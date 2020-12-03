@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CrearTablaPermisoRol extends Migration
+class CreateRolPersonaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CrearTablaPermisoRol extends Migration
      */
     public function up()
     {
-        Schema::create('permiso_rol', function (Blueprint $table) {
+        Schema::create('rolpersona', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('persona_id');
+            $table->foreign('persona_id', 'fk_rolpersona_persona')->references('id')->on('persona');
             $table->unsignedInteger('rol_id');
-            $table->foreign('rol_id', 'fk_permisorol_rol')->references('id')->on('permiso')->onDelete('restrict')->onUpdate('restrict');
-            $table->unsignedInteger('permiso_id');
-            $table->foreign('permiso_id', 'fk_permisorol_usuario')->references('id')->on('permiso')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreign('rol_id', 'fk_rolpersona_rol')->references('id')->on('rol');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CrearTablaPermisoRol extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permiso_rol');
+        Schema::dropIfExists('rolpersona');
     }
 }

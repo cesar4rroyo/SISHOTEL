@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CambiarPropiedadesToLibroPrestamo extends Migration
+class CreateServiciosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class CambiarPropiedadesToLibroPrestamo extends Migration
      */
     public function up()
     {
-        Schema::table('libro_prestamo', function (Blueprint $table) {
-            $table->string('prestado_a', 120)->change();
+        Schema::create('servicios', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('nombre', 20);
+            $table->integer('precio');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class CambiarPropiedadesToLibroPrestamo extends Migration
      */
     public function down()
     {
-        Schema::table('libro_prestamo', function (Blueprint $table) {
-            $table->string('prestado_a', 100)->change();
-        });
+        Schema::dropIfExists('servicios');
     }
 }
