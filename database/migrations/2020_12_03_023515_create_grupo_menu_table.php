@@ -16,8 +16,8 @@ class CreateGrupoMenuTable extends Migration
         Schema::create('grupomenu', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre', 20);
-            $table->string('icono', 50);
-            $table->integer('orden');
+            $table->string('icono', 50)->nullable();
+            $table->integer('orden')->default(0);
             $table->timestamps();
         });
     }
