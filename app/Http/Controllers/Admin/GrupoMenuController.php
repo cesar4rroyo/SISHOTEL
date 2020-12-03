@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\GrupoMenu;
+use Illuminate\Support\Facades\DB;
 
 class GrupoMenuController extends Controller
 {
@@ -14,7 +16,8 @@ class GrupoMenuController extends Controller
      */
     public function index()
     {
-        //
+        $grupomenu = DB::table('grupomenu')->paginate(4);
+        return view('admin.grupomenu.index', compact('grupomenu'));
     }
 
     /**
@@ -24,7 +27,7 @@ class GrupoMenuController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.grupomenu.create');
     }
 
     /**
@@ -35,7 +38,10 @@ class GrupoMenuController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        GrupoMenu::create($request->all());
+        return redirect()
+            ->route('grupomenu')
+            ->with('success', 'Agregado correctamente');
     }
 
     /**
@@ -46,7 +52,8 @@ class GrupoMenuController extends Controller
      */
     public function show($id)
     {
-        //
+        $grupomenu = GrupoMenu::findOrFail($id);
+        return view('admin.grupomenu.show', compact('grupomenu'));
     }
 
     /**
@@ -57,7 +64,8 @@ class GrupoMenuController extends Controller
      */
     public function edit($id)
     {
-        //
+        $grupomenu = GrupoMenu::findOrFail($id);
+        return view('admin.grupomenu.edit', compact('grupomenu'));
     }
 
     /**
@@ -69,7 +77,11 @@ class GrupoMenuController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        GrupoMenu::findOrFail($id)
+            ->update($request->all());
+        return redirect()
+            ->route('grupomenu')
+            ->with('sussess', 'Menú actualizado con exito');
     }
 
     /**
@@ -80,6 +92,9 @@ class GrupoMenuController extends Controller
      */
     public function destroy($id)
     {
-        //
+        GrupoMenu::destroy($id);
+        return redirect()
+            ->route('grupomenu')
+            ->with('success', 'Eliminado Correctamente');
     }
 }

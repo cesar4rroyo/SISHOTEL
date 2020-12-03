@@ -11,8 +11,5 @@ class GrupoMenu extends Model
 
     protected $primaryKey = 'id';
 
-
     protected $fillable = ['nombre', 'icono', 'orden'];
-
-    protected $guarde = ['id'];
 }
