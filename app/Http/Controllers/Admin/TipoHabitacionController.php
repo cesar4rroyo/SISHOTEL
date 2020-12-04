@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\GrupoMenu;
+use App\Models\TipoHabitacion;
 use Illuminate\Support\Facades\DB;
 
-class GrupoMenuController extends Controller
+class TipoHabitacionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,8 @@ class GrupoMenuController extends Controller
     public function index()
     {
         $paginate_number = 10;
-        $grupomenu = DB::table('grupomenu')->paginate($paginate_number);
-        return view('admin.grupomenu.index', compact('grupomenu'));
+        $tipohabitacion = DB::table('tipohabitacion')->paginate($paginate_number);
+        return view('admin.tipohabitacion.index', compact('tipohabitacion'));
     }
 
     /**
@@ -28,7 +28,7 @@ class GrupoMenuController extends Controller
      */
     public function create()
     {
-        return view('admin.grupomenu.create');
+        return view('admin.tipohabitacion.create');
     }
 
     /**
@@ -39,9 +39,9 @@ class GrupoMenuController extends Controller
      */
     public function store(Request $request)
     {
-        GrupoMenu::create($request->all());
+        TipoHabitacion::create($request->all());
         return redirect()
-            ->route('grupomenu')
+            ->route('tipohabitacion')
             ->with('success', 'Agregado correctamente');
     }
 
@@ -53,8 +53,8 @@ class GrupoMenuController extends Controller
      */
     public function show($id)
     {
-        $grupomenu = GrupoMenu::findOrFail($id);
-        return view('admin.grupomenu.show', compact('grupomenu'));
+        $tipohabitacion = Tipohabitacion::findOrFail($id);
+        return view('admin.tipohabitacion.show', compact('tipohabitacion'));
     }
 
     /**
@@ -65,8 +65,8 @@ class GrupoMenuController extends Controller
      */
     public function edit($id)
     {
-        $grupomenu = GrupoMenu::findOrFail($id);
-        return view('admin.grupomenu.edit', compact('grupomenu'));
+        $tipohabitacion = Tipohabitacion::findOrFail($id);
+        return view('admin.tipohabitacion.edit', compact('tipohabitacion'));
     }
 
     /**
@@ -78,10 +78,10 @@ class GrupoMenuController extends Controller
      */
     public function update(Request $request, $id)
     {
-        GrupoMenu::findOrFail($id)
+        Tipohabitacion::findOrFail($id)
             ->update($request->all());
         return redirect()
-            ->route('grupomenu')
+            ->route('tipohabitacion')
             ->with('sussess', 'Menú actualizado con exito');
     }
 
@@ -93,9 +93,9 @@ class GrupoMenuController extends Controller
      */
     public function destroy($id)
     {
-        GrupoMenu::destroy($id);
+        Tipohabitacion::destroy($id);
         return redirect()
-            ->route('grupomenu')
+            ->route('tipohabitacion')
             ->with('success', 'Eliminado Correctamente');
     }
 }
