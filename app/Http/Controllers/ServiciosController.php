@@ -52,8 +52,8 @@ class ServiciosController extends Controller
      */
     public function show($id)
     {
-        $servicios = Servicios::findOrFail($id);
-        return view('general.servicios.show', compact('servicios'));
+        $servicio = Servicios::findOrFail($id);
+        return view('general.servicios.show', compact('servicio'));
     }
 
     /**
@@ -64,8 +64,8 @@ class ServiciosController extends Controller
      */
     public function edit($id)
     {
-        $servicios = Servicios::findOrFail($id);
-        return view('general.servicios.edit', compact('servicios'));
+        $servicio = Servicios::findOrFail($id);
+        return view('general.servicios.edit', compact('servicio'));
     }
 
     /**
