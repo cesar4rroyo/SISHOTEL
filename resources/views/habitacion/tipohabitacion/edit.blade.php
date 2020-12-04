@@ -26,7 +26,7 @@
                         {{ method_field('PUT') }}
                         {{ csrf_field() }}
 
-                        @include ('admin.tipohabitacion.form', ['formMode' => 'edit'])
+                        @include ('habitacion.tipohabitacion.form', ['formMode' => 'edit'])
 
                     </form>
 

@@ -24,7 +24,7 @@
                         class="form-horizontal" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
-                        @include ('admin.tipohabitacion.form', ['formMode' => 'create'])
+                        @include ('habitacion.tipohabitacion.form', ['formMode' => 'create'])
 
                     </form>
 
