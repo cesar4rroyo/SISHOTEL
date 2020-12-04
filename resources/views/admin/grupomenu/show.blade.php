@@ -4,9 +4,9 @@
 <div class="container">
     <div class="row">
 
-        <div class="col-md-9">
+        <div class="col-md-12">
             <div class="card">
-                <div class="card-header">grupomenu {{ $grupomenu->id }}</div>
+                <div class="card-header">Grupomenu {{ $grupomenu->id }}</div>
                 <div class="card-body">
 
                     <a href="{{ url('admin/grupomenu') }}" title="Back"><button class="btn btn-warning btn-sm"><i
