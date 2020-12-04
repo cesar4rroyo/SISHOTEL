@@ -21,7 +21,7 @@
                     </ul>
                     @endif
 
-                    <form method="POST" action="{{ ROUTE('update_tipousuario' , $tipousuario->id) }}"
+                    <form method="POST" action="{{ route('update_tipousuario' , $tipousuario->id) }}"
                         accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
                         {{ method_field('PUT') }}
                         {{ csrf_field() }}
