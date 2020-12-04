@@ -82,7 +82,7 @@ class RolController extends Controller
             ->update($request->all());
         return redirect()
             ->route('rol')
-            ->with('sussess', 'Menú actualizado con exito');
+            ->with('success', 'Menú actualizado con exito');
     }
 
     /**

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends("theme.$theme.layout")
 
 @section('content')
 <div class="container">
@@ -12,24 +12,10 @@
             <div class="card">
                 <div class="card-header">Nacionalidad</div>
                 <div class="card-body">
-                    <a href="{{ url('/nacionalidad/create') }}" class="btn btn-success btn-sm"
+                    <a href="{{ url('admin/nacionalidad/create') }}" class="btn btn-success btn-sm"
                         title="Add New nacionalidad">
-                        <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                        <i class="fa fa-plus" aria-hidden="true"></i> Agregar nuevo
                     </a>
-
-                    <form method="GET" action="{{ url('/nacionalidad') }}" accept-charset="UTF-8"
-                        class="form-inline my-2 my-lg-0 float-right" role="search">
-                        <div class="input-group">
-                            <input type="text" class="form-control" name="search" placeholder="Search..."
-                                value="{{ request('search') }}">
-                            <span class="input-group-append">
-                                <button class="btn btn-secondary" type="submit">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </form>
-
                     <br />
                     <br />
                     <div class="table-responsive">
@@ -47,22 +33,23 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->nombre }}</td>
                                     <td>
-                                        <a href="{{ url('/nacionalidad/' . $item->id) }}"
+                                        <a href="{{ route('show_nacionalidad', $item->id)  }}"
                                             title="View nacionalidad"><button class="btn btn-info btn-sm"><i
-                                                    class="fa fa-eye" aria-hidden="true"></i> View</button></a>
-                                        <a href="{{ url('/nacionalidad/' . $item->id . '/edit') }}"
+                                                    class="fa fa-eye" aria-hidden="true"></i>
+                                                Ver</button></a>
+                                        <a href="{{ route('edit_nacionalidad', $item->id ) }}"
                                             title="Edit nacionalidad"><button class="btn btn-primary btn-sm"><i
                                                     class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                                Edit</button></a>
+                                                Editar</button></a>
 
-                                        <form method="POST" action="{{ url('/nacionalidad' . '/' . $item->id) }}"
+                                        <form method="POST" action="{{route('destroy_nacionalidad', $item->id)}}"
                                             accept-charset="UTF-8" style="display:inline">
                                             {{ method_field('DELETE') }}
                                             {{ csrf_field() }}
                                             <button type="submit" class="btn btn-danger btn-sm"
                                                 title="Delete nacionalidad"
                                                 onclick="return confirm(&quot;Confirm delete?&quot;)"><i
-                                                    class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                                                    class="fa fa-trash-o" aria-hidden="true"></i> Eliminar</button>
                                         </form>
                                     </td>
                                 </tr>

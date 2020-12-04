@@ -82,7 +82,7 @@ class NacionalidadController extends Controller
             ->update($request->all());
         return redirect()
             ->route('nacionalidad')
-            ->with('sussess', 'Menú actualizado con exito');
+            ->with('success', 'Actualizado con exito');
     }
 
     /**

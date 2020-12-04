@@ -82,7 +82,7 @@ class GrupoMenuController extends Controller
             ->update($request->all());
         return redirect()
             ->route('grupomenu')
-            ->with('sussess', 'Menú actualizado con exito');
+            ->with('success', 'Menú actualizado con exito');
     }
 
     /**

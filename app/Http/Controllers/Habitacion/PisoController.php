@@ -82,7 +82,7 @@ class PisoController extends Controller
             ->update($request->all());
         return redirect()
             ->route('piso')
-            ->with('sussess', 'Menú actualizado con exito');
+            ->with('success', 'Menú actualizado con exito');
     }
 
     /**

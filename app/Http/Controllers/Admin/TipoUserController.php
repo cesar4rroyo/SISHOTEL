@@ -82,7 +82,7 @@ class TipoUserController extends Controller
             ->update($request->all());
         return redirect()
             ->route('tipousuario')
-            ->with('sussess', 'Menú actualizado con exito');
+            ->with('success', 'Menú actualizado con exito');
     }
 
     /**
