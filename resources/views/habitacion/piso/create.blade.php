@@ -21,8 +21,8 @@
                     </ul>
                     @endif
 
-                    <form method="POST" action="{{ url('/piso') }}" accept-charset="UTF-8" class="form-horizontal"
-                        enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('store_piso') }}" accept-charset="UTF-8"
+                        class="form-horizontal" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
                         @include ('habitacion.piso.form', ['formMode' => 'create'])
