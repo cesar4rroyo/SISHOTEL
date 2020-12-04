@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Producto;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Categoria;
+use Illuminate\Support\Facades\DB;
 
 class CategoriaController extends Controller
 {
@@ -14,7 +16,9 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        //
+        $paginate_number = 10;
+        $categoria = DB::table('categoria')->paginate($paginate_number);
+        return view('producto.categoria.index', compact('categoria'));
     }
 
     /**
@@ -24,7 +28,7 @@ class CategoriaController extends Controller
      */
     public function create()
     {
-        //
+        return view('producto.categoria.create');
     }
 
     /**
@@ -35,7 +39,10 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Categoria::create($request->all());
+        return redirect()
+            ->route('categoria')
+            ->with('success', 'Agregado correctamente');
     }
 
     /**
@@ -46,7 +53,8 @@ class CategoriaController extends Controller
      */
     public function show($id)
     {
-        //
+        $categoria = Categoria::findOrFail($id);
+        return view('producto.categoria.show', compact('categoria'));
     }
 
     /**
@@ -57,7 +65,8 @@ class CategoriaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $categoria = Categoria::findOrFail($id);
+        return view('producto.categoria.edit', compact('categoria'));
     }
 
     /**
@@ -69,7 +78,11 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Categoria::findOrFail($id)
+            ->update($request->all());
+        return redirect()
+            ->route('categoria')
+            ->with('sussess', 'Menú actualizado con exito');
     }
 
     /**
@@ -80,6 +93,9 @@ class CategoriaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Categoria::destroy($id);
+        return redirect()
+            ->route('categoria')
+            ->with('success', 'Eliminado Correctamente');
     }
 }

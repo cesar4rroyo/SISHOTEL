@@ -18,7 +18,7 @@ class TipoHabitacionController extends Controller
     {
         $paginate_number = 10;
         $tipohabitacion = DB::table('tipohabitacion')->paginate($paginate_number);
-        return view('admin.tipohabitacion.index', compact('tipohabitacion'));
+        return view('habitacion.tipohabitacion.index', compact('tipohabitacion'));
     }
 
     /**
@@ -28,7 +28,7 @@ class TipoHabitacionController extends Controller
      */
     public function create()
     {
-        return view('admin.tipohabitacion.create');
+        return view('habitacion.tipohabitacion.create');
     }
 
     /**
@@ -54,7 +54,7 @@ class TipoHabitacionController extends Controller
     public function show($id)
     {
         $tipohabitacion = Tipohabitacion::findOrFail($id);
-        return view('admin.tipohabitacion.show', compact('tipohabitacion'));
+        return view('habitacion.tipohabitacion.show', compact('tipohabitacion'));
     }
 
     /**
@@ -66,7 +66,7 @@ class TipoHabitacionController extends Controller
     public function edit($id)
     {
         $tipohabitacion = Tipohabitacion::findOrFail($id);
-        return view('admin.tipohabitacion.edit', compact('tipohabitacion'));
+        return view('habitacion.tipohabitacion.edit', compact('tipohabitacion'));
     }
 
     /**

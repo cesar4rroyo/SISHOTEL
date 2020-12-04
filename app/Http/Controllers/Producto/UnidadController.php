@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Producto;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Unidad;
+use Illuminate\Support\Facades\DB;
 
 class UnidadController extends Controller
 {
@@ -14,7 +16,9 @@ class UnidadController extends Controller
      */
     public function index()
     {
-        //
+        $paginate_number = 10;
+        $unidad = DB::table('unidad')->paginate($paginate_number);
+        return view('producto.unidad.index', compact('unidad'));
     }
 
     /**
@@ -24,7 +28,7 @@ class UnidadController extends Controller
      */
     public function create()
     {
-        //
+        return view('producto.unidad.create');
     }
 
     /**
@@ -35,7 +39,10 @@ class UnidadController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Unidad::create($request->all());
+        return redirect()
+            ->route('unidad')
+            ->with('success', 'Agregado correctamente');
     }
 
     /**
@@ -46,7 +53,8 @@ class UnidadController extends Controller
      */
     public function show($id)
     {
-        //
+        $unidad = Unidad::findOrFail($id);
+        return view('producto.unidad.show', compact('unidad'));
     }
 
     /**
@@ -57,7 +65,8 @@ class UnidadController extends Controller
      */
     public function edit($id)
     {
-        //
+        $unidad = Unidad::findOrFail($id);
+        return view('producto.unidad.edit', compact('unidad'));
     }
 
     /**
@@ -69,7 +78,11 @@ class UnidadController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Unidad::findOrFail($id)
+            ->update($request->all());
+        return redirect()
+            ->route('unidad')
+            ->with('sussess', 'Menú actualizado con exito');
     }
 
     /**
@@ -80,6 +93,9 @@ class UnidadController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Unidad::destroy($id);
+        return redirect()
+            ->route('unidad')
+            ->with('success', 'Eliminado Correctamente');
     }
 }

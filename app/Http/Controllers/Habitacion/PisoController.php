@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Habitacion;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Piso;
+use Illuminate\Support\Facades\DB;
 
 class PisoController extends Controller
 {
@@ -14,7 +16,9 @@ class PisoController extends Controller
      */
     public function index()
     {
-        //
+        $paginate_number = 10;
+        $piso = DB::table('piso')->paginate($paginate_number);
+        return view('habitacion.piso.index', compact('piso'));
     }
 
     /**
@@ -24,7 +28,7 @@ class PisoController extends Controller
      */
     public function create()
     {
-        //
+        return view('habitacion.piso.create');
     }
 
     /**
@@ -35,7 +39,10 @@ class PisoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Piso::create($request->all());
+        return redirect()
+            ->route('piso')
+            ->with('success', 'Agregado correctamente');
     }
 
     /**
@@ -46,7 +53,8 @@ class PisoController extends Controller
      */
     public function show($id)
     {
-        //
+        $piso = Piso::findOrFail($id);
+        return view('habitacion.piso.show', compact('piso'));
     }
 
     /**
@@ -57,7 +65,8 @@ class PisoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $piso = Piso::findOrFail($id);
+        return view('habitacion.piso.edit', compact('piso'));
     }
 
     /**
@@ -69,7 +78,11 @@ class PisoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Piso::findOrFail($id)
+            ->update($request->all());
+        return redirect()
+            ->route('piso')
+            ->with('sussess', 'Menú actualizado con exito');
     }
 
     /**
@@ -80,6 +93,9 @@ class PisoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Piso::destroy($id);
+        return redirect()
+            ->route('piso')
+            ->with('success', 'Eliminado Correctamente');
     }
 }

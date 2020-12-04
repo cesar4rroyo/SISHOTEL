@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Servicios;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ServiciosController extends Controller
 {
@@ -13,7 +15,9 @@ class ServiciosController extends Controller
      */
     public function index()
     {
-        //
+        $paginate_number = 10;
+        $servicios = DB::table('servicios')->paginate($paginate_number);
+        return view('general.servicios.index', compact('servicios'));
     }
 
     /**
@@ -23,7 +27,7 @@ class ServiciosController extends Controller
      */
     public function create()
     {
-        //
+        return view('general.servicios.create');
     }
 
     /**
@@ -34,7 +38,10 @@ class ServiciosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Servicios::create($request->all());
+        return redirect()
+            ->route('servicios')
+            ->with('success', 'Agregado correctamente');
     }
 
     /**
@@ -45,7 +52,8 @@ class ServiciosController extends Controller
      */
     public function show($id)
     {
-        //
+        $servicios = Servicios::findOrFail($id);
+        return view('general.servicios.show', compact('servicios'));
     }
 
     /**
@@ -56,7 +64,8 @@ class ServiciosController extends Controller
      */
     public function edit($id)
     {
-        //
+        $servicios = Servicios::findOrFail($id);
+        return view('general.servicios.edit', compact('servicios'));
     }
 
     /**
@@ -68,7 +77,11 @@ class ServiciosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Servicios::findOrFail($id)
+            ->update($request->all());
+        return redirect()
+            ->route('servicios')
+            ->with('sussess', 'Menú actualizado con exito');
     }
 
     /**
@@ -79,6 +92,9 @@ class ServiciosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Servicios::destroy($id);
+        return redirect()
+            ->route('servicios')
+            ->with('success', 'Eliminado Correctamente');
     }
 }

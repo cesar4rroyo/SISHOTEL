@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Concepto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ConceptoController extends Controller
 {
@@ -13,7 +15,9 @@ class ConceptoController extends Controller
      */
     public function index()
     {
-        //
+        $paginate_number = 10;
+        $concepto = DB::table('concepto')->paginate($paginate_number);
+        return view('general.concepto.index', compact('concepto'));
     }
 
     /**
@@ -23,7 +27,7 @@ class ConceptoController extends Controller
      */
     public function create()
     {
-        //
+        return view('general.concepto.create');
     }
 
     /**
@@ -34,7 +38,10 @@ class ConceptoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Concepto::create($request->all());
+        return redirect()
+            ->route('concepto')
+            ->with('success', 'Agregado correctamente');
     }
 
     /**
@@ -45,7 +52,8 @@ class ConceptoController extends Controller
      */
     public function show($id)
     {
-        //
+        $concepto = Concepto::findOrFail($id);
+        return view('general.concepto.show', compact('concepto'));
     }
 
     /**
@@ -56,7 +64,8 @@ class ConceptoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $concepto = Concepto::findOrFail($id);
+        return view('general.concepto.edit', compact('concepto'));
     }
 
     /**
@@ -68,7 +77,11 @@ class ConceptoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Concepto::findOrFail($id)
+            ->update($request->all());
+        return redirect()
+            ->route('concepto')
+            ->with('sussess', 'Menú actualizado con exito');
     }
 
     /**
@@ -79,6 +92,9 @@ class ConceptoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Concepto::destroy($id);
+        return redirect()
+            ->route('concepto')
+            ->with('success', 'Eliminado Correctamente');
     }
 }
