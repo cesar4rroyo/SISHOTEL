@@ -12,7 +12,7 @@
             <div class="card">
                 <div class="card-header">Piso</div>
                 <div class="card-body">
-                    <a href="{{ url('piso/create') }}" class="btn btn-success btn-sm" title="Add New piso">
+                    <a href="{{ route('create_piso') }}" class="btn btn-success btn-sm" title="Add New piso">
                         <i class="fa fa-plus" aria-hidden="true"></i> Agregar Nuevo
                     </a>
                     <br />

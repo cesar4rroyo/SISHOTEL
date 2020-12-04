@@ -12,7 +12,7 @@
             <div class="card">
                 <div class="card-header">Tipohabitacion</div>
                 <div class="card-body">
-                    <a href="{{ url('tipohabitacion/create') }}" class="btn btn-success btn-sm"
+                    <a href="{{ route('create_tipohabitacion') }}" class="btn btn-success btn-sm"
                         title="Add New tipohabitacion">
                         <i class="fa fa-plus" aria-hidden="true"></i> Agregar Nuevo
                     </a>
