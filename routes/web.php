@@ -145,18 +145,18 @@ Route::put('habitacion/{id}', 'Habitacion\HabitacionController@update')->name('u
 Route::delete('habitacion/{id}/destroy', 'Habitacion\HabitacionController@destroy')->name('destroy_habitacion');
 
 /* Rutas de CONCEPTO */
-Route::get('concepto/create', 'ConceptoController@create')->name('create_concepto');
-Route::get('concepto', 'ConceptoController@index')->name('concepto');
-Route::get('concepto/{id}', 'ConceptoController@show')->name('show_concepto');
-Route::post('concepto', 'ConceptoController@store')->name('store_concepto');
-Route::get('concepto/{id}/edit', 'ConceptoController@edit')->name('edit_concepto');
-Route::put('concepto/{id}', 'ConceptoController@update')->name('update_concepto');
-Route::delete('concepto/{id}/destroy', 'ConceptoController@destroy')->name('destroy_concepto');
+Route::get('general/concepto/create', 'ConceptoController@create')->name('create_concepto');
+Route::get('general/concepto', 'ConceptoController@index')->name('concepto');
+Route::get('general/concepto/{id}', 'ConceptoController@show')->name('show_concepto');
+Route::post('general/concepto', 'ConceptoController@store')->name('store_concepto');
+Route::get('general/concepto/{id}/edit', 'ConceptoController@edit')->name('edit_concepto');
+Route::put('general/concepto/{id}', 'ConceptoController@update')->name('update_concepto');
+Route::delete('general/concepto/{id}/destroy', 'ConceptoController@destroy')->name('destroy_concepto');
 /* Rutas de SERVICIOS */
-Route::get('servicios/create', 'ServiciosController@create')->name('create_servicios');
-Route::get('servicios', 'ServiciosController@index')->name('servicios');
-Route::get('servicios/{id}', 'ServiciosController@show')->name('show_servicios');
-Route::post('servicios', 'ServiciosController@store')->name('store_servicios');
-Route::get('servicios/{id}/edit', 'ServiciosController@edit')->name('edit_servicios');
-Route::put('servicios/{id}', 'ServiciosController@update')->name('update_servicios');
-Route::delete('servicios/{id}/destroy', 'ServiciosController@destroy')->name('destroy_servicios');
+Route::get('general/servicios/create', 'ServiciosController@create')->name('create_servicios');
+Route::get('general/servicios', 'ServiciosController@index')->name('servicios');
+Route::get('general/servicios/{id}', 'ServiciosController@show')->name('show_servicios');
+Route::post('general/servicios', 'ServiciosController@store')->name('store_servicios');
+Route::get('general/servicios/{id}/edit', 'ServiciosController@edit')->name('edit_servicios');
+Route::put('general/servicios/{id}', 'ServiciosController@update')->name('update_servicios');
+Route::delete('general/servicios/{id}/destroy', 'ServiciosController@destroy')->name('destroy_servicios');
