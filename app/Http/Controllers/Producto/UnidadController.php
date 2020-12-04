@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Producto;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\TipoHabitacion;
-use Illuminate\Support\Facades\DB;
 
-class TipoHabitacionController extends Controller
+class UnidadController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +14,7 @@ class TipoHabitacionController extends Controller
      */
     public function index()
     {
-        $paginate_number = 10;
-        $tipohabitacion = DB::table('tipohabitacion')->paginate($paginate_number);
-        return view('admin.tipohabitacion.index', compact('tipohabitacion'));
+        //
     }
 
     /**
@@ -28,7 +24,7 @@ class TipoHabitacionController extends Controller
      */
     public function create()
     {
-        return view('admin.tipohabitacion.create');
+        //
     }
 
     /**
@@ -39,10 +35,7 @@ class TipoHabitacionController extends Controller
      */
     public function store(Request $request)
     {
-        TipoHabitacion::create($request->all());
-        return redirect()
-            ->route('tipohabitacion')
-            ->with('success', 'Agregado correctamente');
+        //
     }
 
     /**
@@ -53,8 +46,7 @@ class TipoHabitacionController extends Controller
      */
     public function show($id)
     {
-        $tipohabitacion = Tipohabitacion::findOrFail($id);
-        return view('admin.tipohabitacion.show', compact('tipohabitacion'));
+        //
     }
 
     /**
@@ -65,8 +57,7 @@ class TipoHabitacionController extends Controller
      */
     public function edit($id)
     {
-        $tipohabitacion = Tipohabitacion::findOrFail($id);
-        return view('admin.tipohabitacion.edit', compact('tipohabitacion'));
+        //
     }
 
     /**
@@ -78,11 +69,7 @@ class TipoHabitacionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Tipohabitacion::findOrFail($id)
-            ->update($request->all());
-        return redirect()
-            ->route('tipohabitacion')
-            ->with('sussess', 'Menú actualizado con exito');
+        //
     }
 
     /**
@@ -93,9 +80,6 @@ class TipoHabitacionController extends Controller
      */
     public function destroy($id)
     {
-        Tipohabitacion::destroy($id);
-        return redirect()
-            ->route('tipohabitacion')
-            ->with('success', 'Eliminado Correctamente');
+        //
     }
 }
