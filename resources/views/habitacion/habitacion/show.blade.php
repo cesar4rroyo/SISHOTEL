@@ -44,6 +44,10 @@
                                     <th> Piso </th>
                                     <td> {{ $habitacion->piso->nombre }} </td>
                                 </tr>
+                                <tr>
+                                    <th> Tipo Habitacio </th>
+                                    <td> {{ $habitacion->tipohabitacion->nombre }} </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

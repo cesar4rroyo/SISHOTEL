@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Producto;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Categoria;
+use App\Models\Producto;
+use App\Models\Unidad;
 
 class ProductoController extends Controller
 {
@@ -14,7 +17,12 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        //
+        $paginate_number = 10;
+        $producto =
+            Producto::with('categoria', 'unidad')
+            ->orderBy('nombre')
+            ->paginate($paginate_number);
+        return view('producto.producto.index', compact('producto'));
     }
 
     /**
@@ -24,7 +32,10 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        //
+        $categorias = Categoria::with('producto')->get();
+        $unidades = Unidad::with('producto')->get();
+        // $unidades = DB::table('tipoproducto')->get();
+        return view('producto.producto.create', compact('categorias', 'unidades'));
     }
 
     /**
@@ -35,7 +46,17 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $producto = Producto::create([
+            'nombre' => $request->nombre,
+            'precioventa' => $request->precioventa,
+            'preciocompra' => $request->preciocompra,
+            'categoria_id' => $request->categoria_id,
+            'unidad_id' => $request->unidad_id
+        ]);
+
+        return redirect()
+            ->route('producto')
+            ->with('success', 'Agregado correctamente');
     }
 
     /**
@@ -46,7 +67,8 @@ class ProductoController extends Controller
      */
     public function show($id)
     {
-        //
+        $producto = Producto::findOrFail($id);
+        return view('producto.producto.show', compact('producto'));
     }
 
     /**
@@ -57,7 +79,10 @@ class ProductoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $producto = Producto::findOrFail($id);
+        $categorias = Categoria::with('producto')->get();
+        $unidades = Unidad::with('producto')->get();
+        return view('producto.producto.edit', compact('producto', 'categorias', 'unidades'));
     }
 
     /**
@@ -69,7 +94,18 @@ class ProductoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $producto = Producto::findOrFail($id)
+            ->update([
+                'nombre' => $request->nombre,
+                'precioventa' => $request->precioventa,
+                'preciocompra' => $request->preciocompra,
+                'categoria_id' => $request->categoria_id,
+                'unidad_id' => $request->unidad_id
+            ]);
+
+        return redirect()
+            ->route('producto')
+            ->with('success', 'Actualizado correctamente');
     }
 
     /**
@@ -80,6 +116,9 @@ class ProductoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Producto::destroy($id);
+        return redirect()
+            ->route('producto')
+            ->with('success', 'Eliminado Correctamente');
     }
 }
