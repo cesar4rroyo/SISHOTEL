@@ -18,9 +18,17 @@ class CreateHabitacionTable extends Migration
             $table->integer('numero');
             $table->string('situacion', 200);
             $table->unsignedInteger('piso_id');
-            $table->foreign('piso_id', 'fk_habitacion_piso')->references('id')->on('piso');
+            $table->foreign('piso_id', 'fk_habitacion_piso')
+                ->references('id')
+                ->on('piso')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->unsignedInteger('tipohabitacion_id');
-            $table->foreign('tipohabitacion_id', 'fk_habitacion_tipohabitacion')->references('id')->on('tipohabitacion');
+            $table->foreign('tipohabitacion_id', 'fk_habitacion_tipohabitacion')
+                ->references('id')
+                ->on('tipohabitacion')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->timestamps();
         });
     }

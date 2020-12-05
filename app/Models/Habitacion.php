@@ -3,29 +3,22 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Habitacion extends Model
 {
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
+
     protected $table = 'habitacion';
-
-    /**
-    * The database primary key value.
-    *
-    * @var string
-    */
     protected $primaryKey = 'id';
-
-    /**
-     * Attributes that should be mass-assignable.
-     *
-     * @var array
-     */
     protected $fillable = ['numero', 'situacion', 'piso_id', 'tipohabitacion_id'];
 
-    
+
+    public function piso()
+    {
+        return $this->belongsTo(Piso::class, 'piso_id');
+    }
+    public function tipohabitacion()
+    {
+        return $this->belongsTo(TipoHabitacion::class, 'tipohabitacion_id');
+    }
 }
