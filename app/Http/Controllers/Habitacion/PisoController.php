@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Habitacion;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Habitacion\ValidatePiso;
 use App\Models\Piso;
 use Illuminate\Support\Facades\DB;
 
@@ -37,7 +38,7 @@ class PisoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ValidatePiso $request)
     {
         Piso::create($request->all());
         return redirect()
@@ -76,7 +77,7 @@ class PisoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ValidatePiso $request, $id)
     {
         Piso::findOrFail($id)
             ->update($request->all());

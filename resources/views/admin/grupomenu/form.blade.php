@@ -10,12 +10,12 @@
         value="{{ isset($grupomenu->icono) ? $grupomenu->icono : ''}}">
     {!! $errors->first('icono', '<p class="help-block">:message</p>') !!}
 </div>
-<div class="form-group {{ $errors->has('orden') ? 'has-error' : ''}}">
-    <label for="orden" class="control-label">{{ 'Orden' }}</label>
-    <input class="form-control" name="orden" type="number" id="orden"
-        value="{{ isset($grupomenu->orden) ? $grupomenu->orden : ''}}">
-    {!! $errors->first('orden', '<p class="help-block">:message</p>') !!}
-</div>
+{{-- <div class="form-group {{ $errors->has('orden') ? 'has-error' : ''}}">
+<label for="orden" class="control-label">{{ 'Orden' }}</label>
+<input class="form-control" name="orden" type="number" id="orden"
+    value="{{ isset($grupomenu->orden) ? $grupomenu->orden : ''}}">
+{!! $errors->first('orden', '<p class="help-block">:message</p>') !!}
+</div> --}}
 
 
 <div class="form-group">

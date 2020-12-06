@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Producto;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Producto\ValidateCategoria;
 use App\Models\Categoria;
 use Illuminate\Support\Facades\DB;
 
@@ -37,7 +38,7 @@ class CategoriaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ValidateCategoria $request)
     {
         Categoria::create($request->all());
         return redirect()
@@ -76,7 +77,7 @@ class CategoriaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ValidateCategoria $request, $id)
     {
         Categoria::findOrFail($id)
             ->update($request->all());

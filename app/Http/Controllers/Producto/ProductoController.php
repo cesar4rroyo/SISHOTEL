@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Producto;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Producto\ValidateProducto;
 use App\Models\Categoria;
 use App\Models\Producto;
 use App\Models\Unidad;
@@ -44,7 +45,7 @@ class ProductoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ValidateProducto $request)
     {
         $producto = Producto::create([
             'nombre' => $request->nombre,
@@ -92,7 +93,7 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ValidateProducto $request, $id)
     {
         $producto = Producto::findOrFail($id)
             ->update([

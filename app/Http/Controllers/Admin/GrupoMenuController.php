@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ValidateGrupoMenu;
 use App\Models\GrupoMenu;
 use Illuminate\Support\Facades\DB;
 
@@ -37,7 +38,7 @@ class GrupoMenuController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ValidateGrupoMenu $request)
     {
         GrupoMenu::create($request->all());
         return redirect()
@@ -76,7 +77,7 @@ class GrupoMenuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ValidateGrupoMenu $request, $id)
     {
         GrupoMenu::findOrFail($id)
             ->update($request->all());

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ValidateConcepto;
 use App\Models\Concepto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,7 +37,7 @@ class ConceptoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ValidateConcepto $request)
     {
         Concepto::create($request->all());
         return redirect()
@@ -75,7 +76,7 @@ class ConceptoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ValidateConcepto $request, $id)
     {
         Concepto::findOrFail($id)
             ->update($request->all());

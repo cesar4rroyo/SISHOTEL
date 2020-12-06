@@ -2,13 +2,13 @@
     <label for="numero" class="control-label">{{ 'Numero' }}</label>
     <input class="form-control" name="numero" type="number" id="numero"
         value="{{ isset($habitacion->numero) ? $habitacion->numero : ''}}">
-    {!! $errors->first('numero', '<p class="help-block">:message</p>') !!}
+    {!! $errors->first('numero', '<p class="text-danger">:message</p>') !!}
 </div>
 <div class="form-group {{ $errors->has('situacion') ? 'has-error' : ''}}">
     <label for="situacion" class="control-label">{{ 'Situacion' }}</label>
     <input class="form-control" name="situacion" type="text" id="situacion"
         value="{{ isset($habitacion->situacion) ? $habitacion->situacion : ''}}">
-    {!! $errors->first('situacion', '<p class="help-block">:message</p>') !!}
+    {!! $errors->first('situacion', '<p class="text-danger">:message</p>') !!}
 </div>
 <div class="form-group {{ $errors->has('piso') ? 'has-error' : ''}}">
     <label for="piso_id" class="control-label">{{ 'Piso' }}</label>
@@ -24,7 +24,7 @@
     </select>
     {{-- <input class="form-control" name="piso" type="number" id="piso"
         value="{{ isset($habitacion->piso) ? $habitacion->piso : ''}}"> --}}
-    {!! $errors->first('piso', '<p class="help-block">:message</p>') !!}
+    {!! $errors->first('piso', '<p class="text-danger">:message</p>') !!}
 </div>
 <div class="form-group {{ $errors->has('tipohabitacion') ? 'has-error' : ''}}">
     <label for="tipohabitacion_id" class="control-label">{{ 'Tipohabitacion' }}</label>
@@ -40,7 +40,7 @@
     </select>
     {{-- <input class="form-control" name="tipohabitacion" type="number" id="tipohabitacion"
         value="{{ isset($habitacion->tipohabitacion) ? $habitacion->tipohabitacion->nombre : ''}}"> --}}
-    {!! $errors->first('tipohabitacion', '<p class="help-block">:message</p>') !!}
+    {!! $errors->first('tipohabitacion', '<p class="text-danger">:message</p>') !!}
 </div>
 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Habitacion;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Habitacion\ValidateHabitacion;
 use App\Models\Habitacion;
 use App\Models\Piso;
 use App\Models\TipoHabitacion;
@@ -31,7 +32,7 @@ class HabitacionController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(ValidateHabitacion $request)
     {
         // $habitacion = new Habitacion();
         // $piso = Piso::findOrFail($request->piso_id);
@@ -71,7 +72,7 @@ class HabitacionController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+    public function update(ValidateHabitacion $request, $id)
     {
         $habitacion = Habitacion::findOrFail($id)
             ->update([

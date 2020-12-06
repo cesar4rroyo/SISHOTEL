@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Habitacion;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Habitacion\ValidateTipoHabitacion;
 use App\Models\TipoHabitacion;
 use Illuminate\Support\Facades\DB;
 
@@ -37,7 +38,7 @@ class TipoHabitacionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ValidateTipoHabitacion $request)
     {
         TipoHabitacion::create($request->all());
         return redirect()
@@ -76,7 +77,7 @@ class TipoHabitacionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ValidateTipoHabitacion $request, $id)
     {
         Tipohabitacion::findOrFail($id)
             ->update($request->all());

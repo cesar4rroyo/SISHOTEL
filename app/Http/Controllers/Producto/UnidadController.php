@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Producto;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Producto\ValidateUnidad;
 use App\Models\Unidad;
 use Illuminate\Support\Facades\DB;
 
@@ -37,7 +38,7 @@ class UnidadController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ValidateUnidad $request)
     {
         Unidad::create($request->all());
         return redirect()
@@ -76,7 +77,7 @@ class UnidadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ValidateUnidad $request, $id)
     {
         Unidad::findOrFail($id)
             ->update($request->all());

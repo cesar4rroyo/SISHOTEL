@@ -2,7 +2,7 @@
     <label for="nombre" class="control-label">{{ 'Nombre' }}</label>
     <input class="form-control" name="nombre" type="text" id="nombre"
         value="{{ isset($unidad->nombre) ? $unidad->nombre : ''}}">
-    {!! $errors->first('nombre', '<p class="help-block">:message</p>') !!}
+    {!! $errors->first('nombre', '<p class="text-danger">:message</p>') !!}
 </div>
 
 
