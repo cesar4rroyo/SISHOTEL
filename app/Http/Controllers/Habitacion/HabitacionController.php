@@ -27,22 +27,13 @@ class HabitacionController extends Controller
     public function create()
     {
         $pisos = Piso::with('habitacion')->get();
-        $tipohabitaciones = DB::table('tipohabitacion')->get();
+        $tipohabitaciones = TipoHabitacion::with('habitacion')->get();
         return view('habitacion.habitacion.create', compact('pisos', 'tipohabitaciones'));
     }
 
 
     public function store(ValidateHabitacion $request)
     {
-        // $habitacion = new Habitacion();
-        // $piso = Piso::findOrFail($request->piso_id);
-        // $tipohabitacion = TipoHabitacion::findOrFail($request->tipohabitacion_id);
-        // $piso->habitacion()->save($habitacion);
-        // $tipohabitacion->habitacion()->save($habitacion);
-        // $habitacion
-        //     ->create($request->all())
-        //     ->piso()->associate($piso)
-        //     ->tpohabitacion()->associate($tipohabitacion);
         $habitacion = Habitacion::create([
             'numero' => $request->numero,
             'situacion' => $request->situacion,
@@ -67,7 +58,7 @@ class HabitacionController extends Controller
     {
         $habitacion = Habitacion::findOrFail($id);
         $pisos = Piso::with('habitacion')->get();
-        $tipohabitaciones = DB::table('tipohabitacion')->get();
+        $tipohabitaciones = TipoHabitacion::with('habitacion')->get();
         return view('habitacion.habitacion.edit', compact('habitacion', 'pisos', 'tipohabitaciones'));
     }
 

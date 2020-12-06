@@ -35,7 +35,6 @@ class ProductoController extends Controller
     {
         $categorias = Categoria::with('producto')->get();
         $unidades = Unidad::with('producto')->get();
-        // $unidades = DB::table('tipoproducto')->get();
         return view('producto.producto.create', compact('categorias', 'unidades'));
     }
 

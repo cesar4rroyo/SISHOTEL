@@ -4,16 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ValidateOpcionMenu;
+use App\Models\GrupoMenu;
 use App\Models\OpcionMenu;
 use Illuminate\Support\Facades\DB;
 
 class OpcionMenuController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $paginate_number = 10;
@@ -21,73 +18,70 @@ class OpcionMenuController extends Controller
             OpcionMenu::with('grupomenu')
             ->orderBy('grupomenu_id')
             ->paginate($paginate_number);
-        // dd($opcionmenu);
-        return view('admin.grupomenu.index', compact('opcionmenu'));
+        return view('admin.opcionmenu.index', compact('opcionmenu'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
-        //
+        $grupomenu = GrupoMenu::with('opcionmenu')->get();
+        return view('admin.opcionmenu.create', compact('grupomenu'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function store(ValidateOpcionMenu $request)
     {
-        //
+        $opcionmenu = OpcionMenu::create([
+            'nombre' => $request->nombre,
+            'link' => $request->link,
+            'icono' => $request->icono,
+            'orden' => $request->orden,
+            'grupomenu_id' => $request->grupomenu_id
+        ]);
+
+        return redirect()
+            ->route('opcionmenu')
+            ->with('success', 'Agregado correctamente');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
-        //
+        $opcionmenu = OpcionMenu::findOrFail($id);
+        return view('admin.opcionmenu.show', compact('opcionmenu'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
-        //
+        $grupomenu = GrupoMenu::with('opcionmenu')->get();
+        $opcionmenu = OpcionMenu::findOrFail($id);
+        return view('admin.opcionmenu.edit', compact('grupomenu', 'opcionmenu'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+
+    public function update(ValidateOpcionMenu $request, $id)
     {
-        //
+        $opcionmenu = OpcionMenu::findOrFail($id)
+            ->update([
+                'nombre' => $request->nombre,
+                'link' => $request->link,
+                'icono' => $request->icono,
+                'orden' => $request->orden,
+                'grupomenu_id' => $request->grupomenu_id
+            ]);
+
+        return redirect()
+            ->route('opcionmenu')
+            ->with('success', 'Actualizado correctamente');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
-        //
+        OpcionMenu::destroy($id);
+        return redirect()
+            ->route('opcionmenu')
+            ->with('success', 'Eliminado Correctamente');
     }
 }

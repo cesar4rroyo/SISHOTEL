@@ -13,6 +13,6 @@ class TipoHabitacion extends Model
 
     public function habitacion()
     {
-        return $this->hasMany(Habitacion::class);
+        return $this->hasMany(Habitacion::class, 'tipohabitacion_id');
     }
 }

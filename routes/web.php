@@ -43,13 +43,13 @@ Route::group(['prefix' => 'admin', 'namespace'], function () {
     Route::put('nacionalidad/{id}', 'Admin\NacionalidadController@update')->name('update_nacionalidad');
     Route::delete('nacionalidad/{id}/destroy', 'Admin\NacionalidadController@destroy')->name('destroy_nacionalidad');
     /* Rutas de OPCIONMENU */
-    Route::get('opcionmenu/create', 'Admin\OpcionmenuController@create')->name('create_opcionmenu');
-    Route::get('opcionmenu', 'Admin\OpcionmenuController@index')->name('opcionmenu');
-    Route::get('opcionmenu/{id}', 'Admin\OpcionmenuController@show')->name('show_opcionmenu');
-    Route::post('opcionmenu', 'Admin\OpcionmenuController@store')->name('store_opcionmenu');
-    Route::get('opcionmenu/{id}/edit', 'Admin\OpcionmenuController@edit')->name('edit_opcionmenu');
-    Route::put('opcionmenu/{id}', 'Admin\OpcionmenuController@update')->name('update_opcionmenu');
-    Route::delete('opcionmenu/{id}/destroy', 'Admin\OpcionmenuController@destroy')->name('destroy_opcionmenu');
+    Route::get('opcionmenu/create', 'Admin\OpcionMenuController@create')->name('create_opcionmenu');
+    Route::get('opcionmenu', 'Admin\OpcionMenuController@index')->name('opcionmenu');
+    Route::get('opcionmenu/{id}', 'Admin\OpcionMenuController@show')->name('show_opcionmenu');
+    Route::post('opcionmenu', 'Admin\OpcionMenuController@store')->name('store_opcionmenu');
+    Route::get('opcionmenu/{id}/edit', 'Admin\OpcionMenuController@edit')->name('edit_opcionmenu');
+    Route::put('opcionmenu/{id}', 'Admin\OpcionMenuController@update')->name('update_opcionmenu');
+    Route::delete('opcionmenu/{id}/destroy', 'Admin\OpcionMenuController@destroy')->name('destroy_opcionmenu');
     /* Rutas de PERSONA */
     Route::get('persona/create', 'Admin\PersonaController@create')->name('create_persona');
     Route::get('persona', 'Admin\PersonaController@index')->name('persona');

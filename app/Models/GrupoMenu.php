@@ -12,6 +12,6 @@ class GrupoMenu extends Model
     protected $fillable = ['nombre', 'icono', 'orden'];
     public function opcionmenu()
     {
-        return $this->hasMany(OpcionMenu::class);
+        return $this->hasMany(OpcionMenu::class, 'grupomenu_id');
     }
 }
