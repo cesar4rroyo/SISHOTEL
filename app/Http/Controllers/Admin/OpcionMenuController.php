@@ -11,14 +11,22 @@ use Illuminate\Support\Facades\DB;
 
 class OpcionMenuController extends Controller
 {
-    public function index()
+f    public function index(Request $request)
     {
         $paginate_number = 10;
-        $opcionmenu =
-            OpcionMenu::with('grupomenu')
-            ->orderBy('grupomenu_id')
-            ->paginate($paginate_number);
-        return view('admin.opcionmenu.index', compact('opcionmenu'));
+        if ($request->exists($request)) {
+            $opcionmenu =
+                OpcionMenu::where('grupomenu_id', '=', $request)
+                ->paginate($paginate_number);
+            $grupomenu = GrupoMenu::with('opcionmenu')->get();
+        } else {
+            $opcionmenu =
+                OpcionMenu::with('grupomenu')
+                ->orderBy('grupomenu_id')
+                ->paginate($paginate_number);
+            $grupomenu = GrupoMenu::with('opcionmenu')->get();
+        }
+        return view('admin.opcionmenu.index', compact('opcionmenu', 'grupomenu'));
     }
 
 

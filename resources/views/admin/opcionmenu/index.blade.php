@@ -18,8 +18,12 @@
                     <form method="GET" action="{{ route('opcionmenu') }}" accept-charset="UTF-8"
                         class="form-inline my-2 my-lg-0 float-right" role="search">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="search" placeholder="Buscar..."
-                                value="{{ request('search') }}">
+                            <select class="form-control" name="search" value="{{ request('search') }}">
+                                <option value=""><i class="fas fa-filter"></i> Filtrar Grupos Menú</option>
+                                @foreach ($grupomenu as $item)
+                                <option value="{{$item->id}}">{{$item->nombre}}</option>
+                                @endforeach
+                            </select>
                             <span class="input-group-append">
                                 <button class="btn btn-secondary" type="submit">
                                     <i class="fa fa-search"></i>
