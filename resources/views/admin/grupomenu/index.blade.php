@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Grupomenu</div>
+                <div class="card-header">Grupo Menu</div>
                 <div class="card-body">
                     <a href="{{ url('admin/grupomenu/create') }}" class="btn btn-success btn-sm"
                         title="Add New grupomenu">
@@ -27,7 +27,7 @@
                                     <th>Nombre</th>
                                     <th>Icono</th>
                                     <th>Orden</th>
-                                    <th>Actions</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>

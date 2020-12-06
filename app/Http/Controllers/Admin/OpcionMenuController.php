@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\OpcionMenu;
+use Illuminate\Support\Facades\DB;
 
 class OpcionMenuController extends Controller
 {
@@ -14,7 +16,13 @@ class OpcionMenuController extends Controller
      */
     public function index()
     {
-        //
+        $paginate_number = 10;
+        $opcionmenu =
+            OpcionMenu::with('grupomenu')
+            ->orderBy('grupomenu_id')
+            ->paginate($paginate_number);
+        // dd($opcionmenu);
+        return view('admin.grupomenu.index', compact('opcionmenu'));
     }
 
     /**

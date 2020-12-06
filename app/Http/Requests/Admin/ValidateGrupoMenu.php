@@ -25,7 +25,8 @@ class ValidateGrupoMenu extends FormRequest
     {
         return [
             'nombre' => 'required | max:20 | unique:grupomenu,nombre,' . $this->route('id'),
-            'icono' => 'nullable | max:50'
+            'icono' => 'nullable | max:50',
+            'orden' => 'required',
         ];
     }
 }

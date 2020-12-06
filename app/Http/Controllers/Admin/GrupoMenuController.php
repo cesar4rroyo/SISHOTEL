@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ValidateGrupoMenu;
 use App\Models\GrupoMenu;
+use App\Models\OpcionMenu;
 use Illuminate\Support\Facades\DB;
 
 class GrupoMenuController extends Controller
@@ -19,7 +20,12 @@ class GrupoMenuController extends Controller
     {
         $paginate_number = 10;
         $grupomenu = DB::table('grupomenu')->paginate($paginate_number);
-        return view('admin.grupomenu.index', compact('grupomenu'));
+        $opcionmenu =
+            OpcionMenu::with('grupomenu')
+            ->orderBy('grupomenu_id')
+            ->paginate($paginate_number);
+        // dd($opcionmenu);
+        return view('admin.grupomenu.index', compact('grupomenu', 'opcionmenu'));
     }
 
     /**
