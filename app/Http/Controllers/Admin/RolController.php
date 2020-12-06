@@ -17,7 +17,7 @@ class RolController extends Controller
     public function index()
     {
         $paginate_number = 10;
-        $rol = DB::table('rol')->paginate($paginate_number);
+        $rol = Rol::latest()->paginate($paginate_number);
         return view('admin.rol.index', compact('rol'));
     }
 

@@ -11,12 +11,13 @@ use Illuminate\Support\Facades\DB;
 
 class OpcionMenuController extends Controller
 {
-f    public function index(Request $request)
+    public function index(Request $request)
     {
+        $search = $request->get('search');
         $paginate_number = 10;
-        if ($request->exists($request)) {
+        if (!empty($search)) {
             $opcionmenu =
-                OpcionMenu::where('grupomenu_id', '=', $request)
+                OpcionMenu::where('grupomenu_id', '=', $search)
                 ->paginate($paginate_number);
             $grupomenu = GrupoMenu::with('opcionmenu')->get();
         } else {

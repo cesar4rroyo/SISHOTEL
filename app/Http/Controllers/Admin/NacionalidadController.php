@@ -17,7 +17,8 @@ class NacionalidadController extends Controller
     public function index()
     {
         $paginate_number = 10;
-        $nacionalidad = DB::table('nacionalidad')->paginate($paginate_number);
+        $nacionalidad = Nacionalidad::latest()
+            ->paginate($paginate_number);
         return view('admin.nacionalidad.index', compact('nacionalidad'));
     }
 
