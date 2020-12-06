@@ -6,26 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rol extends Model
 {
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
+
     protected $table = 'rol';
-
-    /**
-    * The database primary key value.
-    *
-    * @var string
-    */
     protected $primaryKey = 'id';
-
-    /**
-     * Attributes that should be mass-assignable.
-     *
-     * @var array
-     */
     protected $fillable = ['nombre'];
 
-    
+    public function persona()
+    {
+        return $this->belongsToMany(Persona::class, 'rolpersona');
+    }
 }

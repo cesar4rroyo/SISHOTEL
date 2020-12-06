@@ -20,4 +20,12 @@ class Persona extends Model
         'observacion',
         'nacionalidad_id'
     ];
+    public function nacionalidad()
+    {
+        return $this->belongsTo(Nacionalidad::class, 'nacionalidad_id');
+    }
+    public function rol()
+    {
+        return $this->belongsToMany(Rol::class, 'rolpersona');
+    }
 }
