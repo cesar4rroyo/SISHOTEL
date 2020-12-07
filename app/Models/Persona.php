@@ -24,7 +24,7 @@ class Persona extends Model
     {
         return $this->belongsTo(Nacionalidad::class, 'nacionalidad_id');
     }
-    public function rol()
+    public function roles()
     {
         return $this->belongsToMany(Rol::class, 'rolpersona');
     }

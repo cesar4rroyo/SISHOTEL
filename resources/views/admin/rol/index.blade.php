@@ -13,7 +13,7 @@
                 <div class="card-header">Rol</div>
                 <div class="card-body">
                     <a href="{{ url('admin/rol/create') }}" class="btn btn-success btn-sm" title="Add New rol">
-                        <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                        <i class="fa fa-plus" aria-hidden="true"></i> Agregar Nuevo
                     </a>
                     <br />
                     <br />
@@ -23,7 +23,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Nombre</th>
-                                    <th>Actions</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>

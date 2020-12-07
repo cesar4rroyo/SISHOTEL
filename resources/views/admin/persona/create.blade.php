@@ -20,7 +20,7 @@
                     </ul>
                     @endif
 
-                    <form method="POST" action="{{ route('create_persona') }}" accept-charset="UTF-8"
+                    <form method="POST" action="{{ route('store_persona') }}" accept-charset="UTF-8"
                         class="form-horizontal" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
