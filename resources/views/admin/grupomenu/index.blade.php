@@ -35,7 +35,11 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->nombre }}</td>
-                                    <td>{{ $item->icono }}</td>
+                                    <td>
+                                        <span>
+                                            <i style="color: rgb(14, 0, 0);font-size:20px"
+                                                class="{{ $item->icono}}"></i>
+                                        </span></td>
                                     <td>{{ $item->orden }}</td>
                                     <td>
                                         <a href="{{ route('show_grupomenu', $item->id) }}"
