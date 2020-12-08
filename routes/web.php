@@ -16,75 +16,77 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'InicioController@index');
 
-
-Route::group(['prefix' => 'admin', 'namespace'], function () {
+//auth
+Route::get('auth/login', 'Seguridad\LoginController@index')->name('login');
+Route::post('auth/login', 'Seguridad\LoginController@login')->name('login_post');
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth'], function () {
     /* Rutas de ACCESO */
-    Route::get('acceso/create', 'Admin\AccesoController@create')->name('create_acceso');
-    Route::get('acceso', 'Admin\AccesoController@index')->name('acceso');
-    Route::get('acceso/{id}', 'Admin\AccesoController@show')->name('show_acceso');
-    Route::post('acceso', 'Admin\AccesoController@store')->name('store_acceso');
-    Route::get('acceso/{id}/edit', 'Admin\AccesoController@edit')->name('edit_acceso');
-    Route::put('acceso/{id}', 'Admin\AccesoController@update')->name('update_acceso');
-    Route::delete('acceso/{id}/destroy', 'Admin\AccesoController@destroy')->name('destroy_acceso');
+    Route::get('acceso/create', 'AccesoController@create')->name('create_acceso');
+    Route::get('acceso', 'AccesoController@index')->name('acceso');
+    Route::get('acceso/{id}', 'AccesoController@show')->name('show_acceso');
+    Route::post('acceso', 'AccesoController@store')->name('store_acceso');
+    Route::get('acceso/{id}/edit', 'AccesoController@edit')->name('edit_acceso');
+    Route::put('acceso/{id}', 'AccesoController@update')->name('update_acceso');
+    Route::delete('acceso/{id}/destroy', 'AccesoController@destroy')->name('destroy_acceso');
     /* Rutas de GRUPOMENU */
-    Route::get('grupomenu/create', 'Admin\GrupoMenuController@create')->name('create_grupomenu');
-    Route::get('grupomenu', 'Admin\GrupoMenuController@index')->name('grupomenu');
-    Route::get('grupomenu/{id}', 'Admin\GrupoMenuController@show')->name('show_grupomenu');
-    Route::post('grupomenu', 'Admin\GrupoMenuController@store')->name('store_grupomenu');
-    Route::get('grupomenu/{id}/edit', 'Admin\GrupoMenuController@edit')->name('edit_grupomenu');
-    Route::put('grupomenu/{id}', 'Admin\GrupoMenuController@update')->name('update_grupomenu');
-    Route::delete('grupomenu/{id}/destroy', 'Admin\GrupoMenuController@destroy')->name('destroy_grupomenu');
+    Route::get('grupomenu/create', 'GrupoMenuController@create')->name('create_grupomenu');
+    Route::get('grupomenu', 'GrupoMenuController@index')->name('grupomenu');
+    Route::get('grupomenu/{id}', 'GrupoMenuController@show')->name('show_grupomenu');
+    Route::post('grupomenu', 'GrupoMenuController@store')->name('store_grupomenu');
+    Route::get('grupomenu/{id}/edit', 'GrupoMenuController@edit')->name('edit_grupomenu');
+    Route::put('grupomenu/{id}', 'GrupoMenuController@update')->name('update_grupomenu');
+    Route::delete('grupomenu/{id}/destroy', 'GrupoMenuController@destroy')->name('destroy_grupomenu');
     /* Rutas de NACIONALIDAD */
-    Route::get('nacionalidad/create', 'Admin\NacionalidadController@create')->name('create_nacionalidad');
-    Route::get('nacionalidad', 'Admin\NacionalidadController@index')->name('nacionalidad');
-    Route::get('nacionalidad/{id}', 'Admin\NacionalidadController@show')->name('show_nacionalidad');
-    Route::post('nacionalidad', 'Admin\NacionalidadController@store')->name('store_nacionalidad');
-    Route::get('nacionalidad/{id}/edit', 'Admin\NacionalidadController@edit')->name('edit_nacionalidad');
-    Route::put('nacionalidad/{id}', 'Admin\NacionalidadController@update')->name('update_nacionalidad');
-    Route::delete('nacionalidad/{id}/destroy', 'Admin\NacionalidadController@destroy')->name('destroy_nacionalidad');
+    Route::get('nacionalidad/create', 'NacionalidadController@create')->name('create_nacionalidad');
+    Route::get('nacionalidad', 'NacionalidadController@index')->name('nacionalidad');
+    Route::get('nacionalidad/{id}', 'NacionalidadController@show')->name('show_nacionalidad');
+    Route::post('nacionalidad', 'NacionalidadController@store')->name('store_nacionalidad');
+    Route::get('nacionalidad/{id}/edit', 'NacionalidadController@edit')->name('edit_nacionalidad');
+    Route::put('nacionalidad/{id}', 'NacionalidadController@update')->name('update_nacionalidad');
+    Route::delete('nacionalidad/{id}/destroy', 'NacionalidadController@destroy')->name('destroy_nacionalidad');
     /* Rutas de OPCIONMENU */
-    Route::get('opcionmenu/create', 'Admin\OpcionMenuController@create')->name('create_opcionmenu');
-    Route::get('opcionmenu', 'Admin\OpcionMenuController@index')->name('opcionmenu');
-    Route::get('opcionmenu/{id}', 'Admin\OpcionMenuController@show')->name('show_opcionmenu');
-    Route::post('opcionmenu', 'Admin\OpcionMenuController@store')->name('store_opcionmenu');
-    Route::get('opcionmenu/{id}/edit', 'Admin\OpcionMenuController@edit')->name('edit_opcionmenu');
-    Route::put('opcionmenu/{id}', 'Admin\OpcionMenuController@update')->name('update_opcionmenu');
-    Route::delete('opcionmenu/{id}/destroy', 'Admin\OpcionMenuController@destroy')->name('destroy_opcionmenu');
+    Route::get('opcionmenu/create', 'OpcionMenuController@create')->name('create_opcionmenu');
+    Route::get('opcionmenu', 'OpcionMenuController@index')->name('opcionmenu');
+    Route::get('opcionmenu/{id}', 'OpcionMenuController@show')->name('show_opcionmenu');
+    Route::post('opcionmenu', 'OpcionMenuController@store')->name('store_opcionmenu');
+    Route::get('opcionmenu/{id}/edit', 'OpcionMenuController@edit')->name('edit_opcionmenu');
+    Route::put('opcionmenu/{id}', 'OpcionMenuController@update')->name('update_opcionmenu');
+    Route::delete('opcionmenu/{id}/destroy', 'OpcionMenuController@destroy')->name('destroy_opcionmenu');
     /* Rutas de PERSONA */
-    Route::get('persona/create', 'Admin\PersonaController@create')->name('create_persona');
-    Route::get('persona', 'Admin\PersonaController@index')->name('persona');
-    Route::get('persona/{id}', 'Admin\PersonaController@show')->name('show_persona');
-    Route::post('persona', 'Admin\PersonaController@store')->name('store_persona');
-    Route::get('persona/{id}/edit', 'Admin\PersonaController@edit')->name('edit_persona');
-    Route::put('persona/{id}', 'Admin\PersonaController@update')->name('update_persona');
-    Route::delete('persona/{id}/destroy', 'Admin\PersonaController@destroy')->name('destroy_persona');
+    Route::get('persona/create', 'PersonaController@create')->name('create_persona');
+    Route::get('persona', 'PersonaController@index')->name('persona');
+    Route::get('persona/{id}', 'PersonaController@show')->name('show_persona');
+    Route::post('persona', 'PersonaController@store')->name('store_persona');
+    Route::get('persona/{id}/edit', 'PersonaController@edit')->name('edit_persona');
+    Route::put('persona/{id}', 'PersonaController@update')->name('update_persona');
+    Route::delete('persona/{id}/destroy', 'PersonaController@destroy')->name('destroy_persona');
     /* Rutas de ROL */
-    Route::get('rol/create', 'Admin\RolController@create')->name('create_rol');
-    Route::get('rol', 'Admin\RolController@index')->name('rol');
-    Route::get('rol/{id}', 'Admin\RolController@show')->name('show_rol');
-    Route::post('rol', 'Admin\RolController@store')->name('store_rol');
-    Route::get('rol/{id}/edit', 'Admin\RolController@edit')->name('edit_rol');
-    Route::put('rol/{id}', 'Admin\RolController@update')->name('update_rol');
-    Route::delete('rol/{id}/destroy', 'Admin\RolController@destroy')->name('destroy_rol');
+    Route::get('rol/create', 'RolController@create')->name('create_rol');
+    Route::get('rol', 'RolController@index')->name('rol');
+    Route::get('rol/{id}', 'RolController@show')->name('show_rol');
+    Route::post('rol', 'RolController@store')->name('store_rol');
+    Route::get('rol/{id}/edit', 'RolController@edit')->name('edit_rol');
+    Route::put('rol/{id}', 'RolController@update')->name('update_rol');
+    Route::delete('rol/{id}/destroy', 'RolController@destroy')->name('destroy_rol');
     /* Rutas de ROLPERSONA */
-    Route::get('rolpersona', 'Admin\RolPersonaController@index')->name('rolpersona');
-    Route::post('rolpersona', 'Admin\RolPersonaController@store')->name('store_rolpersona');
+    Route::get('rolpersona', 'RolPersonaController@index')->name('rolpersona');
+    Route::post('rolpersona', 'RolPersonaController@store')->name('store_rolpersona');
     /* Rutas de TIPOUSUARIO */
-    Route::get('tipousuario/create', 'Admin\TipoUserController@create')->name('create_tipousuario');
-    Route::get('tipousuario', 'Admin\TipoUserController@index')->name('tipousuario');
-    Route::get('tipousuario/{id}', 'Admin\TipoUserController@show')->name('show_tipousuario');
-    Route::post('tipousuario', 'Admin\TipoUserController@store')->name('store_tipousuario');
-    Route::get('tipousuario/{id}/edit', 'Admin\TipoUserController@edit')->name('edit_tipousuario');
-    Route::put('tipousuario/{id}', 'Admin\TipoUserController@update')->name('update_tipousuario');
-    Route::delete('tipousuario/{id}/destroy', 'Admin\TipoUserController@destroy')->name('destroy_tipousuario');
+    Route::get('tipousuario/create', 'TipoUserController@create')->name('create_tipousuario');
+    Route::get('tipousuario', 'TipoUserController@index')->name('tipousuario');
+    Route::get('tipousuario/{id}', 'TipoUserController@show')->name('show_tipousuario');
+    Route::post('tipousuario', 'TipoUserController@store')->name('store_tipousuario');
+    Route::get('tipousuario/{id}/edit', 'TipoUserController@edit')->name('edit_tipousuario');
+    Route::put('tipousuario/{id}', 'TipoUserController@update')->name('update_tipousuario');
+    Route::delete('tipousuario/{id}/destroy', 'TipoUserController@destroy')->name('destroy_tipousuario');
     /* Rutas de USUARIO */
-    Route::get('usuario/create', 'Admin\UsuarioController@create')->name('create_usuario');
-    Route::get('usuario', 'Admin\UsuarioController@index')->name('usuario');
-    Route::get('usuario/{id}', 'Admin\UsuarioController@show')->name('show_usuario');
-    Route::post('usuario', 'Admin\UsuarioController@store')->name('store_usuario');
-    Route::get('usuario/{id}/edit', 'Admin\UsuarioController@edit')->name('edit_usuario');
-    Route::put('usuario/{id}', 'Admin\UsuarioController@update')->name('update_usuario');
-    Route::delete('usuario/{id}/destroy', 'Admin\UsuarioController@destroy')->name('destroy_usuario');
+    Route::get('usuario/create', 'UsuarioController@create')->name('create_usuario');
+    Route::get('usuario', 'UsuarioController@index')->name('usuario');
+    Route::get('usuario/{id}', 'UsuarioController@show')->name('show_usuario');
+    Route::post('usuario', 'UsuarioController@store')->name('store_usuario');
+    Route::get('usuario/{id}/edit', 'UsuarioController@edit')->name('edit_usuario');
+    Route::put('usuario/{id}', 'UsuarioController@update')->name('update_usuario');
+    Route::delete('usuario/{id}/destroy', 'UsuarioController@destroy')->name('destroy_usuario');
 });
 
 /* Rutas de CATEGORIA */
