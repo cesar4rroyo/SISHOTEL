@@ -31,6 +31,7 @@
     <script src="{{asset("assets/$theme/dist/js/adminlte.min.js")}}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{asset("assets/$theme/dist/js/demo.js")}}"></script>
+    <script src="{{asset("js/admin/rolpersona/index.js")}}"></script>
 </body>
 
 </html>

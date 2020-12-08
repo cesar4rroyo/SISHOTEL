@@ -67,13 +67,8 @@ Route::group(['prefix' => 'admin', 'namespace'], function () {
     Route::put('rol/{id}', 'Admin\RolController@update')->name('update_rol');
     Route::delete('rol/{id}/destroy', 'Admin\RolController@destroy')->name('destroy_rol');
     /* Rutas de ROLPERSONA */
-    Route::get('rolpersona/create', 'Admin\RolpersonaController@create')->name('create_rolpersona');
-    Route::get('rolpersona', 'Admin\RolpersonaController@index')->name('rolpersona');
-    Route::get('rolpersona/{id}', 'Admin\RolpersonaController@show')->name('show_rolpersona');
-    Route::post('rolpersona', 'Admin\RolpersonaController@store')->name('store_rolpersona');
-    Route::get('rolpersona/{id}/edit', 'Admin\RolpersonaController@edit')->name('edit_rolpersona');
-    Route::put('rolpersona/{id}', 'Admin\RolpersonaController@update')->name('update_rolpersona');
-    Route::delete('rolpersona/{id}/destroy', 'Admin\RolpersonaController@destroy')->name('destroy_rolpersona');
+    Route::get('rolpersona', 'Admin\RolPersonaController@index')->name('rolpersona');
+    Route::post('rolpersona', 'Admin\RolPersonaController@store')->name('store_rolpersona');
     /* Rutas de TIPOUSUARIO */
     Route::get('tipousuario/create', 'Admin\TipoUserController@create')->name('create_tipousuario');
     Route::get('tipousuario', 'Admin\TipoUserController@index')->name('tipousuario');

@@ -1,0 +1,49 @@
+@extends("theme.$theme.layout")
+@section('content')
+<div class="container">
+    @if ($message = Session::get('success'))
+    <div class="alert alert-success">
+        <p>{{ $message }}</p>
+    </div>
+    @endif
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">Rol Persona</div>
+                <div class="card-body">
+                    <div class="card-body table-responsive p-0">
+                        @csrf
+                        <table class="table table-striped table-bordered table-hover" id="tabla-data">
+                            <thead>
+                                <tr>
+                                    <th>Personas</th>
+                                    @foreach ($roles as $id => $nombre)
+                                    <th class="text-center">{{$nombre}}</th>
+                                    @endforeach
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($personas as $key=>$persona)
+                                <tr>
+                                    <td>
+                                        {{$persona["nombres"] }}{{" "}}{{$persona["apellidos"]}}
+                                    </td>
+                                    @foreach ($roles as $id=>$nombre)
+                                    <td class="text-center">
+                                        <input type="checkbox" class="rol_persona" name="personarol[]"
+                                            data-personaid={{$persona["id"]}} value="{{$id}}"
+                                            {{in_array($id, array_column($personasroles[$persona["id"]], "id"))? "checked" : ""}}>
+                                    </td>
+                                    @endforeach
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
