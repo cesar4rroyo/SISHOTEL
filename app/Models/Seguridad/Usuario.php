@@ -28,20 +28,14 @@ class Usuario extends Authenticatable
     }
     public function setSession($tipousuario)
     {
-        Session::put([
-            'usuario' => $this->login,
-            'usuario_id' => $this->id,
-            // 'nombre_usuario' => $this->nombre
-        ]);
         if (count($tipousuario) == 1) {
-            Session::put(
-                [
-                    'tipousuario_id' => $tipousuario[0]['id'],
-                    'tipousuario_nombre' => $tipousuario[0]['nombre'],
-                ]
-            );
-        } else {
-            Session::put('tipousuario', $tipousuario);
+            Session::put([
+                'tipousuario_id' => $tipousuario[0]['id'],
+                'tipousuario_nombre' => $tipousuario[0]['nombre']
+            ]);
         }
+
+
+        // Session::put('tipousuario', $tipousuario);
     }
 }
