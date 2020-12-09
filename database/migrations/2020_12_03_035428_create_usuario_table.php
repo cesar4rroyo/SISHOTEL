@@ -16,9 +16,10 @@ class CreateUsuarioTable extends Migration
         Schema::create('usuario', function (Blueprint $table) {
             $table->increments('id');
             $table->string('login');
-            $table->unsignedInteger('tipousuario_id');
+            $table->string('password');
+            $table->unsignedInteger('tipousuario_id')->nullable();
             $table->foreign('tipousuario_id', 'fk_usuario_tipousuario')->nullable()->references('id')->on('tipousuario');
-            $table->unsignedInteger('persona_id');
+            $table->unsignedInteger('persona_id')->nullable();
             $table->foreign('persona_id', 'fk_usuario_persona')->nullable()->references('id')->on('persona');
             $table->timestamps();
         });
