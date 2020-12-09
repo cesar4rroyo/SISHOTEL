@@ -19,15 +19,11 @@ Route::get('/', 'InicioController@index');
 //auth
 Route::get('auth/login', 'Seguridad\LoginController@index')->name('login');
 Route::post('auth/login', 'Seguridad\LoginController@login')->name('login_post');
+Route::get('auth/logout', 'Seguridad\LoginController@logout')->name('logout');
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth'], function () {
     /* Rutas de ACCESO */
-    Route::get('acceso/create', 'AccesoController@create')->name('create_acceso');
     Route::get('acceso', 'AccesoController@index')->name('acceso');
-    Route::get('acceso/{id}', 'AccesoController@show')->name('show_acceso');
     Route::post('acceso', 'AccesoController@store')->name('store_acceso');
-    Route::get('acceso/{id}/edit', 'AccesoController@edit')->name('edit_acceso');
-    Route::put('acceso/{id}', 'AccesoController@update')->name('update_acceso');
-    Route::delete('acceso/{id}/destroy', 'AccesoController@destroy')->name('destroy_acceso');
     /* Rutas de GRUPOMENU */
     Route::get('grupomenu/create', 'GrupoMenuController@create')->name('create_grupomenu');
     Route::get('grupomenu', 'GrupoMenuController@index')->name('grupomenu');

@@ -6,7 +6,7 @@
 
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Tipousuario {{ $tipousuario->id }}</div>
+                <div class="card-header">Tipo Usuario {{ $tipousuario->id }}</div>
                 <div class="card-body">
 
                     <a href="{{ url('admin/tipousuario') }}" title="Back"><button class="btn btn-warning btn-sm"><i

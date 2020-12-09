@@ -14,4 +14,8 @@ class OpcionMenu extends Model
     {
         return $this->belongsTo(GrupoMenu::class, 'grupomenu_id');
     }
+    public function tipousuario()
+    {
+        return $this->belongsToMany(TipoUsuario::class, 'acceso', 'opcionmenu_id', 'tipousuario_id');
+    }
 }

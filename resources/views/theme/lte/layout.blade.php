@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{{asset("assets/$theme/dist/css/adminlte.min.css")}}">
 </head>
 
-<body class="hold-transition sidebar-mini layout-boxed">
+<body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         @include("theme/$theme/header")
         @include("theme/$theme/aside")
@@ -32,6 +32,8 @@
     <!-- AdminLTE for demo purposes -->
     <script src="{{asset("assets/$theme/dist/js/demo.js")}}"></script>
     <script src="{{asset("js/admin/rolpersona/index.js")}}"></script>
+    <script src="{{asset("js/admin/acceso/index.js")}}"></script>
+
 </body>
 
 </html>

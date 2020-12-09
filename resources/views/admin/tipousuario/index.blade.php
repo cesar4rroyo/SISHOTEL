@@ -11,11 +11,11 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Tipousuario</div>
+                <div class="card-header">Tipos Usuario</div>
                 <div class="card-body">
-                    <a href="{{ url('admin/tipousuario/create') }}" class="btn btn-success btn-sm"
+                    <a href="{{ route('create_tipousuario') }}" class="btn btn-success btn-sm"
                         title="Add New tipousuario">
-                        <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                        <i class="fa fa-plus" aria-hidden="true"></i> Agregar Nuevo
                     </a>
                     <br />
                     <br />
@@ -25,7 +25,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Nombre</th>
-                                    <th>Actions</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
