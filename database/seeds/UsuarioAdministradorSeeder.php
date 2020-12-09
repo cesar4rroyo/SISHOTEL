@@ -15,6 +15,7 @@ class UsuarioAdministradorSeeder extends Seeder
         DB::table('usuario')->insert([
             'login' => 'admin',
             'password' => bcrypt('admin'),
+            'tipousuario_id' => 1
         ]);
         DB::table('usuario')->insert([
             'login' => 'hotel',
