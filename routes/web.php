@@ -21,6 +21,7 @@ Route::get('auth/login', 'Seguridad\LoginController@index')->name('login');
 Route::post('auth/login', 'Seguridad\LoginController@login')->name('login_post');
 Route::get('auth/logout', 'Seguridad\LoginController@logout')->name('logout');
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth'], function () {
+    Route::get('/', 'AdminController@index')->name('admin');
     /* Rutas de ACCESO */
     Route::get('acceso', 'AccesoController@index')->name('acceso');
     Route::post('acceso', 'AccesoController@store')->name('store_acceso');

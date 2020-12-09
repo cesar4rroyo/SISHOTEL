@@ -23,4 +23,17 @@ class LoginController extends Controller
     {
         return 'login';
     }
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        return $this->loggedOut($request) ?: redirect('/auth/login');
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        //
+    }
 }
