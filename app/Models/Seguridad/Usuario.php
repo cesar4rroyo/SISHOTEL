@@ -6,6 +6,7 @@ use App\Models\TipoUsuario;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
 
 class Usuario extends Authenticatable
 {
@@ -24,5 +25,23 @@ class Usuario extends Authenticatable
     public function tipousuario()
     {
         return $this->belongsTo(TipoUsuario::class, 'tipousuario_id');
+    }
+    public function setSession($tipousuario)
+    {
+        Session::put([
+            'usuario' => $this->login,
+            'usuario_id' => $this->id,
+            // 'nombre_usuario' => $this->nombre
+        ]);
+        if (count($tipousuario) == 1) {
+            Session::put(
+                [
+                    'tipousuario_id' => $tipousuario[0]['id'],
+                    'tipousuario_nombre' => $tipousuario[0]['nombre'],
+                ]
+            );
+        } else {
+            Session::put('tipousuario', $tipousuario);
+        }
     }
 }

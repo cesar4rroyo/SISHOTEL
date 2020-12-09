@@ -17,7 +17,7 @@
                 Logout
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <span class="dropdown-item dropdown-header">Hola {{'cesar'}}</span>
+                <span class="dropdown-item dropdown-header">Hola, {{''}}</span>
                 <div class="dropdown-divider"></div>
                 <div class="dropdown-divider"></div>
                 <a href="{{route('logout')}}" class="dropdown-item dropdown-footer">Salir</a>

@@ -16,5 +16,9 @@ class UsuarioAdministradorSeeder extends Seeder
             'login' => 'admin',
             'password' => bcrypt('admin'),
         ]);
+        DB::table('usuario')->insert([
+            'login' => 'hotel',
+            'password' => bcrypt('hotel'),
+        ]);
     }
 }

@@ -9,7 +9,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 class LoginController extends Controller
 {
     use AuthenticatesUsers;
-    protected $redirectTo = 'admin/persona';
+    protected $redirectTo = '/';
 
     public function __construct()
     {
@@ -34,6 +34,14 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        //
+        $tipousuario = $user->tipousuario()->get();
+        if ($tipousuario->isNotEmpty()) {
+            $user->setSession($tipousuario->toArray());
+        } else {
+            $this->guard()->logout();
+            $request->session()->invalidate();
+            return redirect('auth/login')->withErrors(['error' => 'Este usuario no tiene un perfil activo']);
+        }
+        // dd($tipousuario);
     }
 }

@@ -13,6 +13,7 @@ class InicioController extends Controller
      */
     public function index()
     {
-        return view('seguridad.index');
+        // dd(auth()->user());
+        return view('inicio');
     }
 }
