@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="{{asset("assets/$theme/plugins/fontawesome-free/css/all.min.css")}}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{asset("assets/$theme/dist/css/adminlte.min.css")}}">
+    <link rel="stylesheet" href="{{asset("assets/$theme/plugins/overlayScrollbars/css/OverlayScrollbars.min.css")}}">
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -19,8 +21,11 @@
         @include("theme/$theme/aside")
         <div class="content-wrapper">
             <section class="content p-3">
-                @yield('content')
+                <div class="container-fluid">
+                    @yield('content')
+                </div>
             </section>
+
         </div>
         @include("theme/$theme/footer")
     </div>
@@ -31,6 +36,7 @@
     <script src="{{asset("assets/$theme/dist/js/adminlte.min.js")}}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{asset("assets/$theme/dist/js/demo.js")}}"></script>
+    <script src="{{asset("assets/$theme/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js")}}"></script>
     <script src="{{asset("js/admin/rolpersona/index.js")}}"></script>
     <script src="{{asset("js/admin/acceso/index.js")}}"></script>
 
