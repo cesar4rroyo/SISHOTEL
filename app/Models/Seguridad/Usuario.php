@@ -2,6 +2,7 @@
 
 namespace App\Models\Seguridad;
 
+use App\Models\Persona;
 use App\Models\TipoUsuario;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -31,7 +32,11 @@ class Usuario extends Authenticatable
         if (count($tipousuario) == 1) {
             Session::put([
                 'tipousuario_id' => $tipousuario[0]['id'],
-                'tipousuario_nombre' => $tipousuario[0]['nombre']
+                'tipousuario_nombre' => $tipousuario[0]['nombre'],
+                'usuario' => $this->login,
+                'usuario_id' => $this->id,
+                'persona' => $this->persona()->get()->toArray()[0] ?? null,
+                'roles' => $this->persona()->with('roles')->get()->toArray()[0]['roles'] ?? null,
             ]);
         }
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Seguridad\Usuario;
 use Illuminate\Database\Eloquent\Model;
 
 class Persona extends Model
@@ -27,5 +28,9 @@ class Persona extends Model
     public function roles()
     {
         return $this->belongsToMany(Rol::class, 'rolpersona');
+    }
+    public function usuario()
+    {
+        return $this->hasMany(Usuario::class);
     }
 }
