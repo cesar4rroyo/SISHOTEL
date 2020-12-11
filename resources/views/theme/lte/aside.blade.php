@@ -1,4 +1,4 @@
-{{-- {{dd($menus)}} --}}
+{{-- {{dd($opciones)}} --}}
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{route("admin")}}" class="brand-link">
@@ -35,11 +35,8 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                @foreach ($menus as $key=>$item)
-                {{-- @if ($item["id"]!=0)
-                @break;
-                @endif --}}
-                @include("theme.lte.menu",["item"=>$item])
+                @foreach ($grupos as $key=>$item)
+                @include("theme.lte.menu",["item"=>$item, "opciones"=>$opciones])
                 @endforeach
             </ul>
         </nav>

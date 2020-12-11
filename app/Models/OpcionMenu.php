@@ -25,18 +25,20 @@ class OpcionMenu extends Model
         $opcionmenu = new OpcionMenu();
         $opcion_tipousuario = $opcionmenu->getOpcionMenus();
         $grupos = $opcionmenu->getGrupoMenus();
-        foreach ($grupos as $line) {
 
-            foreach ($opcion_tipousuario as $opcion) {
-                if ($line["id"] != $opcion["grupomenu_id"]) {
-                    break;
-                } else {
-                    $items = [array_merge($line, ['opciones' => $opcion_tipousuario])];
-                }
-            }
-            $menus = array_merge($menus, $items);
-        }
-        return $menus;
+        // foreach ($grupos as $line) {
+        //     $items = [];
+        //     foreach ($opcion_tipousuario as $opcion) {
+        //         if ($line["id"] == $opcion["grupomenu_id"]) {
+        //             $items = [array_merge($line, ['opciones' => $opcion])];
+        //             $menus = array_merge($menus, $items);
+        //         }
+        //         $items = [];
+        //     }
+
+        //     $menus = array_merge($menus, $items);
+        // }
+        return $opcion_tipousuario;
     }
 
 
@@ -47,6 +49,15 @@ class OpcionMenu extends Model
         })->get()->toArray();
 
         return $opcionmenu;
+    }
+    public function getPadres($padres, $line)
+    {
+        $padres = [];
+        foreach ($padres as $line1) {
+            if ($line['id'] == $line1['opcionmenu_id']) {
+                $padres = array_merge($padres, [array_merge($line1, ['opciones' => $this->getPadres($padres, $line1)])]);
+            }
+        }
     }
 
     public function getGrupoMenus()

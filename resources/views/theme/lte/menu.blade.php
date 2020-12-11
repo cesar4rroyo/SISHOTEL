@@ -1,13 +1,4 @@
-@if ($item["opciones"] == [])
-<li class="nav-item">
-    <a href="{{url($item['link'])}}" class="nav-link {{getMenuActivo($item["link"])}}">
-        <i class="nav-icon fa {{$item["icono"]}}"></i>
-        <p>
-            {{$item["nombre"]}}
-        </p>
-    </a>
-</li>
-@else
+{{-- {{dd($opciones)}} --}}
 <li class="nav-item has-treeview">
     <a href="javascript:;" class="nav-link">
         <i class="nav-icon fa {{$item["icono"]}}"></i>
@@ -17,16 +8,17 @@
         </p>
     </a>
     <ul class="nav nav-treeview">
-        @foreach ($item["opciones"] as $submenu)
+        @foreach ($opciones as $key=>$opcion)
+        @if ($item["id"]==$opcion["grupomenu_id"])
         <li class="nav-item">
-            <a href="{{url($submenu['link'])}}" class="nav-link {{getMenuActivo($submenu["link"])}}">
-                <i class="nav-icon fa {{$submenu["icono"]}}"></i>
+            <a href="{{url($opcion['link'])}}" class="nav-link {{getMenuActivo($opcion["link"])}}">
+                <i class="nav-icon fa {{$opcion["icono"]}}"></i>
                 <p>
-                    {{$submenu["nombre"]}}
+                    {{$opcion["nombre"]}}
                 </p>
             </a>
         </li>
+        @endif
         @endforeach
     </ul>
 </li>
-@endif
