@@ -65,7 +65,7 @@ class OpcionMenuSeeder extends Seeder
         DB::table('opcionmenu')->insert([
             'nombre' => 'Pisos',
             'icono' => 'fas fa-hotel',
-            'link' => 'admin/pisos',
+            'link' => 'admin/piso',
             'orden' => 8,
             'grupomenu_id' => 1
         ]);

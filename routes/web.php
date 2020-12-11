@@ -76,7 +76,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::delete('usuario/{id}/destroy', 'UsuarioController@destroy')->name('destroy_usuario');
 });
 
-Route::group(['prefix' => 'habitacion', 'namespace' => 'Habitacion', 'middleware' => ['auth', 'root']], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Habitacion', 'middleware' => ['auth', 'root']], function () {
     /* Rutas de TIPOHABITACION */
     Route::get("tipohabitacion/create", 'TipoHabitacionController@create')->name('create_tipohabitacion');
     Route::get("tipohabitacion", 'TipoHabitacionController@index')->name('tipohabitacion');
