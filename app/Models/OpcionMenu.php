@@ -21,23 +21,8 @@ class OpcionMenu extends Model
 
     public static function getMenu()
     {
-        $menus = [];
         $opcionmenu = new OpcionMenu();
         $opcion_tipousuario = $opcionmenu->getOpcionMenus();
-        $grupos = $opcionmenu->getGrupoMenus();
-
-        // foreach ($grupos as $line) {
-        //     $items = [];
-        //     foreach ($opcion_tipousuario as $opcion) {
-        //         if ($line["id"] == $opcion["grupomenu_id"]) {
-        //             $items = [array_merge($line, ['opciones' => $opcion])];
-        //             $menus = array_merge($menus, $items);
-        //         }
-        //         $items = [];
-        //     }
-
-        //     $menus = array_merge($menus, $items);
-        // }
         return $opcion_tipousuario;
     }
 

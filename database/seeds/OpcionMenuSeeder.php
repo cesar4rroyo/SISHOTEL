@@ -12,33 +12,133 @@ class OpcionMenuSeeder extends Seeder
      */
     public function run()
     {
+        //start Grupo Administracion
         DB::table('opcionmenu')->insert([
-            'nombre' => 'Opcion Menu 1.1',
-            'link' => 'admin/opcion1',
-            'icono' => 'fa fa-user',
+            'nombre' => 'Producto',
+            'link' => 'admin/producto',
+            'icono' => 'fa fa-gift',
             'orden' => 1,
             'grupomenu_id' => 1
         ]);
         DB::table('opcionmenu')->insert([
-            'nombre' => 'Opcion Menu 1.2',
-            'link' => 'admin/opcion2',
-            'icono' => 'fa fa-car',
+            'nombre' => 'Tipo Producto',
+            'link' => 'admin/categoria',
+            'icono' => 'fas fa-gifts',
             'orden' => 2,
             'grupomenu_id' => 1
         ]);
         DB::table('opcionmenu')->insert([
-            'nombre' => 'Opcion Menu 2.1',
-            'icono' => 'fa fa-list ',
-            'link' => 'admin/opcion3',
+            'nombre' => 'Unidad',
+            'icono' => 'fas fa-money-bill-alt',
+            'link' => 'admin/unidad',
+            'orden' => 3,
+            'grupomenu_id' => 1
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Servicios',
+            'icono' => 'fas fa-concierge-bell',
+            'link' => 'admin/servicios',
+            'orden' => 4,
+            'grupomenu_id' => 1
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Concepto',
+            'icono' => 'fas fa-concierge-bell',
+            'link' => 'admin/concepto',
+            'orden' => 5,
+            'grupomenu_id' => 1
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Habitacion',
+            'link' => 'admin/habitacion',
+            'icono' => 'fas fa-h-square',
+            'orden' => 6,
+            'grupomenu_id' => 1
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Tipo Habitacion',
+            'icono' => 'fas fa-shower',
+            'link' => 'admin/tipohabitacion',
+            'orden' => 7,
+            'grupomenu_id' => 1
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Pisos',
+            'icono' => 'fas fa-hotel',
+            'link' => 'admin/pisos',
+            'orden' => 8,
+            'grupomenu_id' => 1
+        ]);
+        //end Grupo Administracion
+
+        //start Grupo Persona
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Personas',
+            'icono' => 'fas fa-user-alt',
+            'link' => 'admin/persona',
             'orden' => 1,
             'grupomenu_id' => 2
         ]);
         DB::table('opcionmenu')->insert([
-            'nombre' => 'Opcion Menu 2.2',
-            'icono' => 'fa fa-pen ',
-            'link' => 'admin/opcion4',
+            'nombre' => 'Nacionalidad',
+            'icono' => 'fas fa-globe-americas',
+            'link' => 'admin/nacionalidad',
             'orden' => 2,
             'grupomenu_id' => 2
         ]);
+        //end Grupo Persona
+
+        //start Grupo Usuarios
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Usuario',
+            'link' => 'admin/usuario',
+            'icono' => 'fas fa-user',
+            'orden' => 1,
+            'grupomenu_id' => 3
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Roles',
+            'link' => 'admin/rol',
+            'icono' => 'fas fa-users-cog',
+            'orden' => 2,
+            'grupomenu_id' => 3
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Rol Persona',
+            'icono' => 'fas fa-user-plus',
+            'link' => 'admin/rolpersona',
+            'orden' => 3,
+            'grupomenu_id' => 3
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Tipos Usuario',
+            'icono' => 'fas fa-users-slash',
+            'link' => 'admin/tipousuario',
+            'orden' => 4,
+            'grupomenu_id' => 3
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Accesos',
+            'link' => 'admin/acceso',
+            'icono' => 'fas fa-people-arrows',
+            'orden' => 5,
+            'grupomenu_id' => 3
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Opciones de Menú',
+            'icono' => 'fas fa-stream',
+            'link' => 'admin/opcionmenu',
+            'orden' => 6,
+            'grupomenu_id' => 3
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Grupos de Menú',
+            'icono' => 'fas fa-list-ol',
+            'link' => 'admin/grupomenu',
+            'orden' => 7,
+            'grupomenu_id' => 3
+        ]);
+        //end Grupo Usuarios
+
     }
 }

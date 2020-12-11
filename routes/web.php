@@ -76,71 +76,75 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::delete('usuario/{id}/destroy', 'UsuarioController@destroy')->name('destroy_usuario');
 });
 
-/* Rutas de CATEGORIA */
-Route::get('categoria/create', 'Producto\CategoriaController@create')->name('create_categoria');
-Route::get('categoria', 'Producto\CategoriaController@index')->name('categoria');
-Route::get('categoria/{id}', 'Producto\CategoriaController@show')->name('show_categoria');
-Route::post('categoria', 'Producto\CategoriaController@store')->name('store_categoria');
-Route::get('categoria/{id}/edit', 'Producto\CategoriaController@edit')->name('edit_categoria');
-Route::put('categoria/{id}', 'Producto\CategoriaController@update')->name('update_categoria');
-Route::delete('categoria/{id}/destroy', 'Producto\CategoriaController@destroy')->name('destroy_categoria');
-/* Rutas de UNIDAD */
-Route::get('unidad/create', 'Producto\UnidadController@create')->name('create_unidad');
-Route::get('unidad', 'Producto\UnidadController@index')->name('unidad');
-Route::get('unidad/{id}', 'Producto\UnidadController@show')->name('show_unidad');
-Route::post('unidad', 'Producto\UnidadController@store')->name('store_unidad');
-Route::get('unidad/{id}/edit', 'Producto\UnidadController@edit')->name('edit_unidad');
-Route::put('unidad/{id}', 'Producto\UnidadController@update')->name('update_unidad');
-Route::delete('unidad/{id}/destroy', 'Producto\UnidadController@destroy')->name('destroy_unidad');
-/* Rutas de PRODUCTO */
-Route::get('producto/create', 'Producto\ProductoController@create')->name('create_producto');
-Route::get('producto', 'Producto\ProductoController@index')->name('producto');
-Route::get('producto/{id}', 'Producto\ProductoController@show')->name('show_producto');
-Route::post('producto', 'Producto\ProductoController@store')->name('store_producto');
-Route::get('producto/{id}/edit', 'Producto\ProductoController@edit')->name('edit_producto');
-Route::put('producto/{id}', 'Producto\ProductoController@update')->name('update_producto');
-Route::delete('producto/{id}/destroy', 'Producto\ProductoController@destroy')->name('destroy_producto');
+Route::group(['prefix' => 'habitacion', 'namespace' => 'Habitacion', 'middleware' => ['auth', 'root']], function () {
+    /* Rutas de TIPOHABITACION */
+    Route::get("tipohabitacion/create", 'TipoHabitacionController@create')->name('create_tipohabitacion');
+    Route::get("tipohabitacion", 'TipoHabitacionController@index')->name('tipohabitacion');
+    Route::get("tipohabitacion/{id}", 'TipoHabitacionController@show')->name('show_tipohabitacion');
+    Route::post("tipohabitacion", 'TipoHabitacionController@store')->name('store_tipohabitacion');
+    Route::get("tipohabitacion/{id}/edit", 'TipoHabitacionController@edit')->name('edit_tipohabitacion');
+    Route::put("tipohabitacion/{id}", 'TipoHabitacionController@update')->name('update_tipohabitacion');
+    Route::delete("tipohabitacion/{id}/destroy", 'TipoHabitacionController@destroy')->name('destroy_tipohabitacion');
+    /* Rutas de PISO */
+    Route::get('piso/create', 'PisoController@create')->name('create_piso');
+    Route::get('piso', 'PisoController@index')->name('piso');
+    Route::get('piso/{id}', 'PisoController@show')->name('show_piso');
+    Route::post('piso', 'PisoController@store')->name('store_piso');
+    Route::get('piso/{id}/edit', 'PisoController@edit')->name('edit_piso');
+    Route::put('piso/{id}', 'PisoController@update')->name('update_piso');
+    Route::delete('piso/{id}/destroy', 'PisoController@destroy')->name('destroy_piso');
 
+    /* Rutas de HABITACION */
+    Route::get('habitacion/create', 'HabitacionController@create')->name('create_habitacion');
+    Route::get('habitacion', 'HabitacionController@index')->name('habitacion');
+    Route::get('habitacion/{id}', 'HabitacionController@show')->name('show_habitacion');
+    Route::post('habitacion', 'HabitacionController@store')->name('store_habitacion');
+    Route::get('habitacion/{id}/edit', 'HabitacionController@edit')->name('edit_habitacion');
+    Route::put('habitacion/{id}', 'HabitacionController@update')->name('update_habitacion');
+    Route::delete('habitacion/{id}/destroy', 'HabitacionController@destroy')->name('destroy_habitacion');
+});
+Route::group(['prefix' => 'admin', 'namespace' => 'Producto', 'middleware' => ['auth', 'root']], function () {
+    /* Rutas de CATEGORIA */
+    Route::get('categoria/create', 'CategoriaController@create')->name('create_categoria');
+    Route::get('categoria', 'CategoriaController@index')->name('categoria');
+    Route::get('categoria/{id}', 'CategoriaController@show')->name('show_categoria');
+    Route::post('categoria', 'CategoriaController@store')->name('store_categoria');
+    Route::get('categoria/{id}/edit', 'CategoriaController@edit')->name('edit_categoria');
+    Route::put('categoria/{id}', 'CategoriaController@update')->name('update_categoria');
+    Route::delete('categoria/{id}/destroy', 'CategoriaController@destroy')->name('destroy_categoria');
+    /* Rutas de UNIDAD */
+    Route::get('unidad/create', 'UnidadController@create')->name('create_unidad');
+    Route::get('unidad', 'UnidadController@index')->name('unidad');
+    Route::get('unidad/{id}', 'UnidadController@show')->name('show_unidad');
+    Route::post('unidad', 'UnidadController@store')->name('store_unidad');
+    Route::get('unidad/{id}/edit', 'UnidadController@edit')->name('edit_unidad');
+    Route::put('unidad/{id}', 'UnidadController@update')->name('update_unidad');
+    Route::delete('unidad/{id}/destroy', 'UnidadController@destroy')->name('destroy_unidad');
+    /* Rutas de PRODUCTO */
+    Route::get('producto/create', 'ProductoController@create')->name('create_producto');
+    Route::get('producto', 'ProductoController@index')->name('producto');
+    Route::get('producto/{id}', 'ProductoController@show')->name('show_producto');
+    Route::post('producto', 'ProductoController@store')->name('store_producto');
+    Route::get('producto/{id}/edit', 'ProductoController@edit')->name('edit_producto');
+    Route::put('producto/{id}', 'ProductoController@update')->name('update_producto');
+    Route::delete('producto/{id}/destroy', 'ProductoController@destroy')->name('destroy_producto');
+});
 
-/* Rutas de TIPOHABITACION */
-Route::get("tipohabitacion/create", 'Habitacion\TipoHabitacionController@create')->name('create_tipohabitacion');
-Route::get("tipohabitacion", 'Habitacion\TipoHabitacionController@index')->name('tipohabitacion');
-Route::get("tipohabitacion/{id}", 'Habitacion\TipoHabitacionController@show')->name('show_tipohabitacion');
-Route::post("tipohabitacion", 'Habitacion\TipoHabitacionController@store')->name('store_tipohabitacion');
-Route::get("tipohabitacion/{id}/edit", 'Habitacion\TipoHabitacionController@edit')->name('edit_tipohabitacion');
-Route::put("tipohabitacion/{id}", 'Habitacion\TipoHabitacionController@update')->name('update_tipohabitacion');
-Route::delete("tipohabitacion/{id}/destroy", 'Habitacion\TipoHabitacionController@destroy')->name('destroy_tipohabitacion');
-/* Rutas de PISO */
-Route::get('piso/create', 'Habitacion\PisoController@create')->name('create_piso');
-Route::get('piso', 'Habitacion\PisoController@index')->name('piso');
-Route::get('piso/{id}', 'Habitacion\PisoController@show')->name('show_piso');
-Route::post('piso', 'Habitacion\PisoController@store')->name('store_piso');
-Route::get('piso/{id}/edit', 'Habitacion\PisoController@edit')->name('edit_piso');
-Route::put('piso/{id}', 'Habitacion\PisoController@update')->name('update_piso');
-Route::delete('piso/{id}/destroy', 'Habitacion\PisoController@destroy')->name('destroy_piso');
-
-/* Rutas de HABITACION */
-Route::get('habitacion/create', 'Habitacion\HabitacionController@create')->name('create_habitacion');
-Route::get('habitacion', 'Habitacion\HabitacionController@index')->name('habitacion');
-Route::get('habitacion/{id}', 'Habitacion\HabitacionController@show')->name('show_habitacion');
-Route::post('habitacion', 'Habitacion\HabitacionController@store')->name('store_habitacion');
-Route::get('habitacion/{id}/edit', 'Habitacion\HabitacionController@edit')->name('edit_habitacion');
-Route::put('habitacion/{id}', 'Habitacion\HabitacionController@update')->name('update_habitacion');
-Route::delete('habitacion/{id}/destroy', 'Habitacion\HabitacionController@destroy')->name('destroy_habitacion');
-
-/* Rutas de CONCEPTO */
-Route::get('general/concepto/create', 'ConceptoController@create')->name('create_concepto');
-Route::get('general/concepto', 'ConceptoController@index')->name('concepto');
-Route::get('general/concepto/{id}', 'ConceptoController@show')->name('show_concepto');
-Route::post('general/concepto', 'ConceptoController@store')->name('store_concepto');
-Route::get('general/concepto/{id}/edit', 'ConceptoController@edit')->name('edit_concepto');
-Route::put('general/concepto/{id}', 'ConceptoController@update')->name('update_concepto');
-Route::delete('general/concepto/{id}/destroy', 'ConceptoController@destroy')->name('destroy_concepto');
-/* Rutas de SERVICIOS */
-Route::get('general/servicios/create', 'ServiciosController@create')->name('create_servicios');
-Route::get('general/servicios', 'ServiciosController@index')->name('servicios');
-Route::get('general/servicios/{id}', 'ServiciosController@show')->name('show_servicios');
-Route::post('general/servicios', 'ServiciosController@store')->name('store_servicios');
-Route::get('general/servicios/{id}/edit', 'ServiciosController@edit')->name('edit_servicios');
-Route::put('general/servicios/{id}', 'ServiciosController@update')->name('update_servicios');
-Route::delete('general/servicios/{id}/destroy', 'ServiciosController@destroy')->name('destroy_servicios');
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'root']], function () {
+    /* Rutas de CONCEPTO */
+    Route::get('concepto/create', 'ConceptoController@create')->name('create_concepto');
+    Route::get('concepto', 'ConceptoController@index')->name('concepto');
+    Route::get('concepto/{id}', 'ConceptoController@show')->name('show_concepto');
+    Route::post('concepto', 'ConceptoController@store')->name('store_concepto');
+    Route::get('concepto/{id}/edit', 'ConceptoController@edit')->name('edit_concepto');
+    Route::put('concepto/{id}', 'ConceptoController@update')->name('update_concepto');
+    Route::delete('concepto/{id}/destroy', 'ConceptoController@destroy')->name('destroy_concepto');
+    /* Rutas de SERVICIOS */
+    Route::get('servicios/create', 'ServiciosController@create')->name('create_servicios');
+    Route::get('servicios', 'ServiciosController@index')->name('servicios');
+    Route::get('servicios/{id}', 'ServiciosController@show')->name('show_servicios');
+    Route::post('servicios', 'ServiciosController@store')->name('store_servicios');
+    Route::get('servicios/{id}/edit', 'ServiciosController@edit')->name('edit_servicios');
+    Route::put('servicios/{id}', 'ServiciosController@update')->name('update_servicios');
+    Route::delete('servicios/{id}/destroy', 'ServiciosController@destroy')->name('destroy_servicios');
+});
