@@ -39,6 +39,8 @@
     <script src="{{asset("assets/$theme/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js")}}"></script>
     <script src="{{asset("js/admin/rolpersona/index.js")}}"></script>
     <script src="{{asset("js/admin/acceso/index.js")}}"></script>
+    <script src="{{asset("js/admin/scripts.js")}}"></script>
+
 
 </body>
 

@@ -35,15 +35,7 @@ class OpcionMenu extends Model
 
         return $opcionmenu;
     }
-    public function getPadres($padres, $line)
-    {
-        $padres = [];
-        foreach ($padres as $line1) {
-            if ($line['id'] == $line1['opcionmenu_id']) {
-                $padres = array_merge($padres, [array_merge($line1, ['opciones' => $this->getPadres($padres, $line1)])]);
-            }
-        }
-    }
+
 
     public function getGrupoMenus()
     {

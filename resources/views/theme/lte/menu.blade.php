@@ -1,5 +1,5 @@
-{{-- {{dd($opciones)}} --}}
-<li class="nav-item has-treeview">
+{{-- {{dd($item)}} --}}
+<li class="nav-item has-treeview grupomenu">
     <a href="javascript:;" class="nav-link">
         <i class="nav-icon fa {{$item["icono"]}}"></i>
         <p>
