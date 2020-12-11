@@ -7,8 +7,8 @@
             <div class="card">
                 <div class="card-header">Create New nacionalidad</div>
                 <div class="card-body">
-                    <a href="{{ url('admin/nacionalidad') }}" title="Back"><button class="btn btn-warning btn-sm"><i
-                                class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
+                    <a href="{{ route('nacionalidad') }}" title="Back"><button class="btn btn-warning btn-sm"><i
+                                class="fa fa-arrow-left" aria-hidden="true"></i> Regresar</button></a>
                     <br />
                     <br />
 

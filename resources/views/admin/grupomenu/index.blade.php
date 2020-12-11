@@ -13,8 +13,7 @@
             <div class="card">
                 <div class="card-header">Grupo Menu</div>
                 <div class="card-body">
-                    <a href="{{ url('admin/grupomenu/create') }}" class="btn btn-success btn-sm"
-                        title="Add New grupomenu">
+                    <a href="{{ route('create_grupomenu') }}" class="btn btn-success btn-sm" title="Add New grupomenu">
                         <i class="fa fa-plus" aria-hidden="true"></i> Agregar Nuevo
                     </a>
                     <br />

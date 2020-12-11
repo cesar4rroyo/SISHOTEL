@@ -8,7 +8,7 @@
                 <div class="card-header">rol {{ $rol->id }}</div>
                 <div class="card-body">
 
-                    <a href="{{ url('admin/rol') }}" title="Back"><button class="btn btn-warning btn-sm"><i
+                    <a href="{{ route('rol') }}" title="Back"><button class="btn btn-warning btn-sm"><i
                                 class="fa fa-arrow-left" aria-hidden="true"></i> Regresar</button></a>
                     <a href="{{ route('edit_rol' , $rol->id ) }}" title="Edit rol"><button
                             class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>

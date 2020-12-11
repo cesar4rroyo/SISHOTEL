@@ -9,7 +9,7 @@
                 <div class="card-header">Grupomenu {{ $grupomenu->id }}</div>
                 <div class="card-body">
 
-                    <a href="{{ url('admin/grupomenu') }}" title="Back"><button class="btn btn-warning btn-sm"><i
+                    <a href="{{ route('grupomenu') }}" title="Back"><button class="btn btn-warning btn-sm"><i
                                 class="fa fa-arrow-left" aria-hidden="true"></i> Regresar</button></a>
                     <a href="{{ route('edit_grupomenu', $grupomenu->id ) }}" title="Edit grupomenu"><button
                             class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>

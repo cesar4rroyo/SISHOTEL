@@ -12,8 +12,7 @@
             <div class="card">
                 <div class="card-header">Concepto</div>
                 <div class="card-body">
-                    <a href="{{ url('general/concepto/create') }}" class="btn btn-success btn-sm"
-                        title="Add New concepto">
+                    <a href="{{ route('create_concepto') }}" class="btn btn-success btn-sm" title="Add New concepto">
                         <i class="fa fa-plus" aria-hidden="true"></i> Agregar Nuevo
                     </a>
                     <br />

@@ -12,7 +12,7 @@
             <div class="card">
                 <div class="card-header">Nacionalidad</div>
                 <div class="card-body">
-                    <a href="{{ url('admin/nacionalidad/create') }}" class="btn btn-success btn-sm"
+                    <a href="{{ route('create_nacionalidad') }}" class="btn btn-success btn-sm"
                         title="Add New nacionalidad">
                         <i class="fa fa-plus" aria-hidden="true"></i> Agregar nuevo
                     </a>

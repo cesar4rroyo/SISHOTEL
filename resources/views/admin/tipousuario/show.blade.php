@@ -9,8 +9,8 @@
                 <div class="card-header">Tipo Usuario {{ $tipousuario->id }}</div>
                 <div class="card-body">
 
-                    <a href="{{ url('admin/tipousuario') }}" title="Back"><button class="btn btn-warning btn-sm"><i
-                                class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
+                    <a href="{{ route('tipousuario') }}" title="Back"><button class="btn btn-warning btn-sm"><i
+                                class="fa fa-arrow-left" aria-hidden="true"></i> Regresar</button></a>
                     <a href="{{ route('edit_tipousuario' , $tipousuario->id) }}" title="Edit tipousuario"><button
                             class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             Editar</button></a>

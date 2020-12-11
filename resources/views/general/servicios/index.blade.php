@@ -12,8 +12,7 @@
             <div class="card">
                 <div class="card-header">Servicios</div>
                 <div class="card-body">
-                    <a href="{{ url('general/servicios/create') }}" class="btn btn-success btn-sm"
-                        title="Add New servicio">
+                    <a href="{{ route('create_servicios') }}" class="btn btn-success btn-sm" title="Add New servicio">
                         <i class="fa fa-plus" aria-hidden="true"></i> Agregar Nuevo
                     </a>
                     <br />
