@@ -33,7 +33,15 @@ class UsuarioController extends Controller
 
     public function store(ValidateUsuario $request)
     {
-        //
+        $usuario = Usuario::create([
+            'login' => $request->login,
+            'password' => $request->password,
+            'tipousuario_id' => $request->tipousuario,
+            'persona_id' => $request->persona
+        ]);
+        return redirect()
+            ->route('usuario')
+            ->with('success', 'Agregado correctamente');
     }
 
 
@@ -55,7 +63,17 @@ class UsuarioController extends Controller
 
     public function update(ValidateUsuario $request, $id)
     {
-        //
+        $usuario = Usuario::findOrFail($id)
+            ->update([
+                'login' => $request->login,
+                'password' => $request->password,
+                'tipousuario_id' => $request->tipousuario,
+                'persona_id' => $request->persona
+            ]);
+
+        return redirect()
+            ->route('usuario')
+            ->with('success', 'Actualizado correctamente');
     }
 
 
@@ -63,7 +81,7 @@ class UsuarioController extends Controller
     {
         Usuario::destroy($id);
         return redirect()
-            ->route('habitacion')
+            ->route('usuario')
             ->with('success', 'Eliminado Correctamente');
     }
 }

@@ -7,6 +7,7 @@ use App\Models\TipoUsuario;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class Usuario extends Authenticatable
@@ -42,5 +43,9 @@ class Usuario extends Authenticatable
 
 
         // Session::put('tipousuario', $tipousuario);
+    }
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = Hash::make($password);
     }
 }
