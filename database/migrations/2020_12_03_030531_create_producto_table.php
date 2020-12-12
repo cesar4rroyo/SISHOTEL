@@ -15,9 +15,17 @@ class CreateProductoTable extends Migration
             $table->integer('preciocompra');
             $table->integer('precioventa');
             $table->unsignedInteger('categoria_id');
-            $table->foreign('categoria_id', 'fk_producto_categoria')->references('id')->on('categoria');
+            $table->foreign('categoria_id', 'fk_producto_categoria')
+                ->references('id')
+                ->on('categoria')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->unsignedInteger('unidad_id');
-            $table->foreign('unidad_id', 'fk_producto_unidad')->references('id')->on('unidad');
+            $table->foreign('unidad_id', 'fk_producto_unidad')
+                ->references('id')
+                ->on('unidad')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->timestamps();
         });
     }

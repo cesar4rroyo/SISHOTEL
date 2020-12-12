@@ -26,7 +26,12 @@ class CreatePersonaTable extends Migration
             $table->string('telefono');
             $table->string('observacion')->nullable();
             $table->unsignedInteger('nacionalidad_id')->nullable();
-            $table->foreign('nacionalidad_id', 'fk_persona_nacionalidad')->nullable()->references('id')->on('nacionalidad');
+            $table->foreign('nacionalidad_id', 'fk_persona_nacionalidad')
+                ->nullable()
+                ->references('id')
+                ->on('nacionalidad')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->timestamps();
         });
     }

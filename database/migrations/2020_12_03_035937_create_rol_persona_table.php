@@ -16,9 +16,13 @@ class CreateRolPersonaTable extends Migration
         Schema::create('rolpersona', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('persona_id');
-            $table->foreign('persona_id', 'fk_rolpersona_persona')->references('id')->on('persona');
+            $table->foreign('persona_id', 'fk_rolpersona_persona')
+                ->references('id')
+                ->on('persona');
             $table->unsignedInteger('rol_id');
-            $table->foreign('rol_id', 'fk_rolpersona_rol')->references('id')->on('rol');
+            $table->foreign('rol_id', 'fk_rolpersona_rol')
+                ->references('id')
+                ->on('rol');
             $table->timestamps();
         });
     }

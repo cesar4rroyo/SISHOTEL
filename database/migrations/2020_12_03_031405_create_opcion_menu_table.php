@@ -20,7 +20,11 @@ class CreateOpcionMenuTable extends Migration
             $table->string('icono', 50)->nullable();
             $table->integer('orden')->default(0);
             $table->unsignedInteger('grupomenu_id')->default(0);
-            $table->foreign('grupomenu_id', 'fk_opcionmenu_grupomenu')->references('id')->on('grupomenu');
+            $table->foreign('grupomenu_id', 'fk_opcionmenu_grupomenu')
+                ->references('id')
+                ->on('grupomenu')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->timestamps();
         });
     }

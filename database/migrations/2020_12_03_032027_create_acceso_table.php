@@ -16,9 +16,17 @@ class CreateAccesoTable extends Migration
         Schema::create('acceso', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('tipousuario_id');
-            $table->foreign('tipousuario_id', 'fk_acceso_tipousuario')->references('id')->on('tipousuario');
+            $table->foreign('tipousuario_id', 'fk_acceso_tipousuario')
+                ->references('id')
+                ->on('tipousuario')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->unsignedInteger('opcionmenu_id');
-            $table->foreign('opcionmenu_id', 'fk_acceso_opcionmenu')->references('id')->on('opcionmenu');
+            $table->foreign('opcionmenu_id', 'fk_acceso_opcionmenu')
+                ->references('id')
+                ->on('opcionmenu')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->timestamps();
         });
     }

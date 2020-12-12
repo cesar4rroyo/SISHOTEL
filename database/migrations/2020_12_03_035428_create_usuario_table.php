@@ -18,9 +18,19 @@ class CreateUsuarioTable extends Migration
             $table->string('login');
             $table->string('password');
             $table->unsignedInteger('tipousuario_id')->nullable();
-            $table->foreign('tipousuario_id', 'fk_usuario_tipousuario')->nullable()->references('id')->on('tipousuario');
+            $table->foreign('tipousuario_id', 'fk_usuario_tipousuario')
+                ->nullable()
+                ->references('id')
+                ->on('tipousuario')
+                ->onDelete('restrict')
+                ->onUpdate('restrict');
             $table->unsignedInteger('persona_id')->nullable();
-            $table->foreign('persona_id', 'fk_usuario_persona')->nullable()->references('id')->on('persona');
+            $table->foreign('persona_id', 'fk_usuario_persona')
+                ->nullable()
+                ->references('id')
+                ->on('persona')
+                ->onDelete('restrict')
+                ->onUpdate('restrict');
             $table->timestamps();
         });
     }
