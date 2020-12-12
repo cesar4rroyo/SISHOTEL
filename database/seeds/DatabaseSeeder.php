@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
             'producto',
             'opcionmenu',
             'persona',
-            'usuario'
+            'usuario',
+            'acceso'
 
         ]);
         $this->call(TipoHabitacionSeeder::class);
@@ -41,6 +42,7 @@ class DatabaseSeeder extends Seeder
         $this->call(OpcionMenuSeeder::class);
         $this->call(PersonaSeeder::class);
         $this->call(UsuarioAdministradorSeeder::class);
+        $this->call(AccesoSeeder::class);
     }
 
     protected function truncateTablas(array $tablas)
