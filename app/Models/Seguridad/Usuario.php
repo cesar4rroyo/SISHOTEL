@@ -48,4 +48,14 @@ class Usuario extends Authenticatable
     {
         $this->attributes['password'] = Hash::make($password);
     }
+
+    public static function getPersonasUsuarios()
+    {
+        $id_rolUsuario = '1';
+        $personas = Persona::whereHas('roles', function ($query) use ($id_rolUsuario) {
+
+            $query->where('rol.id', '=', $id_rolUsuario);
+        })->get();
+        return $personas;
+    }
 }

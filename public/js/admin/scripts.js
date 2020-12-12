@@ -1,5 +1,5 @@
-$($document).ready(function () {
-
-    $('ul.sidebar-menu').find('li.active').parents('li').addClass('active');
-
+document.addEventListener("DOMContentLoaded", function () {
+    var menu = $('ul.nav-sidebar').find('a.active').parents('li.has-treeview');
+    menu.addClass('menu-open');
+    menu.children('a').addClass('active');
 });

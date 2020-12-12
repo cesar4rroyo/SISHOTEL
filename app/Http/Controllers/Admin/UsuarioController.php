@@ -26,7 +26,7 @@ class UsuarioController extends Controller
     public function create()
     {
         $tipousuarios = TipoUsuario::with('usuario')->get();
-        $personas = Persona::with('usuario')->get();
+        $personas = Usuario::getPersonasUsuarios();
         return view('admin.usuario.create', compact('tipousuarios', 'personas'));
     }
 

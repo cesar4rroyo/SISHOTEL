@@ -29,6 +29,7 @@ class Persona extends Model
     {
         return $this->belongsToMany(Rol::class, 'rolpersona');
     }
+
     public function usuario()
     {
         return $this->hasMany(Usuario::class);
