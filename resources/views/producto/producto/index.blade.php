@@ -22,7 +22,7 @@
                                     <th>Precio Compra</th>
                                     <th>Categoria</th>
                                     <th>Unidad</th>
-                                    <th>Actions</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>

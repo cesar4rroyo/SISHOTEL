@@ -14,7 +14,7 @@ $factory->define(Persona::class, function (Faker $faker) {
         'sexo' => $faker->randomLetter,
         'fechanacimiento' => $faker->dateTimeThisCentury,
         'telefono' => $faker->phoneNumber,
-        'observacion' => $faker->text,
+        'observacion' => $faker->sentence,
         'nacionalidad_id' => $faker->unique(true)->numberBetween(1, 21),
     ];
 });
