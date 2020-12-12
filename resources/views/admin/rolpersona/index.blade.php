@@ -1,9 +1,19 @@
 @extends("theme.$theme.layout")
 @section('content')
+
 <div class="container">
     @if ($message = Session::get('success'))
     <div class="alert alert-success">
         <p>{{ $message }}</p>
+    </div>
+    @endif
+    @if (session("mensaje"))
+    <div class="alert alert-success alert-dismissible" data-auto-dismiss="3000">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-check"></i> Mensaje sistema Biblioteca</h4>
+        <ul>
+            <li>{{ session("mensaje") }}</li>
+        </ul>
     </div>
     @endif
     <div class="row">

@@ -40,7 +40,12 @@
     <script src="{{asset("js/admin/rolpersona/index.js")}}"></script>
     <script src="{{asset("js/admin/acceso/index.js")}}"></script>
     <script src="{{asset("js/admin/scripts.js")}}"></script>
-
+    <script src="{{asset("js/funciones.js")}}"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
+        integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
+        crossorigin="anonymous" />
 
 </body>
 

@@ -18,7 +18,7 @@ function ajaxRequest(url, data) {
         type: 'POST',
         data: data,
         success: function (respuesta) {
-            console.log("Correcto");
+            Hotel.notificaciones(respuesta.respuesta, 'Hotel', 'success');
         },
         error: function (e) {
             console.log(e);
