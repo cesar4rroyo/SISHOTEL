@@ -21,7 +21,7 @@ class OpcionMenuSeeder extends Seeder
             'grupomenu_id' => 1
         ]);
         DB::table('opcionmenu')->insert([
-            'nombre' => 'Tipo Producto',
+            'nombre' => 'Categorías',
             'link' => 'admin/categoria',
             'icono' => 'fas fa-gifts',
             'orden' => 2,

@@ -13,7 +13,7 @@
                     <br />
                     <br />
                     <div class="table-responsive">
-                        <table class="table">
+                        <table class="table" id="tabla-data">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -44,13 +44,14 @@
                                                     class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 Editar</button></a>
 
-                                        <form method="POST" action="{{ route('destroy_producto' , $item->id) }}"
-                                            accept-charset="UTF-8" style="display:inline">
+                                        <form class="form-eliminar" method="POST"
+                                            action="{{ route('destroy_producto' , $item->id) }}" accept-charset="UTF-8"
+                                            style="display:inline">
                                             {{ method_field('DELETE') }}
                                             {{ csrf_field() }}
-                                            <button type="submit" class="btn btn-danger btn-sm" title="Delete producto"
-                                                onclick="return confirm(&quot;Confirm delete?&quot;)"><i
-                                                    class="fa fa-trash-o" aria-hidden="true"></i> Eliminar</button>
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                title="Delete producto"><i class=" fa fa-trash-o"
+                                                    aria-hidden="true"></i> Eliminar</button>
                                         </form>
                                     </td>
                                 </tr>

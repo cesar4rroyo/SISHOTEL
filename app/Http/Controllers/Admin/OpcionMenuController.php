@@ -86,11 +86,13 @@ class OpcionMenuController extends Controller
     }
 
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        OpcionMenu::destroy($id);
-        return redirect()
-            ->route('opcionmenu')
-            ->with('success', 'Eliminado Correctamente');
+        if ($request->ajax()) {
+            OpcionMenu::destroy($id);
+            return response()->json(['mensaje' => 'ok']);
+        } else {
+            abort(404);
+        }
     }
 }

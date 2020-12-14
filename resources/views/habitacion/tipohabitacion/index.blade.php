@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Tipohabitacion</div>
+                <div class="card-header">Tipos de Habitacion</div>
                 <div class="card-body">
                     <a href="{{ route('create_tipohabitacion') }}" class="btn btn-success btn-sm"
                         title="Add New tipohabitacion">
@@ -20,7 +20,7 @@
                     <br />
                     <br />
                     <div class="table-responsive">
-                        <table class="table">
+                        <table class="table" id="tabla-data">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -44,14 +44,14 @@
                                                     class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 Editar</button></a>
 
-                                        <form method="POST" action="{{ route('destroy_tipohabitacion', $item->id)  }}"
+                                        <form class="form-eliminar" method="POST"
+                                            action="{{ route('destroy_tipohabitacion', $item->id)  }}"
                                             accept-charset="UTF-8" style="display:inline">
                                             {{ method_field('DELETE') }}
                                             {{ csrf_field() }}
                                             <button type="submit" class="btn btn-danger btn-sm"
-                                                title="Delete tipohabitacion"
-                                                onclick="return confirm(&quot;Confirm delete?&quot;)"><i
-                                                    class="fa fa-trash-o" aria-hidden="true"></i> Eliminar</button>
+                                                title="Delete tipohabitacion"><i class="fa fa-trash-o"
+                                                    aria-hidden="true"></i> Eliminar</button>
                                         </form>
                                     </td>
                                 </tr>

@@ -92,11 +92,13 @@ class CategoriaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        Categoria::destroy($id);
-        return redirect()
-            ->route('categoria')
-            ->with('success', 'Eliminado Correctamente');
+        if ($request->ajax()) {
+            Categoria::destroy($id);
+            return response()->json(['mensaje' => 'ok']);
+        } else {
+            abort(404);
+        }
     }
 }

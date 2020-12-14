@@ -12,14 +12,7 @@
                     <a href="{{ route('edit_opcionmenu' , $opcionmenu->id ) }}" title="Edit opcionmenu"><button
                             class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             Editar</button></a>
-                    <form method="POST" action="{{ route('opcionmenu' , $opcionmenu->id) }}" accept-charset="UTF-8"
-                        style="display:inline">
-                        {{ method_field('DELETE') }}
-                        {{ csrf_field() }}
-                        <button type="submit" class="btn btn-danger btn-sm" title="Delete opcionmenu"
-                            onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o"
-                                aria-hidden="true"></i> Eliminar</button>
-                    </form>
+
                     <br />
                     <br />
                     <div class="table-responsive">

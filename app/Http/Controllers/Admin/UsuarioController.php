@@ -77,11 +77,13 @@ class UsuarioController extends Controller
     }
 
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        Usuario::destroy($id);
-        return redirect()
-            ->route('usuario')
-            ->with('success', 'Eliminado Correctamente');
+        if ($request->ajax()) {
+            Usuario::destroy($id);
+            return response()->json(['mensaje' => 'ok']);
+        } else {
+            abort(404);
+        }
     }
 }

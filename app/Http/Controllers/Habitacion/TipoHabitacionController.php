@@ -92,11 +92,13 @@ class TipoHabitacionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        Tipohabitacion::destroy($id);
-        return redirect()
-            ->route('tipohabitacion')
-            ->with('success', 'Eliminado Correctamente');
+        if ($request->ajax()) {
+            Tipohabitacion::destroy($id);
+            return response()->json(['mensaje' => 'ok']);
+        } else {
+            abort(404);
+        }
     }
 }

@@ -58,11 +58,13 @@ class TipoUserController extends Controller
     }
 
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        TipoUsuario::destroy($id);
-        return redirect()
-            ->route('tipousuario')
-            ->with('success', 'Eliminado Correctamente');
+        if ($request->ajax()) {
+            TipoUsuario::destroy($id);
+            return response()->json(['mensaje' => 'ok']);
+        } else {
+            abort(404);
+        }
     }
 }
