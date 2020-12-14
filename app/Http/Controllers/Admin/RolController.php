@@ -91,11 +91,15 @@ class RolController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        Rol::destroy($id);
-        return redirect()
-            ->route('rol')
-            ->with('success', 'Eliminado Correctamente');
+        if ($request->ajax()) {
+            $rol = Rol::findOrFail($id);
+            $rol->persona()->detach();
+            $rol->delete();
+            return response()->json(['mensaje' => 'ok']);
+        } else {
+            abort(404);
+        }
     }
 }

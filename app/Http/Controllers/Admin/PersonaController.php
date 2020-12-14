@@ -11,7 +11,6 @@ use App\Models\Rol;
 class PersonaController extends Controller
 {
 
-    //  Persona::with('roles')->get()->pluck('roles','id')->toArray();
     public function index(Request $request)
     {
         $search = $request->get('search');
@@ -101,11 +100,13 @@ class PersonaController extends Controller
     }
 
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        Persona::destroy($id);
-        return redirect()
-            ->route('persona')
-            ->with('success', 'Eliminado Correctamente');
+        if ($request->ajax()) {
+            Persona::destroy($id);
+            return response()->json(['mensaje' => 'ok']);
+        } else {
+            abort(404);
+        }
     }
 }

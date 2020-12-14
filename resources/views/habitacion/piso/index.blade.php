@@ -18,7 +18,7 @@
                     <br />
                     <br />
                     <div class="table-responsive">
-                        <table class="table">
+                        <table class="table" id="tabla-data">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -38,12 +38,12 @@
                                         <a href="{{ route('edit_piso', $item->id ) }}" title="Edit piso"><button
                                                 class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o"
                                                     aria-hidden="true"></i> Editar</button></a>
-                                        <form method="POST" action="{{ route('destroy_piso' , $item->id) }}"
-                                            accept-charset="UTF-8" style="display:inline">
+                                        <form class="form-eliminar" method="POST"
+                                            action="{{ route('destroy_piso' , $item->id) }}" accept-charset="UTF-8"
+                                            style="display:inline">
                                             {{ method_field('DELETE') }}
                                             {{ csrf_field() }}
-                                            <button type="submit" class="btn btn-danger btn-sm" title="Delete piso"
-                                                onclick="return confirm(&quot;Confirm delete?&quot;)"><i
+                                            <button type="submit" class="btn btn-danger btn-sm" title="Delete piso"><i
                                                     class="fa fa-trash-o" aria-hidden="true"></i> Eliminar</button>
                                         </form>
                                     </td>

@@ -114,11 +114,13 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        Producto::destroy($id);
-        return redirect()
-            ->route('producto')
-            ->with('success', 'Eliminado Correctamente');
+        if ($request->ajax()) {
+            Producto::destroy($id);
+            return response()->json(['mensaje' => 'ok']);
+        } else {
+            abort(404);
+        }
     }
 }

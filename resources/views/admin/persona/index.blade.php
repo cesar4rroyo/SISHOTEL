@@ -35,14 +35,14 @@
                     <br />
                     <br />
                     <div class="table-responsive">
-                        <table class="table">
+                        <table class="table" id="tabla-data">
                             <thead>
                                 <tr>
                                     <th>Nombres</th>
                                     <th>Apellidos</th>
                                     <th>RUC</th>
                                     <th>DNI</th>
-                                    <th>Direccion</th>
+                                    <th>Nacionalidad</th>
                                     <th>Telefono</th>
                                     <th>Observacion</th>
                                     <th>Acciones</th>
@@ -61,25 +61,30 @@
                                     <td>
                                         {{ isset($item->dni ) ? $item->dni  : '-'}}
                                     </td>
-                                    <td>{{ $item->direccion }}</td>
+                                    <td>{{ $item->nacionalidad->nombre }}</td>
                                     <td>{{ $item->telefono }}</td>
                                     <td>{{ $item->observacion }}</td>
                                     <td>
-                                        <a href="{{ route('show_persona' , $item->id) }}" title="View persona"><button
-                                                class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i>
-                                                Más</button></a>
-                                        <a href="{{ route('edit_persona' , $item->id ) }}" title="Edit persona"><button
-                                                class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o"
-                                                    aria-hidden="true"></i>
-                                                Editar</button></a>
-                                        <form method="POST" action="{{ route('destroy_persona', $item->id) }}"
-                                            accept-charset="UTF-8" style="display:inline">
-                                            {{ method_field('DELETE') }}
-                                            {{ csrf_field() }}
-                                            <button type="submit" class="btn btn-danger btn-sm" title="Delete persona"
-                                                onclick="return confirm(&quot;Confirm delete?&quot;)"><i
-                                                    class="fa fa-trash-o" aria-hidden="true"></i> Eliminar</button>
-                                        </form>
+                                        <div class="btn-group">
+                                            <a href="{{ route('show_persona' , $item->id) }}"
+                                                title="View persona"><button class="btn btn-info btn-sm"><i
+                                                        class="fa fa-eye" aria-hidden="true"></i>
+                                                </button></a>
+                                            <a href="{{ route('edit_persona' , $item->id ) }}"
+                                                title="Edit persona"><button class="btn btn-primary btn-sm"><i
+                                                        class="fa fa-pen" aria-hidden="true"></i>
+                                                </button></a>
+                                            <form class="form-eliminar" method="POST"
+                                                action="{{ route('destroy_persona', $item->id) }}"
+                                                accept-charset="UTF-8" style="display:inline">
+                                                {{ method_field('DELETE') }}
+                                                {{ csrf_field() }}
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    title="Delete persona"><i class="fa fa-trash"
+                                                        aria-hidden="true"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach

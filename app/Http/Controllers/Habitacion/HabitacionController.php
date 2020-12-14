@@ -79,11 +79,14 @@ class HabitacionController extends Controller
     }
 
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        Habitacion::destroy($id);
-        return redirect()
-            ->route('habitacion')
-            ->with('success', 'Eliminado Correctamente');
+
+        if ($request->ajax()) {
+            Habitacion::destroy($id);
+            return response()->json(['mensaje' => 'ok']);
+        } else {
+            abort(404);
+        }
     }
 }

@@ -92,11 +92,13 @@ class NacionalidadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        Nacionalidad::destroy($id);
-        return redirect()
-            ->route('nacionalidad')
-            ->with('success', 'Eliminado Correctamente');
+        if ($request->ajax()) {
+            Nacionalidad::destroy($id);
+            return response()->json(['mensaje' => 'ok']);
+        } else {
+            abort(404);
+        }
     }
 }

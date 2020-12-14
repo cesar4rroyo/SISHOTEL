@@ -35,7 +35,7 @@
                     <br />
                     <br />
                     <div class="table-responsive">
-                        <table class="table">
+                        <table class="table" id="tabla-data">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -71,14 +71,14 @@
                                                     class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 Editar</button></a>
 
-                                        <form method="POST" action="{{ route('destroy_opcionmenu' , $item->id) }}"
+                                        <form class="form-eliminar" method="POST"
+                                            action="{{ route('destroy_opcionmenu' , $item->id) }}"
                                             accept-charset="UTF-8" style="display:inline">
                                             {{ method_field('DELETE') }}
                                             {{ csrf_field() }}
                                             <button type="submit" class="btn btn-danger btn-sm"
-                                                title="Delete opcionmenu"
-                                                onclick="return confirm(&quot;Confirm delete?&quot;)"><i
-                                                    class="fa fa-trash-o" aria-hidden="true"></i> Eliminar</button>
+                                                title="Delete opcionmenu"><i class="fa fa-trash-o"
+                                                    aria-hidden="true"></i> Eliminar</button>
                                         </form>
                                     </td>
                                 </tr>

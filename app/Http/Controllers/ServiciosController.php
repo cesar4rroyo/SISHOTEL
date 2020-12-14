@@ -91,11 +91,14 @@ class ServiciosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        Servicios::destroy($id);
-        return redirect()
-            ->route('servicios')
-            ->with('success', 'Eliminado Correctamente');
+        if ($request->ajax()) {
+            Servicios::destroy($id);
+
+            return response()->json(['mensaje' => 'ok']);
+        } else {
+            abort(404);
+        }
     }
 }
