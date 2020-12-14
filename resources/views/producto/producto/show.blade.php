@@ -13,19 +13,10 @@
                     <a href="{{ route('edit_producto' , $producto->id ) }}" title="Edit producto"><button
                             class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             Editar</button></a>
-
-                    <form method="POST" action="{{ route('destroy_producto' , $producto->id) }}" accept-charset="UTF-8"
-                        style="display:inline">
-                        {{ method_field('DELETE') }}
-                        {{ csrf_field() }}
-                        <button type="submit" class="btn btn-danger btn-sm" title="Delete producto"
-                            onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o"
-                                aria-hidden="true"></i> Eliminar</button>
-                    </form>
                     <br />
                     <br />
                     <div class="table-responsive">
-                        <table class="table">
+                        <table class="table" id="tabla-data">
                             <tbody>
                                 <tr>
                                     <th>ID</th>

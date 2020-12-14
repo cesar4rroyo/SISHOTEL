@@ -13,15 +13,6 @@
                     <a href="{{ route('edit_concepto' , $concepto->id) }}" title="Edit concepto"><button
                             class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             Editar</button></a>
-
-                    <form method="POST" action="{{ route('destroy_concepto', $concepto->id) }}" accept-charset="UTF-8"
-                        style="display:inline">
-                        {{ method_field('DELETE') }}
-                        {{ csrf_field() }}
-                        <button type="submit" class="btn btn-danger btn-sm" title="Delete concepto"
-                            onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o"
-                                aria-hidden="true"></i> Eliminar</button>
-                    </form>
                     <br />
                     <br />
 
