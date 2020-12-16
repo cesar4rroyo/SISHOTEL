@@ -35,12 +35,12 @@ class Usuario extends Authenticatable
                 'tipousuario_id' => $tipousuario[0]['id'],
                 'tipousuario_nombre' => $tipousuario[0]['nombre'],
                 'usuario' => $this->login,
+                'accesos' => $this->tipousuario()->with('opcionmenu')->get()->toArray()[0]['opcionmenu'] ?? null,
                 'usuario_id' => $this->id,
                 'persona' => $this->persona()->get()->toArray()[0] ?? null,
                 'roles' => $this->persona()->with('roles')->get()->toArray()[0]['roles'] ?? null,
             ]);
         }
-
 
         // Session::put('tipousuario', $tipousuario);
     }

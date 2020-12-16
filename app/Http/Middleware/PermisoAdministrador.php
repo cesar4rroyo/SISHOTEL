@@ -15,15 +15,17 @@ class PermisoAdministrador
      */
     public function handle($request, Closure $next)
     {
-        if ($this->permiso()) {
+        if ($this->permiso() == 1) {
             return $next($request);
+        } else if ($this->permiso() == 2) {
+            return redirect('/')->with('warning', 'No cuentas con todos los provilegios de Super Administrador, algunas opciones estan restringidas.');
         } else {
-            return redirect('/')->with('warning', 'No tiene permiso para ingresar');
+            return redirect('/')->with('warning', 'Algunas opciones estan restringidas, ya que no cuentas con los permisos necesarios');
         }
     }
 
     private function permiso()
     {
-        return session()->get('tipousuario_id') == 1;
+        return session()->get('tipousuario_id');
     }
 }

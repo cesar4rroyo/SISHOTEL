@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers\Producto;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Producto\ValidateProducto;
 use App\Models\Categoria;
+use App\Models\OpcionMenu;
 use App\Models\Producto;
 use App\Models\Unidad;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class ProductoController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *

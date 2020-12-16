@@ -76,7 +76,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::delete('usuario/{id}/destroy', 'UsuarioController@destroy')->name('destroy_usuario');
 });
 
-Route::group(['prefix' => 'admin', 'namespace' => 'Habitacion', 'middleware' => ['auth', 'root']], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Habitacion', 'middleware' => ['auth', 'acceso']], function () {
     /* Rutas de TIPOHABITACION */
     Route::get("tipohabitacion/create", 'TipoHabitacionController@create')->name('create_tipohabitacion');
     Route::get("tipohabitacion", 'TipoHabitacionController@index')->name('tipohabitacion');
@@ -93,7 +93,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Habitacion', 'middleware' => 
     Route::get('piso/{id}/edit', 'PisoController@edit')->name('edit_piso');
     Route::put('piso/{id}', 'PisoController@update')->name('update_piso');
     Route::delete('piso/{id}/destroy', 'PisoController@destroy')->name('destroy_piso');
-
     /* Rutas de HABITACION */
     Route::get('habitacion/create', 'HabitacionController@create')->name('create_habitacion');
     Route::get('habitacion', 'HabitacionController@index')->name('habitacion');
@@ -103,7 +102,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Habitacion', 'middleware' => 
     Route::put('habitacion/{id}', 'HabitacionController@update')->name('update_habitacion');
     Route::delete('habitacion/{id}/destroy', 'HabitacionController@destroy')->name('destroy_habitacion');
 });
-Route::group(['prefix' => 'admin', 'namespace' => 'Producto', 'middleware' => ['auth', 'root']], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Producto', 'middleware' => ['auth', 'acceso']], function () {
     /* Rutas de CATEGORIA */
     Route::get('categoria/create', 'CategoriaController@create')->name('create_categoria');
     Route::get('categoria', 'CategoriaController@index')->name('categoria');
@@ -130,7 +129,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Producto', 'middleware' => ['
     Route::delete('producto/{id}/destroy', 'ProductoController@destroy')->name('destroy_producto');
 });
 
-Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'root']], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'acceso']], function () {
     /* Rutas de CONCEPTO */
     Route::get('concepto/create', 'ConceptoController@create')->name('create_concepto');
     Route::get('concepto', 'ConceptoController@index')->name('concepto');
