@@ -30,10 +30,6 @@ class AppServiceProvider extends ServiceProvider
             $opciones = OpcionMenu::getMenu();
             $view->with('opciones', $opciones);
         });
-        view()->composer('theme.lte.aside', function ($view) {
-            $grupos = GrupoMenu::get()->toArray();
-            $view->with('grupos', $grupos);
-        });
         view()->share('theme', 'lte');
     }
 }

@@ -26,14 +26,18 @@ class OpcionMenu extends Model
         return $opcion_tipousuario;
     }
 
-
+    //obtener las opciones de menu que le corresponden al tipodeusuario que esta logueado
     public function getOpcionMenus()
     {
-        $opcionmenu = OpcionMenu::whereHas('tipousuario', function ($query) {
-            $query->where('tipousuario_id', session()->get('tipousuario_id'))->orderBy('orden');
-        })->get()->toArray();
+        $grupoWithOpciones = GrupoMenu::with([
+            'opcionmenu' => function ($query) {
+                $query->whereHas('tipousuario', function ($q) {
+                    $q->where('tipousuario_id', session()->get('tipousuario_id'))->orderBy('orden');
+                });
+            }
+        ])->get()->toArray();
 
-        return $opcionmenu;
+        return $grupoWithOpciones;
     }
 
 

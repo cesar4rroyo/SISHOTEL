@@ -35,8 +35,8 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                @foreach ($grupos as $key=>$item)
-                @include("theme.lte.menu",["item"=>$item, "opciones"=>$opciones])
+                @foreach ($opciones as $key=>$item)
+                @include("theme.lte.menu",["item"=>$item])
                 @endforeach
             </ul>
         </nav>
