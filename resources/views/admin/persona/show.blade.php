@@ -7,16 +7,17 @@
             <div class="card">
                 <div class="card-header">Persona {{ $persona->id }}</div>
                 <div class="card-body">
-                    <a href="{{ route('persona') }}" title="Back"><button class="btn btn-warning btn-sm"><i
-                                class="fa fa-arrow-left" aria-hidden="true"></i> Regresar</button></a>
+                    <a href="{{ route('persona') }}" title="Regresar"><button
+                            class="btn btn-outline-secondary btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+                            Regresar</button></a>
                     <a href="{{ route('edit_persona' , $persona->id ) }}" title="Edit persona"><button
-                            class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            class="btn btn-outline-primary btn-sm"><i class="fas fa-edit" aria-hidden="true"></i>
                             Editar</button>
                     </a>
                     <br />
                     <br />
                     <div class="table-responsive">
-                        <table class="table">
+                        <table class="table table-hover">
                             <tbody>
                                 <tr>
                                     <th>ID</th>
@@ -55,8 +56,8 @@
                                     <td> {{ $persona->telefono }} </td>
                                 </tr>
                                 <tr>
-                                    <th> Obersvación </th>
-                                    <td> {{ $persona->obersvacion }} </td>
+                                    <th> Observación </th>
+                                    <td> {{ $persona->observacion }} </td>
                                 </tr>
                                 <tr>
                                     <th> Nacionalidad </th>

@@ -5,9 +5,9 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Editar grupomenu #{{ $grupomenu->id }}</div>
+                <div class="card-header">Editar Grupo de Menú #{{ $grupomenu->id }}</div>
                 <div class="card-body">
-                    <a href="{{ route('grupomenu') }}" title="Back"><button class="btn btn-warning btn-sm"><i
+                    <a href="{{ route('grupomenu') }}" title="Regresar"><button class="btn btn-outline-info btn-sm"><i
                                 class="fa fa-arrow-left" aria-hidden="true"></i> Regresar</button></a>
                     <br />
                     <br />

@@ -8,10 +8,10 @@
                 <div class="card-header">Piso {{ $piso->id }}</div>
                 <div class="card-body">
 
-                    <a href="{{ route('piso') }}" title="Back"><button class="btn btn-warning btn-sm"><i
+                    <a href="{{ route('piso') }}" title="Regresar"><button class="btn btn-outline-secondary btn-sm"><i
                                 class="fa fa-arrow-left" aria-hidden="true"></i> Regresar</button></a>
-                    <a href="{{ route('edit_piso' , $piso->id) }}" title="Edit piso"><button
-                            class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    <a href="{{ route('edit_piso' , $piso->id) }}" title="Editar piso"><button
+                            class="btn btn-outline-primary btn-sm"><i class="fas fa-edit" aria-hidden="true"></i>
                             Editar</button></a>
                     <br />
                     <br />

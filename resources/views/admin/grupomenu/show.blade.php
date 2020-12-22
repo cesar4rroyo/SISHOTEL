@@ -9,10 +9,11 @@
                 <div class="card-header">Grupomenu {{ $grupomenu->id }}</div>
                 <div class="card-body">
 
-                    <a href="{{ route('grupomenu') }}" title="Back"><button class="btn btn-warning btn-sm"><i
-                                class="fa fa-arrow-left" aria-hidden="true"></i> Regresar</button></a>
-                    <a href="{{ route('edit_grupomenu', $grupomenu->id ) }}" title="Edit grupomenu"><button
-                            class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    <a href="{{ route('grupomenu') }}" title="Regresar"><button
+                            class="btn btn-outline-secondary btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+                            Regresar</button></a>
+                    <a href="{{ route('edit_grupomenu', $grupomenu->id ) }}" title="Editar grupomenu"><button
+                            class="btn btn-outline-primary btn-sm"><i class="fas fa-edit" aria-hidden="true"></i>
                             Editar</button></a>
                     <br />
                     <br />

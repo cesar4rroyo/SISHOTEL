@@ -4,8 +4,6 @@
         value="{{ isset($unidad->nombre) ? $unidad->nombre : ''}}">
     {!! $errors->first('nombre', '<p class="text-danger">:message</p>') !!}
 </div>
-
-
 <div class="form-group">
-    <input class="btn btn-primary" type="submit" value="{{ $formMode === 'edit' ? 'Actualizar' : 'Agregar' }}">
+    <input class="btn btn-outline-success" type="submit" value="{{ $formMode === 'edit' ? 'Actualizar' : 'Agregar' }}">
 </div>

@@ -29,18 +29,18 @@
                         </div>
                     </form>
                     <br />
-                    <a href="{{ route('create_persona') }}" class="btn btn-success btn-sm" title="Add New persona">
+                    <a href="{{ route('create_persona') }}" class="btn btn-outline-success" title="Add New persona">
                         <i class="fa fa-plus" aria-hidden="true"></i> Agregar Nuevo
                     </a>
                     <br />
                     <br />
                     <div class="table-responsive">
-                        <table class="table" id="tabla-data">
+                        <table class="table text-center table-hover" id="tabla-data">
                             <thead>
                                 <tr>
                                     <th>Nombres</th>
                                     <th>Apellidos</th>
-                                    <th>RUC</th>
+                                    {{-- <th>RUC</th> --}}
                                     <th>DNI</th>
                                     <th>Nacionalidad</th>
                                     <th>Telefono</th>
@@ -55,9 +55,9 @@
                                     <td>
                                         {{ isset($item->apellidos ) ? $item->apellidos  : '-'}}
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         {{ isset($item->ruc ) ? $item->ruc  : '-'}}
-                                    </td>
+                                    </td> --}}
                                     <td>
                                         {{ isset($item->dni ) ? $item->dni  : '-'}}
                                     </td>
@@ -67,20 +67,20 @@
                                     <td>
                                         <div class="btn-group">
                                             <a href="{{ route('show_persona' , $item->id) }}"
-                                                title="View persona"><button class="btn btn-info btn-sm"><i
+                                                title="Ver persona"><button class="btn btn-outline-secondary btn-sm"><i
                                                         class="fa fa-eye" aria-hidden="true"></i>
                                                 </button></a>
                                             <a href="{{ route('edit_persona' , $item->id ) }}"
-                                                title="Edit persona"><button class="btn btn-primary btn-sm"><i
-                                                        class="fa fa-pen" aria-hidden="true"></i>
+                                                title="Editar persona"><button class="btn btn-outline-primary btn-sm"><i
+                                                        class="fas fa-edit" aria-hidden="true"></i>
                                                 </button></a>
                                             <form class="form-eliminar" method="POST"
                                                 action="{{ route('destroy_persona', $item->id) }}"
                                                 accept-charset="UTF-8" style="display:inline">
                                                 {{ method_field('DELETE') }}
                                                 {{ csrf_field() }}
-                                                <button type="submit" class="btn btn-danger btn-sm"
-                                                    title="Delete persona"><i class="fa fa-trash"
+                                                <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                    title="Eliminar persona"><i class="fa fa-trash"
                                                         aria-hidden="true"></i>
                                                 </button>
                                             </form>

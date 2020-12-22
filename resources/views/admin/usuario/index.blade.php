@@ -6,27 +6,30 @@
             <div class="card">
                 <div class="card-header">Usuario</div>
                 <div class="card-body">
-                    <a href="{{ route('create_usuario') }}" class="btn btn-success btn-sm" title="Add New usuario">
-                        <i class="fa fa-plus" aria-hidden="true"></i> Agregar Nuevo
-                    </a>
-
-                    {{-- <form method="GET" action="{{ route('usuario') }}" accept-charset="UTF-8"
-                    class="form-inline my-2 my-lg-0 float-right" role="search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="search" placeholder="Search..."
-                            value="{{ request('search') }}">
-                        <span class="input-group-append">
-                            <button class="btn btn-secondary" type="submit">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </span>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <a href="{{ route('create_usuario') }}" class="btn btn-outline-success"
+                                title="Agregar nuevo usuario">
+                                <i class="fa fa-plus" aria-hidden="true"></i> Agregar Nuevo
+                            </a>
+                        </div>
+                        <div class="col">
+                            <form method="GET" action="{{ route('usuario') }}" accept-charset="UTF-8"
+                                class="my-2 my-lg-0" role="search">
+                                <div class="input-group">
+                                    <input placeholder="Buscar..." class="form-control" name="search"
+                                        value="{{ request('search') }}" />
+                                    <span class="input-group-append">
+                                        <button class="btn btn-secondary" type="submit">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    </form> --}}
-
-                    <br />
-                    <br />
                     <div class="table-responsive">
-                        <table class="table" id="tabla-data">
+                        <table class="table text-center table-hover" id="tabla-data">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -44,22 +47,24 @@
                                     <td>{{ $item->tipousuario->nombre}}</td>
                                     <td>{{ $item->persona->nombres ?? '-'}}</td>
                                     <td>
-                                        <a href="{{ route('show_usuario' , $item->id) }}" title="View usuario"><button
-                                                class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i>
-                                                Ver</button></a>
-                                        <a href="{{ route('edit_usuario' , $item->id ) }}" title="Edit usuario"><button
-                                                class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o"
+                                        <a href="{{ route('show_usuario' , $item->id) }}" title="Ver usuario"><button
+                                                class="btn btn-outline-secondary btn-sm"><i class="fa fa-eye"
                                                     aria-hidden="true"></i>
-                                                Editar</button></a>
+                                            </button></a>
+                                        <a href="{{ route('edit_usuario' , $item->id ) }}"
+                                            title="Editar usuario"><button class="btn btn-outline-primary btn-sm"><i
+                                                    class="fas fa-edit" aria-hidden="true"></i>
+                                            </button></a>
 
                                         <form class="form-eliminar" method="POST"
                                             action="{{ route('destroy_usuario' , $item->id) }}" accept-charset="UTF-8"
                                             style="display:inline">
                                             {{ method_field('DELETE') }}
                                             {{ csrf_field() }}
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                title="Delete usuario"><i class="fa fa-trash-o" aria-hidden="true"></i>
-                                                Eliminar</button>
+                                            <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                title="Eliminar usuario"><i class="fas fa-trash-alt"
+                                                    aria-hidden="true"></i>
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>

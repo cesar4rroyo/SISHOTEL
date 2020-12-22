@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-header">Editar habitacion #{{ $habitacion->id }}</div>
                 <div class="card-body">
-                    <a href="{{ route('habitacion') }}" title="Back"><button class="btn btn-warning btn-sm"><i
+                    <a href="{{ route('habitacion') }}" title="Regresar"><button class="btn btn-outline-info btn-sm"><i
                                 class="fa fa-arrow-left" aria-hidden="true"></i> Regresar</button></a>
                     <br />
                     <br />

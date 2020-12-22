@@ -6,10 +6,10 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Create New piso</div>
+                <div class="card-header">Crear nuevo piso</div>
                 <div class="card-body">
-                    <a href="{{ route('piso') }}" title="Back"><button class="btn btn-warning btn-sm"><i
-                                class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
+                    <a href="{{ route('piso') }}" title="Regresar"><button class="btn btn-outline-info btn-sm"><i
+                                class="fa fa-arrow-left" aria-hidden="true"></i> Regresar</button></a>
                     <br />
                     <br />
 

@@ -11,7 +11,8 @@
             <div class="card">
                 <div class="card-header">Opciones de Menu</div>
                 <div class="card-body">
-                    <a href="{{ route('create_opcionmenu') }}" class="btn btn-success btn-sm"
+
+                    <a href="{{ route('create_opcionmenu') }}" class="btn btn-outline-success"
                         title="Add New opcionmenu">
                         <i class="fa fa-plus" aria-hidden="true"></i> Agregar Nuevo
                     </a>
@@ -35,7 +36,7 @@
                     <br />
                     <br />
                     <div class="table-responsive">
-                        <table class="table" id="tabla-data">
+                        <table class="table text-center table-hover" id="tabla-data">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -44,7 +45,7 @@
                                     <th>Icono</th>
                                     <th>Orden</th>
                                     <th>Grupo Menu</th>
-                                    <th>Actions</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -63,22 +64,21 @@
                                     <td>{{ $item->grupomenu->nombre }}</td>
                                     <td>
                                         <a href="{{ route('show_opcionmenu' , $item->id) }}"
-                                            title="View opcionmenu"><button class="btn btn-info btn-sm"><i
+                                            title="Ver opcionmenu"><button class="btn btn-outline-secondary btn-sm"><i
                                                     class="fa fa-eye" aria-hidden="true"></i>
-                                                Ver</button></a>
+                                            </button></a>
                                         <a href="{{ route('edit_opcionmenu' , $item->id) }}"
-                                            title="Edit opcionmenu"><button class="btn btn-primary btn-sm"><i
-                                                    class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                                Editar</button></a>
-
+                                            title="Editar opcionmenu"><button class="btn btn-outline-primary btn-sm"><i
+                                                    class="fas fa-edit" aria-hidden="true"></i>
+                                            </button></a>
                                         <form class="form-eliminar" method="POST"
                                             action="{{ route('destroy_opcionmenu' , $item->id) }}"
                                             accept-charset="UTF-8" style="display:inline">
                                             {{ method_field('DELETE') }}
                                             {{ csrf_field() }}
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                title="Delete opcionmenu"><i class="fa fa-trash-o"
-                                                    aria-hidden="true"></i> Eliminar</button>
+                                            <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                title="Eliminar opcionmenu"><i class="fas fa-trash-alt"
+                                                    aria-hidden="true"></i> </button>
                                         </form>
                                     </td>
                                 </tr>

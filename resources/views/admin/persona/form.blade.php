@@ -14,7 +14,7 @@
 </div>
 <div class="row">
     <div class="form-group col-sm {{ $errors->has('razonsocial') ? 'has-error' : ''}}">
-        <label for="razonsocial" class="control-label">{{ 'Razon Social' }}</label>
+        <label for="razonsocial" class="control-label">{{ 'Razón Social' }}</label>
         <input class="form-control" name="razonsocial" type="text" id="razonsocial"
             value="{{ isset($persona->razonsocial) ? $persona->razonsocial : ''}}">
         {!! $errors->first('razonsocial', '<p class="text-danger">:message</p>') !!}
@@ -43,14 +43,14 @@
         {!! $errors->first('sexo', '<p class="text-danger">:message</p>') !!}
     </div>
     <div class="form-group col-sm {{ $errors->has('fechanacimiento') ? 'has-error' : ''}}">
-        <label for="fechanacimiento" class="control-label">{{ 'Fechanacimiento' }}</label>
+        <label for="fechanacimiento" class="control-label">{{ 'Fecha de nacimiento' }}</label>
         <input class="form-control" name="fechanacimiento" type="date" id="fechanacimiento"
             value="{{ isset($persona->fechanacimiento) ? $persona->fechanacimiento : ''}}">
         {!! $errors->first('fechanacimiento', '<p class="text-danger">:message</p>') !!}
     </div>
     <div class="form-group col-sm {{ $errors->has('telefono') ? 'has-error' : ''}}">
-        <label for="telefono" class="control-label">{{ 'Telefono' }}</label>
-        <input class="form-control" name="telefono" type="number" id="telefono"
+        <label for="telefono" class="control-label">{{ 'Teléfono' }}</label>
+        <input class="form-control" name="telefono" type="text" id="telefono"
             value="{{ isset($persona->telefono) ? $persona->telefono : ''}}">
         {!! $errors->first('telefono', '<p class="text-danger">:message</p>') !!}
     </div>
@@ -85,5 +85,5 @@
 </div>
 
 <div class="form-group">
-    <input class="btn btn-primary" type="submit" value="{{ $formMode === 'edit' ? 'Actualizar' : 'Agregar' }}">
+    <input class="btn btn-outline-success" type="submit" value="{{ $formMode === 'edit' ? 'Actualizar' : 'Agregar' }}">
 </div>

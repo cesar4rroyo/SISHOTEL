@@ -7,9 +7,9 @@
 
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Crear Tipo Usuario</div>
+                <div class="card-header">Crear Tipo de Usuario</div>
                 <div class="card-body">
-                    <a href="{{ route('tipousuario') }}" title="Back"><button class="btn btn-warning btn-sm"><i
+                    <a href="{{ route('tipousuario') }}" title="Regresar"><button class="btn btn-outline-info btn-sm"><i
                                 class="fa fa-arrow-left" aria-hidden="true"></i> Regresar</button></a>
                     <br />
                     <br />

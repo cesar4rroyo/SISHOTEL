@@ -25,10 +25,10 @@
                     @yield('content')
                 </div>
             </section>
-
         </div>
-        @include("theme/$theme/footer")
+        {{-- @include("theme/$theme/footer") --}}
     </div>
+
     <script src="{{asset("assets/$theme/plugins/jquery/jquery.min.js")}}"></script>
     <!-- Bootstrap 4 -->
     <script src="{{asset("assets/$theme/plugins/bootstrap/js/bootstrap.bundle.min.js")}}"></script>

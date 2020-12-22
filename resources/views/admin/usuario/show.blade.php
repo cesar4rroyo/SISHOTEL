@@ -7,10 +7,11 @@
                 <div class="card-header">Usuario {{ $usuario->id }}</div>
                 <div class="card-body">
 
-                    <a href="{{ route('usuario') }}" title="Back"><button class="btn btn-warning btn-sm"><i
-                                class="fa fa-arrow-left" aria-hidden="true"></i> Regresar</button></a>
-                    <a href="{{ route('edit_usuario',$usuario->id) }}" title="Edit usuario"><button
-                            class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    <a href="{{ route('usuario') }}" title="Regresar"><button
+                            class="btn btn-outline-secondary btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+                            Regresar</button></a>
+                    <a href="{{ route('edit_usuario',$usuario->id) }}" title="Editar usuario"><button
+                            class="btn btn-outline-primary btn-sm"><i class="fas fa-edit" aria-hidden="true"></i>
                             Editar</button></a>
                     <br />
                     <br />

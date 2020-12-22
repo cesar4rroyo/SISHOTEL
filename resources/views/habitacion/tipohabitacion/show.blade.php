@@ -5,14 +5,15 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">tipohabitacion {{ $tipohabitacion->id }}</div>
+                <div class="card-header">Tipo de Habitación {{ $tipohabitacion->id }}</div>
                 <div class="card-body">
 
-                    <a href="{{ route('tipohabitacion') }}" title="Back"><button class="btn btn-warning btn-sm"><i
-                                class="fa fa-arrow-left" aria-hidden="true"></i> Regresar</button></a>
+                    <a href="{{ route('tipohabitacion') }}" title="Regresar"><button
+                            class="btn btn-outline-secondary btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+                            Regresar</button></a>
                     <a href="{{ route('edit_tipohabitacion', $tipohabitacion->id) }}"
-                        title="Edit tipohabitacion"><button class="btn btn-primary btn-sm"><i
-                                class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button></a>
+                        title="Editar tipohabitacion"><button class="btn btn-outline-primary btn-sm"><i
+                                class="fas fa-edit" aria-hidden="true"></i> Editar</button></a>
                     <br />
                     <br />
 

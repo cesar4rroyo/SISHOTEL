@@ -6,9 +6,9 @@
 
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Editar Tipo Usuario #{{ $tipousuario->id }}</div>
+                <div class="card-header">Editar Tipo de Usuario #{{ $tipousuario->id }}</div>
                 <div class="card-body">
-                    <a href="{{ url('tipousuario') }}" title="Back"><button class="btn btn-warning btn-sm"><i
+                    <a href="{{ route('tipousuario') }}" title="Regresar"><button class="btn btn-outline-info btn-sm"><i
                                 class="fa fa-arrow-left" aria-hidden="true"></i> Regresar</button></a>
                     <br />
                     <br />

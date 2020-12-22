@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">Crear Nuevo Servicio</div>
                 <div class="card-body">
-                    <a href="{{ route('servicios') }}" title="Back"><button class="btn btn-warning btn-sm"><i
+                    <a href="{{ route('servicios') }}" title="Back"><button class="btn btn-outline-info btn-sm"><i
                                 class="fa fa-arrow-left" aria-hidden="true"></i> Regresar</button></a>
                     <br />
                     <br />
