@@ -13,14 +13,27 @@
                 <div class="card-body">
 
                     <form method="GET" action="{{ route('persona') }}" accept-charset="UTF-8" class="my-2 my-lg-0"
-                        role="search">
+                        role="rol">
                         <div class="input-group">
-                            <select class="form-control" name="search" value="{{ request('search') }}">
-                                <option value=""><i class="fas fa-filter"></i> Seleccionar Rol</option>
+                            <select class="form-control" name="rol" value="{{ request('rol') }}">
+                                <option value=""><i class="fas fa-filter"></i> Filtrar por Roles</option>
                                 @foreach ($rol as $item)
                                 <option value="{{$item->id}}">{{$item->nombre}}</option>
                                 @endforeach
                             </select>
+                            <span class="input-group-append">
+                                <button class="btn btn-secondary" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+                    <br>
+                    <form method="GET" action="{{ route('persona') }}" accept-charset="UTF-8" class="my-2 my-lg-0"
+                        role="search">
+                        <div class="input-group">
+                            <input placeholder="Buscar..." class="form-control" name="search"
+                                value="{{ request('search') }}" />
                             <span class="input-group-append">
                                 <button class="btn btn-secondary" type="submit">
                                     <i class="fa fa-search"></i>
@@ -40,10 +53,10 @@
                                 <tr>
                                     <th>Nombres</th>
                                     <th>Apellidos</th>
-                                    {{-- <th>RUC</th> --}}
+                                    <th>RUC</th>
                                     <th>DNI</th>
                                     <th>Nacionalidad</th>
-                                    <th>Telefono</th>
+                                    {{-- <th>Telefono</th> --}}
                                     <th>Observacion</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -55,14 +68,14 @@
                                     <td>
                                         {{ isset($item->apellidos ) ? $item->apellidos  : '-'}}
                                     </td>
-                                    {{-- <td>
+                                    <td>
                                         {{ isset($item->ruc ) ? $item->ruc  : '-'}}
-                                    </td> --}}
+                                    </td>
                                     <td>
                                         {{ isset($item->dni ) ? $item->dni  : '-'}}
                                     </td>
                                     <td>{{ $item->nacionalidad->nombre }}</td>
-                                    <td>{{ $item->telefono }}</td>
+                                    {{-- <td>{{ $item->telefono }}</td> --}}
                                     <td>{{ $item->observacion }}</td>
                                     <td>
                                         <div class="btn-group">

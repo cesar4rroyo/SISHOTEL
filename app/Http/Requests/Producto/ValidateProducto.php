@@ -27,8 +27,8 @@ class ValidateProducto extends FormRequest
             'nombre' => 'required | max:20 | unique:producto,nombre,' . $this->route('id'),
             'precioventa' => 'required',
             'preciocompra' => 'required',
-            'categoria' => 'required',
-            'unidad' => 'required',
+            'categoria_id' => 'required',
+            'unidad_id' => 'required',
         ];
     }
 }

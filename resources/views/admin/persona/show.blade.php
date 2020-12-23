@@ -32,6 +32,14 @@
                                     <td> {{ $persona->apellidos }} </td>
                                 </tr>
                                 <tr>
+                                    <th>Roles</th>
+                                    <td>
+                                        @foreach ($persona->roles as $rol)
+                                        {{$loop->last ? $rol->nombre : $rol->nombre . ', '}}
+                                        @endforeach
+                                    </td>
+                                </tr>
+                                <tr>
                                     <th> Razon Social </th>
                                     <td> {{ $persona->razonsocial }} </td>
                                 </tr>

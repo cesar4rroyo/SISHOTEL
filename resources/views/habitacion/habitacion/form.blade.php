@@ -37,8 +37,17 @@
 
 <div class="form-group {{ $errors->has('situacion') ? 'has-error' : ''}}">
     <label for="situacion" class="control-label">{{ 'Situacion' }}</label>
-    <input class="form-control" name="situacion" type="text" id="situacion"
-        value="{{ isset($habitacion->situacion) ? $habitacion->situacion : ''}}">
+    <select class="form-control" name="situacion" id="situacion">
+        <option value="{{ isset($habitacion->situacion) ? $habitacion->situacion: ''}}">
+            {{ isset($habitacion->situacion) ? $habitacion->situacion : 'Seleccione una opcion'}}
+        </option>
+        <option value="{{"Ocupada"}}">{{'Ocupado'}}</option>
+        <option value="{{"Disponible"}}">{{'Disponible'}}</option>
+        <option value="{{"Limpieza"}}">{{'En limpieza'}}</option>
+
+    </select>
+    {{-- <input class="form-control" name="situacion" type="text" id="situacion"
+        value="{{ isset($habitacion->situacion) ? $habitacion->situacion : ''}}"> --}}
     {!! $errors->first('situacion', '<p class="text-danger">:message</p>') !!}
 </div>
 <div class="form-group">

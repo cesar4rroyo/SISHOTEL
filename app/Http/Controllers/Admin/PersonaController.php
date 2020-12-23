@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ValidatePersona;
 use App\Models\Nacionalidad;
 use App\Models\Persona;
 use App\Models\Rol;
@@ -14,12 +15,23 @@ class PersonaController extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search');
-        //search es el rol seleccionado como filtro de las personas
+        //search es el filtro seleccionado para buscar a las personas
+        $rol = $request->get('rol');
+        //rol es el rol_id seleccionado como filtro de las personas
         $paginate_number = 10;
-        if (!empty($search)) {
-            $persona = Persona::whereHas('roles', function ($query) use ($search) {
-                $query->where('rol_id', $search);
+        if (!empty($rol)) {
+            $persona = Persona::whereHas('roles', function ($query) use ($rol) {
+                $query->where('rol_id', $rol);
             })->paginate($paginate_number);
+            $rol = Rol::with('persona')->get();
+        } else if (!empty($search)) {
+            $persona = Persona::where('nombres', 'LIKE', '%' . $search . '%')
+                ->orWhere('apellidos', 'LIKE', '%' . $search . '%')
+                ->orWhere('ruc', 'LIKE', '%' . $search . '%')
+                ->orWhere('dni', 'LIKE', '%' . $search . '%')
+                ->orWhere('direccion', 'LIKE', '%' . $search . '%')
+                ->orWhere('razonsocial', 'LIKE', '%' . $search . '%')
+                ->paginate($paginate_number);
             $rol = Rol::with('persona')->get();
         } else {
             $persona =
@@ -40,7 +52,7 @@ class PersonaController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(ValidatePersona $request)
     {
         $persona = Persona::create([
             'nombres' => $request->nombres,
@@ -56,6 +68,7 @@ class PersonaController extends Controller
             'nacionalidad_id' => $request->nacionalidad_id,
 
         ]);
+        $persona->roles()->sync($request->rol_id);
         return redirect()
             ->route('persona')
             ->with('success', 'Agregado correctamente');
@@ -73,26 +86,28 @@ class PersonaController extends Controller
     {
         $nacionalidades = Nacionalidad::with('persona')->get();
         $persona = persona::findOrFail($id);
-        return view('admin.persona.edit', compact('persona', 'nacionalidades'));
+        $roles = Rol::orderBy('id')->pluck('nombre', 'id')->toArray();
+        return view('admin.persona.edit', compact('persona', 'nacionalidades', 'roles'));
     }
 
 
-    public function update(Request $request, $id)
+    public function update(ValidatePersona $request, $id)
     {
-        $persona = Persona::findOrFail($id)
-            ->update([
-                'nombres' => $request->nombres,
-                'apellidos' => $request->apellidos,
-                'razonsocial' => $request->razonsocial,
-                'ruc' => $request->ruc,
-                'dni' => $request->dni,
-                'direccion' => $request->direccion,
-                'sexo' => $request->sexo,
-                'fechanacimiento' => $request->fechanacimiento,
-                'telefono' => $request->telefono,
-                'observacion' => $request->observacion,
-                'nacionalidad_id' => $request->nacionalidad_id,
-            ]);
+        $persona = Persona::findOrFail($id);
+        $persona->update([
+            'nombres' => $request->nombres,
+            'apellidos' => $request->apellidos,
+            'razonsocial' => $request->razonsocial,
+            'ruc' => $request->ruc,
+            'dni' => $request->dni,
+            'direccion' => $request->direccion,
+            'sexo' => $request->sexo,
+            'fechanacimiento' => $request->fechanacimiento,
+            'telefono' => $request->telefono,
+            'observacion' => $request->observacion,
+            'nacionalidad_id' => $request->nacionalidad_id,
+        ]);
+        $persona->roles()->sync($request->rol_id);
 
         return redirect()
             ->route('persona')

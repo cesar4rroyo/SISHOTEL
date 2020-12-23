@@ -1,5 +1,5 @@
 @extends("theme.$theme.layout")
-
+{{-- {{dd($roles)}} --}}
 @section('content')
 <div class="container">
     <div class="row">

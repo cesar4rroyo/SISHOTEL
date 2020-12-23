@@ -7,8 +7,13 @@
     </div>
     <div class="form-group col-sm {{ $errors->has('tipo') ? 'has-error' : ''}}">
         <label for="tipo" class="control-label">{{ 'Tipo' }}</label>
-        <input class="form-control" name="tipo" type="text" id="tipo"
-            value="{{ isset($concepto->tipo) ? $concepto->tipo : ''}}">
+        <select class="form-control" name="tipo" type="text" id="tipo">
+            <option value="{{ isset($concepto->tipo) ? $concepto->tipo : ''}}">
+                {{ isset($concepto->tipo) ? $concepto->tipo : 'Seleccione una opcion'}}
+            </option>
+            <option value="{{"Ingreso"}}">{{'Ingreso'}}</option>
+            <option value="{{"Egreso"}}">{{'Egreso'}}</option>
+        </select>
         {!! $errors->first('tipo', '<p class="text-danger">:message</p>') !!}
     </div>
 </div>

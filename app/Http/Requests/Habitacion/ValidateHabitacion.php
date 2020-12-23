@@ -26,9 +26,8 @@ class ValidateHabitacion extends FormRequest
         return [
             'numero' => 'required | unique:habitacion,numero,' . $this->route('id'),
             'situacion' => 'required |max:200',
-            'precio' => 'required',
-            'piso' => 'required',
-            'tipohabitacion' => 'required'
+            'piso_id' => 'required',
+            'tipohabitacion_id' => 'required'
         ];
     }
 }

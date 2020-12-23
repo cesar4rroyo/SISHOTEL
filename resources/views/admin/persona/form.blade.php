@@ -11,6 +11,21 @@
             value="{{ isset($persona->apellidos) ? $persona->apellidos : ''}}">
         {!! $errors->first('apellidos', '<p class="text-danger">:message</p>') !!}
     </div>
+    <div class="form-group col-sm {{ $errors->has('rol') ? 'has-er ror' : ''}}">
+        <label for="rol_id[]" class="control-label">{{ 'Roles' }}</label>
+        <select class="form-control select2" id="rol_id[]" name="rol_id[]" multiple="multiple"
+            data-placeholder="Seleccionar rol" style="width: 100%;">
+            @foreach ($roles as $id => $nombre)
+            <option value="{{$id}}"
+                {{is_array(old('rol_id')) ? (in_array($id, old('rol_id')) ? 'selected' : '')  : (isset($persona) ? ($persona->roles->firstWhere('id', $id) ? 'selected' : '') : '')}}>
+                {{$nombre}}</option>
+            @endforeach
+        </select>
+        {{-- <input class="form-control" name="rol" type="text" id="rol"
+            value="{{ isset($persona->rol) ? $persona->rol->nombre : ''}}"> --}}
+        {!! $errors->first('apellidos', '<p class="text-danger">:message</p>') !!}
+    </div>
+
 </div>
 <div class="row">
     <div class="form-group col-sm {{ $errors->has('razonsocial') ? 'has-error' : ''}}">
