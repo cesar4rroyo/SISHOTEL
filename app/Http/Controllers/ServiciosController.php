@@ -14,10 +14,17 @@ class ServiciosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $paginate_number = 10;
-        $servicios = DB::table('servicios')->paginate($paginate_number);
+        $search = $request->get('search');
+        if (!empty($search)) {
+            $servicios = Servicios::where('nombre', 'LIKE', '%' . $search . '%')
+                ->paginate($paginate_number);
+        } else {
+            $servicios = Servicios::orderBy('id')
+                ->paginate($paginate_number);
+        }
         return view('general.servicios.index', compact('servicios'));
     }
 

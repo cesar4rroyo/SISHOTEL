@@ -11,10 +11,17 @@ use Illuminate\Support\Facades\DB;
 class TipoUserController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         $paginate_number = 10;
-        $tipousuario = TipoUsuario::with('usuario')->paginate($paginate_number);
+        $search = $request->get('search');
+        if (!empty($search)) {
+            $tipousuario = TipoUsuario::where('nombre', 'LIKE', '%' . $search . '%')
+                ->paginate($paginate_number);
+        } else {
+            $tipousuario = TipoUsuario::orderBy('id')
+                ->paginate($paginate_number);
+        }
         return view('admin.tipousuario.index', compact('tipousuario'));
     }
 

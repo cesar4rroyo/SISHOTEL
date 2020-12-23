@@ -15,10 +15,18 @@ class PisoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $paginate_number = 10;
-        $piso = DB::table('piso')->paginate($paginate_number);
+        $search = $request->get('search');
+        if (!empty($search)) {
+            $piso = Piso::where('nombre', 'LIKE', '%' . $search . '%')
+                ->paginate($paginate_number);
+        } else {
+            $piso = Piso::orderBy('id')
+                ->paginate($paginate_number);
+        }
+
         return view('habitacion.piso.index', compact('piso'));
     }
 

@@ -14,10 +14,17 @@ class RolController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $paginate_number = 10;
-        $rol = Rol::latest()->paginate($paginate_number);
+        $search = $request->get('search');
+        if (!empty($search)) {
+            $rol = Rol::where('nombre', 'LIKE', '%' . $search . '%')
+                ->paginate($paginate_number);
+        } else {
+            $rol = Rol::orderBy('id')
+                ->paginate($paginate_number);
+        }
         return view('admin.rol.index', compact('rol'));
     }
 

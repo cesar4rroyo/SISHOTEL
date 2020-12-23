@@ -13,13 +13,22 @@ use Illuminate\Support\Facades\DB;
 class HabitacionController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         $paginate_number = 10;
-        $habitacion =
-            Habitacion::with('piso', 'tipohabitacion')
-            ->orderBy('numero')
-            ->paginate($paginate_number);
+        $search = $request->get('search');
+        if (!empty($search)) {
+            $habitacion = Habitacion::where('numero', 'LIKE', '%' . $search . '%')
+                ->orWhere('situacion', 'LIKE', '%' . $search . '%')
+                ->orderBy('numero')
+                ->paginate($paginate_number);
+        } else {
+            $habitacion =
+                Habitacion::with('piso', 'tipohabitacion')
+                ->orderBy('numero')
+                ->paginate($paginate_number);
+        }
+
         return view('habitacion.habitacion.index', compact('habitacion'));
     }
 

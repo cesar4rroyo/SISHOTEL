@@ -15,10 +15,18 @@ class CategoriaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $paginate_number = 10;
-        $categoria = DB::table('categoria')->paginate($paginate_number);
+        $search = $request->get('search');
+        if (!empty($search)) {
+            $categoria = Categoria::where('nombre', 'LIKE', '%' . $search . '%')
+                ->paginate($paginate_number);
+        } else {
+            $categoria = Categoria::orderBy('id')
+                ->paginate($paginate_number);
+        }
+
         return view('producto.categoria.index', compact('categoria'));
     }
 

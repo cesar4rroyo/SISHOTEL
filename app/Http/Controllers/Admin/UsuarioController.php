@@ -12,13 +12,20 @@ use App\Models\TipoUsuario;
 class UsuarioController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         $paginate_number = 10;
-        $usuario =
-            Usuario::with('persona', 'tipousuario')
-            ->orderBy('id')
-            ->paginate($paginate_number);
+        $search = $request->get('search');
+        if (!empty($search)) {
+            $usuario = Usuario::where('login', 'LIKE', '%' . $search . '%')
+                ->paginate($paginate_number);
+        } else {
+            $usuario =
+                Usuario::with('persona', 'tipousuario')
+                ->orderBy('id')
+                ->paginate($paginate_number);
+        }
+
         return view('admin.usuario.index', compact('usuario'));
     }
 

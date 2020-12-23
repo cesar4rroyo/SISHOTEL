@@ -14,10 +14,18 @@ class ConceptoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $paginate_number = 10;
-        $concepto = DB::table('concepto')->paginate($paginate_number);
+        $search = $request->get('search');
+        if (!empty($search)) {
+            $concepto = Concepto::where('nombre', 'LIKE', '%' . $search . '%')
+                ->orWhere('tipo', 'LIKE', '%' . $search . '%')
+                ->paginate($paginate_number);
+        } else {
+            $concepto = Concepto::orderBy('id')
+                ->paginate($paginate_number);
+        }
         return view('general.concepto.index', compact('concepto'));
     }
 

@@ -15,10 +15,17 @@ class TipoHabitacionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $paginate_number = 10;
-        $tipohabitacion = DB::table('tipohabitacion')->paginate($paginate_number);
+        $search = $request->get('search');
+        if (!empty($search)) {
+            $tipohabitacion = TipoHabitacion::where('nombre', 'LIKE', '%' . $search . '%')
+                ->paginate($paginate_number);
+        } else {
+            $tipohabitacion = TipoHabitacion::orderBy('id')
+                ->paginate($paginate_number);
+        }
         return view('habitacion.tipohabitacion.index', compact('tipohabitacion'));
     }
 
