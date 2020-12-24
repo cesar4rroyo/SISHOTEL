@@ -147,3 +147,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'acceso']], function
     Route::put('servicios/{id}', 'ServiciosController@update')->name('update_servicios');
     Route::delete('servicios/{id}/destroy', 'ServiciosController@destroy')->name('destroy_servicios');
 });
+Route::group(['prefix' => 'admin', 'namespace' => 'Reservas', 'middleware' => ['auth', 'acceso']], function () {
+    /* Rutas de RESERVAS */
+    Route::get('reserva/create', 'ReservaController@create')->name('create_reserva');
+    Route::get('reserva', 'ReservaController@index')->name('reserva');
+    Route::get('reserva/{id}', 'ReservaController@show')->name('show_reserva');
+    Route::post('reserva', 'ReservaController@store')->name('store_reserva');
+    Route::get('reserva/{id}/edit', 'ReservaController@edit')->name('edit_reserva');
+    Route::put('reserva/{id}', 'ReservaController@update')->name('update_reserva');
+    Route::delete('reserva/{id}/destroy', 'ReservaController@destroy')->name('destroy_reserva');
+});

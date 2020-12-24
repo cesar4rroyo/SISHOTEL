@@ -25,9 +25,9 @@
             <option value="{{ isset($habitacion->tipohabitacion->nombre) ? $habitacion->tipohabitacion->id : ''}}">
                 {{ isset($habitacion->tipohabitacion->nombre) ? $habitacion->tipohabitacion->nombre : 'Seleccione una opcion'}}
             </option>
-            @foreach ($tipohabitaciones as $item)
-            <option value="{{$item->id}}">
-                {{$item->nombre}}
+            @foreach ($tipohabitaciones as $tipo)
+            <option value="{{$tipo->id}}">
+                {{$tipo->nombre}}
             </option>
             @endforeach
         </select>
