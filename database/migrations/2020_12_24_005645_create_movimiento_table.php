@@ -17,7 +17,7 @@ class CreateMovimientoTable extends Migration
             $table->increments('id');
             $table->dateTime('fechaingreso');
             $table->dateTime('fechasalida');
-            $table->decimal('dias', 3, 4);
+            $table->decimal('dias', 4, 4);
             $table->decimal('total', 6, 4);
             $table->decimal('preciohabitacion', 8, 4);
             $table->string('situacion', 50);
@@ -45,7 +45,7 @@ class CreateMovimientoTable extends Migration
                 ->on('usuario')
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
-            $table->$table->timestamps();
+            $table->timestamps();
         });
     }
 
