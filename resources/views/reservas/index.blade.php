@@ -10,7 +10,7 @@
                 <div class="card-body">
                     @foreach ($pisos as $piso)
                     @if (count($piso['habitacion'])!=0)
-                    <div class="card alert alert-info">
+                    <div class="card alert alert-primary">
                         <div class="card-header text-uppercase font-weight-bold">{{$piso['nombre']}}</div>
                         <div class="card-body card-group">
                             @foreach ($piso['habitacion'] as $habitacion)

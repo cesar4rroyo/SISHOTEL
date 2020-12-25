@@ -6,26 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Concepto extends Model
 {
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
+
     protected $table = 'concepto';
 
-    /**
-    * The database primary key value.
-    *
-    * @var string
-    */
     protected $primaryKey = 'id';
 
-    /**
-     * Attributes that should be mass-assignable.
-     *
-     * @var array
-     */
     protected $fillable = ['nombre', 'tipo'];
 
-    
+    public function caja()
+    {
+        return $this->hasMany(Caja::class, 'concepto_id');
+    }
 }

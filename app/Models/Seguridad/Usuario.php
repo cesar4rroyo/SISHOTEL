@@ -3,6 +3,9 @@
 namespace App\Models\Seguridad;
 
 use App\Models\Persona;
+use App\Models\Procesos\Caja;
+use App\Models\Procesos\Movimiento;
+use App\Models\Procesos\Reserva;
 use App\Models\TipoUsuario;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -20,6 +23,23 @@ class Usuario extends Authenticatable
         'persona_id',
         'tipousuario_id'
     ];
+
+    //funciones para el proceso
+    public function reserva()
+    {
+        return $this->hasMany(Reserva::class);
+    }
+    public function movimiento()
+    {
+        return $this->hasMany(Movimiento::class);
+    }
+    public function caja()
+    {
+        return $this->hasMany(Caja::class);
+    }
+
+    //funciones para el manteniemto
+
     public function persona()
     {
         return $this->belongsTo(Persona::class, 'persona_id');
@@ -41,8 +61,6 @@ class Usuario extends Authenticatable
                 'roles' => $this->persona()->with('roles')->get()->toArray()[0]['roles'] ?? null,
             ]);
         }
-
-        // Session::put('tipousuario', $tipousuario);
     }
     public function setPasswordAttribute($password)
     {
@@ -53,7 +71,6 @@ class Usuario extends Authenticatable
     {
         $id_rolUsuario = '1';
         $personas = Persona::whereHas('roles', function ($query) use ($id_rolUsuario) {
-
             $query->where('rol.id', '=', $id_rolUsuario);
         })->get();
         return $personas;

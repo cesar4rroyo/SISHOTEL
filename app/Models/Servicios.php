@@ -2,30 +2,31 @@
 
 namespace App\Models;
 
+use App\Models\Procesos\DetalleCaja;
+use App\Models\Procesos\DetalleComprobante;
+use App\Models\Procesos\DetalleMovimiento;
 use Illuminate\Database\Eloquent\Model;
 
 class Servicios extends Model
 {
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
+   
     protected $table = 'servicios';
 
-    /**
-    * The database primary key value.
-    *
-    * @var string
-    */
     protected $primaryKey = 'id';
 
-    /**
-     * Attributes that should be mass-assignable.
-     *
-     * @var array
-     */
     protected $fillable = ['nombre', 'precio'];
+
+    public function detalleComprobante()
+    {
+        return $this->hasMany(DetalleComprobante::class, 'servicio_id');
+    }
+    public function detalleCaja()
+    {
+        return $this->hasMany(DetalleCaja::class, 'servicio_id');
+    }
+    public function detalleMovimiento()
+    {
+        return $this->hasMany(DetalleMovimiento::class, 'servicio_id');
 
     
 }

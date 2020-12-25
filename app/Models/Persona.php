@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Procesos\Caja;
+use App\Models\Procesos\Movimiento;
+use App\Models\Procesos\Reserva;
 use App\Models\Seguridad\Usuario;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,6 +24,8 @@ class Persona extends Model
         'observacion',
         'nacionalidad_id'
     ];
+    //funciones para el mantenimiento
+
     public function nacionalidad()
     {
         return $this->belongsTo(Nacionalidad::class, 'nacionalidad_id');
@@ -33,5 +38,20 @@ class Persona extends Model
     public function usuario()
     {
         return $this->hasMany(Usuario::class);
+    }
+
+    //funciones para el proceso
+
+    public function reserva()
+    {
+        return $this->hasMany(Reserva::class);
+    }
+    public function movimiento()
+    {
+        return $this->hasMany(Movimiento::class);
+    }
+    public function caja()
+    {
+        return $this->hasMany(Caja::class);
     }
 }
