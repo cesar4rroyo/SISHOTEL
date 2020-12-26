@@ -2,27 +2,32 @@
 
 <head>
     <meta charset='utf-8' />
-    <link href='{{asset('assets/fullcalendar/packages/core/main.css')}}' rel='stylesheet' />
-    <link href='{{asset('assets/fullcalendar/packages/daygrid/main.css')}}' rel='stylesheet' />
-    <script src='{{asset('assets/fullcalendar/packages/core/main.js')}}'></script>
-    <script src='{{asset('assets/fullcalendar/packages/daygrid/main.js')}}'></script>
-
+    <link href="{{asset('assets/fullcalendar/lib/main.css')}}" rel='stylesheet' />
+    <script src="{{asset('assets/fullcalendar/lib/main.js')}}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
-           plugins:['dayGrid']
-          
+          initialView: 'dayGridMonth'
         });
-        calendar.setOption('locale','Es');
         calendar.render();
       });
 
     </script>
 </head>
+<style>
+    /* .fc-left h2 {
+        text-transform: capitalize;
+        font-size: 1.5rem
+    }
+
+    .fc-today-button {
+        text-transform: capitalize;
+    } */
+</style>
 
 <body>
-    <div class="container">
+    <div class="container m-3">
         <div id='calendar'></div>
     </div>
 

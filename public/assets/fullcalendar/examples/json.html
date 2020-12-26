@@ -2,31 +2,23 @@
 <html>
 <head>
 <meta charset='utf-8' />
-<link href='../packages/core/main.css' rel='stylesheet' />
-<link href='../packages/daygrid/main.css' rel='stylesheet' />
-<link href='../packages/timegrid/main.css' rel='stylesheet' />
-<link href='../packages/list/main.css' rel='stylesheet' />
-<script src='../packages/core/main.js'></script>
-<script src='../packages/interaction/main.js'></script>
-<script src='../packages/daygrid/main.js'></script>
-<script src='../packages/timegrid/main.js'></script>
-<script src='../packages/list/main.js'></script>
+<link href='../lib/main.css' rel='stylesheet' />
+<script src='../lib/main.js'></script>
 <script>
 
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-      plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
-      header: {
+      headerToolbar: {
         left: 'prev,next today',
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
       },
-      defaultDate: '2020-02-12',
+      initialDate: '2020-09-12',
       editable: true,
       navLinks: true, // can click day/week names to navigate views
-      eventLimit: true, // allow "more" link when too many events
+      dayMaxEvents: true, // allow "more" link when too many events
       events: {
         url: 'php/get-events.php',
         failure: function() {
@@ -72,7 +64,7 @@
   }
 
   #calendar {
-    max-width: 900px;
+    max-width: 1100px;
     margin: 40px auto;
     padding: 0 10px;
   }

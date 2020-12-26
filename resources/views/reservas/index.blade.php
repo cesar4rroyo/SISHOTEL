@@ -13,7 +13,9 @@
                         <div class="input-group">
                             <input class="form-control" placeholder="Nueva Reserva" type="date">
                         </div>
+                        <button class="btn btn-outline-success mt-3 ">Buscar</button>
                     </form>
+                    @include('fullcalendar.index')
                 </div>
             </div>
         </div>
