@@ -17,8 +17,8 @@ class ReservaController extends Controller
             ->orderBy('id')
             ->get()
             ->toArray();
-        $pisos = Piso::with('habitacion')->get()->toArray();
-        return view('reservas.index', compact('habitacion', 'pisos'));
+        $pisos = Piso::with('habitacion')->paginate(1, ['*'], 'piso');
+        return view('fullcalendar.index', compact('habitacion', 'pisos'));
     }
 
     public function create()

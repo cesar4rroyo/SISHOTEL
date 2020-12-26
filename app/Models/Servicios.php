@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Servicios extends Model
 {
-   
+
     protected $table = 'servicios';
 
     protected $primaryKey = 'id';
@@ -27,6 +27,5 @@ class Servicios extends Model
     public function detalleMovimiento()
     {
         return $this->hasMany(DetalleMovimiento::class, 'servicio_id');
-
-    
+    }
 }

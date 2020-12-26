@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'InicioController@index');
 
+
+
+
 //auth
 Route::get('auth/login', 'Seguridad\LoginController@index')->name('login');
 Route::post('auth/login', 'Seguridad\LoginController@login')->name('login_post');
@@ -156,4 +159,14 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Reservas', 'middleware' => ['
     Route::get('reserva/{id}/edit', 'ReservaController@edit')->name('edit_reserva');
     Route::put('reserva/{id}', 'ReservaController@update')->name('update_reserva');
     Route::delete('reserva/{id}/destroy', 'ReservaController@destroy')->name('destroy_reserva');
+});
+Route::group(['namespace' => 'Control'], function () {
+    /* Rutas de RESERVAS */
+    Route::get('reserva/create', 'HabitacionesController@create')->name('create_habitaciones');
+    Route::get('habitaciones', 'HabitacionesController@index')->name('habitaciones');
+    Route::get('habitaciones/{id}', 'HabitacionesController@show')->name('show_habitaciones');
+    Route::post('habitaciones', 'HabitacionesController@store')->name('store_habitaciones');
+    Route::get('habitaciones/{id}/edit', 'HabitacionesController@edit')->name('edit_habitaciones');
+    Route::put('habitaciones/{id}', 'HabitacionesController@update')->name('update_habitaciones');
+    Route::delete('habitaciones/{id}/destroy', 'HabitacionesController@destroy')->name('destroy_habitaciones');
 });
