@@ -13,28 +13,40 @@ class HabitacionSeeder extends Seeder
     public function run()
     {
         DB::table('habitacion')->insert([
-            'numero' => 1,
-            'situacion' => 'Excelente',
+            'numero' => 101,
+            'situacion' => 'Disponible',
             'piso_id' => 1,
             'tipohabitacion_id' => 1
         ]);
 
         DB::table('habitacion')->insert([
-            'numero' => 2,
-            'situacion' => 'Mala',
+            'numero' => 102,
+            'situacion' => 'Ocupada',
             'piso_id' => 1,
             'tipohabitacion_id' => 1
         ]);
         DB::table('habitacion')->insert([
-            'numero' => 3,
-            'situacion' => 'Bien',
+            'numero' => 103,
+            'situacion' => 'Ocupada',
+            'piso_id' => 1,
+            'tipohabitacion_id' => 1
+        ]);
+        DB::table('habitacion')->insert([
+            'numero' => 201,
+            'situacion' => 'Limpieza',
             'piso_id' => 2,
             'tipohabitacion_id' => 2
         ]);
 
         DB::table('habitacion')->insert([
-            'numero' => 4,
-            'situacion' => 'Mala',
+            'numero' => 202,
+            'situacion' => 'Disponible',
+            'piso_id' => 2,
+            'tipohabitacion_id' => 2
+        ]);
+        DB::table('habitacion')->insert([
+            'numero' => 203,
+            'situacion' => 'Disponible',
             'piso_id' => 2,
             'tipohabitacion_id' => 2
         ]);

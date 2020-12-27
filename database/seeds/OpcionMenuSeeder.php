@@ -149,7 +149,7 @@ class OpcionMenuSeeder extends Seeder
         ]);
         DB::table('opcionmenu')->insert([
             'nombre' => 'Habitaciones',
-            'link' => 'habitaciones',
+            'link' => 'admin/habitaciones',
             'icono' => 'fas fa-h-square',
             'orden' => 1,
             'grupomenu_id' => 5
