@@ -16,7 +16,7 @@ class CreateReservaTable extends Migration
         Schema::create('reserva', function (Blueprint $table) {
             $table->increments('id');
             $table->date('fecha');
-            $table->string('obervacion', 200)->nullable();
+            $table->string('observacion', 200)->nullable();
             $table->string('situacion', 20)->nullable();
             $table->unsignedInteger('persona_id');
             $table->foreign('persona_id', 'fk_reserva_persona')

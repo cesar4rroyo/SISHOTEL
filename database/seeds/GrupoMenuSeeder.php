@@ -29,12 +29,12 @@ class GrupoMenuSeeder extends Seeder
             'orden' => 3,
         ]);
         DB::table('grupomenu')->insert([
-            'nombre' => 'Almacen',
+            'nombre' => 'Reservas',
             'icono' => 'fas fa-box-open',
             'orden' => 4,
         ]);
         DB::table('grupomenu')->insert([
-            'nombre' => 'Ventas',
+            'nombre' => 'Control General',
             'icono' => 'fas fa-shopping-cart',
             'orden' => 5,
         ]);

@@ -155,6 +155,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Reservas', 'middleware' => ['
     Route::get('reserva/create', 'ReservaController@create')->name('create_reserva');
     Route::get('reserva', 'ReservaController@index')->name('reserva');
     Route::get('reserva/{id}', 'ReservaController@show')->name('show_reserva');
+    Route::get('reserva/show', 'ReservaController@show')->name('show_reserva');
     Route::post('reserva', 'ReservaController@store')->name('store_reserva');
     Route::get('reserva/{id}/edit', 'ReservaController@edit')->name('edit_reserva');
     Route::put('reserva/{id}', 'ReservaController@update')->name('update_reserva');

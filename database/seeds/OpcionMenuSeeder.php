@@ -139,6 +139,23 @@ class OpcionMenuSeeder extends Seeder
             'grupomenu_id' => 3
         ]);
         //end Grupo Usuarios
+        //start Grupo Reservas
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Reservas',
+            'link' => 'admin/reserva',
+            'icono' => 'fas fa-h-square',
+            'orden' => 1,
+            'grupomenu_id' => 4
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Habitaciones',
+            'link' => 'habitaciones',
+            'icono' => 'fas fa-h-square',
+            'orden' => 1,
+            'grupomenu_id' => 5
+        ]);
+        //end Grupo Reservas
+
 
     }
 }

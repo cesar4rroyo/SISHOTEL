@@ -54,4 +54,12 @@ class Persona extends Model
     {
         return $this->hasMany(Caja::class);
     }
+    public static function getClientes()
+    {
+        $id_clientes = '2';
+        $personas = Persona::whereHas('roles', function ($query) use ($id_clientes) {
+            $query->where('rol.id', '=', $id_clientes);
+        })->get()->toArray();
+        return $personas;
+    }
 }
