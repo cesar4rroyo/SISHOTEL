@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Reservas;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ValidateReserva;
 use App\Models\Habitacion;
 use App\Models\Persona;
 use App\Models\Piso;
@@ -37,19 +38,18 @@ class ReservaController extends Controller
 
     public function store(Request $request)
     {
-        if ($request->ajax()) {
-            $reserva = Reserva::create([
-                'fecha' => $request->fecha,
-                'observacion' => $request->observacion,
-                'persona_id' => $request->persona_id,
-                'habitacion_id' => $request->habitacion_id,
-                'usuario_id' => session()->all()['usuario_id'],
-                'situacion' => 'Reservado',
-            ]);
-            return response()->json(['respuesta' => 'La reserva se registró correctamente']);
-        } else {
-            abort(404);
-        }
+
+        $reserva = Reserva::create([
+            'fecha' => $request->txtFecha,
+            'observacion' => $request->observacion,
+            'persona_id' => $request->persona,
+            'habitacion_id' => $request->habitacion,
+            'usuario_id' => session()->all()['usuario_id'],
+            'situacion' => 'Reservado',
+        ]);
+        return redirect()
+            ->route('reserva')
+            ->with('success', 'La reserva se registró correctamente');
     }
 
     public function show()
@@ -57,19 +57,22 @@ class ReservaController extends Controller
         $data = [];
         $reservas = Reserva::with('habitacion', 'persona')->get();
         foreach ($reservas as $reserva) {
-            $data[] = [
-                'start' => $reserva->fecha,
-                'title' => 'Reserva de ' . $reserva->persona->nombres,
-                'observacion' => $reserva->observacion,
-                'situacion' => $reserva->situacion,
-                'persona' => $reserva->persona->nombres,
-                'nro_telefono' => $reserva->persona->telefono,
-                'dni' => $reserva->persona->dni,
-                'habitacion' => $reserva->habitacion->numero,
+            if ($reserva->situacion == 'Reservado') {
+                $data[] = [
+                    'id' => $reserva->id,
+                    'start' => $reserva->fecha,
+                    'title' => $reserva->habitacion->numero . ' Reserva de ' . $reserva->persona->nombres,
+                    'observacion' => $reserva->observacion,
+                    'situacion' => $reserva->situacion,
+                    'persona' => $reserva->persona->nombres . $reserva->persona->apellidos,
+                    'nro_telefono' => $reserva->persona->telefono,
+                    'persona_id' => $reserva->persona->id,
+                    'dni' => $reserva->persona->dni,
+                    'habitacion' => $reserva->habitacion->numero,
+                    'habitacion_id' => $reserva->habitacion->id,
 
-
-
-            ];
+                ];
+            }
         }
 
         return response()->json($data);
@@ -82,11 +85,25 @@ class ReservaController extends Controller
 
     public function update(Request $request, $id)
     {
-        //
+        $reserva = Reserva::findOrFail($id);
+        $reserva->update([
+            'fecha' => $request->txtFecha,
+            'observacion' => $request->observacion,
+            'persona_id' => $request->persona,
+            'habitacion_id' => $request->habitacion,
+            'usuario_id' => session()->all()['usuario_id'],
+            'situacion' => 'Actualizado',
+        ]);
+        return response()->json(['respuesta' => 'La reserva se actualizo correctamente']);
     }
 
     public function destroy($id)
     {
-        //
+        $reserva = Reserva::findOrFail($id);
+        $reserva->update([
+            'situacion' => 'Cancelado',
+        ]);
+
+        return response()->json(['respuesta' => 'El reserva se cancelo correctamente']);
     }
 }

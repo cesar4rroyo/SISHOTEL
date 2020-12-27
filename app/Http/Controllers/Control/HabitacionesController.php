@@ -52,7 +52,11 @@ class HabitacionesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $fecha = $request->get('fecha');
+        $habitacion = Habitacion::with('tipohabitacion', 'piso', 'reserva')->whereDoesntHave('reserva', function ($query) use ($fecha) {
+            $query->where('fecha', '=', $fecha);
+        })->get()->toArray();
+        return response()->json($habitacion);
     }
 
     /**
@@ -63,7 +67,6 @@ class HabitacionesController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**

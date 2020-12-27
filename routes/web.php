@@ -161,7 +161,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Reservas', 'middleware' => ['
     Route::put('reserva/{id}', 'ReservaController@update')->name('update_reserva');
     Route::delete('reserva/{id}/destroy', 'ReservaController@destroy')->name('destroy_reserva');
 });
-Route::group(['namespace' => 'Control'], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
     /* Rutas de RESERVAS */
     Route::get('reserva/create', 'HabitacionesController@create')->name('create_habitaciones');
     Route::get('habitaciones', 'HabitacionesController@index')->name('habitaciones');
