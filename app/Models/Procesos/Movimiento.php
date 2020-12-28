@@ -2,6 +2,9 @@
 
 namespace App\Models\Procesos;
 
+use App\Models\Habitacion;
+use App\Models\Persona;
+use App\Models\Seguridad\Usuario;
 use Illuminate\Database\Eloquent\Model;
 
 class Movimiento extends Model
@@ -40,8 +43,8 @@ class Movimiento extends Model
     {
         return $this->hasMany(Comprobante::class, 'movimiento_id');
     }
-    public function detalleComprobante()
+    public function detallemovimiento()
     {
-        return $this->hasMany(DetalleComprobante::class, 'movimiento_id');
+        return $this->hasMany(DetalleMovimiento::class, 'movimiento_id');
     }
 }

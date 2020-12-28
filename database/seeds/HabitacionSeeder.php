@@ -21,19 +21,19 @@ class HabitacionSeeder extends Seeder
 
         DB::table('habitacion')->insert([
             'numero' => 102,
-            'situacion' => 'Ocupada',
+            'situacion' => 'Disponible',
             'piso_id' => 1,
             'tipohabitacion_id' => 1
         ]);
         DB::table('habitacion')->insert([
             'numero' => 103,
-            'situacion' => 'Ocupada',
+            'situacion' => 'Disponible',
             'piso_id' => 1,
             'tipohabitacion_id' => 1
         ]);
         DB::table('habitacion')->insert([
             'numero' => 201,
-            'situacion' => 'Limpieza',
+            'situacion' => 'Disponible',
             'piso_id' => 2,
             'tipohabitacion_id' => 2
         ]);

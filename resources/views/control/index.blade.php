@@ -1,7 +1,7 @@
 @extends("theme.$theme.layout")
 
 @section('content')
-{{-- {{dd($pisos)}} --}}
+{{-- {{dd($habitacion)}} --}}
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -12,7 +12,8 @@
                         role="piso">
                         <div class="input-group">
                             <select class="form-control" name="piso" value="{{ request('piso') }}">
-                                <option value=""><i class="fas fa-filter"></i> Seleccionar Piso</option>
+                                <option value=""><i class="fas fa-filter"></i>
+                                    {{isset($piso->nombre)?$piso->nombre : 'Seleccionar Piso'}}</option>
                                 @foreach ($pisos as $item)
                                 <option value="{{$item['id']}}">{{$item['nombre']}}</option>
                                 @endforeach
@@ -54,14 +55,28 @@
                                                             <span class="badge bg-primary">
                                                                 {{$item['tipohabitacion']['nombre']}}
                                                             </span>
-                                                        </span>
-                                                        <span
-                                                            class="info-box-text text-dark font-weight-bold">Precio:</span><span
-                                                            class="info-box-number">
-                                                            <span class="badge bg-danger">
-                                                                {{$item['tipohabitacion']['precio']}}
+                                                            <span class="badge bg-warning">
+                                                                S/.{{$item['tipohabitacion']['precio']}}.00
                                                             </span>
                                                         </span>
+                                                        <a href="{{route('show_habitaciones', $item['id'])}}" class="">
+                                                            <span class="mt-2 badge bg-secondary">
+                                                                Consultar Reservas
+                                                                <i class="fas fa-search"></i>
+                                                            </span>
+                                                        </a>
+                                                        {{-- @foreach ($reservas as $reserva)
+                                                        @if ($reserva['id']==$item['id'])
+                                                        @if (count($item['reserva'])==0)
+                                                        @break
+                                                        @else
+                                                        <span class="badge bg-danger mt-2">
+                                                            {{'Habitacion Reservada'}}
+                                                        </span>
+                                                        @break
+                                                        @endif
+                                                        @endif
+                                                        @endforeach --}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -71,31 +86,37 @@
                                         <div class="btn-group">
                                             @switch($item['situacion'])
                                             @case('Disponible')
-                                            <button class="btn btn-app bg-success">
+                                            <a href="{{route('edit_movimiento', $item['id'])}}"
+                                                class="btn btn-app bg-success text-decoration-none">
                                                 <i class="fas fa-check-circle"></i>
                                                 Check-In
-                                            </button>
+                                            </a>
                                             @break
                                             @case('Ocupada')
-                                            <button class="btn btn-app bg-danger">
+                                            <a href="{{route('edit_movimiento', $item['id'])}}"
+                                                class="btn btn-app bg-danger text-decoration-none">
                                                 <i class="fas fa-check-circle"></i>
                                                 Check-Out
-                                            </button>
-                                            @break
-                                            @default
-                                            <button class="btn btn-app bg-success disabled">
-                                                <i class="fas fa-check-circle"></i>
-                                                Check-In
-                                            </button>
-                                            @endswitch
-                                            <button class="btn btn-app bg-primary">
+                                            </a>
+                                            <a href="{{route('add_movimieto', ['id'=>$item['id']])}}"
+                                                class="btn btn-app bg-primary text-decoration-none">
                                                 <i class="fas fa-gifts"></i>
                                                 Productos
-                                            </button>
-                                            <button class="btn btn-app bg-secondary">
+                                            </a>
+                                            <a href="{{route('add_movimieto', ['id'=>$item['id'], 'movimiento'=>'servicio'])}}"
+                                                class="btn btn-app bg-secondary text-decoration-none">
                                                 <i class="fa fas fa-concierge-bell"></i>
                                                 Servicios
-                                            </button>
+                                            </a>
+                                            @break
+                                            @default
+                                            <a href="{{route('edit_movimiento', $item['id'])}}"
+                                                class="btn btn-app bg-success disabled text-decoration-none">
+                                                <i class="fas fa-check-circle"></i>
+                                                Check-In
+                                            </a>
+                                            @endswitch
+
                                         </div>
                                     </div>
                                     <div style="height: 20px"></div>

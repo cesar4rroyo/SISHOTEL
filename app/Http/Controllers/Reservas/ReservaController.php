@@ -57,7 +57,7 @@ class ReservaController extends Controller
         $data = [];
         $reservas = Reserva::with('habitacion', 'persona')->get();
         foreach ($reservas as $reserva) {
-            if ($reserva->situacion == 'Reservado') {
+            if ($reserva->situacion == 'Reservado' || $reserva->situacion == 'Actualizado') {
                 $data[] = [
                     'id' => $reserva->id,
                     'start' => $reserva->fecha,
@@ -92,7 +92,7 @@ class ReservaController extends Controller
             'persona_id' => $request->persona,
             'habitacion_id' => $request->habitacion,
             'usuario_id' => session()->all()['usuario_id'],
-            'situacion' => 'Actualizado',
+            'situacion' => 'Reservado',
         ]);
         return response()->json(['respuesta' => 'La reserva se actualizo correctamente']);
     }

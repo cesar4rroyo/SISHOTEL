@@ -15,11 +15,11 @@ class CreateMovimientoTable extends Migration
     {
         Schema::create('movimiento', function (Blueprint $table) {
             $table->increments('id');
-            $table->dateTime('fechaingreso');
-            $table->dateTime('fechasalida');
-            $table->decimal('dias', 4, 4);
-            $table->decimal('total', 6, 4);
-            $table->decimal('preciohabitacion', 8, 4);
+            $table->dateTime('fechaingreso')->nullable();
+            $table->dateTime('fechasalida')->nullable();
+            $table->decimal('dias', 4, 4)->nullable();
+            $table->decimal('total', 6, 4)->nullable();
+            $table->decimal('preciohabitacion', 8, 4)->nullable();
             $table->string('situacion', 50);
             $table->unsignedInteger('habitacion_id');
             $table->foreign('habitacion_id', 'fk_movimiento_habitacion')
@@ -27,8 +27,9 @@ class CreateMovimientoTable extends Migration
                 ->on('habitacion')
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
-            $table->unsignedInteger('reserva_id');
+            $table->unsignedInteger('reserva_id')->nullable();
             $table->foreign('reserva_id', 'fk_movimiento_reserva')
+                ->nullable()
                 ->references('id')
                 ->on('reserva')
                 ->onDelete('cascade')

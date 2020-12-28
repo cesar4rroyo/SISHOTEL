@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Procesos\Movimiento;
 use App\Models\Procesos\Reserva;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

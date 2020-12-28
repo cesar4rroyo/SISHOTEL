@@ -64,7 +64,11 @@
                    
                    event = getDatosActualizados('DELETE');
                    eliminarReserva('/'+$("#txtId").val()+'/destroy', event , '#modal-show');
-               });
+         });
+         $('#btnCheckIn').click(function(evento){         
+            event = getDatosActualizados('GET');
+            enviarDatosToMovimiento(event);
+         });
         function getHabitaciones(data, selectName){
             $.ajax({
                     url: 'habitaciones',
@@ -104,6 +108,7 @@
         function getDatosActualizados(method){            
             newEvent={
                 txtFecha:$('#txtFechaShow').val(),
+                id:$('#txtId').val(),
                 observacion:$('#observacionShow').val(),
                 persona:$('#personaShow').val(),
                 habitacion:$('#selectHabitacionShow').val(),
@@ -167,6 +172,20 @@
             );          
             }  
         });
+
+        function enviarDatosToMovimiento(data){
+            $.ajax({
+                type:'GET',
+                url:'movimiento',
+                data:data,
+                success: function(r){
+                                       
+                },
+                error: function(e){
+                    console.log(e);
+                }
+            });
+        }
         
     </script>
 </head>

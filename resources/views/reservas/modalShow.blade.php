@@ -54,11 +54,11 @@
                             Cancelar</button>
                     </div>
                 </form>
-                <div class="container">
-                    <div class="btn btn-outline-success col-12">
+                {{-- <div class="container">
+                    <button id="btnCheckIn" class="btn btn-outline-success col-12">
                         Check In
-                    </div>
-                </div>
+                    </button>
+                </div> --}}
             </div>
 
         </div>

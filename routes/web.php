@@ -162,12 +162,33 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Reservas', 'middleware' => ['
     Route::delete('reserva/{id}/destroy', 'ReservaController@destroy')->name('destroy_reserva');
 });
 Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
-    /* Rutas de RESERVAS */
-    Route::get('reserva/create', 'HabitacionesController@create')->name('create_habitaciones');
+    /* Rutas de HABITACIONES */
+    Route::get('habitaciones/create', 'HabitacionesController@create')->name('create_habitaciones');
     Route::get('habitaciones', 'HabitacionesController@index')->name('habitaciones');
     Route::get('habitaciones/{id}', 'HabitacionesController@show')->name('show_habitaciones');
     Route::post('habitaciones', 'HabitacionesController@store')->name('store_habitaciones');
     Route::get('habitaciones/{id}/edit', 'HabitacionesController@edit')->name('edit_habitaciones');
     Route::put('habitaciones/{id}', 'HabitacionesController@update')->name('update_habitaciones');
     Route::delete('habitaciones/{id}/destroy', 'HabitacionesController@destroy')->name('destroy_habitaciones');
+});
+Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
+    /* Rutas de Movimientos */
+    Route::get('movimiento/create', 'MovimientoController@create')->name('create_movimiento');
+    Route::get('movimiento', 'MovimientoController@index')->name('movimiento');
+    Route::get('movimiento/{id}', 'MovimientoController@show')->name('show_movimiento');
+    Route::post('movimiento', 'MovimientoController@store')->name('store_movimiento');
+    Route::get('movimiento/{id}/edit', 'MovimientoController@edit')->name('edit_movimiento');
+    Route::put('movimiento/{id}', 'MovimientoController@update')->name('update_movimiento');
+    Route::delete('movimiento/{id}/destroy', 'MovimientoController@destroy')->name('destroy_movimiento');
+});
+Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
+    /* Rutas de Movimientos */
+    Route::get('detallemovimiento/create', 'DetalleMovimientoController@create')->name('create_detallemovimiento');
+    Route::get('detallemovimiento/{id}/{movimiento?}', 'DetalleMovimientoController@movimiento')->name('add_movimieto');
+    Route::get('detallemovimiento', 'DetalleMovimientoController@index')->name('detallemovimiento');
+    Route::get('detallemovimiento/{id}', 'DetalleMovimientoController@show')->name('show_detallemovimiento');
+    Route::post('detallemovimiento', 'DetalleMovimientoController@store')->name('store_detallemovimiento');
+    Route::get('detallemovimiento/{id}/edit', 'DetalleMovimientoController@edit')->name('edit_detallemovimiento');
+    Route::put('detallemovimiento/{id}', 'DetalleMovimientoController@update')->name('update_detallemovimiento');
+    Route::delete('detallemovimiento/{id}/destroy', 'DetalleMovimientoController@destroy')->name('destroy_detallemovimiento');
 });
