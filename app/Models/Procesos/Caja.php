@@ -3,6 +3,8 @@
 namespace App\Models\Procesos;
 
 use App\Models\Concepto;
+use App\Models\Persona;
+use App\Models\Seguridad\Usuario;
 use Illuminate\Database\Eloquent\Model;
 
 class Caja extends Model

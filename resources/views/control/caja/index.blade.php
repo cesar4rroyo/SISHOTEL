@@ -3,6 +3,11 @@
 @section('content')
 <div class="row">
     <div class="col-md-12">
+        @if ($message = Session::get('success'))
+        <div class="alert alert-success">
+            <p>{{ $message }}</p>
+        </div>
+        @endif
         <div class="card">
             <div class="card-header font-weight-bold">Caja</div>
             <div class="card-body">
@@ -41,17 +46,48 @@
                                 @foreach($cajas as $item)
                                 <tr>
                                     <td>{{ $item->fecha }}</td>
-                                    <td>{{ $item->tipo }}</td>
+                                    @if ( ($item->tipo)=='Ingreso' )
+                                    <td>
+                                        <span class="badge badge-success">
+                                            {{ $item->tipo }}
+                                        </span>
+                                    </td>
+                                    @else
+                                    <td>
+                                        <span class="badge badge-danger">
+                                            {{ $item->tipo }}
+                                        </span>
+                                    </td>
+                                    @endif
                                     <td>{{ $item->numero }}</td>
                                     <td>
-                                        {{ isset($item->persona) ? $item->persona->nombres : '-'}}
+                                        {{ $item->persona->nombres}}{{" "}}{{$item->persona->apellidos}}
                                     </td>
-                                    <td>{{ $item->total }}</td>
-                                    <td>{{ $item->concepto->id }}</td>
+                                    @if ( ($item->tipo)=='Ingreso' )
+                                    <td>
+                                        <span class="badge badge-success">
+                                            {{ $item->total }}
+                                        </span>
+                                    </td>
+                                    @else
+                                    <td>
+                                        <span class="badge badge-danger">
+                                            {{ $item->total }}
+                                        </span>
+                                    </td>
+                                    @endif
+
+                                    <td>
+                                        {{ $item->concepto->nombre }}
+                                    </td>
+                                    <td>
+                                        {{ isset($item->comentario ) ? $item->comentario  : '-'}}
+                                    </td>
                                     <td>
                                         {{ isset($item->movimiento ) ? $item->movimiento->id  : '-'}}
                                     </td>
                                     <td>{{ $item->usuario->login }}</td>
+
                                     <td>
                                         <div class="btn-group">
                                             <a href="{{ route('show_caja' , $item->id) }}" title="Ver"><button

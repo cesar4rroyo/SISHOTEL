@@ -15,7 +15,8 @@
                     <form method="POST" action="{{ route('store_caja') }}" accept-charset="UTF-8"
                         class="form-horizontal" enctype="multipart/form-data">
                         {{ csrf_field() }}
-                        {{-- @include ('control.caja.form', ['formMode' => 'create']) --}}
+
+                        @include ('control.caja.form', ['formMode' => 'create'])
                     </form>
                 </div>
             </div>

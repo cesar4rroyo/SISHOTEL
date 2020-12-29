@@ -18,7 +18,7 @@ class CreateCajaTable extends Migration
             $table->date('fecha');
             $table->string('tipo', 50);
             $table->integer('numero');
-            $table->decimal('total', 6, 4);
+            $table->decimal('total', 12, 2);
             $table->string('comentario', 500)->nullable();
             $table->unsignedInteger('concepto_id');
             $table->foreign('concepto_id', 'fk_caja_concepto')

@@ -106,6 +106,7 @@ class PersonaController extends Controller
             'telefono' => $request->telefono,
             'observacion' => $request->observacion,
             'nacionalidad_id' => $request->nacionalidad_id,
+
         ]);
         $persona->roles()->sync($request->rol_id);
 

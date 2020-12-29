@@ -7,85 +7,91 @@ use App\Http\Controllers\Controller;
 use App\Models\Concepto;
 use App\Models\Persona;
 use App\Models\Procesos\Caja;
+use Carbon\Carbon;
 
 class CajaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $cajas = Caja::with('concepto', 'usuario', 'persona', 'movimiento')->paginate(10);
         return view('control.caja.index', compact('cajas'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
-        $conceptos = Concepto::with('caja')->get()->toArray();
-        $personas = Persona::with('caja', 'reserva', 'movimiento')->get()->toArray();
-        return view('control.caja.create', compact('conceptos', 'personas'));
+        $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
+        $today = Carbon::now()->toDateString();
+        $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
+        return view('control.caja.create', compact('conceptos', 'personas', 'today'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
-        //
+        $caja = Caja::create([
+            'fecha' => $request->fecha,
+            'numero' => $request->numero,
+            'concepto_id' => $request->concepto,
+            'tipo' => $request->tipo,
+            'persona_id' => $request->persona,
+            'total' => $request->total,
+            'comentario' => $request->comentario,
+            'usuario_id' => session()->all()['usuario_id'],
+
+        ]);
+        return redirect()
+            ->route('caja')
+            ->with('success', 'Registro agregado correctamente');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
-        //
+        $caja = Caja::findOrFail($id);
+        return view('control.caja.show', compact('caja'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
-        //
+        $caja = Caja::findOrFail($id);
+        $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
+        $today = Carbon::now()->toDateString();
+        $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
+        return view('control.caja.edit', compact('caja', 'conceptos', 'personas', 'today'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
-        //
+        $caja = Caja::findOrFail($id);
+
+        $caja->update([
+            'fecha' => $request->fecha,
+            'numero' => $request->numero,
+            'concepto_id' => $request->concepto,
+            'tipo' => $request->tipo,
+            'persona_id' => $request->persona,
+            'total' => $request->total,
+            'comentario' => $request->comentario,
+            'usuario_id' => session()->all()['usuario_id'],
+
+        ]);
+        return redirect()
+            ->route('caja')
+            ->with('success', 'Registro actualizado correctamente');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+
+    public function destroy(Request $request, $id)
     {
-        //
+        if ($request->ajax()) {
+            Caja::destroy($id);
+            return response()->json(['mensaje' => 'ok']);
+        } else {
+            abort(404);
+        }
     }
 }
