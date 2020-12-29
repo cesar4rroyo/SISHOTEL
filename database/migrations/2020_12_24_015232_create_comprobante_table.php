@@ -18,9 +18,9 @@ class CreateComprobanteTable extends Migration
             $table->string('tipodocumento');
             $table->integer('numero');
             $table->date('fecha');
-            $table->decimal('subtotal', 6, 4);
-            $table->decimal('igv', 4, 4);
-            $table->decimal('total', 6, 4);
+            $table->decimal('subtotal', 10, 2);
+            $table->decimal('igv', 10, 2);
+            $table->decimal('total', 10, 2);
             $table->string('comentario', 500)->nullable();
             $table->unsignedInteger('movimiento_id');
             $table->foreign('movimiento_id', 'fk_comprobante_movimiento')

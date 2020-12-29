@@ -17,8 +17,8 @@ class CreateMovimientoTable extends Migration
             $table->increments('id');
             $table->dateTime('fechaingreso')->nullable();
             $table->dateTime('fechasalida')->nullable();
-            $table->decimal('dias', 4, 4)->nullable();
-            $table->decimal('total', 6, 4)->nullable();
+            $table->decimal('dias', 10, 2)->nullable();
+            $table->decimal('total', 10, 2)->nullable();
             $table->decimal('preciohabitacion', 8, 4)->nullable();
             $table->string('situacion', 50);
             $table->unsignedInteger('habitacion_id');

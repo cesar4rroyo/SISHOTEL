@@ -17,7 +17,7 @@ class CreateCajaTable extends Migration
             $table->increments('id');
             $table->date('fecha');
             $table->string('tipo', 50);
-            $table->integer('numero');
+            $table->string('numero', 10);
             $table->decimal('total', 12, 2);
             $table->string('comentario', 500)->nullable();
             $table->unsignedInteger('concepto_id');
@@ -26,8 +26,9 @@ class CreateCajaTable extends Migration
                 ->on('concepto')
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
-            $table->unsignedInteger('persona_id');
+            $table->unsignedInteger('persona_id')->nullable();
             $table->foreign('persona_id', 'fk_caja_persona')
+                ->nullable()
                 ->references('id')
                 ->on('persona')
                 ->onDelete('restrict')

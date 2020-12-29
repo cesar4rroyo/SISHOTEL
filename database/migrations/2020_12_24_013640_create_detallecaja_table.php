@@ -16,8 +16,8 @@ class CreateDetallecajaTable extends Migration
         Schema::create('detallecaja', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('cantidad');
-            $table->decimal('precioventa', 6, 4);
-            $table->decimal('preciocompra', 6, 4);
+            $table->decimal('precioventa', 10, 2);
+            $table->decimal('preciocompra', 10, 2);
             $table->string('comentario', 500)->nullable();
             $table->unsignedInteger('servicio_id')->nullable();
             $table->foreign('servicio_id', 'fk_detallecaja_servicios')

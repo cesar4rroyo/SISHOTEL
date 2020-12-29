@@ -160,6 +160,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Reservas', 'middleware' => ['
     Route::get('reserva/{id}/edit', 'ReservaController@edit')->name('edit_reserva');
     Route::put('reserva/{id}', 'ReservaController@update')->name('update_reserva');
     Route::delete('reserva/{id}/destroy', 'ReservaController@destroy')->name('destroy_reserva');
+    //reserva buscador
+    Route::get('nombres/buscador', 'PersonaController@buscador');
 });
 Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
     /* Rutas de HABITACIONES */
@@ -203,7 +205,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
     Route::put('detallemovimiento/{id}', 'DetalleMovimientoController@update')->name('update_detallemovimiento');
     Route::delete('detallemovimiento/{id}/destroy', 'DetalleMovimientoController@destroy')->name('destroy_detallemovimiento');
     //Routas caja
+    Route::get('caja/create/apertura', 'CajaController@create_apertura')->name('apertura_caja');
     Route::get('caja/create', 'CajaController@create')->name('create_caja');
+    Route::get('caja/create/cierre', 'CajaController@create_cierre')->name('cierre_caja');
     Route::get('caja', 'CajaController@index')->name('caja');
     Route::get('caja/{id}', 'CajaController@show')->name('show_caja');
     Route::post('caja', 'CajaController@store')->name('store_caja');
@@ -217,5 +221,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
     Route::get('caja/{id}/addDetalle/servicio', 'CajaController@addFromDetalleService')->name('add_detail_servicio');
     //cheak-out
     Route::post('movimiento/checkout/{id}', 'CajaController@checkout')->name('checkout');
-    Route::get('movimiento/{id}/{total}checkout', 'CajaController@createCheckout')->name('add_checkout');
+    Route::post('movimiento/{id}/checkout', 'CajaController@createCheckout')->name('add_checkout');
+    //actualizar habitacion
+    Route::post('caja/habitacion/actualizar/{id}', 'CajaController@updateHabitacion')->name('actualizarHabitacion');
 });

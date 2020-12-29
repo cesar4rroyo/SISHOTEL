@@ -7,7 +7,7 @@
     <div class="form-group col-sm">
         <label class="control-label" for="numero">Número</label>
         <input type="number" class="form-control" name="numero" id="numero"
-            value="{{ isset($caja->numero) ? $caja->numero : ''}}">
+            value="{{ isset($caja->numero) ? $caja->numero : $numero}}">
     </div>
 </div>
 <div class="row">
@@ -18,9 +18,16 @@
                 {{ isset($caja->concepto->nombre) ? $caja->concepto->nombre : 'Seleccione una opcion'}}
             </option>
             @foreach ($conceptos as $item)
+            @if (($item->id)!=1 && ($item->id)!=2)
             <option value="{{$item->id}}">
                 {{$item->nombre}}
             </option>
+            @else
+            <option disabled value="{{$item->id}}">
+                {{$item->nombre}}
+            </option>
+            @endif
+
             @endforeach
         </select>
         {!! $errors->first('concepto', '<p class="text-danger">:message</p>') !!}

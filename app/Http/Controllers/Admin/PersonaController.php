@@ -125,4 +125,16 @@ class PersonaController extends Controller
             abort(404);
         }
     }
+    public function buscador(Request $request)
+    {
+        $search = $request->search;
+        $persona = Persona::where('nombres', 'LIKE', '%' . $search . '%')
+            ->orWhere('apellidos', 'LIKE', '%' . $search . '%')
+            ->orWhere('ruc', 'LIKE', '%' . $search . '%')
+            ->orWhere('dni', 'LIKE', '%' . $search . '%')
+            ->orWhere('direccion', 'LIKE', '%' . $search . '%')
+            ->orWhere('razonsocial', 'LIKE', '%' . $search . '%')
+            ->take(10)->get();
+        return view('control.caja.checkout.create', compact('persona'));
+    }
 }

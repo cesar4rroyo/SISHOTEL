@@ -13,7 +13,7 @@
                         <div class="input-group">
                             <select class="form-control" name="piso" value="{{ request('piso') }}">
                                 <option value=""><i class="fas fa-filter"></i>
-                                    {{isset($piso->nombre)?$piso->nombre : 'Seleccionar Piso'}}</option>
+                                    {{'Seleccionar Piso'}}</option>
                                 @foreach ($pisos as $item)
                                 <option value="{{$item['id']}}">{{$item['nombre']}}</option>
                                 @endforeach
@@ -56,7 +56,7 @@
                                                                 {{$item['tipohabitacion']['nombre']}}
                                                             </span>
                                                             <span class="badge bg-warning">
-                                                                S/.{{$item['tipohabitacion']['precio']}}.00
+                                                                S/.{{$item['tipohabitacion']['precio']}}
                                                             </span>
                                                         </span>
                                                         <a href="{{route('show_habitaciones', $item['id'])}}" class="">

@@ -12,18 +12,17 @@
             <div class="card-header font-weight-bold">Caja</div>
             <div class="card-body">
                 <div class="btn-gtoup">
-                    <a href="{{ route('caja') }}" title="Apertura"><button class="btn btn-primary btn-sm mb-2"><i
-                                class="fas fa-plus-square" aria-hidden="true"></i>
+                    <a href="{{ route('apertura_caja') }}" title="Apertura"><button
+                            class="btn btn-primary btn-sm mb-2"><i class="fas fa-plus-square" aria-hidden="true"></i>
                             Apertura</button></a>
                     <a href="{{ route('create_caja') }}" title="Nuevo"><button class="btn btn-secondary btn-sm mb-2"><i
                                 class="fas fa-money-bill" aria-hidden="true"></i>
                             Nuevo</button></a>
-                    <a href="{{ route('caja') }}" title="Cierre"><button class="btn btn-danger btn-sm mb-2"><i
-                                class="fas fa-external-link-alt" aria-hidden="true"></i>
-                            Cierre</button></a>
-                    <a href="{{ route('caja') }}" title="Imprimir"><button class="btn btn-warning btn-sm mb-2"><i
-                                class="fas fa-print" aria-hidden="true"></i>
-                            Imprimir</button></a>
+                    <form action="{{ route('cierre_caja') }}" title="Cierre"><button
+                            class="btn btn-danger btn-sm mb-2"><i class="fas fa-external-link-alt"
+                                aria-hidden="true"></i>
+                            <input hidden type="number" id="total" name="total">
+                            Cierre</button></form>
                 </div>
                 <div class="container mt-2">
                     <div class="table-responsive">
@@ -32,7 +31,7 @@
                                 <tr>
                                     <th>Fecha</th>
                                     <th>Tipo</th>
-                                    <th>Número</th>
+                                    {{-- <th>Número</th> --}}
                                     <th>Persona</th>
                                     <th>Total</th>
                                     <th>Concepto</th>
@@ -59,17 +58,24 @@
                                         </span>
                                     </td>
                                     @endif
-                                    <td>{{ $item->numero }}</td>
+                                    {{-- <td>{{ $item->numero }}</td> --}}
                                     <td>
+                                        @if ($item->persona)
                                         {{ $item->persona->nombres}}{{" "}}{{$item->persona->apellidos}}
+                                        @endif
                                     </td>
                                     @if ( ($item->tipo)=='Ingreso' )
-                                    <td>
+                                    <td class="subtotal">
                                         <span class="badge badge-success">
                                             {{ $item->total }}
                                         </span>
                                     </td>
                                     @else
+                                    <td class="d-none subtotal">
+                                        <span class="badge badge-danger">
+                                            {{-$item->total }}
+                                        </span>
+                                    </td>
                                     <td>
                                         <span class="badge badge-danger">
                                             {{ $item->total }}
@@ -89,6 +95,8 @@
                                     <td>{{ $item->usuario->login }}</td>
 
                                     <td>
+                                        @if ( ($item->concepto->id)==1)
+                                        @else
                                         <div class="btn-group">
                                             <a href="{{ route('show_caja' , $item->id) }}" title="Ver"><button
                                                     class="btn btn-outline-secondary btn-sm"><i class="fa fa-eye"
@@ -108,6 +116,7 @@
                                                 </button>
                                             </form>
                                         </div>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach
@@ -123,3 +132,14 @@
 </div>
 </div>
 @endsection
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var sum=0;
+        $('.subtotal').each(function() {  
+            sum += parseFloat($(this).text().replace(/,/g, ''), 10);  
+        }); 
+        console.log(sum);
+        $('#total').val(sum.toFixed(2));
+        
+ })
+</script>
