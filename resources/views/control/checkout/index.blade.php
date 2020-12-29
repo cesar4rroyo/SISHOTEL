@@ -38,20 +38,15 @@
                                 <input
                                     value="{{$movimiento['persona']['nombres']}}{{" "}}{{$movimiento['persona']['apellidos']}}"
                                     type="text" class="form-control" name="persona" id="persona">
-                                {{-- <select class="form-control" name="persona" id="persona">
-                                    <option value="">Seleccione Uno</option>
-                                    @foreach ($personas as $persona)
-                                    <option value="{{$persona['id']}}">
-                                {{$persona['nombres']}}{{" "}}{{$persona['apellidos']}}</option>
-                                @endforeach
-                                </select> --}}
+
                             </div>
                             <div class="col-sm form-group">
                                 <label class="control-label" for="preciohabitacion">{{'Precio Habitacion'}}</label>
-                                <input class="form-control" value="{{$habitacion['tipohabitacion']['precio']}}"
+                                <input readonly class="form-control" value="{{$habitacion['tipohabitacion']['precio']}}"
                                     type="number" name="preciohabitacion" id="preciohabitacion">
                             </div>
                         </div>
+                        {{-- {{dd($movimiento['detallemovimiento'])}} --}}
                         @if (count($movimiento['detallemovimiento'])!=0)
                         <div class="container">
                             <label for="movimientos">Movimientos</label>
@@ -60,30 +55,32 @@
                                     <thead>
                                         <tr>
                                             <th>Fecha</th>
-                                            <th>Precio</th>
+                                            <th>Precio Total</th>
                                             <th>Cantidad</th>
                                             <th>Comentario</th>
                                             <th>Servicio/Producto</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{-- @foreach($reservas as $item) --}}
+                                        <?php $total = $habitacion['tipohabitacion']['precio'] ?>
+                                        @foreach($detalles as $item)
+                                        <?php $total += $item['precioventa'] ?>
                                         <tr>
-                                            <td>{{'09-29-12 '}}</td>
+                                            <td>{{$item['fecha']}}</td>
                                             <td>
-                                                {{'S/. 15.00' }}
+                                                {{$item['precioventa']}}
                                             </td>
                                             <td>
-                                                {{ '1' }}
+                                                {{$item['cantidad']}}
                                             </td>
                                             <td>
-                                                {{'-'}}
+                                                {{$item['comentario']}}
                                             </td>
                                             <td>
-                                                {{ 'Gaseosa'}}
+                                                {{isset($item['producto']) ? $item['producto']['nombre'] : $item['servicios']['nombre'] }}
                                             </td>
                                         </tr>
-                                        {{-- @endforeach --}}
+                                        @endforeach
                                     </tbody>
                                 </table>
 
@@ -96,8 +93,10 @@
                                 <input type="number" class="form-control" name="dias" id="dias">
                             </div>
                             <div class="col-sm form-group">
+
                                 <label class="control-label" for="total">{{'Total'}}</label>
-                                <input class="form-control" type="number" name="total" id="total">
+                                <input class="form-control" readonly value="{{$total}}" type="number" name="total"
+                                    id="total">
                             </div>
                         </div>
                         <div class="container text-center">

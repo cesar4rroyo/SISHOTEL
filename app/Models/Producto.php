@@ -5,7 +5,9 @@ namespace App\Models;
 use App\Models\Procesos\DetalleCaja;
 use App\Models\Procesos\DetalleComprobante;
 use App\Models\Procesos\DetalleMovimiento;
+use App\Models\Procesos\Movimiento;
 use Illuminate\Database\Eloquent\Model;
+use Mockery\Mock;
 
 class Producto extends Model
 {
@@ -28,6 +30,17 @@ class Producto extends Model
     {
         return $this->belongsTo(Unidad::class, 'unidad_id');
     }
+
+
+    public function movimiento()
+    {
+        return $this
+            ->belongsToMany(Movimiento::class, 'detallemovimiento')
+            ->withPivot(['cantidad', 'preciocompra', 'precioventa', 'fecha']);
+    }
+
+
+
     public function detalleComprobante()
     {
         return $this->hasMany(DetalleComprobante::class, 'producto_id');

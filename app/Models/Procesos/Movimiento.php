@@ -4,6 +4,7 @@ namespace App\Models\Procesos;
 
 use App\Models\Habitacion;
 use App\Models\Persona;
+use App\Models\Producto;
 use App\Models\Seguridad\Usuario;
 use Illuminate\Database\Eloquent\Model;
 
@@ -46,5 +47,12 @@ class Movimiento extends Model
     public function detallemovimiento()
     {
         return $this->hasMany(DetalleMovimiento::class, 'movimiento_id');
+    }
+
+    public function producto()
+    {
+        return $this
+            ->belongsToMany(Producto::class, 'detallemovimiento')
+            ->withPivot(['cantidad', 'preciocompra', 'precioventa', 'fecha']);
     }
 }

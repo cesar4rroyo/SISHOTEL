@@ -15,6 +15,7 @@ class CreateDetalleMovimientoTable extends Migration
     {
         Schema::create('detallemovimiento', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('cantidad');
             $table->decimal('precioventa', 6, 4);
             $table->decimal('preciocompra', 6, 4);
             $table->string('comentario', 500)->nullable();

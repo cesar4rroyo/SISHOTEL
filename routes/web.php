@@ -182,12 +182,24 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
     Route::delete('movimiento/{id}/destroy', 'MovimientoController@destroy')->name('destroy_movimiento');
 });
 Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
-    /* Rutas de Movimientos */
+    //carrito productos
+    Route::get('addToCart/{id}', 'CartController@addToCart')->name('addToCart');
+    Route::patch('updateCart', 'CartController@update')->name('updateCart');
+    Route::delete('removeFromCart', 'CartController@remove')->name('removeFromCart');
+    //carrito servicios
+    Route::get('addServicioCart/{id}', 'CartController@addServiceToCart')->name('addServicioToCart');
+    Route::patch('updateServicioCart', 'CartController@updateServicioCart')->name('updateServicioCart');
+    Route::delete('removeServicioCart', 'CartController@removeServicoCart')->name('removeServicioFromCart');
+
+    /* Rutas de DetalleMovimientos */
+    Route::get('consultarServicio/{id?}', 'DetalleMovimientoController@servicios')->name('consultarServicio');
+    Route::get('consultarProducto/{id?}', 'DetalleMovimientoController@productos')->name('consultarProducto');
     Route::get('detallemovimiento/create', 'DetalleMovimientoController@create')->name('create_detallemovimiento');
     Route::get('detallemovimiento/{id}/{movimiento?}', 'DetalleMovimientoController@movimiento')->name('add_movimieto');
     Route::get('detallemovimiento', 'DetalleMovimientoController@index')->name('detallemovimiento');
     Route::get('detallemovimiento/{id}', 'DetalleMovimientoController@show')->name('show_detallemovimiento');
     Route::post('detallemovimiento', 'DetalleMovimientoController@store')->name('store_detallemovimiento');
+    Route::post('detallemovimientoServicio', 'DetalleMovimientoController@storeServicio')->name('store_detallemovimientoServicio');
     Route::get('detallemovimiento/{id}/edit', 'DetalleMovimientoController@edit')->name('edit_detallemovimiento');
     Route::put('detallemovimiento/{id}', 'DetalleMovimientoController@update')->name('update_detallemovimiento');
     Route::delete('detallemovimiento/{id}/destroy', 'DetalleMovimientoController@destroy')->name('destroy_detallemovimiento');

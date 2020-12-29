@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Habitacion;
 use App\Models\Persona;
+use App\Models\Procesos\DetalleMovimiento;
 use App\Models\Procesos\Movimiento;
 use App\Models\Procesos\Reserva;
 use App\Models\Seguridad\Usuario;
@@ -65,6 +66,7 @@ class MovimientoController extends Controller
             ->with('success', 'Agregado correctamente');
     }
 
+
     /**
      * Display the specified resource.
      *
@@ -92,12 +94,19 @@ class MovimientoController extends Controller
         } else if ($habitacion['situacion'] == 'Ocupada') {
             $personas = Persona::getClientes();
             $initialDate = Carbon::now()->format('Y-m-d\TH:i');
+            $detalles = DetalleMovimiento::with('producto', 'servicios')
+                ->whereHas('movimiento', function ($h) use ($id) {
+                    $h->wherehas('habitacion', function ($q) use ($id) {
+                        $q->where('id', $id);
+                    })->latest('fechaingreso');
+                })->get()->toArray();
             $movimiento =
                 Movimiento::with('persona', 'reserva', 'habitacion', 'detallemovimiento')
                 ->whereHas('habitacion', function ($q) use ($id) {
                     $q->where('id', $id);
                 })->latest('fechaingreso')->first()->toArray();
-            return view('control.checkout.index', compact('habitacion', 'personas', 'initialDate', 'movimiento'));
+
+            return view('control.checkout.index', compact('habitacion', 'personas', 'initialDate', 'detalles', 'movimiento'));
         }
     }
 

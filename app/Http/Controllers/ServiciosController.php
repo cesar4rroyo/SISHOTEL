@@ -14,6 +14,7 @@ class ServiciosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index(Request $request)
     {
         $paginate_number = 10;
