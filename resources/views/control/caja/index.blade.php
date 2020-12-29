@@ -24,6 +24,10 @@
                             <input hidden type="number" id="total" name="total">
                             Cierre</button></form>
                 </div>
+                <div class="container">
+                    <p>Balance: </p>
+                    <input readonly type="text" readonly class="form-control" id="total_badge">
+                </div>
                 <div class="container mt-2">
                     <div class="table-responsive">
                         <table class="table text-center table-hover" id="tabla-data">
@@ -97,6 +101,8 @@
                                     <td>
                                         @if ( ($item->concepto->id)==1)
                                         @else
+                                        @if (($item->concepto->id)==2)
+                                        @else
                                         <div class="btn-group">
                                             <a href="{{ route('show_caja' , $item->id) }}" title="Ver"><button
                                                     class="btn btn-outline-secondary btn-sm"><i class="fa fa-eye"
@@ -116,6 +122,7 @@
                                                 </button>
                                             </form>
                                         </div>
+                                        @endif
                                         @endif
                                     </td>
                                 </tr>
@@ -140,6 +147,6 @@
         }); 
         console.log(sum);
         $('#total').val(sum.toFixed(2));
-        
+        $('#total_badge').val(sum.toFixed(2));
  })
 </script>
