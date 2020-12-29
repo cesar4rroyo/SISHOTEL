@@ -210,4 +210,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
     Route::get('caja/{id}/edit', 'CajaController@edit')->name('edit_caja');
     Route::put('caja/{id}', 'CajaController@update')->name('update_caja');
     Route::delete('caja/{id}/destroy', 'CajaController@destroy')->name('destroy_caja');
+    //caja desde movimientos detalle
+    Route::get('caja/{id}/addDetalle/producto', 'CajaController@addFromDetallePdto')->name('add_detail_producto');
+    Route::post('addDetalle/producto', 'CajaController@storeProducto')->name('store_caja_producto');
+    Route::post('addServicio/servicio', 'CajaController@storeServicio')->name('store_caja_servicio');
+    Route::get('caja/{id}/addDetalle/servicio', 'CajaController@addFromDetalleService')->name('add_detail_servicio');
+    //cheak-out
+    Route::post('movimiento/checkout/{id}', 'CajaController@checkout')->name('checkout');
+    Route::get('movimiento/{id}/{total}checkout', 'CajaController@createCheckout')->name('add_checkout');
 });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Control;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Concepto;
 use App\Models\Habitacion;
 use App\Models\Persona;
 use App\Models\Procesos\DetalleMovimiento;
@@ -86,6 +87,7 @@ class MovimientoController extends Controller
      */
     public function edit($id)
     {
+        $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
         $habitacion = Habitacion::with('tipohabitacion', 'piso', 'reserva')->find($id)->toArray();
         if ($habitacion['situacion'] == 'Disponible' || $habitacion['situacion'] == 'Limpieza') {
             $personas = Persona::getClientes();
@@ -106,7 +108,7 @@ class MovimientoController extends Controller
                     $q->where('id', $id);
                 })->latest('fechaingreso')->first()->toArray();
 
-            return view('control.checkout.index', compact('habitacion', 'personas', 'initialDate', 'detalles', 'movimiento'));
+            return view('control.checkout.index', compact('conceptos', 'habitacion', 'personas', 'initialDate', 'detalles', 'movimiento'));
         }
     }
 

@@ -124,7 +124,8 @@
                             <button type="submit" class="btn btn-outline-success col-6">
                                 Agregar a habitacion
                             </button>
-                            <a href="#" class="btn btn-outline-info col-6 mt-1">
+                            <a href="{{route('add_detail_producto', $movimientos['id'])}}"
+                                class="btn btn-outline-info col-6 mt-1">
                                 Pago Caja
                             </a>
                         </div>

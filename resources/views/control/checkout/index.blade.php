@@ -12,7 +12,8 @@
                             aria-hidden="true"></i>
                         Regresar</button></a>
                 <div class="container">
-                    <form action="">
+                    <form action="{{route('checkout', $movimiento['id'])}}" method="POST">
+                        @csrf
                         <div class="row">
                             <div class="col-sm form-group">
                                 <label for="habitacion">{{'Habitacion'}}</label>
@@ -99,8 +100,44 @@
                                     id="total">
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="form-group col-sm">
+                                <label class="control-label" for="numero">Número</label>
+                                <input type="number" class="form-control" name="numero" id="numero" value="">
+                            </div>
+                            <div class="form-group col-sm {{ $errors->has('concepto') ? 'has-error' : ''}}">
+                                <label for="concepto" class="control-label">{{ 'Concepto' }}</label>
+                                <select class="form-control" required name="concepto" id="concepto">
+                                    <option value="">
+                                        {{'Seleccione una opcion'}}
+                                    </option>
+                                    @foreach ($conceptos as $item)
+                                    <option value="{{$item->id}}">
+                                        {{$item->nombre}}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                {!! $errors->first('concepto', '<p class="text-danger">:message</p>') !!}
+                            </div>
+                            <div class="form-group col-sm {{ $errors->has('tipo') ? 'has-error' : ''}}">
+                                <label for="tipo" class="control-label">{{ 'Tipo' }}</label>
+                                <select required class="form-control" name="tipo" id="tipo">
+                                    <option value="">
+                                        {{ 'Seleccione una opcion'}}
+                                    </option>
+                                    <option value="Ingreso">Ingreso</option>
+                                    <option value="Egreso">Egreso</option>
+                                </select>
+                                {!! $errors->first('tipo', '<p class="text-danger">:message</p>') !!}
+                            </div>
+                        </div>
+                        <div class="form-group {{ $errors->has('comentario') ? 'has-error' : ''}}">
+                            <label for="comentario" class="control-label">{{ 'Comentario' }}</label>
+                            <input class="form-control" name="comentario" type="text" id="comentario" value="">
+                            {!! $errors->first('comentario', '<p class="text-danger">:message</p>') !!}
+                        </div>
                         <div class="container text-center">
-                            <button class="btn btn-outline-success col-sm-6">
+                            <button type="submit" class="btn btn-outline-success col-sm-6">
                                 Check-Out
                             </button>
                         </div>
