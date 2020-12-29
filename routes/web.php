@@ -190,7 +190,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
     Route::get('addServicioCart/{id}', 'CartController@addServiceToCart')->name('addServicioToCart');
     Route::patch('updateServicioCart', 'CartController@updateServicioCart')->name('updateServicioCart');
     Route::delete('removeServicioCart', 'CartController@removeServicoCart')->name('removeServicioFromCart');
-
     /* Rutas de DetalleMovimientos */
     Route::get('consultarServicio/{id?}', 'DetalleMovimientoController@servicios')->name('consultarServicio');
     Route::get('consultarProducto/{id?}', 'DetalleMovimientoController@productos')->name('consultarProducto');
@@ -203,4 +202,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
     Route::get('detallemovimiento/{id}/edit', 'DetalleMovimientoController@edit')->name('edit_detallemovimiento');
     Route::put('detallemovimiento/{id}', 'DetalleMovimientoController@update')->name('update_detallemovimiento');
     Route::delete('detallemovimiento/{id}/destroy', 'DetalleMovimientoController@destroy')->name('destroy_detallemovimiento');
+    //Routas caja
+    Route::get('caja/create', 'CajaController@create')->name('create_caja');
+    Route::get('caja', 'CajaController@index')->name('caja');
+    Route::get('caja/{id}', 'CajaController@show')->name('show_caja');
+    Route::post('caja', 'CajaController@store')->name('store_caja');
+    Route::get('caja/{id}/edit', 'CajaController@edit')->name('edit_caja');
+    Route::put('caja/{id}', 'CajaController@update')->name('update_caja');
+    Route::delete('caja/{id}/destroy', 'CajaController@destroy')->name('destroy_caja');
 });

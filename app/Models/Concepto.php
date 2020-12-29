@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Procesos\Caja;
 use Illuminate\Database\Eloquent\Model;
 
 class Concepto extends Model
