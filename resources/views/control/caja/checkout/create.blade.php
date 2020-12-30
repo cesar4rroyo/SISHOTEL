@@ -43,9 +43,15 @@
                                         {{'Seleccione una opcion'}}
                                     </option>
                                     @foreach ($conceptos as $item)
+                                    @if (($item->id)!=1 && ($item->id)!=2)
                                     <option value="{{$item->id}}">
                                         {{$item->nombre}}
                                     </option>
+                                    @else
+                                    <option hidden value="{{$item->id}}">
+                                        {{$item->nombre}}
+                                    </option>
+                                    @endif
                                     @endforeach
                                 </select>
                                 {!! $errors->first('concepto', '<p class="text-danger">:message</p>') !!}

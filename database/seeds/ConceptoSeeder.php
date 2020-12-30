@@ -13,10 +13,12 @@ class ConceptoSeeder extends Seeder
      */
     public function run()
     {
+        //Concepto ID=1 => Apertura Caja no cambiar
         DB::table('concepto')->insert([
             'nombre' => 'Apertura Caja',
             'tipo' => 'Ingreso',
         ]);
+        //Concepto ID=1 => Apertura Caja no cambiar
         DB::table('concepto')->insert([
             'nombre' => 'Cierre Caja',
             'tipo' => 'Egreso',

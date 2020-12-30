@@ -15,7 +15,7 @@ class CreatePisoTable extends Migration
     {
         Schema::create('piso', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre', 20);
+            $table->string('nombre', 100);
             $table->timestamps();
         });
     }

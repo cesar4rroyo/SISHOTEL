@@ -23,11 +23,10 @@
                 {{$item->nombre}}
             </option>
             @else
-            <option disabled value="{{$item->id}}">
+            <option hidden value="{{$item->id}}">
                 {{$item->nombre}}
             </option>
             @endif
-
             @endforeach
         </select>
         {!! $errors->first('concepto', '<p class="text-danger">:message</p>') !!}

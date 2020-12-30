@@ -20,7 +20,7 @@ class GrupoMenuSeeder extends Seeder
         ]);
         DB::table('grupomenu')->insert([
             'nombre' => 'Control General',
-            'icono' => 'fas fa-shopping-cart',
+            'icono' => 'fas fa-columns',
             'orden' => 2,
         ]);
         DB::table('grupomenu')->insert([
@@ -41,7 +41,7 @@ class GrupoMenuSeeder extends Seeder
         ]);
         DB::table('grupomenu')->insert([
             'nombre' => 'Reservas',
-            'icono' => 'fas fa-box-open',
+            'icono' => 'fas fa-calendar-check',
             'orden' => 6,
         ]);
     }

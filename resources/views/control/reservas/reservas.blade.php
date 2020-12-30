@@ -41,9 +41,9 @@
                                     {{ isset($item->observacion) ? $item->observacion : '-'}}
                                 </td>
                                 <td>
-                                    <a href="{{ route('edit_reserva' , $item->id ) }}" title="Editar reserva"><button
-                                            class="btn btn-outline-success btn-sm"><i class="fas fa-edit"
-                                                aria-hidden="true"></i>
+                                    <a href="{{ route('edit_movimiento_reserva' , ['id_habitacion'=>$item->habitacion->id, 'id_reserva'=>$item->id] ) }}"
+                                        title="Editar reserva"><button class="btn btn-outline-success btn-sm"><i
+                                                class="fas fa-edit" aria-hidden="true"></i>
                                             Check-In
                                         </button></a>
                                     <form class="form-eliminar" method="POST"

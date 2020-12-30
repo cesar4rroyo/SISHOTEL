@@ -12,6 +12,7 @@ class TipoUsuarioSeeder extends Seeder
      */
     public function run()
     {
+        //id=>1 Admin Principal
         DB::table('tipousuario')->insert([
             'nombre' => 'Administrador Principal',
         ]);

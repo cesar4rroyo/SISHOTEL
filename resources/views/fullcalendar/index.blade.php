@@ -78,12 +78,11 @@
                         var $select =$(selectName);
                         $(selectName).empty();
                         if(Object.keys(respuesta).length==0){
-                            console.log('raaa');
                             $select.append('<option>' + 'No hay habitaciones disponibles' +'</option>');
                         }else{
                             const options = respuesta;
                             $.each(options, function(id, numero) {
-                                $select.append('<option value=' + numero.id + '>' + 'Habitacion Nro:' + numero.numero + '</option>');
+                                $select.append('<option value=' + numero.id + '>' + 'Habitacion Nro.:'+numero.numero + '-'+ numero.tipohabitacion.nombre + '</option>');
                             });
                         }
                        

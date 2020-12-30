@@ -178,8 +178,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
     Route::get('movimiento/create', 'MovimientoController@create')->name('create_movimiento');
     Route::get('movimiento', 'MovimientoController@index')->name('movimiento');
     Route::get('movimiento/{id}', 'MovimientoController@show')->name('show_movimiento');
-    Route::post('movimiento', 'MovimientoController@store')->name('store_movimiento');
+    Route::post('movimiento/{id_reserva?}', 'MovimientoController@store')->name('store_movimiento');
     Route::get('movimiento/{id}/edit', 'MovimientoController@edit')->name('edit_movimiento');
+    Route::get('movimiento/reserva/{id_habitacion}/{id_reserva}', 'MovimientoController@editConReserva')->name('edit_movimiento_reserva');
     Route::put('movimiento/{id}', 'MovimientoController@update')->name('update_movimiento');
     Route::delete('movimiento/{id}/destroy', 'MovimientoController@destroy')->name('destroy_movimiento');
 });

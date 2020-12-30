@@ -23,12 +23,11 @@ class CajaController extends Controller
 
     public function create()
     {
-        $verificaApertura =
-            Caja::with('persona', 'usuario', 'movimiento', 'concepto')
-            ->whereHas('concepto', function ($q) {
-                $q->where('id', 1);
-            })->latest('fecha')->first()->toArray();
-        if ($verificaApertura) {
+        $caja =
+            Caja::with('movimiento', 'persona', 'concepto')
+            ->latest('created_at')->first()->toArray();
+
+        if ($caja['concepto_id'] != '2') {
             $caja = Caja::latest('id')->first();
             if (!is_null($caja)) {
                 $caja->get()->toArray();
@@ -44,7 +43,7 @@ class CajaController extends Controller
         } else {
             return redirect()
                 ->route('caja')
-                ->with('success', 'No se ha aperturado la caja');
+                ->with('error', 'No se ha aperturado la caja');
         }
     }
 
@@ -77,11 +76,21 @@ class CajaController extends Controller
 
     public function edit($id)
     {
-        $caja = Caja::findOrFail($id);
-        $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
-        $today = Carbon::now()->toDateString();
-        $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
-        return view('control.caja.edit', compact('caja', 'conceptos', 'personas', 'today'));
+        $cajaApertura =
+            Caja::with('movimiento', 'persona', 'concepto')
+            ->latest('created_at')->first()->toArray();
+
+        if ($cajaApertura['concepto_id'] != '2') {
+            $caja = Caja::findOrFail($id);
+            $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
+            $today = Carbon::now()->toDateString();
+            $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
+            return view('control.caja.edit', compact('caja', 'conceptos', 'personas', 'today'));
+        } else {
+            return redirect()
+                ->route('caja')
+                ->with('error', 'La caja ya fue cerrada');
+        }
     }
 
 
@@ -108,33 +117,48 @@ class CajaController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        if ($request->ajax()) {
-            Caja::destroy($id);
-            return response()->json(['mensaje' => 'ok']);
-        } else {
-            abort(404);
+        $cajaApertura =
+            Caja::with('movimiento', 'persona', 'concepto')
+            ->latest('created_at')->first()->toArray();
+
+        if ($cajaApertura['concepto_id'] != '2') {
+            if ($request->ajax()) {
+                Caja::destroy($id);
+                return response()->json(['mensaje' => 'ok']);
+            } else {
+                abort(404);
+            }
         }
     }
 
     public function create_cierre(Request $request)
     {
-        $total = $request->total;
-        if (!empty($total)) {
-            $caja = Caja::latest('id')->first();
-            if (!is_null($caja)) {
-                $caja->get()->toArray();
-                $numero = $caja['numero'] + 1;
-                $numero = $this->zero_fill($numero, 8);
-            } else {
-                $numero = $this->zero_fill(300, 8);
+        $caja =
+            Caja::with('movimiento', 'persona', 'concepto')
+            ->latest('created_at')->first()->toArray();
+
+        if ($caja['concepto_id'] != '2') {
+            $total = $request->total;
+            if (!empty($total)) {
+                $caja = Caja::latest('id')->first();
+                if (!is_null($caja)) {
+                    $caja->get()->toArray();
+                    $numero = $caja['numero'] + 1;
+                    $numero = $this->zero_fill($numero, 8);
+                } else {
+                    $numero = $this->zero_fill(300, 8);
+                }
+                $caja =
+                    Caja::with('concepto', 'usuario', 'persona', 'movimiento')->get()->toArray();
+                $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
+                $today = Carbon::now()->toDateString();
+                $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
+                return view('control.caja.cierre.create', compact('numero', 'total', 'conceptos', 'personas', 'today'));
             }
-            $caja =
-                Caja::with('concepto', 'usuario', 'persona', 'movimiento')->get()->toArray();
-            $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
-            $today = Carbon::now()->toDateString();
-            $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
-            return view('control.caja.cierre.create', compact('numero', 'total', 'conceptos', 'personas', 'today'));
         }
+        return redirect()
+            ->route('caja')
+            ->with('error', 'La caja ya se cerró, abra otra de nuevo');
     }
     public function zero_fill($valor, $long = 0)
     {
@@ -179,28 +203,34 @@ class CajaController extends Controller
     }
     public function checkout(Request $request, $id)
     {
+        $caja =
+            Caja::with('movimiento', 'persona', 'concepto')
+            ->latest('created_at')->first()->toArray();
 
-        $habitacion = $request->habitacion;
-
-        $caja = Caja::create([
-            'fecha' => $request->fecha,
-            'numero' => $request->numero,
-            'concepto_id' => $request->concepto,
-            'tipo' => $request->tipo,
-            'persona_id' => $request->persona,
-            'total' => $request->total,
-            'comentario' => $request->comentario,
-            'usuario_id' => session()->all()['usuario_id'],
-            'movimiento_id' => $id,
-        ]);
-
-        return view('control.caja.checkout.updatehabitacion', compact('habitacion'));
+        if ($caja['concepto_id'] != '2') {
+            $habitacion = $request->habitacion;
+            $caja = Caja::create([
+                'fecha' => $request->fecha,
+                'numero' => $request->numero,
+                'concepto_id' => $request->concepto,
+                'tipo' => $request->tipo,
+                'persona_id' => $request->persona,
+                'total' => $request->total,
+                'comentario' => $request->comentario,
+                'usuario_id' => session()->all()['usuario_id'],
+                'movimiento_id' => $id,
+            ]);
+            return view('control.caja.checkout.updatehabitacion', compact('habitacion'));
+        }
+        return redirect()
+            ->route('habitaciones')
+            ->with('error', 'La caja no ha sido aperturada');
     }
     public function updateHabitacion(Request $request, $id)
     {
         $habitacion = Habitacion::findOrFail($id);
         $habitacion->update([
-            'situacion' => 'Disponible',
+            'situacion' => 'En limpieza',
 
         ]);
         return redirect()
@@ -209,30 +239,44 @@ class CajaController extends Controller
     }
     public function addFromDetallePdto($id)
     {
-
-        $cart = session()->get('cart');
-        $total = 0;
-        foreach ($cart as $key => $item) {
-            $total += ($item['precio'] * $item['cantidad']);
+        $caja =
+            Caja::with('movimiento', 'persona', 'concepto')
+            ->latest('created_at')->first()->toArray();
+        if ($caja['concepto_id'] != '2') {
+            $cart = session()->get('cart');
+            $total = 0;
+            foreach ($cart as $key => $item) {
+                $total += ($item['precio'] * $item['cantidad']);
+            }
+            $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
+            $today = Carbon::now()->toDateString();
+            $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
+            return view('control.caja.producto.create', compact('conceptos', 'id', 'personas', 'today', 'total'));
         }
-
-        $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
-        $today = Carbon::now()->toDateString();
-        $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
-        return view('control.caja.producto.create', compact('conceptos', 'id', 'personas', 'today', 'total'));
+        return redirect()
+            ->route('habitaciones')
+            ->with('error', 'La caja no ha sido aperturada');
     }
     public function addFromDetalleService($id)
     {
-        $cart = session()->get('servicio');
-        $total = 0;
-        foreach ($cart as $key => $item) {
-            $total += ($item['precio'] * $item['cantidad']);
-        }
+        $caja =
+            Caja::with('movimiento', 'persona', 'concepto')
+            ->latest('created_at')->first()->toArray();
+        if ($caja['concepto_id'] != '2') {
+            $cart = session()->get('servicio');
+            $total = 0;
+            foreach ($cart as $key => $item) {
+                $total += ($item['precio'] * $item['cantidad']);
+            }
 
-        $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
-        $today = Carbon::now()->toDateString();
-        $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
-        return view('control.caja.servicio.create', compact('conceptos', 'id', 'personas', 'today', 'total'));
+            $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
+            $today = Carbon::now()->toDateString();
+            $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
+            return view('control.caja.servicio.create', compact('conceptos', 'id', 'personas', 'today', 'total'));
+        }
+        return redirect()
+            ->route('habitaciones')
+            ->with('error', 'La caja no ha sido aperturada');
     }
     public function storeProducto(Request $request)
     {

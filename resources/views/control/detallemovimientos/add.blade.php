@@ -120,12 +120,12 @@
                             <textarea class="form-control" name="comentario" id="comentario" cols="10"
                                 rows="5"></textarea>
                         </div>
-                        <div class="container text-center">
-                            <button type="submit" class="btn btn-outline-success col-6">
+                        <div id="btnContainer" class="container text-center">
+                            <button id="btnAddToRoom" type="submit" class="btn btn-outline-success col-6">
                                 Agregar a habitacion
                             </button>
-                            <a href="{{route('add_detail_producto', $movimientos['id'])}}"
-                                class="btn btn-outline-info col-6 mt-1">
+                            <a id="btnAddToCaja" href="{{route('add_detail_producto', $movimientos['id'])}}"
+                                class="btn btn-outline-info col-6 mt-1 btnSubmit">
                                 Pago Caja
                             </a>
                         </div>
@@ -139,7 +139,11 @@
 @endsection
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) {
+
+   
+    
     $('.addToCart').on('click', function(){
+
             var id = $(this).data('id');
             if(id){
                 $.ajax({

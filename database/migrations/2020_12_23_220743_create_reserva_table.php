@@ -17,7 +17,7 @@ class CreateReservaTable extends Migration
             $table->increments('id');
             $table->date('fecha');
             $table->string('observacion', 200)->nullable();
-            $table->string('situacion', 20)->nullable();
+            $table->string('situacion', 200)->nullable();
             $table->unsignedInteger('persona_id');
             $table->foreign('persona_id', 'fk_reserva_persona')
                 ->references('id')

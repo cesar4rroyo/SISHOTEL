@@ -15,11 +15,7 @@ use Carbon\Carbon;
 
 class MovimientoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Request $request)
     {
         if (!empty($request)) {
@@ -32,23 +28,35 @@ class MovimientoController extends Controller
         return response()->redirectTo('create_movimiento');
     }
 
-    /**
-     * Show the form for creating a new resource.     
-     * @return \Illuminate\Http\Response
-     */
+    public function editConReserva($id_habitacion, $id_reserva)
+    {
+        $reserva = $id_reserva;
+        $habitacion = Habitacion::with('tipohabitacion', 'piso', 'reserva')->find($id_habitacion)->toArray();
+        if ($habitacion['situacion'] == 'Disponible' || $habitacion['situacion'] == 'Limpieza') {
+            $personas = Persona::getClientes();
+            $initialDate = Carbon::now()->format('Y-m-d\TH:i');
+            return view('control.checkin.index', compact('habitacion', 'personas', 'initialDate', 'reserva'));
+        } else {
+            return redirect()
+                ->route('habitaciones')
+                ->with('error', 'La habitación se encuentra ocupada o está en limpieza');
+        }
+    }
+
+
     public function create()
     {
         return view('control.checkin.index');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(Request $request, $id_reserva)
     {
+        if ($id_reserva != 'no') {
+            $reserva = Reserva::findOrFail($id_reserva);
+            $reserva->update([
+                'situacion' => 'Usada',
+            ]);
+        }
         $movimiento = Movimiento::create([
             'fechaingreso' => $request->fechaingreso,
             'persona_id' => $request->persona,
@@ -57,6 +65,7 @@ class MovimientoController extends Controller
             'habitacion_id' => $request->habitacion,
             'situacion' => 'Pendiente'
         ]);
+
         $habitacion = Habitacion::find($request->habitacion);
         $habitacion->update([
             'situacion' => 'Ocupada'
@@ -68,23 +77,13 @@ class MovimientoController extends Controller
     }
 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
         $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
@@ -112,24 +111,13 @@ class MovimientoController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         //

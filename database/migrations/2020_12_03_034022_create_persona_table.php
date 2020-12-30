@@ -15,8 +15,8 @@ class CreatePersonaTable extends Migration
     {
         Schema::create('persona', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombres', 20);
-            $table->string('apellidos', 20)->nullable();
+            $table->string('nombres', 50);
+            $table->string('apellidos', 50)->nullable();
             $table->string('razonsocial')->nullable();
             $table->string('ruc')->nullable();
             $table->string('dni', 8)->nullable();
@@ -24,7 +24,7 @@ class CreatePersonaTable extends Migration
             $table->string('sexo')->nullable();
             $table->date('fechanacimiento')->nullable();
             $table->string('telefono');
-            $table->string('observacion')->nullable();
+            $table->string('observacion', 500)->nullable();
             $table->unsignedInteger('nacionalidad_id')->nullable();
             $table->foreign('nacionalidad_id', 'fk_persona_nacionalidad')
                 ->nullable()

@@ -13,42 +13,84 @@ class HabitacionSeeder extends Seeder
     public function run()
     {
         DB::table('habitacion')->insert([
-            'numero' => 101,
-            'situacion' => 'Disponible',
-            'piso_id' => 1,
-            'tipohabitacion_id' => 1
-        ]);
-
-        DB::table('habitacion')->insert([
-            'numero' => 102,
-            'situacion' => 'Disponible',
-            'piso_id' => 1,
-            'tipohabitacion_id' => 1
-        ]);
-        DB::table('habitacion')->insert([
-            'numero' => 103,
-            'situacion' => 'Disponible',
-            'piso_id' => 1,
-            'tipohabitacion_id' => 1
-        ]);
-        DB::table('habitacion')->insert([
             'numero' => 201,
             'situacion' => 'Disponible',
-            'piso_id' => 2,
-            'tipohabitacion_id' => 2
+            'piso_id' => 1,
+            'tipohabitacion_id' => 4
         ]);
 
         DB::table('habitacion')->insert([
             'numero' => 202,
             'situacion' => 'Disponible',
+            'piso_id' => 1,
+            'tipohabitacion_id' => 5
+        ]);
+        DB::table('habitacion')->insert([
+            'numero' => 301,
+            'situacion' => 'Disponible',
             'piso_id' => 2,
             'tipohabitacion_id' => 2
         ]);
         DB::table('habitacion')->insert([
-            'numero' => 203,
+            'numero' => 302,
             'situacion' => 'Disponible',
             'piso_id' => 2,
+            'tipohabitacion_id' => 1
+        ]);
+        DB::table('habitacion')->insert([
+            'numero' => 303,
+            'situacion' => 'Disponible',
+            'piso_id' => 2,
+            'tipohabitacion_id' => 3
+        ]);
+        DB::table('habitacion')->insert([
+            'numero' => 304,
+            'situacion' => 'Disponible',
+            'piso_id' => 2,
+            'tipohabitacion_id' => 3
+        ]);
+        DB::table('habitacion')->insert([
+            'numero' => 305,
+            'situacion' => 'Disponible',
+            'piso_id' => 2,
+            'tipohabitacion_id' => 3
+        ]);
+        DB::table('habitacion')->insert([
+            'numero' => 306,
+            'situacion' => 'Disponible',
+            'piso_id' => 2,
+            'tipohabitacion_id' => 3
+        ]);
+        DB::table('habitacion')->insert([
+            'numero' => 307,
+            'situacion' => 'Disponible',
+            'piso_id' => 2,
+            'tipohabitacion_id' => 3
+        ]);
+        DB::table('habitacion')->insert([
+            'numero' => 401,
+            'situacion' => 'Disponible',
+            'piso_id' => 3,
             'tipohabitacion_id' => 2
+        ]);
+
+        DB::table('habitacion')->insert([
+            'numero' => 402,
+            'situacion' => 'Disponible',
+            'piso_id' => 3,
+            'tipohabitacion_id' => 1
+        ]);
+        DB::table('habitacion')->insert([
+            'numero' => 403,
+            'situacion' => 'Disponible',
+            'piso_id' => 3,
+            'tipohabitacion_id' => 3
+        ]);
+        DB::table('habitacion')->insert([
+            'numero' => 404,
+            'situacion' => 'Disponible',
+            'piso_id' => 3,
+            'tipohabitacion_id' => 3
         ]);
     }
 }

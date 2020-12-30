@@ -11,7 +11,7 @@
                             aria-hidden="true"></i>
                         Regresar</button></a>
                 <div class="container">
-                    <form method="POST" action="{{route('store_movimiento')}}">
+                    <form method="POST" action="{{route('store_movimiento', isset($reserva) ? $reserva : 'no')}}">
                         @csrf
                         <div class="row">
                             <div class="col-sm form-group">
@@ -25,6 +25,13 @@
                                 <input class="form-control" id="fechaingreso" name="fechaingreso" type="datetime-local"
                                     value="{{$initialDate}}">
                             </div>
+                            @isset($reserva)
+                            <div class="col-sm form-group">
+                                <label class="control-label" for="reserva">{{'Reserva Nro.'}}</label>
+                                <input readonly class="form-control" value="{{$reserva}}" type="number" name="reserva"
+                                    id="reserva">
+                            </div>
+                            @endisset
                             {{-- <div class="col-sm form-group">
                                 <label class="control-label" for="fechasalida">{{'Fecha Salida'}}</label>
                             <input class="form-control" id="fechasalida" name="fechasalida" type="datetime-local">
@@ -33,7 +40,7 @@
                 <div class="row">
                     <div class="col-sm form-group">
                         <label class="control-label" for="persona">{{'Cliente'}}</label>
-                        <select class="form-control" name="persona" id="persona">
+                        <select class="form-control" name="persona" id="persona" required>
                             <option value="">Seleccione Uno</option>
                             @foreach ($personas as $persona)
                             <option value="{{$persona['id']}}">
