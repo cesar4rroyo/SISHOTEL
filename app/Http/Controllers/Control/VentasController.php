@@ -9,16 +9,27 @@ use App\Models\Servicios;
 
 class VentasController extends Controller
 {
-    public function indexProductos()
+    public function indexProductos(Request $request)
     {
-        $productos = Producto::get()->toArray();
+        $search = $request->get('search');
+        if (!empty($search)) {
+            $productos = Producto::where('nombre', 'LIKE', '%' . $search . '%')->get()->toArray();
+        } else {
+            $productos = Producto::get()->toArray();
+        }
         return view('control.ventas.add', compact('productos'));
     }
-    public function indexServicios()
+    public function indexServicios(Request $request)
     {
-        $servicios = Servicios::get()->toArray();
+        $search = $request->get('search');
+        if (!empty($search)) {
+            $servicios = Servicios::where('nombre', 'LIKE', '%' . $search . '%')->get()->toArray();
+        } else {
+            $servicios = Servicios::get()->toArray();
+        }
         return view('control.ventas.addServicio', compact('servicios'));
     }
+
 
 
     public function create()

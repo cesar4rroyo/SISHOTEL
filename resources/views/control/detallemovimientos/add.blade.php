@@ -138,9 +138,7 @@
 </div>
 @endsection
 <script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", function(event) {
-
-   
+    document.addEventListener("DOMContentLoaded", function(event) {  
     
     $('.addToCart').on('click', function(){
 

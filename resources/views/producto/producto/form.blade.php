@@ -7,13 +7,13 @@
 <div class="row">
     <div class="form-group col-sm {{ $errors->has('precioventa') ? 'has-error' : ''}}">
         <label for="precioventa" class="control-label">{{ 'Precio Venta' }}</label>
-        <input class="form-control" name="precioventa" type="number" id="precioventa"
+        <input class="form-control" name="precioventa" type="number" step="0.01" id="precioventa"
             value="{{ isset($producto->precioventa) ? $producto->precioventa : ''}}">
         {!! $errors->first('precioventa', '<p class="text-danger">:message</p>') !!}
     </div>
     <div class="form-group col-sm {{ $errors->has('preciocompra') ? 'has-error' : ''}}">
         <label for="preciocompra" class="control-label">{{ 'Precio Compra' }}</label>
-        <input class="form-control" name="preciocompra" type="number" id="preciocompra"
+        <input class="form-control" name="preciocompra" type='number' step="0.01" id="preciocompra"
             value="{{ isset($producto->preciocompra) ? $producto->preciocompra : ''}}">
         {!! $errors->first('preciocompra', '<p class="text-danger">:message</p>') !!}
     </div>
