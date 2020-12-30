@@ -15,7 +15,7 @@ class CreateCajaTable extends Migration
     {
         Schema::create('caja', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('fecha');
+            $table->dateTime('fecha');
             $table->string('tipo', 50);
             $table->string('numero', 100);
             $table->decimal('total', 12, 2);

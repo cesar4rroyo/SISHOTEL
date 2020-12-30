@@ -18,7 +18,7 @@ class ConceptoSeeder extends Seeder
             'nombre' => 'Apertura Caja',
             'tipo' => 'Ingreso',
         ]);
-        //Concepto ID=1 => Apertura Caja no cambiar
+        //Concepto ID=1 => Cierre Caja no cambiar
         DB::table('concepto')->insert([
             'nombre' => 'Cierre Caja',
             'tipo' => 'Egreso',

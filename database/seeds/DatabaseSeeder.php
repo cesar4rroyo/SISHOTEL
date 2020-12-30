@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Categoria;
+use App\Models\Procesos\Caja;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -24,7 +25,8 @@ class DatabaseSeeder extends Seeder
             'opcionmenu',
             'persona',
             'usuario',
-            'acceso'
+            'acceso',
+            'caja'
 
         ]);
         $this->call(TipoHabitacionSeeder::class);
@@ -43,6 +45,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PersonaSeeder::class);
         $this->call(UsuarioAdministradorSeeder::class);
         $this->call(AccesoSeeder::class);
+        $this->call(CajaSeeder::class);
     }
 
     protected function truncateTablas(array $tablas)

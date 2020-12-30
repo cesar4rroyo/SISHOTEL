@@ -12,7 +12,7 @@ class AccesoSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 1; $i <= 29; $i++) {
+        for ($i = 1; $i <= 20; $i++) {
             DB::table('acceso')->insert([
                 'tipousuario_id' => 1,
                 'opcionmenu_id' => $i,
