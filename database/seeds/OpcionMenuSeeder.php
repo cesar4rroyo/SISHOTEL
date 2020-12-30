@@ -174,7 +174,7 @@ class OpcionMenuSeeder extends Seeder
             'nombre' => 'Productos',
             'link' => 'admin/ventas/productos',
             'icono' => 'fas fa-clipboard-list',
-            'orden' => 2,
+            'orden' => 1,
             'grupomenu_id' => 7
         ]);
         DB::table('opcionmenu')->insert([
