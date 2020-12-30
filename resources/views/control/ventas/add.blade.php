@@ -12,7 +12,6 @@
                         Regresar</button></a>
                 <div class="container">
                     <form action="{{'store_detallemovimiento'}}">
-                        <input hidden name="movimiento" value="{{$movimientos['id']}}" type="text">
                         <p class="font-weight-bold ">Nuevo Movimiento Producto</p>
                         <div class="row">
                             <div class="form-group col-sm">

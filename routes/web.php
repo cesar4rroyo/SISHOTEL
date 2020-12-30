@@ -210,6 +210,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
     Route::get('caja/create', 'CajaController@create')->name('create_caja');
     Route::get('caja/create/cierre', 'CajaController@create_cierre')->name('cierre_caja');
     Route::get('caja', 'CajaController@index')->name('caja');
+    Route::get('caja/lista', 'CajaController@indexLista')->name('caja_lista');
     Route::get('caja/{id}', 'CajaController@show')->name('show_caja');
     Route::post('caja', 'CajaController@store')->name('store_caja');
     Route::get('caja/{id}/edit', 'CajaController@edit')->name('edit_caja');
@@ -225,4 +226,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
     Route::post('movimiento/{id}/checkout', 'CajaController@createCheckout')->name('add_checkout');
     //actualizar habitacion
     Route::post('caja/habitacion/actualizar/{id}', 'CajaController@updateHabitacion')->name('actualizarHabitacion');
+    //ventas de Productos
+    Route::get('ventas/productos', 'VentasController@indexProductos')->name('ventas_productos');
+    Route::get('ventas/servicios', 'VentasController@indexServicios')->name('ventas_servicios');
 });

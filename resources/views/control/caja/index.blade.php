@@ -52,6 +52,7 @@
                             </thead>
                             <tbody>
                                 @foreach($cajas as $item)
+                                @if (($item->tipo)!='Configuración Inicial Caja')
                                 <tr>
                                     <td>{{ $item->fecha }}</td>
                                     @if ( ($item->tipo)=='Ingreso' )
@@ -131,6 +132,7 @@
                                         @endif
                                     </td>
                                 </tr>
+                                @endif
                                 @endforeach
                             </tbody>
                         </table>

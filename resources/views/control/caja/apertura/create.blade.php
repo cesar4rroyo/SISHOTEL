@@ -18,7 +18,8 @@
                         <div class="row">
                             <div class="col-sm form-group">
                                 <label for="fecha">{{'Fecha'}}</label>
-                                <input class="form-control" type="date" name="fecha" id="fecha" value="{{$today}}">
+                                <input class="form-control" type="datetime-local" name="fecha" id="fecha"
+                                    value="{{Carbon\Carbon::now()->format('Y-m-d\TH:i')}}">
                             </div>
                             <div class="col-sm form-group">
                                 <input type="text" name="tipo" hidden value="{{'Ingreso'}}">

@@ -162,5 +162,27 @@ class OpcionMenuSeeder extends Seeder
             'orden' => 1,
             'grupomenu_id' => 3
         ]);
+
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Movimientos de Caja',
+            'link' => 'admin/caja/lista',
+            'icono' => 'fas fa-clipboard-list',
+            'orden' => 2,
+            'grupomenu_id' => 3
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Productos',
+            'link' => 'admin/ventas/productos',
+            'icono' => 'fas fa-clipboard-list',
+            'orden' => 2,
+            'grupomenu_id' => 7
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Servicios',
+            'link' => 'admin/ventas/servicios',
+            'icono' => 'fas fa-clipboard-list',
+            'orden' => 2,
+            'grupomenu_id' => 7
+        ]);
     }
 }

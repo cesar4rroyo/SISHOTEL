@@ -44,5 +44,10 @@ class GrupoMenuSeeder extends Seeder
             'icono' => 'fas fa-calendar-check',
             'orden' => 6,
         ]);
+        DB::table('grupomenu')->insert([
+            'nombre' => 'Ventas',
+            'icono' => 'fas fa-store',
+            'orden' => 7,
+        ]);
     }
 }

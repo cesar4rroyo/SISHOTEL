@@ -16,8 +16,29 @@ class CajaController extends Controller
 
     public function index()
     {
-        $cajas = Caja::with('concepto', 'usuario', 'persona', 'movimiento')->orderBy('created_at', 'DESC')->paginate(10);
+        $caja =
+            Caja::with('movimiento', 'persona', 'concepto')->whereHas('concepto', function ($q) {
+                $q->where('id', 2);
+            })
+            ->latest('created_at')->first()->toArray();
+
+        $cajas =
+            Caja::with('concepto', 'usuario', 'persona', 'movimiento')
+            ->where('fecha', '>', $caja['fecha'])
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
+        // dd($cajas);
+
         return view('control.caja.index', compact('cajas'));
+    }
+
+    public function indexLista()
+    {
+        $cajas =
+            Caja::with('concepto', 'usuario', 'persona', 'movimiento')
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
+        return view('control.caja.movimientos.index', compact('cajas'));
     }
 
 
@@ -37,7 +58,7 @@ class CajaController extends Controller
                 $numero = $this->zero_fill(5000, 8);
             }
             $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
-            $today = Carbon::now()->toDateString();
+            $today = Carbon::now();
             $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
             return view('control.caja.create', compact('numero', 'conceptos', 'personas', 'today'));
         } else {
@@ -166,20 +187,29 @@ class CajaController extends Controller
     }
     public function create_apertura()
     {
-        $caja = Caja::latest('id')->first();
+        $cajaValidar =
+            Caja::with('movimiento', 'persona', 'concepto')
+            ->latest('created_at')->first()->toArray();
 
-        if (!is_null($caja)) {
-            $caja->get()->toArray();
-            $numero = $caja['numero'] + 1;
-            $numero = $this->zero_fill($numero, 8);
-        } else {
-            $numero = $this->zero_fill(1, 8);
+        if ($cajaValidar['concepto_id'] == '2') {
+            $caja = Caja::latest('id')->first();
+
+            if (!is_null($caja)) {
+                $caja->get()->toArray();
+                $numero = $caja['numero'] + 1;
+                $numero = $this->zero_fill($numero, 8);
+            } else {
+                $numero = $this->zero_fill(1, 8);
+            }
+
+            $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
+            $today = Carbon::now()->toDateString();
+            $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
+            return view('control.caja.apertura.create', compact('numero', 'conceptos', 'personas', 'today'));
         }
-
-        $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
-        $today = Carbon::now()->toDateString();
-        $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
-        return view('control.caja.apertura.create', compact('numero', 'conceptos', 'personas', 'today'));
+        return redirect()
+            ->route('caja')
+            ->with('error', 'Hay una caja abierta, cierrela y crea otra de nuevo');
     }
 
     public function createCheckout(Request $request, $id)
