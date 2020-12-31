@@ -23,16 +23,13 @@
                     <a href="{{ route('create_caja') }}" title="Nuevo"><button class="btn btn-secondary btn-sm mb-2"><i
                                 class="fas fa-money-bill" aria-hidden="true"></i>
                             Nuevo</button></a>
-                    <form action="{{ route('cierre_caja') }}" title="Cierre"><button
+                    <form action="{{ route('cierre_caja') }}" novalidate title="Cierre"><button
                             class="btn btn-danger btn-sm mb-2"><i class="fas fa-external-link-alt"
                                 aria-hidden="true"></i>
                             <input hidden type="number" id="total" name="total">
                             Cierre</button></form>
                 </div>
-                <div class="container">
-                    <p>Balance: </p>
-                    <input readonly type="text" readonly class="form-control" id="total_badge">
-                </div>
+
                 <div class="container mt-2">
                     <div class="table-responsive">
                         <table class="table text-center table-hover" id="tabla-data">
@@ -75,7 +72,7 @@
                                         @endif
                                     </td>
                                     @if ( ($item->tipo)=='Ingreso' )
-                                    <td class="subtotal">
+                                    <td class="subtotal sumaIngreso">
                                         <span class="badge badge-success">
                                             {{ $item->total }}
                                         </span>
@@ -87,12 +84,11 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <span class="badge badge-danger">
+                                        <span class="badge badge-danger sumaEgreso">
                                             {{ $item->total }}
                                         </span>
                                     </td>
                                     @endif
-
                                     <td>
                                         {{ $item->concepto->nombre }}
                                     </td>
@@ -139,6 +135,43 @@
                         <div class="pagination-wrapper"> {!! $cajas->appends(['search' =>
                             Request::get('search')])->render() !!} </div>
                     </div>
+                    <div class="container mr-auto">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box bg-success">
+                                    <div class="inner">
+                                        <h3 id="ingresos">0</h3>
+                                        <p>Ingresos</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box bg-danger">
+                                    <div class="inner">
+                                        <h3 id="egresos">0</h3>
+                                        <p>Egresos</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-chart-pie"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box bg-info">
+                                    <div class="inner">
+                                        <h3 id="balance">0</h3>
+                                        <p>Balance</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-chart-pie"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -152,8 +185,22 @@
         $('.subtotal').each(function() {  
             sum += parseFloat($(this).text().replace(/,/g, ''), 10);  
         }); 
+        var sumIngreso=0;
+        $('.sumaIngreso').each(function(){
+            sumIngreso += parseFloat($(this).text().replace(/,/g, ''), 10);
+        });
+        console.log(sumIngreso);
+        var sumaEgreso=0;
+        $('.sumaEgreso').each(function(){
+            sumaEgreso += parseFloat($(this).text().replace(/,/g, ''), 10);
+        });
         console.log(sum);
         $('#total').val(sum.toFixed(2));
         $('#total_badge').val(sum.toFixed(2));
+
+        $('#balance').text(sum.toFixed(2));
+        $('#ingresos').text(sumIngreso.toFixed(2));
+        $('#egresos').text(sumaEgreso.toFixed(2));
+
  })
 </script>

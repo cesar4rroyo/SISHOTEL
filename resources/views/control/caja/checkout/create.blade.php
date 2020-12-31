@@ -23,19 +23,22 @@
                                 <input type="date" id="fecha" class="form-control" name="fecha" value="{{$today}}">
                             </div>
                             <div class="col-sm form-group">
-                                <?php 
-                                    function zero_fill ($valor, $long = 0)
-                                        {
-                                            return str_pad($valor, $long, '0', STR_PAD_LEFT);
-                                        }
-                                    $numero = zero_fill(1000 . $id, 8);
-                                    ?>
                                 <label class="control-label" for="numero">Número</label>
                                 <input type="number" readonly class="form-control" name="numero" id="numero"
                                     value="{{$numero}}">
                             </div>
                         </div>
                         <div class="row">
+                            <div class="form-group col-sm {{ $errors->has('tipo') ? 'has-error' : ''}}">
+                                <label for="tipo" class="control-label">{{ 'Tipo' }}</label>
+                                <select required class="form-control" name="tipo" id="tipo">
+                                    <option value="Ingreso">
+                                        {{ 'Ingreso'}}
+                                    </option>
+                                    <option value="Egreso">Egreso</option>
+                                </select>
+                                {!! $errors->first('tipo', '<p class="text-danger">:message</p>') !!}
+                            </div>
                             <div class="form-group col-sm {{ $errors->has('concepto') ? 'has-error' : ''}}">
                                 <label for="concepto" class="control-label">{{ 'Concepto' }}</label>
                                 <select class="form-control" required name="concepto" id="concepto">
@@ -56,16 +59,6 @@
                                 </select>
                                 {!! $errors->first('concepto', '<p class="text-danger">:message</p>') !!}
                             </div>
-                            <div class="form-group col-sm {{ $errors->has('tipo') ? 'has-error' : ''}}">
-                                <label for="tipo" class="control-label">{{ 'Tipo' }}</label>
-                                <select required class="form-control" name="tipo" id="tipo">
-                                    <option value="Ingreso">
-                                        {{ 'Ingreso'}}
-                                    </option>
-                                    <option value="Egreso">Egreso</option>
-                                </select>
-                                {!! $errors->first('tipo', '<p class="text-danger">:message</p>') !!}
-                            </div>
                             <div class="form-group col-sm">
                                 <label class="control-label" for="movimiento">Movimiento Nro:</label>
                                 <input type="number" readonly class="form-control" name="movimiento" id="movimiento"
@@ -76,7 +69,8 @@
                             <div class="form-group col-sm {{ $errors->has('persona') ? 'has-error' : ''}}">
                                 <label for="persona" class="control-label">{{ 'Personas' }}</label>
                                 {{-- <input type="text" id="persona"> --}}
-                                <select class="form-control" required name="persona" id="persona_select">
+                                <select class="form-control clientes-select2 select2-light" required name="persona"
+                                    id="persona_select">
                                     <option value="">{{'Seleccione una opcion'}}</option>
                                     @foreach ($personas as $item)
                                     <option value="{{$item->id}}">

@@ -16,7 +16,56 @@
         <div class="card">
             <div class="card-header font-weight-bold">Caja</div>
             <div class="card-body">
-
+                <div class="row">
+                    <div class="col-sm">
+                        <form method="GET" action="{{ route('caja_lista') }}" accept-charset="UTF-8"
+                            class="my-2 my-lg-0" role="tipo">
+                            <div class="input-group">
+                                <select class="form-control" name="tipo" value="{{ request('tipo') }}">
+                                    <option value=""><i class="fas fa-filter"></i> Filtrar por Tipo</option>
+                                    <option value="Ingreso">Ingreso</option>
+                                    <option value="Engreso">Engreso</option>
+                                </select>
+                                <span class="input-group-append">
+                                    <button class="btn btn-secondary" type="submit">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm">
+                        <form method="GET" action="{{ route('caja_lista') }}" accept-charset="UTF-8"
+                            class="my-2 my-lg-0" role="concepto">
+                            <div class="input-group">
+                                <select class="form-control" name="concepto" value="{{ request('concepto') }}">
+                                    <option value=""><i class="fas fa-filter"></i> Filtrar por Conceptos</option>
+                                    @foreach ($concepto as $item)
+                                    <option value="{{$item->id}}">{{$item->nombre}}</option>
+                                    @endforeach
+                                </select>
+                                <span class="input-group-append">
+                                    <button class="btn btn-secondary" type="submit">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <br>
+                {{-- <form method="GET" action="{{ route('caja_lista') }}" accept-charset="UTF-8" class="my-2 my-lg-0"
+                role="search">
+                <div class="input-group">
+                    <input placeholder="Buscar..." class="form-control" name="search" value="{{ request('search') }}" />
+                    <span class="input-group-append">
+                        <button class="btn btn-secondary" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+                </form>
+                <br> --}}
                 <div class="container mt-2">
                     <div class="table-responsive">
                         <table class="table text-center table-hover" id="tabla-data">
@@ -58,7 +107,7 @@
                                         @endif
                                     </td>
                                     @if ( ($item->tipo)=='Ingreso' )
-                                    <td class="subtotal">
+                                    <td class="subtotal sumaIngreso">
                                         <span class="badge badge-success">
                                             {{ $item->total }}
                                         </span>
@@ -70,7 +119,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <span class="badge badge-danger">
+                                        <span class="badge badge-danger sumaEgreso">
                                             {{ $item->total }}
                                         </span>
                                     </td>
@@ -94,6 +143,7 @@
                         <div class="pagination-wrapper"> {!! $cajas->appends(['search' =>
                             Request::get('search')])->render() !!} </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -106,9 +156,12 @@
         var sum=0;
         $('.subtotal').each(function() {  
             sum += parseFloat($(this).text().replace(/,/g, ''), 10);  
-        }); 
+        });         
+        
         console.log(sum);
         $('#total').val(sum.toFixed(2));
         $('#total_badge').val(sum.toFixed(2));
+
+      
  })
 </script>

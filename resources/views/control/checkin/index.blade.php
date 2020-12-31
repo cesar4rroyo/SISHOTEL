@@ -40,7 +40,7 @@
                 <div class="row">
                     <div class="col-sm form-group">
                         <label class="control-label" for="persona">{{'Cliente'}}</label>
-                        <select class="form-control" name="persona" id="persona" required>
+                        <select class="form-control clientes-select2" name="persona" id="persona" required>
                             <option value="">Seleccione Uno</option>
                             @foreach ($personas as $persona)
                             <option value="{{$persona['id']}}">

@@ -51,7 +51,7 @@
                         <button type="button" id="btnActualizar" class="btn btn-outline-primary">Actualizar
                             Reserva</button>
                         <button type="button" id="btnEliminar" class="btn btn-outline-danger">
-                            Cancelar</button>
+                            Cancelar Reserva</button>
                     </div>
                 </form>
                 {{-- <div class="container">

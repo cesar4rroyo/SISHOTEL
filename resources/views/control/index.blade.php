@@ -75,18 +75,6 @@
                                                                 <i class="fas fa-search"></i>
                                                             </span>
                                                         </a>
-                                                        {{-- @foreach ($reservas as $reserva)
-                                                        @if ($reserva['id']==$item['id'])
-                                                        @if (count($item['reserva'])==0)
-                                                        @break
-                                                        @else
-                                                        <span class="badge bg-danger mt-2">
-                                                            {{'Habitacion Reservada'}}
-                                                        </span>
-                                                        @break
-                                                        @endif
-                                                        @endif
-                                                        @endforeach --}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -124,6 +112,11 @@
                                                 class="btn btn-app bg-success disabled text-decoration-none">
                                                 <i class="fas fa-check-circle"></i>
                                                 Check-In
+                                            </a>
+                                            <a href="{{route('edit_habitacion' , $item['id'])}}"
+                                                class="btn btn-app bg-warning text-decoration-none">
+                                                <i class="fas fa-check-circle"></i>
+                                                Actualizar Habitación
                                             </a>
                                             @endswitch
 

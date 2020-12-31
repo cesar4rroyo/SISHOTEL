@@ -23,7 +23,8 @@
                             </div>
                             <div class="form-group col-sm">
                                 <label class="control-label" for="numero">Número</label>
-                                <input type="number" class="form-control" name="numero" id="numero" value="">
+                                <input type="number" readonly class="form-control" name="numero" id="numero"
+                                    value="{{$numero}}">
                             </div>
                         </div>
                         <div class="row">
@@ -67,7 +68,7 @@
                         <div class="row">
                             <div class="form-group col-sm {{ $errors->has('persona') ? 'has-error' : ''}}">
                                 <label for="persona" class="control-label">{{ 'Personas' }}</label>
-                                <select class="form-control" required name="persona" id="persona">
+                                <select class="form-control clientes-select2" required name="persona" id="persona">
                                     <option value="">{{'Seleccione una opcion'}}</option>
                                     @foreach ($personas as $item)
                                     <option value="{{$item->id}}">

@@ -32,13 +32,35 @@ class CajaController extends Controller
         return view('control.caja.index', compact('cajas'));
     }
 
-    public function indexLista()
+    public function indexLista(Request $request)
     {
-        $cajas =
-            Caja::with('concepto', 'usuario', 'persona', 'movimiento')
-            ->orderBy('created_at', 'DESC')
-            ->paginate(10);
-        return view('control.caja.movimientos.index', compact('cajas'));
+        $search = $request->get('search');
+        $concepto = $request->get('concepto');
+        $tipo = $request->get('tipo');
+
+        if (!empty($concepto)) {
+            $cajas =
+                Caja::with('concepto', 'usuario', 'persona', 'movimiento')
+                ->whereHas('concepto', function ($q) use ($concepto) {
+                    $q->where('id', $concepto);
+                })
+                ->orderBy('created_at', 'DESC')
+                ->paginate(10);
+        } else if (!empty($tipo)) {
+            $cajas =
+                Caja::with('concepto', 'usuario', 'persona', 'movimiento')
+                ->where('tipo', $tipo)
+                ->orderBy('created_at', 'DESC')
+                ->paginate(10);
+        } else {
+            $cajas =
+                Caja::with('concepto', 'usuario', 'persona', 'movimiento')
+                ->orderBy('created_at', 'DESC')
+                ->paginate(10);
+        }
+
+        $concepto = Concepto::with('caja')->get();
+        return view('control.caja.movimientos.index', compact('concepto', 'cajas'));
     }
 
 
@@ -97,6 +119,7 @@ class CajaController extends Controller
 
     public function edit($id)
     {
+
         $cajaApertura =
             Caja::with('movimiento', 'persona', 'concepto')
             ->latest('created_at')->first()->toArray();
@@ -221,7 +244,15 @@ class CajaController extends Controller
         $total = $request->total;
         $habitacion = $request->habitacion_id;
         $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
+        $caja = Caja::latest('id')->first();
 
+        if (!is_null($caja)) {
+            $caja->get()->toArray();
+            $numero = $caja['numero'] + 1;
+            $numero = $this->zero_fill($numero, 8);
+        } else {
+            $numero = $this->zero_fill(1, 8);
+        }
         $movimiento->update([
             'fechasalida' => $request->fechasalida,
             'dias' => $request->dias,
@@ -229,7 +260,7 @@ class CajaController extends Controller
             'situacion' => 'En espera pago',
         ]);
 
-        return view('control.caja.checkout.create', compact('habitacion', 'conceptos', 'id', 'personas', 'today', 'total'));
+        return view('control.caja.checkout.create', compact('numero', 'habitacion', 'conceptos', 'id', 'personas', 'today', 'total'));
     }
     public function checkout(Request $request, $id)
     {
@@ -278,6 +309,16 @@ class CajaController extends Controller
             foreach ($cart as $key => $item) {
                 $total += ($item['precio'] * $item['cantidad']);
             }
+            $cajaValidate = Caja::latest('id')->first();
+
+            if (!is_null($cajaValidate)) {
+                $cajaValidate->get()->toArray();
+                $numero = $cajaValidate['numero'] + 1;
+                $numero = $this->zero_fill($numero, 8);
+            } else {
+                $numero = $this->zero_fill(1, 8);
+            }
+
             $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
             $today = Carbon::now()->toDateString();
             $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
@@ -297,6 +338,15 @@ class CajaController extends Controller
             $total = 0;
             foreach ($cart as $key => $item) {
                 $total += ($item['precio'] * $item['cantidad']);
+            }
+            $cajaValidate = Caja::latest('id')->first();
+
+            if (!is_null($cajaValidate)) {
+                $cajaValidate->get()->toArray();
+                $numero = $cajaValidate['numero'] + 1;
+                $numero = $this->zero_fill($numero, 8);
+            } else {
+                $numero = $this->zero_fill(1, 8);
             }
 
             $conceptos = Concepto::with('caja')->orderBy('nombre')->get();

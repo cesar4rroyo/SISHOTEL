@@ -11,6 +11,17 @@
     </div>
 </div>
 <div class="row">
+    <div class="form-group col-sm {{ $errors->has('tipo') ? 'has-error' : ''}}">
+        <label for="tipo" class="control-label">{{ 'Tipo' }}</label>
+        <select required class="form-control" name="tipo" id="tipo">
+            <option value="{{ isset($caja->tipo) ? $caja->tipo : ''}}">
+                {{ isset($caja->tipo) ? $caja->tipo : 'Seleccione una opcion'}}
+            </option>
+            <option value="Ingreso">Ingreso</option>
+            <option value="Egreso">Egreso</option>
+        </select>
+        {!! $errors->first('concepto', '<p class="text-danger">:message</p>') !!}
+    </div>
     <div class="form-group col-sm {{ $errors->has('concepto') ? 'has-error' : ''}}">
         <label for="concepto" class="control-label">{{ 'Concepto' }}</label>
         <select required class="form-control" name="concepto" id="concepto">
@@ -31,17 +42,7 @@
         </select>
         {!! $errors->first('concepto', '<p class="text-danger">:message</p>') !!}
     </div>
-    <div class="form-group col-sm {{ $errors->has('tipo') ? 'has-error' : ''}}">
-        <label for="tipo" class="control-label">{{ 'Tipo' }}</label>
-        <select required class="form-control" name="tipo" id="tipo">
-            <option value="{{ isset($caja->tipo) ? $caja->tipo : ''}}">
-                {{ isset($caja->tipo) ? $caja->tipo : 'Seleccione una opcion'}}
-            </option>
-            <option value="Ingreso">Ingreso</option>
-            <option value="Egreso">Egreso</option>
-        </select>
-        {!! $errors->first('concepto', '<p class="text-danger">:message</p>') !!}
-    </div>
+
 </div>
 <div class="row">
     <div class="form-group col-sm {{ $errors->has('persona') ? 'has-error' : ''}}">
