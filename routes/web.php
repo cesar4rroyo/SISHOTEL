@@ -173,7 +173,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     Route::put('habitaciones/{id}', 'HabitacionesController@update')->name('update_habitaciones');
     Route::delete('habitaciones/{id}/destroy', 'HabitacionesController@destroy')->name('destroy_habitaciones');
 });
-Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['auth', 'acceso']], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['auth']], function () {
     /* Rutas de Movimientos */
     Route::get('movimiento/create', 'MovimientoController@create')->name('create_movimiento');
     Route::get('movimiento', 'MovimientoController@index')->name('movimiento');
@@ -183,8 +183,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     Route::get('movimiento/reserva/{id_habitacion}/{id_reserva}', 'MovimientoController@editConReserva')->name('edit_movimiento_reserva');
     Route::put('movimiento/{id}', 'MovimientoController@update')->name('update_movimiento');
     Route::delete('movimiento/{id}/destroy', 'MovimientoController@destroy')->name('destroy_movimiento');
-});
-Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['auth', 'acceso']], function () {
+
     //carrito productos
     Route::get('addToCart/{id}', 'CartController@addToCart')->name('addToCart');
     Route::patch('updateCart', 'CartController@update')->name('updateCart');
@@ -205,22 +204,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     Route::get('detallemovimiento/{id}/edit', 'DetalleMovimientoController@edit')->name('edit_detallemovimiento');
     Route::put('detallemovimiento/{id}', 'DetalleMovimientoController@update')->name('update_detallemovimiento');
     Route::delete('detallemovimiento/{id}/destroy', 'DetalleMovimientoController@destroy')->name('destroy_detallemovimiento');
-    //Routas caja
-    Route::get('caja/create/apertura', 'CajaController@create_apertura')->name('apertura_caja');
-    Route::get('caja/create', 'CajaController@create')->name('create_caja');
-    Route::get('caja/create/cierre', 'CajaController@create_cierre')->name('cierre_caja');
-    Route::get('caja', 'CajaController@index')->name('caja');
-    Route::get('caja/lista', 'CajaController@indexLista')->name('caja_lista');
-    Route::get('caja/{id}', 'CajaController@show')->name('show_caja');
-    Route::post('caja', 'CajaController@store')->name('store_caja');
-    Route::get('caja/{id}/edit', 'CajaController@edit')->name('edit_caja');
-    Route::put('caja/{id}', 'CajaController@update')->name('update_caja');
-    Route::delete('caja/{id}/destroy', 'CajaController@destroy')->name('destroy_caja');
-    //caja desde movimientos detalle
-    Route::get('caja/{id}/addDetalle/producto', 'CajaController@addFromDetallePdto')->name('add_detail_producto');
-    Route::post('addDetalle/producto', 'CajaController@storeProducto')->name('store_caja_producto');
-    Route::post('addServicio/servicio', 'CajaController@storeServicio')->name('store_caja_servicio');
-    Route::get('caja/{id}/addDetalle/servicio', 'CajaController@addFromDetalleService')->name('add_detail_servicio');
+
     //cheak-out
     Route::post('movimiento/checkout/{id}', 'CajaController@checkout')->name('checkout');
     Route::post('movimiento/{id}/checkout', 'CajaController@createCheckout')->name('add_checkout');
@@ -241,4 +225,24 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     Route::post('ventas/addDetalle/producto', 'VentasController@storeProducto')->name('store_caja_producto_ventas');
     Route::post('ventas/addServicio/servicio', 'VentasController@storeServicio')->name('store_caja_servicio_ventas');
     Route::post('ventas/caja/addDetalle/servicio', 'VentasController@addFromDetalleService')->name('add_detail_servicio_ventas');
+
+    //caja desde movimientos detalle
+    Route::post('addDetalle/producto', 'CajaController@storeProducto')->name('store_caja_producto');
+    Route::post('addServicio/servicio', 'CajaController@storeServicio')->name('store_caja_servicio');
+});
+Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['auth', 'acceso']], function () {
+    //Routas caja
+    Route::get('caja/create/apertura', 'CajaController@create_apertura')->name('apertura_caja');
+    Route::get('caja/create', 'CajaController@create')->name('create_caja');
+    Route::get('caja/create/cierre', 'CajaController@create_cierre')->name('cierre_caja');
+    Route::get('caja', 'CajaController@index')->name('caja');
+    Route::get('caja/lista', 'CajaController@indexLista')->name('caja_lista');
+    Route::get('caja/{id}', 'CajaController@show')->name('show_caja');
+    Route::post('caja', 'CajaController@store')->name('store_caja');
+    Route::get('caja/{id}/edit', 'CajaController@edit')->name('edit_caja');
+    Route::put('caja/{id}', 'CajaController@update')->name('update_caja');
+    Route::delete('caja/{id}/destroy', 'CajaController@destroy')->name('destroy_caja');
+    //caja desde movimientos detalle
+    Route::get('caja/{id}/addDetalle/producto', 'CajaController@addFromDetallePdto')->name('add_detail_producto');
+    Route::get('caja/{id}/addDetalle/servicio', 'CajaController@addFromDetalleService')->name('add_detail_servicio');
 });

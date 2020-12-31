@@ -13,7 +13,11 @@ class AccesoPermisos
     {
         $ruta = $request->path();
         $ruta_corta = explode('/', $ruta);
+        // if (count($ruta_corta) == 3) {
+        //     $ruta_final = $ruta_corta[0] . "/" . $ruta_corta[1] . "/" . $ruta_corta[2];
+        // } else {
         $ruta_final = $ruta_corta[0] . "/" . $ruta_corta[1];
+
         if ($this->permiso($ruta_final)) {
             return $next($request);
         } else {
@@ -23,6 +27,7 @@ class AccesoPermisos
 
     private function permiso($ruta)
     {
+
         $opcion = OpcionMenu::where('link', '=', $ruta)->get()->toArray();
         $tipousuario_id = session()->get('tipousuario_id');
         $final = DB::table('acceso')

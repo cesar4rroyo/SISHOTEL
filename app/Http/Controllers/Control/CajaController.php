@@ -20,14 +20,14 @@ class CajaController extends Controller
             Caja::with('movimiento', 'persona', 'concepto')->whereHas('concepto', function ($q) {
                 $q->where('id', 2);
             })
-            ->latest('created_at')->first()->toArray();
+            ->latest('fecha')->first()->toArray();
 
         $cajas =
             Caja::with('concepto', 'usuario', 'persona', 'movimiento')
             ->where('fecha', '>', $caja['fecha'])
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('fecha', 'DESC')
             ->paginate(10);
-        // dd($cajas);
+        // dd($cajas->toArray());
 
         return view('control.caja.index', compact('cajas'));
     }

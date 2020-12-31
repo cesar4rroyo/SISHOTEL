@@ -20,7 +20,8 @@
                         <div class="row">
                             <div class="form-group col-sm">
                                 <label class="control-label" for="fecha">Fecha</label>
-                                <input type="date" id="fecha" class="form-control" name="fecha" value="{{$today}}">
+                                <input type="datetime-local" id="fecha" class="form-control" name="fecha"
+                                    value="{{Carbon\Carbon::now()->format('Y-m-d\TH:i')}}">
                             </div>
                             <div class="col-sm form-group">
                                 <label class="control-label" for="numero">Número</label>
