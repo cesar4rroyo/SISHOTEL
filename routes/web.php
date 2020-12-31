@@ -163,7 +163,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Reservas', 'middleware' => ['
     //reserva buscador
     Route::get('nombres/buscador', 'PersonaController@buscador');
 });
-Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['auth', 'acceso']], function () {
     /* Rutas de HABITACIONES */
     Route::get('habitaciones/create', 'HabitacionesController@create')->name('create_habitaciones');
     Route::get('habitaciones', 'HabitacionesController@index')->name('habitaciones');
@@ -173,7 +173,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
     Route::put('habitaciones/{id}', 'HabitacionesController@update')->name('update_habitaciones');
     Route::delete('habitaciones/{id}/destroy', 'HabitacionesController@destroy')->name('destroy_habitaciones');
 });
-Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['auth', 'acceso']], function () {
     /* Rutas de Movimientos */
     Route::get('movimiento/create', 'MovimientoController@create')->name('create_movimiento');
     Route::get('movimiento', 'MovimientoController@index')->name('movimiento');
@@ -184,7 +184,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
     Route::put('movimiento/{id}', 'MovimientoController@update')->name('update_movimiento');
     Route::delete('movimiento/{id}/destroy', 'MovimientoController@destroy')->name('destroy_movimiento');
 });
-Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['auth', 'acceso']], function () {
     //carrito productos
     Route::get('addToCart/{id}', 'CartController@addToCart')->name('addToCart');
     Route::patch('updateCart', 'CartController@update')->name('updateCart');
