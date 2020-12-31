@@ -22,8 +22,8 @@
                                     <i class="fas fa-plus-circle"></i>
                                     {{'Agregar Nuevo'}}</span>
                             </a>
-                            <select name="persona" class="form-control" id="persona" required>
-                                <option value="">Seleccione una opcion</option>
+                            <select name="persona" class="clientes-select2" id="persona" required>
+                                <option value="">Seleccione una persona</option>
                                 @foreach ($clientes as $cliente)
                                 <option value="{{$cliente['id']}}">
                                     {{$cliente['nombres']}} {{$cliente['apellidos']}}</option>
@@ -34,7 +34,8 @@
                     <div class="form-group">
                         <label for="selectHabitacion"
                             class="control-label selectHabitacion">{{ 'Habitaciones Disponibles' }}</label>
-                        <select name="habitacion" class="form-control" id="selectHabitacion">
+                        <select name="habitacion[]" multiple='multiple' class="form-control habitacion-select2"
+                            id="selectHabitacion">
                             <option value="{{$initialDate}}">Seleccione una opcion</option>
                         </select>
                     </div>

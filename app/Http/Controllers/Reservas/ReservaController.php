@@ -38,15 +38,18 @@ class ReservaController extends Controller
 
     public function store(Request $request)
     {
+        $habitaciones = $request->habitacion;
+        foreach ($habitaciones as $key => $item) {
+            $reserva = Reserva::create([
+                'fecha' => $request->txtFecha,
+                'observacion' => $request->observacion,
+                'persona_id' => $request->persona,
+                'habitacion_id' => $item,
+                'usuario_id' => session()->all()['usuario_id'],
+                'situacion' => 'Reservado',
+            ]);
+        }
 
-        $reserva = Reserva::create([
-            'fecha' => $request->txtFecha,
-            'observacion' => $request->observacion,
-            'persona_id' => $request->persona,
-            'habitacion_id' => $request->habitacion,
-            'usuario_id' => session()->all()['usuario_id'],
-            'situacion' => 'Reservado',
-        ]);
         return redirect()
             ->route('reserva')
             ->with('success', 'La reserva se registró correctamente');

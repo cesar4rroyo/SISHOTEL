@@ -53,5 +53,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     $('.select2').select2();
 
+    $('.clientes-select2').select2();
+
+    $(".clientes-select2").select2({
+        theme: "classic",
+        width: '100%',
+    });
+    $(".habitacion-select2").select2({
+        theme: "classic",
+        width: '100%',
+        height: '100px'
+    })
 
 });
