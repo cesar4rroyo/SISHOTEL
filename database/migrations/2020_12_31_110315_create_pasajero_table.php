@@ -21,6 +21,7 @@ class CreatePasajeroTable extends Migration
                 ->on('persona')
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
+            $table->unsignedInteger('movimiento_id');
             $table->foreign('movimiento_id', 'fk_pasajero_movimiento')
                 ->references('id')
                 ->on('movimiento')

@@ -29,7 +29,7 @@ class ValidatePersona extends FormRequest
             'nombres' => 'required |max:20',
             'apellidos' => 'max:20',
             'direccion' => 'nullable| required |max:50',
-            'telefono' => 'nullable |max:9|min:9|numeric'
+            'telefono' => 'nullable |min:9|numeric'
         ];
     }
 }

@@ -175,7 +175,7 @@ class VentasController extends Controller
             $comentario = $request->comentario;
             $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
             $today = Carbon::now()->toDateString();
-            $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
+            $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
             return view('control.ventas.createProducto', compact('numero', 'conceptos', 'personas', 'today', 'total', 'comentario'));
         }
         return redirect()
@@ -209,7 +209,7 @@ class VentasController extends Controller
             $comentario = $request->comentario;
             $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
             $today = Carbon::now()->toDateString();
-            $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
+            $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
             return view('control.ventas.createServicio', compact('numero', 'conceptos', 'personas', 'today', 'total', 'comentario'));
         }
         return redirect()

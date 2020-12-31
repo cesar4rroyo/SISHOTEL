@@ -116,6 +116,40 @@
                             <textarea class="form-control" name="comentario" id="comentario" cols="10"
                                 rows="5"></textarea>
                         </div>
+                        <div class="row">
+                            <label for="movimientos">Personas</label>
+                            <div id="personas" class="table-responsive">
+                                <table class="table text-center table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>DNI / RUC</th>
+                                            <th>Teléfono</th>
+                                            <th>Dirección</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($pasajeros as $item)
+                                        <tr>
+                                            <td>
+                                                {{isset($item['persona']['nombres'])? $item['persona']['nombres'] . " " . $item['persona']['apellidos'] : $item['persona']['nombres']}}
+                                            </td>
+                                            <td>
+                                                {{isset($item['persona']['ruc'])?$item['persona']['ruc']:$item['persona']['dni']}}
+                                            </td>
+                                            <td>
+                                                {{$item['persona']['telefono']}}
+                                            </td>
+                                            <td>
+                                                {{$item['persona']['direccion']}}
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                         <div class="container text-center">
                             <button type="submit" class="btn btn-outline-success col-6">
                                 Agregar a habitación
