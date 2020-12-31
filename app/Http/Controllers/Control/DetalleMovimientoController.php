@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Procesos\Caja;
 use App\Models\Procesos\DetalleMovimiento;
 use App\Models\Procesos\Movimiento;
+use App\Models\Procesos\Pasajero;
 use App\Models\Producto;
 use App\Models\Servicios;
 use Carbon\Carbon;
@@ -30,7 +31,7 @@ class DetalleMovimientoController extends Controller
         }
 
         $movimientos =
-            Movimiento::with('persona', 'reserva', 'habitacion', 'detallemovimiento')
+            Movimiento::with('pasajero', 'reserva', 'habitacion', 'detallemovimiento')
             ->whereHas('habitacion', function ($q) use ($id) {
                 $q->where('id', $id);
             })->latest('fechaingreso')->first()->toArray();
@@ -46,7 +47,7 @@ class DetalleMovimientoController extends Controller
             $productos = Producto::get()->toArray();
         }
         $movimientos =
-            Movimiento::with('persona', 'reserva', 'habitacion', 'detallemovimiento')
+            Movimiento::with('pasajero', 'reserva', 'habitacion', 'detallemovimiento')
             ->whereHas('habitacion', function ($q) use ($id) {
                 $q->where('id', $id);
             })->latest('fechaingreso')->first()->toArray();
@@ -58,19 +59,23 @@ class DetalleMovimientoController extends Controller
         if (is_null($movimiento)) {
             $productos = Producto::get()->toArray();
             $movimientos =
-                Movimiento::with('persona', 'reserva', 'habitacion', 'detallemovimiento')
+                Movimiento::with('pasajero', 'reserva', 'habitacion', 'detallemovimiento')
                 ->whereHas('habitacion', function ($q) use ($id) {
                     $q->where('id', $id);
                 })->latest('fechaingreso')->first()->toArray();
-            return view('control.detallemovimientos.add', compact('productos', 'movimientos', 'id'));
+            $pasajeros = Pasajero::with('persona', 'movimiento')->where('movimiento_id', $movimientos['id'])->get()->toArray();
+
+            return view('control.detallemovimientos.add', compact('pasajeros', 'productos', 'movimientos', 'id'));
         } else {
             $servicios = Servicios::get()->toArray();
             $movimientos =
-                Movimiento::with('persona', 'reserva', 'habitacion', 'detallemovimiento')
+                Movimiento::with('pasajero', 'reserva', 'habitacion', 'detallemovimiento')
                 ->whereHas('habitacion', function ($q) use ($id) {
                     $q->where('id', $id);
                 })->latest('fechaingreso')->first()->toArray();
-            return view('control.detallemovimientos.addServicio', compact('servicios', 'movimientos', 'id'));
+            $pasajeros = Pasajero::with('persona', 'movimiento')->where('movimiento_id', $movimientos['id'])->get()->toArray();
+
+            return view('control.detallemovimientos.addServicio', compact('pasajeros', 'servicios', 'movimientos', 'id'));
         }
     }
     /**

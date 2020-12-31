@@ -81,7 +81,7 @@ class CajaController extends Controller
             }
             $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
             $today = Carbon::now();
-            $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
+            $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
             return view('control.caja.create', compact('numero', 'conceptos', 'personas', 'today'));
         } else {
             return redirect()
@@ -128,7 +128,7 @@ class CajaController extends Controller
             $caja = Caja::findOrFail($id);
             $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
             $today = Carbon::now()->toDateString();
-            $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
+            $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
             return view('control.caja.edit', compact('caja', 'conceptos', 'personas', 'today'));
         } else {
             return redirect()
@@ -196,7 +196,7 @@ class CajaController extends Controller
                     Caja::with('concepto', 'usuario', 'persona', 'movimiento')->get()->toArray();
                 $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
                 $today = Carbon::now()->toDateString();
-                $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
+                $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
                 return view('control.caja.cierre.create', compact('numero', 'total', 'conceptos', 'personas', 'today'));
             }
         }
@@ -227,7 +227,7 @@ class CajaController extends Controller
 
             $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
             $today = Carbon::now()->toDateString();
-            $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
+            $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
             return view('control.caja.apertura.create', compact('numero', 'conceptos', 'personas', 'today'));
         }
         return redirect()
@@ -243,7 +243,7 @@ class CajaController extends Controller
         $today = Carbon::now()->toDateString();
         $total = $request->total;
         $habitacion = $request->habitacion_id;
-        $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
+        $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
         $caja = Caja::latest('id')->first();
 
         if (!is_null($caja)) {
@@ -321,7 +321,7 @@ class CajaController extends Controller
 
             $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
             $today = Carbon::now()->toDateString();
-            $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
+            $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
             return view('control.caja.producto.create', compact('numero', 'conceptos', 'id', 'personas', 'today', 'total'));
         }
         return redirect()
@@ -351,7 +351,7 @@ class CajaController extends Controller
 
             $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
             $today = Carbon::now()->toDateString();
-            $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
+            $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
             return view('control.caja.servicio.create', compact('numero', 'conceptos', 'id', 'personas', 'today', 'total'));
         }
         return redirect()

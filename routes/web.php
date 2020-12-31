@@ -47,6 +47,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('persona', 'PersonaController@index')->name('persona');
     Route::get('persona/{id}', 'PersonaController@show')->name('show_persona');
     Route::post('persona', 'PersonaController@store')->name('store_persona');
+    Route::post('persona', 'PersonaController@store_checkin')->name('store_persona_checkin');
+    Route::post('persona/checkin/reserva/{id}', 'PersonaController@store_checkin_reserva')->name('store_persona_checkin_reserva');
     Route::get('persona/{id}/edit', 'PersonaController@edit')->name('edit_persona');
     Route::put('persona/{id}', 'PersonaController@update')->name('update_persona');
     Route::delete('persona/{id}/destroy', 'PersonaController@destroy')->name('destroy_persona');
@@ -177,7 +179,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     /* Rutas de Movimientos */
     Route::get('movimiento/create', 'MovimientoController@create')->name('create_movimiento');
     Route::get('movimiento', 'MovimientoController@index')->name('movimiento');
-    Route::get('movimiento/{id}', 'MovimientoController@show')->name('show_movimiento');
+    Route::get('movimiento/show', 'MovimientoController@show')->name('show_movimiento');
     Route::post('movimiento/{id_reserva?}', 'MovimientoController@store')->name('store_movimiento');
     Route::get('movimiento/{id}/edit', 'MovimientoController@edit')->name('edit_movimiento');
     Route::get('movimiento/reserva/{id_habitacion}/{id_reserva}', 'MovimientoController@editConReserva')->name('edit_movimiento_reserva');

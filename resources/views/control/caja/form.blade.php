@@ -47,7 +47,7 @@
 <div class="row">
     <div class="form-group col-sm {{ $errors->has('persona') ? 'has-error' : ''}}">
         <label for="persona" class="control-label">{{ 'Personas' }}</label>
-        <select required class="form-control" name="persona" id="persona">
+        <select required class="form-control clientes-select2" name="persona" id="persona">
             <option value="{{ isset($caja->persona) ? $caja->persona->id : ''}}">
                 {{ isset($caja->persona->nombres) ? $caja->persona->nombres : 'Seleccione una opcion'}}
             </option>

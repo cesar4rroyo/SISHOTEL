@@ -6,12 +6,16 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Concepto;
 use App\Models\Habitacion;
+use App\Models\Nacionalidad;
 use App\Models\Persona;
 use App\Models\Procesos\DetalleMovimiento;
 use App\Models\Procesos\Movimiento;
+use App\Models\Procesos\Pasajero;
 use App\Models\Procesos\Reserva;
+use App\Models\Rol;
 use App\Models\Seguridad\Usuario;
 use Carbon\Carbon;
+use Illuminate\Contracts\Session\Session;
 
 class MovimientoController extends Controller
 {
@@ -31,11 +35,14 @@ class MovimientoController extends Controller
     public function editConReserva($id_habitacion, $id_reserva)
     {
         $reserva = $id_reserva;
+        $initialDate = Carbon::now()->format('Y-m-d\TH:i');
+        $roles = Rol::orderBy('id')->pluck('nombre', 'id')->toArray();
+        $nacionalidades = Nacionalidad::with('persona')->get();
         $habitacion = Habitacion::with('tipohabitacion', 'piso', 'reserva')->find($id_habitacion)->toArray();
         if ($habitacion['situacion'] == 'Disponible' || $habitacion['situacion'] == 'Limpieza') {
             $personas = Persona::getClientes();
             $initialDate = Carbon::now()->format('Y-m-d\TH:i');
-            return view('control.checkin.index', compact('habitacion', 'personas', 'initialDate', 'reserva'));
+            return view('control.checkin.conreserva', compact('nacionalidades', 'roles', 'habitacion', 'personas', 'initialDate', 'reserva'));
         } else {
             return redirect()
                 ->route('habitaciones')
@@ -57,32 +64,30 @@ class MovimientoController extends Controller
                 'situacion' => 'Usada',
             ]);
         }
+        $personas = $request->persona;
+        if (session()->get('pasajeros')) {
+            session()->pull('pasajeros', []);
+        }
+        session()->push('pasajeros', $personas);
+
+
         $movimiento = Movimiento::create([
             'fechaingreso' => $request->fechaingreso,
-            'persona_id' => $request->persona,
             'preciohabitacion' => $request->preciohabitacion,
             'usuario_id' => session()->all()['usuario_id'],
             'habitacion_id' => $request->habitacion,
             'situacion' => 'Pendiente'
         ]);
+        $habitacion = $request->habitacion;
 
-        $habitacion = Habitacion::find($request->habitacion);
-        $habitacion->update([
-            'situacion' => 'Ocupada'
-        ]);
 
-        return redirect()
-            ->route('habitaciones')
-            ->with('success', 'Agregado correctamente');
+        return view('control.checkin.confirmacion', compact('habitacion'));
     }
-
-
-
-    public function show($id)
+    public function show()
     {
-        //
+        $movimiento = Movimiento::latest('id')->first()->toArray();
+        return response()->json($movimiento);
     }
-
 
     public function edit($id)
     {
@@ -91,9 +96,11 @@ class MovimientoController extends Controller
         if ($habitacion['situacion'] == 'Disponible' || $habitacion['situacion'] == 'Limpieza') {
             $personas = Persona::getClientes();
             $initialDate = Carbon::now()->format('Y-m-d\TH:i');
-            return view('control.checkin.index', compact('habitacion', 'personas', 'initialDate'));
+            $roles = Rol::orderBy('id')->pluck('nombre', 'id')->toArray();
+            $nacionalidades = Nacionalidad::with('persona')->get();
+
+            return view('control.checkin.index', compact('roles', 'nacionalidades', 'habitacion', 'personas', 'initialDate'));
         } else if ($habitacion['situacion'] == 'Ocupada') {
-            $personas = Persona::getClientes();
             $initialDate = Carbon::now()->format('Y-m-d\TH:i');
             $detalles = DetalleMovimiento::with('producto', 'servicios')
                 ->whereHas('movimiento', function ($h) use ($id) {
@@ -102,19 +109,46 @@ class MovimientoController extends Controller
                     })->latest('fechaingreso');
                 })->get()->toArray();
             $movimiento =
-                Movimiento::with('persona', 'reserva', 'habitacion', 'detallemovimiento')
+                Movimiento::with('pasajero', 'reserva', 'habitacion', 'detallemovimiento')
                 ->whereHas('habitacion', function ($q) use ($id) {
                     $q->where('id', $id);
                 })->latest('fechaingreso')->first()->toArray();
+            $pasajeros = Pasajero::with('persona', 'movimiento')
+                ->whereHas('movimiento', function ($q) use ($id) {
+                    $q->where('habitacion_id', $id);
+                })
+                ->where('movimiento_id', $movimiento['id'])
+                ->get()
+                ->toArray();
 
-            return view('control.checkout.index', compact('conceptos', 'habitacion', 'personas', 'initialDate', 'detalles', 'movimiento'));
+
+            return view('control.checkout.index', compact('conceptos', 'habitacion', 'initialDate', 'detalles', 'movimiento', 'pasajeros'));
         }
     }
 
 
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $pasajeros = session()->get('pasajeros')[0];
+            foreach ($pasajeros as $key => $item) {
+                $pasajero = Pasajero::create([
+                    'movimiento_id' => $request->movimiento,
+                    'persona_id' => $item
+                ]);
+            }
+            $habitacion = Habitacion::find($id);
+            $habitacion->update([
+                'situacion' => 'Ocupada'
+            ]);
+            return redirect()
+                ->route('habitaciones')
+                ->with('success', 'El Check-in se ha realizado correctamente');
+        } catch (\Throwable $th) {
+            return redirect()
+                ->route('habitaciones')
+                ->with('error', 'Ha ocurrido un error interno' . $th);
+        }
     }
 
 

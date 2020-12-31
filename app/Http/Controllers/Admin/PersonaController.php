@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ValidatePersona;
+use App\Models\Habitacion;
 use App\Models\Nacionalidad;
 use App\Models\Persona;
 use App\Models\Rol;
+use Carbon\Carbon;
 
 class PersonaController extends Controller
 {
@@ -72,6 +74,61 @@ class PersonaController extends Controller
         return redirect()
             ->route('persona')
             ->with('success', 'Agregado correctamente');
+    }
+    public function store_checkin_reserva(Request $request, $id)
+    {
+        $reserva = $id;
+        $habitacion = Habitacion::with('tipohabitacion', 'piso', 'reserva')->find($request->habitacion)->toArray();
+        $initialDate = Carbon::now()->format('Y-m-d\TH:i');
+        $roles = Rol::orderBy('id')->pluck('nombre', 'id')->toArray();
+        $nacionalidades = Nacionalidad::with('persona')->get();
+
+        $persona = Persona::create([
+            'nombres' => $request->nombres,
+            'apellidos' => $request->apellidos,
+            'razonsocial' => $request->razonsocial,
+            'ruc' => $request->ruc,
+            'dni' => $request->dni,
+            'direccion' => $request->direccion,
+            'sexo' => $request->sexo,
+            'fechanacimiento' => $request->fechanacimiento,
+            'telefono' => $request->telefono,
+            'observacion' => $request->observacion,
+            'nacionalidad_id' => $request->nacionalidad_id,
+
+        ]);
+        $persona->roles()->sync($request->rol_id);
+
+        $personas = Persona::getClientes();
+
+        return view('control.checkin.conreserva', compact('reserva', 'roles', 'nacionalidades', 'habitacion', 'personas', 'initialDate'));
+    }
+    public function store_checkin(Request $request)
+    {
+        $habitacion = Habitacion::with('tipohabitacion', 'piso', 'reserva')->find($request->habitacion)->toArray();
+        $initialDate = Carbon::now()->format('Y-m-d\TH:i');
+        $roles = Rol::orderBy('id')->pluck('nombre', 'id')->toArray();
+        $nacionalidades = Nacionalidad::with('persona')->get();
+
+        $persona = Persona::create([
+            'nombres' => $request->nombres,
+            'apellidos' => $request->apellidos,
+            'razonsocial' => $request->razonsocial,
+            'ruc' => $request->ruc,
+            'dni' => $request->dni,
+            'direccion' => $request->direccion,
+            'sexo' => $request->sexo,
+            'fechanacimiento' => $request->fechanacimiento,
+            'telefono' => $request->telefono,
+            'observacion' => $request->observacion,
+            'nacionalidad_id' => $request->nacionalidad_id,
+
+        ]);
+        $persona->roles()->sync($request->rol_id);
+
+        $personas = Persona::getClientes();
+
+        return view('control.checkin.index', compact('roles', 'nacionalidades', 'habitacion', 'personas', 'initialDate'));
     }
 
 

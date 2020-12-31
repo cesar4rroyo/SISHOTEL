@@ -36,85 +36,120 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm form-group">
+                            {{-- <div class="col-sm form-group">
                                 <label for="persona">{{'Cliente'}}</label>
-                                <input
-                                    value="{{$movimiento['persona']['nombres']}}{{" "}}{{$movimiento['persona']['apellidos']}}"
-                                    type="text" class="form-control" name="persona" id="persona">
-                            </div>
-                            <div class="col-sm form-group">
-                                <label class="control-label" for="preciohabitacion">{{'Precio Habitacion'}}</label>
-                                <input readonly class="form-control" value="{{$habitacion['tipohabitacion']['precio']}}"
-                                    type="number" name="preciohabitacion" id="preciohabitacion">
-                            </div>
-                            {{-- @isset($reserva)
+                            <input
+                                value="{{$movimiento['persona']['nombres']}}{{" "}}{{$movimiento['persona']['apellidos']}}"
+                                type="text" class="form-control" name="persona" id="persona">
+                        </div> --}}
+                        <div class="col-sm form-group">
+                            <label class="control-label" for="preciohabitacion">{{'Precio Habitacion'}}</label>
+                            <input readonly class="form-control" value="{{$habitacion['tipohabitacion']['precio']}}"
+                                type="number" name="preciohabitacion" id="preciohabitacion">
+                        </div>
+                        {{-- @isset($reserva)
                             <div class="col-sm form-group">
                                 <label class="control-label" for="reserva">{{'Reserva Nro.'}}</label>
-                            <input readonly class="form-control" value="{{$reserva}}" type="number" name="reserva"
-                                id="reserva">
-                        </div>
-                        @endisset --}}
+                        <input readonly class="form-control" value="{{$reserva}}" type="number" name="reserva"
+                            id="reserva">
                 </div>
-                @if (count($movimiento['detallemovimiento'])!=0)
-                <div class="container">
-                    <label for="movimientos">Movimientos</label>
-                    <div id="movimientos" class="table-responsive">
-                        <table class="table text-center table-hover" id="tabla-data">
-                            <thead>
-                                <tr>
-                                    <th>Fecha</th>
-                                    <th>Precio Total</th>
-                                    <th>Cantidad</th>
-                                    <th>Comentario</th>
-                                    <th>Servicio/Producto</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php $total = 0 ?>
-                                @foreach($detalles as $item)
-                                <?php $total += $item['precioventa'] ?>
-                                <tr>
-                                    <td>{{$item['fecha']}}</td>
-                                    <td>
-                                        {{$item['precioventa']}}
-                                    </td>
-                                    <td>
-                                        {{$item['cantidad']}}
-                                    </td>
-                                    <td>
-                                        {{$item['comentario']}}
-                                    </td>
-                                    <td>
-                                        {{isset($item['producto']) ? $item['producto']['nombre'] : $item['servicios']['nombre'] }}
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-                @endif
-                <div class="row">
-                    <div class="col-sm form-group">
-                        <label class="control-label" for="dias">{{'Dias'}}</label>
-                        <input required type="number" class="form-control" name="dias" id="dias">
-                    </div>
-                    <div class="col-sm form-group">
-                        <label class="control-label" for="total">{{'Total'}}</label>
-                        <input class="form-control" readonly value="{{isset($total) ? $total : 0}}" type="number"
-                            name="total" id="total">
-                    </div>
-                </div>
-                <div class="container text-center">
-                    <button type="submit" class="btn btn-outline-success col-sm-6">
-                        Check-Out
-                    </button>
-                </div>
-                </form>
+                @endisset --}}
             </div>
+            @if (count($movimiento['detallemovimiento'])!=0)
+            <div class="container">
+                <label for="movimientos">Movimientos</label>
+                <div id="movimientos" class="table-responsive">
+                    <table class="table text-center table-hover" id="tabla-data">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Precio Total</th>
+                                <th>Cantidad</th>
+                                <th>Comentario</th>
+                                <th>Servicio/Producto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $total = 0 ?>
+                            @foreach($detalles as $item)
+                            <?php $total += $item['precioventa'] ?>
+                            <tr>
+                                <td>{{$item['fecha']}}</td>
+                                <td>
+                                    {{$item['precioventa']}}
+                                </td>
+                                <td>
+                                    {{$item['cantidad']}}
+                                </td>
+                                <td>
+                                    {{$item['comentario']}}
+                                </td>
+                                <td>
+                                    {{isset($item['producto']) ? $item['producto']['nombre'] : $item['servicios']['nombre'] }}
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            @endif
+            <div class="row">
+                <div class="col-sm form-group">
+                    <label class="control-label" for="dias">{{'Dias'}}</label>
+                    <input required type="number" class="form-control" name="dias" id="dias">
+                </div>
+                <div class="col-sm form-group">
+                    <label class="control-label" for="total">{{'Total'}}</label>
+                    <input class="form-control" readonly value="{{isset($total) ? $total : 0}}" type="number"
+                        name="total" id="total">
+                </div>
+            </div>
+            <div class="row">
+                <label for="movimientos">Personas</label>
+                <div id="personas" class="table-responsive">
+                    <table class="table text-center table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>DNI / RUC</th>
+                                <th>Teléfono</th>
+                                <th>Dirección</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($pasajeros as $item)
+                            <tr>
+                                <td>
+                                    {{isset($item['persona']['nombres'])? $item['persona']['nombres'] . " " . $item['persona']['apellidos'] : $item['persona']['nombres']}}
+                                </td>
+                                <td>
+                                    {{isset($item['persona']['ruc'])?$item['persona']['ruc']:$item['persona']['dni']}}
+                                </td>
+                                <td>
+                                    {{$item['persona']['telefono']}}
+                                </td>
+                                <td>
+                                    {{$item['persona']['direccion']}}
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            <div class="container text-center">
+                <button type="submit" class="btn btn-outline-success col-sm-6">
+                    Check-Out
+                </button>
+            </div>
+            </form>
         </div>
     </div>
+</div>
 </div>
 </div>
 </div>

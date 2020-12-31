@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Procesos\Caja;
 use App\Models\Procesos\Movimiento;
+use App\Models\Procesos\Pasajero;
 use App\Models\Procesos\Reserva;
 use App\Models\Seguridad\Usuario;
 use Illuminate\Database\Eloquent\Model;
@@ -46,9 +47,9 @@ class Persona extends Model
     {
         return $this->hasMany(Reserva::class);
     }
-    public function movimiento()
+    public function pasajero()
     {
-        return $this->hasMany(Movimiento::class);
+        return $this->hasMany(Pasajero::class);
     }
     public function caja()
     {

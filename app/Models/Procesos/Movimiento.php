@@ -21,17 +21,16 @@ class Movimiento extends Model
         'situacion',
         'habitacion_id',
         'reserva_id',
-        'persona_id',
         'usuario_id'
     ];
     public function reserva()
     {
         return $this->belongsTo(Reserva::class, 'reserva_id');
     }
-    public function persona()
-    {
-        return $this->belongsTo(Persona::class, 'persona_id');
-    }
+    // public function persona()
+    // {
+    //     return $this->belongsTo(Persona::class, 'persona_id');
+    // }
     public function habitacion()
     {
         return $this->belongsTo(Habitacion::class, 'habitacion_id');
@@ -43,6 +42,10 @@ class Movimiento extends Model
     public function comprobante()
     {
         return $this->hasMany(Comprobante::class, 'movimiento_id');
+    }
+    public function pasajero()
+    {
+        return $this->hasMany(Pasajero::class, 'movimiento_id');
     }
     public function detallemovimiento()
     {

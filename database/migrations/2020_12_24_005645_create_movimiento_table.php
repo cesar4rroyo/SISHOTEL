@@ -34,12 +34,6 @@ class CreateMovimientoTable extends Migration
                 ->on('reserva')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->unsignedInteger('persona_id');
-            $table->foreign('persona_id', 'fk_movimiento_persona')
-                ->references('id')
-                ->on('persona')
-                ->onDelete('restrict')
-                ->onUpdate('cascade');
             $table->unsignedInteger('usuario_id');
             $table->foreign('usuario_id', 'fk_movimiento_usuario')
                 ->references('id')

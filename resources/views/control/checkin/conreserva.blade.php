@@ -21,8 +21,8 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form method="POST" action="{{ route('store_persona_checkin') }}" accept-charset="UTF-8"
-                                    class="form-horizontal" enctype="multipart/form-data">
+                                <form method="POST" action="{{ route('store_persona_checkin_reserva', $reserva) }}"
+                                    accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     @include ('control.checkin.form', ['formMode' => 'create'])
                                     <input type="text" name="habitacion" hidden value="{{$habitacion['id']}}">
