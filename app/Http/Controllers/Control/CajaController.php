@@ -55,7 +55,7 @@ class CajaController extends Controller
                 $numero = $caja['numero'] + 1;
                 $numero = $this->zero_fill($numero, 8);
             } else {
-                $numero = $this->zero_fill(5000, 8);
+                $numero = $this->zero_fill(1, 8);
             }
             $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
             $today = Carbon::now();
@@ -167,7 +167,7 @@ class CajaController extends Controller
                     $numero = $caja['numero'] + 1;
                     $numero = $this->zero_fill($numero, 8);
                 } else {
-                    $numero = $this->zero_fill(300, 8);
+                    $numero = $this->zero_fill(1, 8);
                 }
                 $caja =
                     Caja::with('concepto', 'usuario', 'persona', 'movimiento')->get()->toArray();
@@ -281,7 +281,7 @@ class CajaController extends Controller
             $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
             $today = Carbon::now()->toDateString();
             $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
-            return view('control.caja.producto.create', compact('conceptos', 'id', 'personas', 'today', 'total'));
+            return view('control.caja.producto.create', compact('numero', 'conceptos', 'id', 'personas', 'today', 'total'));
         }
         return redirect()
             ->route('habitaciones')
@@ -302,7 +302,7 @@ class CajaController extends Controller
             $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
             $today = Carbon::now()->toDateString();
             $personas = Persona::with('caja', 'reserva', 'movimiento')->orderBy('nombres')->get();
-            return view('control.caja.servicio.create', compact('conceptos', 'id', 'personas', 'today', 'total'));
+            return view('control.caja.servicio.create', compact('numero', 'conceptos', 'id', 'personas', 'today', 'total'));
         }
         return redirect()
             ->route('habitaciones')

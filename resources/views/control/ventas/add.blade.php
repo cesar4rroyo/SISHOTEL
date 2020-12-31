@@ -68,8 +68,8 @@
                                     </thead>
                                     <tbody class="text-center">
                                         <?php $total = 0 ?>
-                                        @if (session('cart'))
-                                        @foreach (session('cart') as $id=>$details)
+                                        @if (session('cart_ventas'))
+                                        @foreach (session('cart_ventas') as $id=>$details)
                                         <?php $total += $details['precio'] * $details['cantidad'] ?>
                                         <tr>
                                             <td>
@@ -111,6 +111,19 @@
                             </div>
                         </div>
                     </div>
+                    <form action="{{route('add_detail_producto_ventas')}}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label for="comentario">{{'Comentario'}}</label>
+                            <textarea class="form-control" name="comentario" id="comentario" cols="10"
+                                rows="5"></textarea>
+                        </div>
+                        <div class="container text-center">
+                            <button type="submit" class="btn btn-outline-success col-6">
+                                Pago a caja
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -118,3 +131,57 @@
 </div>
 </div>
 @endsection
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) {  
+    
+    $('.addToCart').on('click', function(){
+
+            var id = $(this).data('id');
+            if(id){
+                $.ajax({
+                    url:"{{url('admin/ventas/productos/addToCart')}}"+'/'+id,
+                    type:'GET',
+                    success:function(respuesta){
+                        Hotel.notificaciones(respuesta.respuesta, 'Hotel', 'success');
+                        location.reload();                         
+                    },
+                    error: function(e){
+                        console.log(e);
+                    }
+                })
+            }
+
+        })
+    $(".removeFromCart").on('click',function (e) {
+        e.preventDefault();
+        var ele = $(this);
+        if(confirm("Desea Eliminar")) {
+            $.ajax({
+                url: "{{url('admin/ventas/productos/removeFromCart')}}",
+                method: "DELETE",
+                data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id")},
+                success: function (respuesta) {
+                    Hotel.notificaciones(respuesta.respuesta, 'Hotel', 'success');
+                    location.reload();
+                }
+            });
+        }
+    });
+    $(".updateCart").click(function (e) {
+           e.preventDefault();
+           var ele = $(this);
+            $.ajax({
+               url: "{{ url('admin/ventas/productos/updateCart') }}",
+               method: "PATCH",
+               data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id"), cantidad: ele.parents("tr").find(".quantity").val()},
+               success: function (respuesta) {
+                    Hotel.notificaciones(respuesta.respuesta, 'Hotel', 'success');
+                    location.reload();
+            }
+        });
+    });
+
+    });
+
+</script>

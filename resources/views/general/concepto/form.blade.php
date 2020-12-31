@@ -11,8 +11,12 @@
             <option value="{{ isset($concepto->tipo) ? $concepto->tipo : ''}}">
                 {{ isset($concepto->tipo) ? $concepto->tipo : 'Seleccione una opcion'}}
             </option>
-            <option value="{{"Ingreso"}}">{{'Ingreso'}}</option>
+            @if ($concepto->tipo='Ingreso')
             <option value="{{"Egreso"}}">{{'Egreso'}}</option>
+            @else
+            <option value="{{"Ingreso"}}">{{'Ingreso'}}</option>
+            @endif
+
         </select>
         {!! $errors->first('tipo', '<p class="text-danger">:message</p>') !!}
     </div>

@@ -18,7 +18,8 @@
                         <div class="row">
                             <div class="form-group col-sm">
                                 <label class="control-label" for="fecha">Fecha</label>
-                                <input type="date" id="fecha" class="form-control" name="fecha" value="{{$today}}">
+                                <input type="datetime-local" id="fecha" class="form-control" name="fecha"
+                                    value="{{Carbon\Carbon::now()->format('Y-m-d\TH:i')}}">
                             </div>
                             <div class="form-group col-sm">
                                 <label class="control-label" for="numero">Número</label>
@@ -26,20 +27,6 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="form-group col-sm {{ $errors->has('concepto') ? 'has-error' : ''}}">
-                                <label for="concepto" class="control-label">{{ 'Concepto' }}</label>
-                                <select class="form-control" required name="concepto" id="concepto">
-                                    <option value="">
-                                        {{'Seleccione una opcion'}}
-                                    </option>
-                                    @foreach ($conceptos as $item)
-                                    <option value="{{$item->id}}">
-                                        {{$item->nombre}}
-                                    </option>
-                                    @endforeach
-                                </select>
-                                {!! $errors->first('concepto', '<p class="text-danger">:message</p>') !!}
-                            </div>
                             <div class="form-group col-sm {{ $errors->has('tipo') ? 'has-error' : ''}}">
                                 <label for="tipo" class="control-label">{{ 'Tipo' }}</label>
                                 <select required class="form-control" name="tipo" id="tipo">
@@ -48,6 +35,26 @@
                                     </option>
                                     <option value="Ingreso">Ingreso</option>
                                     <option value="Egreso">Egreso</option>
+                                </select>
+                                {!! $errors->first('concepto', '<p class="text-danger">:message</p>') !!}
+                            </div>
+                            <div class="form-group col-sm {{ $errors->has('concepto') ? 'has-error' : ''}}">
+                                <label for="concepto" class="control-label">{{ 'Concepto' }}</label>
+                                <select class="form-control" required name="concepto" id="concepto">
+                                    <option value="">
+                                        {{'Seleccione una opcion'}}
+                                    </option>
+                                    @foreach ($conceptos as $item)
+                                    @if (($item->id)!=1 && ($item->id)!=2)
+                                    <option value="{{$item->id}}">
+                                        {{$item->nombre}}
+                                    </option>
+                                    @else
+                                    <option hidden value="{{$item->id}}">
+                                        {{$item->nombre}}
+                                    </option>
+                                    @endif
+                                    @endforeach
                                 </select>
                                 {!! $errors->first('concepto', '<p class="text-danger">:message</p>') !!}
                             </div>

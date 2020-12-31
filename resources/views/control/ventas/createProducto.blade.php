@@ -12,7 +12,7 @@
                             Regresar</button></a>
                 </div>
                 <div class="container mt-2">
-                    <form method="POST" action="{{ route('store_caja_producto') }}" accept-charset="UTF-8"
+                    <form method="POST" action="{{ route('store_caja_producto_ventas') }}" accept-charset="UTF-8"
                         class="form-horizontal" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="row">
@@ -23,7 +23,7 @@
                             </div>
                             <div class="form-group col-sm">
                                 <label class="control-label" for="numero">Número</label>
-                                <input type="number" class="form-control" name="numero" id="numero" value="">
+                                <input type="number" class="form-control" name="numero" id="numero" value="{{$numero}}">
                             </div>
                         </div>
                         <div class="row">
@@ -58,11 +58,6 @@
                                 </select>
                                 {!! $errors->first('concepto', '<p class="text-danger">:message</p>') !!}
                             </div>
-                            <div class="form-group col-sm">
-                                <label class="control-label" for="movimiento">Movimiento Nro:</label>
-                                <input type="number" readonly class="form-control" name="movimiento" id="movimiento"
-                                    value="{{$id}}">
-                            </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-sm {{ $errors->has('persona') ? 'has-error' : ''}}">
@@ -85,11 +80,12 @@
                         </div>
                         <div class="form-group {{ $errors->has('comentario') ? 'has-error' : ''}}">
                             <label for="comentario" class="control-label">{{ 'Comentario' }}</label>
-                            <input class="form-control" name="comentario" type="text" id="comentario" value="">
+                            <input class="form-control" value="{{$comentario}}" name="comentario" type="text"
+                                id="comentario" value="">
                             {!! $errors->first('comentario', '<p class="text-danger">:message</p>') !!}
                         </div>
                         <div class="container text-center">
-                            <button class="btn btn-outline-success col-sm-6">
+                            <button type="submit" class="btn btn-outline-success col-sm-6">
                                 Registrar Movimiento
                             </button>
                         </div>

@@ -10,7 +10,6 @@
                             aria-hidden="true"></i>
                         Regresar</button></a>
                 <div class="container">
-
                     <div class="row">
                         <div class="col-sm">
                             <p class="font-weight-bold ">Servicios</p>
@@ -68,8 +67,8 @@
                                     </thead>
                                     <tbody class="text-center">
                                         <?php $total = 0 ?>
-                                        @if (session('servicio'))
-                                        @foreach (session('servicio') as $id=>$details)
+                                        @if (session('servicio_ventas'))
+                                        @foreach (session('servicio_ventas') as $id=>$details)
                                         <?php $total += $details['precio'] * $details['cantidad'] ?>
                                         <tr>
                                             <td>
@@ -108,7 +107,7 @@
                             </div>
                         </div>
                     </div>
-                    <form action="{{route('store_detallemovimientoServicio')}}" method="POST">
+                    <form action="{{route('add_detail_servicio_ventas')}}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="comentario">{{'Comentario'}}</label>
@@ -117,7 +116,7 @@
                         </div>
                         <div class="container text-center">
                             <button type="submit" class="btn btn-outline-success col-6">
-                                Agregar a habitación
+                                Pago a caja
                             </button>
                         </div>
                     </form>
@@ -128,3 +127,54 @@
 </div>
 </div>
 @endsection
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) {
+    $('.addToCart').on('click', function(){
+            var id = $(this).data('id');
+            if(id){
+                $.ajax({
+                    url:"{{url('admin/ventas/servicios/addServicioCart')}}"+'/'+id,
+                    type:'GET',
+                    success:function(respuesta){
+                        Hotel.notificaciones(respuesta.respuesta, 'Hotel', 'success');
+                        location.reload();                         
+                    },
+                    error: function(e){
+                        console.log(e);
+                    }
+                })
+            }
+
+        })
+    $(".removeFromCart").on('click',function (e) {
+        e.preventDefault();
+        var ele = $(this);
+        if(confirm("Desea Eliminar")) {
+            $.ajax({
+                url: "{{url('admin/ventas/servicios/removeServicioCart')}}",
+                method: "DELETE",
+                data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id")},
+                success: function (respuesta) {
+                    Hotel.notificaciones(respuesta.respuesta, 'Hotel', 'success');
+                    location.reload();
+                }
+            });
+        }
+    });
+    $(".updateCart").click(function (e) {
+           e.preventDefault();
+           var ele = $(this);
+            $.ajax({
+               url: "{{ url('admin/ventas/servicios/updateServicioCart') }}",
+               method: "PATCH",
+               data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id"), cantidad: ele.parents("tr").find(".quantity").val()},
+               success: function (respuesta) {
+                    Hotel.notificaciones(respuesta.respuesta, 'Hotel', 'success');
+                    location.reload();
+            }
+        });
+    });
+
+    });
+
+</script>

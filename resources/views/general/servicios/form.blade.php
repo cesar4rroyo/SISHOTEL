@@ -7,7 +7,7 @@
     </div>
     <div class="form-group col-sm {{ $errors->has('precio') ? 'has-error' : ''}}">
         <label for="precio" class="control-label">{{ 'Precio' }}</label>
-        <input class="form-control" name="precio" type="number" id="precio"
+        <input class="form-control" name="precio" type="number" step="0.01" id="precio"
             value="{{ isset($servicio->precio) ? $servicio->precio : ''}}">
         {!! $errors->first('precio', '<p class="text-danger">:message</p>') !!}
     </div>

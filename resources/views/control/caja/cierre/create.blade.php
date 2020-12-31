@@ -38,8 +38,8 @@
                             </div>
                             <div class="col-sm form-group">
                                 <label for="total">{{'Total'}}</label>
-                                <input class="form-control" readonly type="number" name="total" value="{{$total}}"
-                                    id="total">
+                                <input class="form-control" readonly type="number" step="0.01" name="total"
+                                    value="{{$total}}" id="total">
                             </div>
                         </div>
                         <div class="form-group">

@@ -51,6 +51,7 @@
                                     <td>{{ $item->nombre }}</td>
                                     <td>{{ $item->tipo }}</td>
                                     <td>
+                                        @if (($item->id)!=1 && ($item->id)!=2)
                                         <a href="{{ route('show_concepto' , $item->id) }}" title="Ver concepto"><button
                                                 class="btn btn-outline-secondary btn-sm"><i class="fa fa-eye"
                                                     aria-hidden="true"></i>
@@ -69,6 +70,7 @@
                                                     aria-hidden="true"></i>
                                             </button>
                                         </form>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach

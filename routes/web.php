@@ -229,4 +229,16 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control'], function () {
     //ventas de Productos
     Route::get('ventas/productos', 'VentasController@indexProductos')->name('ventas_productos');
     Route::get('ventas/servicios', 'VentasController@indexServicios')->name('ventas_servicios');
+    //carrito productos
+    Route::get('ventas/productos/addToCart/{id}', 'VentasController@addToCart')->name('ventas_addToCart');
+    Route::patch('ventas/productos/updateCart', 'VentasController@update')->name('ventas_updateCart');
+    Route::delete('ventas/productos/removeFromCart', 'VentasController@remove')->name('ventas_removeFromCart');
+    //carrito servicios
+    Route::get('ventas/servicios/addServicioCart/{id}', 'VentasController@addServiceToCart')->name('ventas_addServicioToCart');
+    Route::patch('ventas/servicios/updateServicioCart', 'VentasController@updateServicioCart')->name('ventas_updateServicioCart');
+    Route::delete('ventas/servicios/removeServicioCart', 'VentasController@removeServicoCart')->name('ventas_removeServicioFromCart');
+    Route::post('ventas/caja/addDetalle/producto', 'VentasController@addFromDetallePdto')->name('add_detail_producto_ventas');
+    Route::post('ventas/addDetalle/producto', 'VentasController@storeProducto')->name('store_caja_producto_ventas');
+    Route::post('ventas/addServicio/servicio', 'VentasController@storeServicio')->name('store_caja_servicio_ventas');
+    Route::post('ventas/caja/addDetalle/servicio', 'VentasController@addFromDetalleService')->name('add_detail_servicio_ventas');
 });

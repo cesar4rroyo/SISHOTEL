@@ -37,7 +37,7 @@
                             </div>
                             <div class="col-sm form-group">
                                 <label for="total">{{'Total'}}</label>
-                                <input required class="form-control" type="number" name="total" id="total">
+                                <input required class="form-control" type="number" step="0.01" name="total" id="total">
                             </div>
                         </div>
                         <div class="form-group">

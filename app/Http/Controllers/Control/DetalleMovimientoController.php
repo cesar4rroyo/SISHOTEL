@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Control;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Procesos\Caja;
 use App\Models\Procesos\DetalleMovimiento;
 use App\Models\Procesos\Movimiento;
 use App\Models\Producto;
@@ -101,6 +102,7 @@ class DetalleMovimientoController extends Controller
 
     public function storeServicio(Request $request)
     {
+
         $comentario = ($request->comentario) ? $request->comentario : '-';
         $movimiento_id = $request->movimiento;
         $servicios = session()->all()['servicio'];
