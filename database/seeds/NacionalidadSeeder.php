@@ -13,6 +13,13 @@ class NacionalidadSeeder extends Seeder
      */
     public function run()
     {
-        factory(Nacionalidad::class, 30)->create();
+        DB::table('nacionalidad')->delete();
+        $json = File::get("database/helpers/paises.json");
+        $data = json_decode($json);
+        foreach ($data as $item) {
+            Nacionalidad::create(array(
+                'nombre' => $item->nombre,
+            ));
+        }
     }
 }
