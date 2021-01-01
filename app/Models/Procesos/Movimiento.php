@@ -52,6 +52,11 @@ class Movimiento extends Model
         return $this->hasMany(DetalleMovimiento::class, 'movimiento_id');
     }
 
+    public function caja()
+    {
+        return $this->hasMany(Caja::class, 'movimiento_id');
+    }
+
     public function producto()
     {
         return $this

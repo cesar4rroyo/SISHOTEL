@@ -31,6 +31,15 @@ class ReservaController extends Controller
         return view('reservas.index', compact('initialDate', 'clientes', 'habitaciones'));
     }
 
+    public function listarReservas()
+    {
+        $reservas = Reserva::with('habitacion', 'persona')
+            ->where('situacion', "Reservado")
+            ->orderBy('fecha')
+            ->paginate(10);
+        return view('control.reservas.index', compact('reservas'));
+    }
+
     public function create()
     {
         //

@@ -45,8 +45,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($tipousuario as $item)
                                 <tr>
+                                    @foreach($tipousuario as $item)
+                                    @if (($item->id)==1)
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $item->nombre }}</td>
+                                    @else
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->nombre }}</td>
                                     <td>
@@ -70,7 +74,9 @@
                                                     aria-hidden="true"></i> </button>
                                         </form>
                                     </td>
+                                    @endif
                                 </tr>
+
                                 @endforeach
                             </tbody>
                         </table>

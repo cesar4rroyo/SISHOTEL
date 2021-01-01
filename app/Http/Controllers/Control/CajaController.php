@@ -9,6 +9,7 @@ use App\Models\Habitacion;
 use App\Models\Persona;
 use App\Models\Procesos\Caja;
 use App\Models\Procesos\Movimiento;
+use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
 
 class CajaController extends Controller
@@ -16,6 +17,14 @@ class CajaController extends Controller
 
     public function index()
     {
+        $cajaApertura =
+            Caja::with('movimiento', 'persona', 'concepto')
+            ->latest('created_at')->first()->toArray();
+        $disabled = false;
+
+        if ($cajaApertura['concepto_id'] != '2') {
+            $disabled = true;
+        }
         $caja =
             Caja::with('movimiento', 'persona', 'concepto')->whereHas('concepto', function ($q) {
                 $q->where('id', 2);
@@ -29,7 +38,23 @@ class CajaController extends Controller
             ->paginate(10);
         // dd($cajas->toArray());
 
-        return view('control.caja.index', compact('cajas'));
+        return view('control.caja.index', compact('disabled', 'cajas'));
+    }
+
+    public function exportPdf()
+    {
+        $caja =
+            Caja::with('movimiento', 'persona', 'concepto')->whereHas('concepto', function ($q) {
+                $q->where('id', 2);
+            })
+            ->latest('fecha')->first()->toArray();
+        $cajas =
+            Caja::with('concepto', 'usuario', 'persona', 'movimiento')
+            ->where('fecha', '>', $caja['fecha'])
+            ->orderBy('fecha', 'DESC')
+            ->get();
+        $pdf = PDF::loadView('pdf.caja', compact('cajas'))->setPaper('a4', 'landscape');;
+        return $pdf->download('registros-list.pdf');
     }
 
     public function indexLista(Request $request)
@@ -267,8 +292,12 @@ class CajaController extends Controller
         $caja =
             Caja::with('movimiento', 'persona', 'concepto')
             ->latest('created_at')->first()->toArray();
+        $movimiento = Movimiento::findOrFail($id);
 
         if ($caja['concepto_id'] != '2') {
+            $movimiento->update([
+                'situacion' => 'Pago Realizado',
+            ]);
             $habitacion = $request->habitacion;
             $caja = Caja::create([
                 'fecha' => $request->fecha,

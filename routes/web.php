@@ -156,7 +156,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Reservas', 'middleware' => ['
     /* Rutas de RESERVAS */
     Route::get('reserva/create', 'ReservaController@create')->name('create_reserva');
     Route::get('reserva', 'ReservaController@index')->name('reserva');
-    Route::get('reserva/{id}', 'ReservaController@show')->name('show_reserva');
+    Route::get('reserva/todas/list', 'ReservaController@listarReservas')->name('reserva_lista_todas');
+
+    // Route::get('reserva/{id}', 'ReservaController@show')->name('show_reserva');
     Route::get('reserva/show', 'ReservaController@show')->name('show_reserva');
     Route::post('reserva', 'ReservaController@store')->name('store_reserva');
     Route::get('reserva/{id}/edit', 'ReservaController@edit')->name('edit_reserva');
@@ -210,6 +212,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     //cheak-out
     Route::post('movimiento/checkout/{id}', 'CajaController@checkout')->name('checkout');
     Route::post('movimiento/{id}/checkout', 'CajaController@createCheckout')->name('add_checkout');
+    Route::get('movimiento/checkouts/lista', 'MovimientoController@listarCheckOuts')->name('checkouts_lista');
+    Route::get('movimiento/pdf/{id}', 'MovimientoController@exportPdf')->name('check_out_pdf');
+
+
     //actualizar habitacion
     Route::post('caja/habitacion/actualizar/{id}', 'CajaController@updateHabitacion')->name('actualizarHabitacion');
     //ventas de Productos
@@ -238,6 +244,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     Route::get('caja/create', 'CajaController@create')->name('create_caja');
     Route::get('caja/create/cierre', 'CajaController@create_cierre')->name('cierre_caja');
     Route::get('caja', 'CajaController@index')->name('caja');
+    Route::get('caja/pdf', 'CajaController@exportPdf')->name('caja_pdf');
     Route::get('caja/lista', 'CajaController@indexLista')->name('caja_lista');
     Route::get('caja/{id}', 'CajaController@show')->name('show_caja');
     Route::post('caja', 'CajaController@store')->name('store_caja');

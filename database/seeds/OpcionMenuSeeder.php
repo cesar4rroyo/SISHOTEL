@@ -148,10 +148,24 @@ class OpcionMenuSeeder extends Seeder
             'grupomenu_id' => 6
         ]);
         DB::table('opcionmenu')->insert([
+            'nombre' => 'Lista de Reservas',
+            'link' => 'admin/reserva/todas/list',
+            'icono' => 'fas fa-list-ol',
+            'orden' => 2,
+            'grupomenu_id' => 6
+        ]);
+        DB::table('opcionmenu')->insert([
             'nombre' => 'Habitaciones',
             'link' => 'admin/habitaciones',
             'icono' => 'fas fa-h-square',
             'orden' => 1,
+            'grupomenu_id' => 2
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Check-Outs',
+            'link' => 'admin/movimiento/checkouts/lista',
+            'icono' => 'fas fa-list-ol',
+            'orden' => 2,
             'grupomenu_id' => 2
         ]);
         //end Grupo Reservas

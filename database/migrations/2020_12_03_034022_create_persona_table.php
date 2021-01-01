@@ -20,7 +20,7 @@ class CreatePersonaTable extends Migration
             $table->string('razonsocial')->nullable();
             $table->string('ruc')->nullable();
             $table->string('dni', 8)->nullable();
-            $table->string('direccion', 100);
+            $table->string('direccion', 100)->nullable();
             $table->string('sexo')->nullable();
             $table->date('fechanacimiento')->nullable();
             $table->string('telefono');

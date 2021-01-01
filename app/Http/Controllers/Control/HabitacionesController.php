@@ -11,11 +11,7 @@ use Carbon\Carbon;
 
 class HabitacionesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Request $request)
     {
         $piso = $request->get('piso');
@@ -58,22 +54,13 @@ class HabitacionesController extends Controller
         return view('control.index', compact('habitacion', 'pisos', 'piso', 'fechaActual', 'reservas'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
         $fecha = $request->get('fecha');
@@ -83,12 +70,7 @@ class HabitacionesController extends Controller
         return response()->json($habitacion);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         $habitacion = Habitacion::with('tipohabitacion', 'piso', 'reserva')->find($id);
@@ -98,34 +80,17 @@ class HabitacionesController extends Controller
         return view('control.reservas.reservas', compact('habitacion', 'reservas'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         //

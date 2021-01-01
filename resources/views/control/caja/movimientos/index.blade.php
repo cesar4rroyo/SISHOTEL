@@ -24,7 +24,7 @@
                                 <select class="form-control" name="tipo" value="{{ request('tipo') }}">
                                     <option value=""><i class="fas fa-filter"></i> Filtrar por Tipo</option>
                                     <option value="Ingreso">Ingreso</option>
-                                    <option value="Engreso">Engreso</option>
+                                    <option value="Egreso">Egreso</option>
                                 </select>
                                 <span class="input-group-append">
                                     <button class="btn btn-secondary" type="submit">

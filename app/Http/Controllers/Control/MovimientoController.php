@@ -16,6 +16,8 @@ use App\Models\Rol;
 use App\Models\Seguridad\Usuario;
 use Carbon\Carbon;
 use Illuminate\Contracts\Session\Session;
+use Barryvdh\DomPDF\Facade as PDF;
+
 
 class MovimientoController extends Controller
 {
@@ -32,6 +34,21 @@ class MovimientoController extends Controller
         return response()->redirectTo('create_movimiento');
     }
 
+    public function listarCheckOuts()
+    {
+        $movimientos =
+            Movimiento::with('pasajero.persona', 'detallemovimiento', 'habitacion.tipohabitacion', 'comprobante', 'caja')
+            ->where('situacion', 'Pago Realizado')
+            ->get();
+        return view('control.checkout.ej', compact('movimientos'));
+    }
+
+    public function exportPdf($id)
+    {
+        $movimiento = Movimiento::findOrFail($id);
+        $pdf = PDF::loadView('pdf.checkout', compact('movimiento'))->setPaper('a4');
+        return $pdf->download('registros-check-out.pdf');
+    }
     public function editConReserva($id_habitacion, $id_reserva)
     {
         $reserva = $id_reserva;

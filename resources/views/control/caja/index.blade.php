@@ -18,18 +18,25 @@
             <div class="card-body">
                 <div class="btn-gtoup">
                     <a href="{{ route('apertura_caja') }}" title="Apertura"><button
-                            class="btn btn-primary btn-sm mb-2"><i class="fas fa-plus-square" aria-hidden="true"></i>
+                            class="btn btn-primary btn-sm mb-2"><i
+                                class="fas fa-plus-square {{($disabled)?'disabled':''}}" aria-hidden="true"></i>
                             Apertura</button></a>
-                    <a href="{{ route('create_caja') }}" title="Nuevo"><button class="btn btn-secondary btn-sm mb-2"><i
+                    <a href="{{ route('create_caja') }}" title="Nuevo"><button
+                            class="btn btn-secondary btn-sm mb-2 {{(!$disabled)?'disabled':''}}"><i
                                 class="fas fa-money-bill" aria-hidden="true"></i>
                             Nuevo</button></a>
-                    <form action="{{ route('cierre_caja') }}" novalidate title="Cierre"><button
-                            class="btn btn-danger btn-sm mb-2"><i class="fas fa-external-link-alt"
-                                aria-hidden="true"></i>
+                    <form action="{{ route('cierre_caja') }}" class="d-inline" novalidate title="Cierre"><button
+                            class="btn btn-danger btn-sm mb-2 {{(!$disabled)?'disabled':''}}"><i
+                                class="fas fa-external-link-alt" aria-hidden="true"></i>
                             <input hidden type="number" id="total" name="total">
                             Cierre</button></form>
+                    <a href="{{route('caja_pdf')}}">
+                        <button class="btn btn-warning btn-sm mb-2 {{(!$disabled)?'disabled':''}}"><i
+                                class="fas fa-print" aria-hidden="true"></i>
+                            Imprimir</button>
+                    </a>
                 </div>
-
+                {{-- {{dd( $disabled)}} --}}
                 <div class="container mt-2">
                     <div class="table-responsive">
                         <table class="table text-center table-hover" id="tabla-data">

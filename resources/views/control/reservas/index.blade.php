@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header font-weight-bold">Lista de Reservas de Habitacion {{$habitacion->id}}</div>
+            <div class="card-header font-weight-bold">Próximas reservas</div>
             <div class="card-body">
                 <a href="{{ route('habitaciones') }}" title="Regresar"><button
                         class="btn btn-outline-secondary btn-sm mb-2"><i class="fa fa-arrow-left"

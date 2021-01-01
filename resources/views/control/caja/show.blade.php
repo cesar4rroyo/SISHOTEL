@@ -22,6 +22,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <td>{{ $caja->id }}</td>
+
                                 </tr>
                                 <tr>
                                     <th> Fecha </th>
