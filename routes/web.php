@@ -47,7 +47,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('persona', 'PersonaController@index')->name('persona');
     Route::get('persona/{id}', 'PersonaController@show')->name('show_persona');
     Route::post('persona', 'PersonaController@store')->name('store_persona');
-    Route::post('persona', 'PersonaController@store_checkin')->name('store_persona_checkin');
+    Route::post('persona/checkin', 'PersonaController@store_checkin')->name('store_persona_checkin');
     Route::post('persona/checkin/reserva/{id}', 'PersonaController@store_checkin_reserva')->name('store_persona_checkin_reserva');
     Route::get('persona/{id}/edit', 'PersonaController@edit')->name('edit_persona');
     Route::put('persona/{id}', 'PersonaController@update')->name('update_persona');
