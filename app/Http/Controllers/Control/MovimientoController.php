@@ -124,17 +124,17 @@ class MovimientoController extends Controller
             return view('control.checkin.index', compact('roles', 'nacionalidades', 'habitacion', 'personas', 'initialDate'));
         } else if ($habitacion['situacion'] == 'Ocupada') {
             $initialDate = Carbon::now()->format('Y-m-d\TH:i');
-            $detalles = DetalleMovimiento::with('producto', 'servicios')
-                ->whereHas('movimiento', function ($h) use ($id) {
-                    $h->wherehas('habitacion', function ($q) use ($id) {
-                        $q->where('id', $id);
-                    })->latest('fechaingreso');
-                })->get()->toArray();
             $movimiento =
                 Movimiento::with('pasajero', 'reserva', 'habitacion', 'detallemovimiento')
                 ->whereHas('habitacion', function ($q) use ($id) {
                     $q->where('id', $id);
                 })->latest('fechaingreso')->first()->toArray();
+            $id_movimiento = $movimiento['id'];
+            $detalles = DetalleMovimiento::with('producto', 'servicios', 'movimiento')
+                ->whereHas('movimiento', function ($h) use ($id_movimiento) {
+                    $h->where('id', $id_movimiento);
+                })->get()->toArray();
+            // dd($detalles);
             $pasajeros = Pasajero::with('persona', 'movimiento')
                 ->whereHas('movimiento', function ($q) use ($id) {
                     $q->where('habitacion_id', $id);
