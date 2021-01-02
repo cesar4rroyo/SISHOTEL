@@ -11,10 +11,11 @@
             <option value="{{ isset($concepto->tipo) ? $concepto->tipo : ''}}">
                 {{ isset($concepto->tipo) ? $concepto->tipo : 'Seleccione una opcion'}}
             </option>
-            @if ($concepto->tipo='Ingreso')
+            @if (isset($concepto->tipo) && $concepto->tipo='Ingreso')
             <option value="{{"Egreso"}}">{{'Egreso'}}</option>
             @else
             <option value="{{"Ingreso"}}">{{'Ingreso'}}</option>
+            <option value="{{"Egreso"}}">{{'Egreso'}}</option>
             @endif
 
         </select>

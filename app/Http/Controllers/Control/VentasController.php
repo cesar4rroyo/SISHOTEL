@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Concepto;
 use App\Models\Persona;
 use App\Models\Procesos\Caja;
+use App\Models\Procesos\DetalleCaja;
 use App\Models\Producto;
 use App\Models\Servicios;
 use Carbon\Carbon;
@@ -218,17 +219,36 @@ class VentasController extends Controller
     }
     public function storeProducto(Request $request)
     {
-        $caja = Caja::create([
+        $comentario = $request->comentario;
+
+        $cajaAdd = Caja::create([
             'fecha' => $request->fecha,
             'numero' => $request->numero,
             'concepto_id' => $request->concepto,
             'tipo' => $request->tipo,
             'persona_id' => $request->persona,
             'total' => $request->total,
-            'comentario' => $request->comentario,
+            'comentario' => $comentario,
             'usuario_id' => session()->all()['usuario_id'],
 
         ]);
+        $caja =
+            Caja::with('movimiento', 'persona', 'concepto')
+            ->latest('created_at')->first()->toArray();
+
+        $id_caja = $caja['id'];
+        $productos = session()->all()['cart_ventas'];
+        foreach ($productos as $key => $item) {
+            $detallecaja = DetalleCaja::create([
+                'cantidad' => $item['cantidad'],
+                'preciocompra' => $item['precio'],
+                'precioventa' => ($item['cantidad'] * $item['precio']),
+                'comentario' => $comentario,
+                'producto_id' => $key,
+                'caja_id' => $id_caja,
+            ]);
+        }
+
         session()->pull('cart_ventas', []);
 
         return redirect()
@@ -237,17 +257,34 @@ class VentasController extends Controller
     }
     public function storeServicio(Request $request)
     {
-        $caja = Caja::create([
+        $comentario = $request->comentario;
+
+        $cajaAdd = Caja::create([
             'fecha' => $request->fecha,
             'numero' => $request->numero,
             'concepto_id' => $request->concepto,
             'tipo' => $request->tipo,
             'persona_id' => $request->persona,
             'total' => $request->total,
-            'comentario' => $request->comentario,
+            'comentario' => $comentario,
             'usuario_id' => session()->all()['usuario_id'],
-
         ]);
+        $caja =
+            Caja::with('movimiento', 'persona', 'concepto')
+            ->latest('created_at')->first()->toArray();
+
+        $id_caja = $caja['id'];
+        $servicios = session()->all()['servicio'];
+        foreach ($servicios as $key => $item) {
+            $detallecaja = DetalleCaja::create([
+                'cantidad' => $item['cantidad'],
+                'preciocompra' => $item['precio'],
+                'precioventa' => ($item['cantidad'] * $item['precio']),
+                'comentario' => $comentario,
+                'servicio_id' => $key,
+                'caja_id' => $id_caja,
+            ]);
+        }
         session()->pull('servicio_ventas', []);
         return redirect()
             ->route('caja')

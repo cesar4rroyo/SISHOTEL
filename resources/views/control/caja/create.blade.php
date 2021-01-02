@@ -25,3 +25,18 @@
 </div>
 </div>
 @endsection
+
+{{-- <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var layout_select_html = $('#concepto').html(); //save original dropdown list
+        $("#column_select").change(function () {
+            var cur_column_val = $(this).val(); //save the selected value of the first dropdown
+            $('#concepto').html(layout_select_html); //set original dropdown list back
+            $('#concepto').children('option').each(function(){ //loop through options
+                if($(this).val().indexOf(cur_column_val)== -1){ //do your conditional and if it should not be in the dropdown list
+                $(this).remove(); //remove option from list
+                }
+            });
+        });
+        });
+</script> --}}

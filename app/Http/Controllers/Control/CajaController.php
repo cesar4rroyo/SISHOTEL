@@ -8,6 +8,7 @@ use App\Models\Concepto;
 use App\Models\Habitacion;
 use App\Models\Persona;
 use App\Models\Procesos\Caja;
+use App\Models\Procesos\DetalleCaja;
 use App\Models\Procesos\Movimiento;
 use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
@@ -137,8 +138,10 @@ class CajaController extends Controller
 
     public function show($id)
     {
-        $caja = Caja::findOrFail($id);
-        return view('control.caja.show', compact('caja'));
+        $caja = Caja::with('detallecaja.producto', 'detallecaja.servicios', 'movimiento')->findOrFail($id);
+        $detallecaja = $caja->toArray()['detallecaja'];
+        // dd($detallecaja);
+        return view('control.caja.show', compact('detallecaja', 'caja'));
     }
 
 
@@ -389,18 +392,37 @@ class CajaController extends Controller
     }
     public function storeProducto(Request $request)
     {
-        $caja = Caja::create([
+        $comentario = $request->comentario;
+        $cajaAdd = Caja::create([
             'fecha' => $request->fecha,
             'numero' => $request->numero,
             'concepto_id' => $request->concepto,
             'tipo' => $request->tipo,
             'persona_id' => $request->persona,
             'total' => $request->total,
-            'comentario' => $request->comentario,
+            'comentario' => $comentario,
             'usuario_id' => session()->all()['usuario_id'],
-            'movimiento_id' => $request->movimiento,
 
         ]);
+
+        $caja =
+            Caja::with('movimiento', 'persona', 'concepto')
+            ->latest('created_at')->first()->toArray();
+
+        $id_caja = $caja['id'];
+        $productos = session()->all()['cart'];
+        foreach ($productos as $key => $item) {
+            $detallecaja = DetalleCaja::create([
+                'cantidad' => $item['cantidad'],
+                'preciocompra' => $item['precio'],
+                'precioventa' => ($item['cantidad'] * $item['precio']),
+                'comentario' => $comentario,
+                'producto_id' => $key,
+                'caja_id' => $id_caja,
+            ]);
+        }
+
+
         session()->pull('cart', []);
 
         return redirect()
@@ -409,7 +431,9 @@ class CajaController extends Controller
     }
     public function storeServicio(Request $request)
     {
-        $caja = Caja::create([
+        $comentario = $request->comentario;
+
+        $cajaAdd = Caja::create([
             'fecha' => $request->fecha,
             'numero' => $request->numero,
             'concepto_id' => $request->concepto,
@@ -418,9 +442,24 @@ class CajaController extends Controller
             'total' => $request->total,
             'comentario' => $request->comentario,
             'usuario_id' => session()->all()['usuario_id'],
-            'movimiento_id' => $request->movimiento,
 
         ]);
+        $caja =
+            Caja::with('movimiento', 'persona', 'concepto')
+            ->latest('created_at')->first()->toArray();
+
+        $id_caja = $caja['id'];
+        $servicios = session()->all()['servicio'];
+        foreach ($servicios as $key => $item) {
+            $detallecaja = DetalleCaja::create([
+                'cantidad' => $item['cantidad'],
+                'preciocompra' => $item['precio'],
+                'precioventa' => ($item['cantidad'] * $item['precio']),
+                'comentario' => $comentario,
+                'servicio_id' => $key,
+                'caja_id' => $id_caja,
+            ]);
+        }
         session()->pull('servicio', []);
         return redirect()
             ->route('caja')

@@ -76,6 +76,48 @@
                                 </tr>
                             </tbody>
                         </table>
+                        @if (count($detallecaja)!=0)
+                        <div class="container">
+                            <label for="detalle">Detalles Caja</label>
+                            <div id="detalle" class="table-responsive">
+                                <table class="table text-center table-hover" id="tabla-data">
+                                    <thead>
+                                        <tr>
+                                            <th>Precio Total</th>
+                                            <th>Cantidad</th>
+                                            <th>Comentario</th>
+                                            <th>Servicio/Producto</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $total = 0 ?>
+                                        @foreach($detallecaja as $item)
+                                        <?php $total += $item['precioventa'] ?>
+                                        <tr>
+                                            <td>
+                                                {{$item['precioventa']}}
+                                            </td>
+                                            <td>
+                                                {{$item['cantidad']}}
+                                            </td>
+                                            <td>
+                                                {{$item['comentario']}}
+                                            </td>
+                                            <td>
+                                                {{isset($item['producto']) ? $item['producto']['nombre'] : $item['servicios']['nombre'] }}
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                        <tr>
+                                            <td class=" font-weight-bold">Total: S/.{{$total}}</td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+                        </div>
+                        @endif
                     </div>
 
                 </div>
