@@ -2,61 +2,60 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <title>Document</title>
+    <link rel="stylesheet" href="{{asset("assets/$theme/dist/css/adminlte.min.css")}}">
+
 </head>
-<style>
-    .header {
-        display: flex;
-    }
-
-    .title {
-        background-color: rgb(172, 172, 5);
-        color: white;
-        font-weight: bold;
-        padding: 4px;
-        text-align: center
-    }
-
-    .col {
-        width: 50%;
-    }
-
-    .content {
-        display: flex;
-        text-align: center;
-    }
-
-    .col p span {
-        border: 2px solid black;
-        padding: 2px;
-        border-radius: 5px;
-        width: 200px;
-    }
-</style>
 
 <body>
-    <div class="header">
-        <img src="{{asset("assets/$theme/dist/img/logo.jpeg")}}" width="100px" alt="">
-        <h2>Ficha de Registro Nro. 1</h2>
+    <div>
+        <table class="table table-hover">
+            <tbody>
+                <tr>
+                    <th>ID</th>
+                    <td>{{ $persona->id }}</td>
+                </tr>
+                <tr>
+                    <th> Nombres </th>
+                    <td> {{ $persona->nombres }} </td>
+                </tr>
+                <tr>
+                    <th> Apellidos </th>
+                    <td> {{ $persona->apellidos }} </td>
+                </tr>
+
+                <tr>
+                    <th> Ruc </th>
+                    <td> {{ $persona->ruc }} </td>
+                </tr>
+                <tr>
+                    <th> DNI </th>
+                    <td> {{ $persona->dni }} </td>
+                </tr>
+                <tr>
+                    <th> Dirección </th>
+                    <td> {{ $persona->direccion }} </td>
+                </tr>
+                <tr>
+                    <th> Fecha de nacimiento </th>
+                    <td> {{ $persona->fechanacimiento }} </td>
+                </tr>
+                <tr>
+                    <th> Teléfono </th>
+                    <td> {{ $persona->telefono }} </td>
+                </tr>
+                <tr>
+                    <th> Observación </th>
+                    <td> {{ $persona->observacion }} </td>
+                </tr>
+                <tr>
+                    <th> Nacionalidad </th>
+                    <td> {{ $persona->nacionalidad->nombre }} </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <div class="title">Información del Húesped</div>
-    <div class="content">
-        <div class="col">
-            <p>Nombre:
-                <span> Cesar David </span>
-            </p>
-        </div>
-        <div class="col">
-            <p>Apellidos:
-                <span> Arroyo Torres </span>
-            </p>
-        </div>
-    </div>
-    <div class="title">Información de la Habitación</div>
-    <div class="title">Información de llegada y salida</div>
 
 
 </body>

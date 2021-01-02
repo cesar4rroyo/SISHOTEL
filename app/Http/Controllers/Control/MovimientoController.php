@@ -37,15 +37,20 @@ class MovimientoController extends Controller
     public function listarCheckOuts()
     {
         $movimientos =
-            Movimiento::with('pasajero.persona', 'detallemovimiento', 'habitacion.tipohabitacion', 'comprobante', 'caja')
+            Movimiento::with('pasajero.persona.nacionalidad', 'detallemovimiento', 'habitacion.tipohabitacion', 'comprobante', 'caja')
             ->where('situacion', 'Pago Realizado')
             ->get();
-        return view('control.checkout.ej', compact('movimientos'));
+        return view('control.checkout.list', compact('movimientos'));
     }
 
     public function exportPdf($id)
     {
-        $movimiento = Movimiento::findOrFail($id);
+        $movimiento =
+            Movimiento::with('pasajero.persona.nacionalidad', 'detallemovimiento', 'habitacion.tipohabitacion', 'comprobante', 'caja')
+                ->where('id', $id)
+                ->get()
+                ->toArray()[0];
+        // dd($movimiento);
         $pdf = PDF::loadView('pdf.checkout', compact('movimiento'))->setPaper('a4');
         return $pdf->download('registros-check-out.pdf');
     }

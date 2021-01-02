@@ -2,123 +2,172 @@
 <html lang="en">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Check - Out Nro: {{$movimiento->id}}</title>
-    <!-- Theme style -->
-    <link rel="stylesheet" href="{{asset("assets/$theme/dist/css/adminlte.min.css")}}">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
 </head>
 <style>
-    .td-25 {
-        width: 25%;
+    .title {
+        background-color: rgb(226, 194, 9);
+        color: white;
+        font-weight: bold;
+        padding: 4px;
+        text-align: center;
+        margin-bottom: 10px;
+        margin-top: 10px;
+
     }
 
-    .td-50 {
+    .head-title {
+        text-align: center;
+        font-weight: bold;
+        font-size: 20px;
+        margin-top: 20px;
+    }
+
+    .col {
         width: 50%;
+        margin: 10px;
     }
 
-    .td-100 {
+    .content {
+        display: flex;
+        text-align: center;
+    }
+
+
+
+    .group {
+        display: flex;
+    }
+
+    .label {
+        text-transform: uppercase;
+
+
+
+    }
+
+    .col-3 {
+        width: 33%;
+    }
+
+    .col-100 {
         width: 100%;
     }
 
-    .row {
-        display: inline-flex;
+    .input {
+        border: 1px solid black;
+        padding: 2px;
+        border-radius: 5px;
+        width: 100%;
+    }
+
+    .main {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .img-container {
+        position: absolute;
+        top: 1;
+        left: 1;
+    }
+
+    .page-break {
+        page-break-after: always;
+    }
+
+    .table tbody tr {
+        margin-top: 4px;
     }
 </style>
 
 <body>
-    @foreach ($movimiento->pasajero as $persona)
+    @foreach ($movimiento['pasajero'] as $persona)
+    <div class="img-container">
+        <img src="{{asset("assets/$theme/dist/img/logo.jpeg")}}" width="80px" alt="">
+    </div>
+    <div class="head-title">
+        Ficha de Registro Nro. {{($loop->index)+1}}
+    </div>
+    <div class="title">Información del Húesped</div>
+    <table class="table table-hover text-center">
+        <tbody>
+            <tr>
+                <th> Nombres </th>
+                <td class="input"> {{ $persona['persona']['nombres'] }} </td>
+                <th> Apellidos </th>
+                <td class="input"> {{ $persona['persona']['apellidos'] }} </td>
+            </tr>
+            <tr>
+                <th> Empresa </th>
+                <td class="input"> {{ isset($persona['persona']['empresa']) ? $persona['persona']['empresa'] :' - ' }}
+                </td>
+                <th> RUC </th>
+                <td class="input"> {{ isset($persona['persona']['ruc']) ? $persona['persona']['ruc'] : ' - ' }} </td>
+            </tr>
+            <tr>
+                <th> DNI / Nro. Pasaporte </th>
+                <td class="input">
+                    {{ isset($persona['persona']['dni']) ? $persona['persona']['dni'] : $persona['persona']['pasaporte'] }}
+                </td>
+                <th> Fecha de nacimiento </th>
+                <td class="input"> {{ $persona['persona']['fechanacimiento'] }} </td>
+            </tr>
+            <tr>
+                <th> Dirección </th>
+                <td class="input"> {{ $persona['persona']['direccion'] }} </td>
+            </tr>
+            <tr>
+                <th> Ciudad </th>
+                <td class="input"> {{ isset($persona['persona']['ciudad'])?$persona['persona']['ciudad']:'-' }} </td>
+                <th> Edad </th>
+                <td class="input"> {{ isset($persona['persona']['edad'])?$persona['persona']['edad']:'-' }} </td>
+            </tr>
+            <tr>
+                <th> Teléfono </th>
+                <td class="input"> {{ $persona['persona']['telefono'] }} </td>
+                <th> Nacionalidad </th>
+                <td class="input"> {{ $persona['persona']['nacionalidad']['nombre'] }} </td>
+            </tr>
+            <tr>
+                <th> Email </th>
+                <td class="input"> {{ isset($persona['persona']['email'])?$persona['persona']['email']:'-' }} </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="title">Información de la Habitación</div>
+    <table class="table table-hover text-center">
+        <tbody>
+            <tr>
+                <th> Número de Habitación </th>
+                <td class="input"> {{$movimiento['habitacion']['numero']}} </td>
+                <th> Tipo de Habitación </th>
+                <td class="input"> {{$movimiento['habitacion']['tipohabitacion']['nombre']}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="title">Información de llegada y salida</div>
+    <table class="table table-hover text-center">
+        <tbody>
+            <tr>
+                <th>Check-In</th>
+                <td class="input">{{$movimiento['fechaingreso']}}</td>
+                <th>Check-Out</th>
+                <td class="input">{{$movimiento['fechasalida']}}</td>
+                <th>Días</th>
+                <td class="input">{{$movimiento['dias']}}</td>
+            </tr>
+        </tbody>
+    </table>
 
-    <div class="text-center justify-content-center">
-        <p class="font-weight-bold">Ficha de Registro Nro.{{$loop->index}}</p>
-    </div>
-    {{-- <p>Información principal</p> --}}
-    <tbody>
-        <thead>Información principal</thead>
-        <tr>
-            <th>Nombres</th>
-            <td>{{ $persona->nombres }}</td>
-        </tr>
-        <tr>
-            <th> Apellidos </th>
-            <td> {{ $persona->apellidos  }} </td>
-        </tr>
-    </tbody>
-    <div class="row">
-        <div class="form-group td-50">
-            <label for="nombres" class="control-label">{{ 'Nombres' }}</label>
-            <input class="form-control" name="nombres" type="text" id="nombres" value="{{ $persona->nombres }}">
-        </div>
-        <div class="form-group td-50">
-            <label for="apellidos" class="control-label">{{ 'Apellidos' }}</label>
-            <input class="form-control" name="apellidos" type="text" id="apellidos" value="{{ $persona->apellidos }}">
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group td-50">
-            <label for="empresa" class="control-label">{{ 'Empresa' }}</label>
-            <input class="form-control" name="empresa" type="text" id="empresa" value="">
-        </div>
-        <div class="form-group td-50">
-            <label for="ruc" class="control-label">{{ 'RUC' }}</label>
-            <input class="form-control" name="ruc" type="text" id="ruc" value="{{ $persona->ruc }}">
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group td-50">
-            <label for="pasaporte" class="control-label">{{ 'Nro. Pasaporte' }}</label>
-            <input class="form-control" name="pasaporte" type="text" id="pasaporte" value="">
-        </div>
-        <div class="form-group td-50">
-            <label for="nacionalidad" class="control-label">{{ 'Nacionalidad' }}</label>
-            <input class="form-control" name="nacionalidad" type="text" id="nacionalidad"
-                value="{{ $persona->nacionalidad }}">
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="direccion" class="control-label">{{ 'Dirección' }}</label>
-        <input class="form-control" name="direccion" type="text" id="direccion" value="{{ $persona->direccion}}">
-    </div>
-    <div class="row">
-        <div class="form-group td-50">
-            <label for="ciudad" class="control-label">{{ 'Ciudad' }}</label>
-            <input class="form-control" name="ciudad" type="text" id="ciudad" value="{{'Chiclayo'}}">
-        </div>
-        <div class="form-group td-50">
-            <label for="edad" class="control-label">{{ 'Edad' }}</label>
-            <input class="form-control" name="edad" type="number" id="edad" value="">
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group td-50">
-            <label for="telefono" class="control-label">{{ 'Telefono' }}</label>
-            <input class="form-control" name="telefono" type="text" id="telefono" value="{{ $persona->telefono}}">
-        </div>
-        <div class="form-group td-50">
-            <label for="fechanacimiento" class="control-label">{{ 'Fecha de Nacimiento' }}</label>
-            <input class="form-control" name="fechanacimiento" type="date" id="fechanacimiento"
-                value="{{ $persona->fechanacimiento }}">
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="email" class="control-label">{{ 'Email' }}</label>
-        <input class="form-control" name="email" type="text" id="email" value="">
-    </div>
-    <p>Información de la habitación</p>
-    <p>{{$movimiento->habitacion->numero .' - ' . $movimiento->habitacion->tipohabitacion->nombre}}</p>
-    <p>Información de llegada y salida</p>
-    <div class="row">
-        <div class="form-group td-50">
-            <label for="fechaingreso" class="control-label">{{ 'Check-In' }}</label>
-            <input class="form-control" name="fechaingreso" type="date" id="fechaingreso"
-                value="{{ $movimiento->fechaingreso}}">
-        </div>
-        <div class="form-group td-50">
-            <label for="fechasalida" class="control-label">{{ 'Check-Out' }}</label>
-            <input class="form-control" name="fechasalida" type="date" id="fechasalida"
-                value="{{ $movimiento->fechasalida }}">
-        </div>
-    </div>
+    <div class="page-break"></div>
+
+
+
     @endforeach
 </body>
 
