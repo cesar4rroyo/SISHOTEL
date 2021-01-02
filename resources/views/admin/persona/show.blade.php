@@ -56,12 +56,24 @@
                                     <td> {{ $persona->direccion }} </td>
                                 </tr>
                                 <tr>
+                                    <th> Ciudad </th>
+                                    <td> {{ $persona->ciudad }} </td>
+                                </tr>
+                                <tr>
                                     <th> Fecha de nacimiento </th>
                                     <td> {{ $persona->fechanacimiento }} </td>
                                 </tr>
                                 <tr>
+                                    <th> Edad </th>
+                                    <td> {{ $persona->edad }} </td>
+                                </tr>
+                                <tr>
                                     <th> Teléfono </th>
                                     <td> {{ $persona->telefono }} </td>
+                                </tr>
+                                <tr>
+                                    <th> Email </th>
+                                    <td> {{ $persona->email }} </td>
                                 </tr>
                                 <tr>
                                     <th> Observación </th>

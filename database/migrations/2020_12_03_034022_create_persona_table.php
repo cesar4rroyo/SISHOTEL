@@ -25,9 +25,9 @@ class CreatePersonaTable extends Migration
             $table->string('direccion', 100)->nullable();
             $table->string('sexo')->nullable();
             $table->date('fechanacimiento')->nullable();
-            $table->string('telefono');
+            $table->string('telefono')->nullable();
             $table->string('observacion', 500)->nullable();
-            $table->string('email', 50);
+            $table->string('email', 50)->nullable();
             $table->unsignedInteger('nacionalidad_id')->nullable();
             $table->foreign('nacionalidad_id', 'fk_persona_nacionalidad')
                 ->nullable()

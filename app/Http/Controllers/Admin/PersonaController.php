@@ -68,6 +68,9 @@ class PersonaController extends Controller
             'telefono' => $request->telefono,
             'observacion' => $request->observacion,
             'nacionalidad_id' => $request->nacionalidad_id,
+            'email' => $request->email,
+            'ciudad' => $request->ciudad,
+            'edad' => $request->edad,
 
         ]);
         $persona->roles()->sync($request->rol_id);
@@ -163,6 +166,9 @@ class PersonaController extends Controller
             'telefono' => $request->telefono,
             'observacion' => $request->observacion,
             'nacionalidad_id' => $request->nacionalidad_id,
+            'email' => $request->email,
+            'ciudad' => $request->ciudad,
+            'edad' => $request->edad,
 
         ]);
         $persona->roles()->sync($request->rol_id);
