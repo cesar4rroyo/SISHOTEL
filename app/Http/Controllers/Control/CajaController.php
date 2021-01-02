@@ -8,6 +8,7 @@ use App\Models\Concepto;
 use App\Models\Habitacion;
 use App\Models\Persona;
 use App\Models\Procesos\Caja;
+use App\Models\Procesos\Comprobante;
 use App\Models\Procesos\DetalleCaja;
 use App\Models\Procesos\Movimiento;
 use Barryvdh\DomPDF\Facade as PDF;
@@ -292,15 +293,16 @@ class CajaController extends Controller
     }
     public function checkout(Request $request, $id)
     {
+        //validar si la caja esta aperturada o no
         $caja =
             Caja::with('movimiento', 'persona', 'concepto')
             ->latest('created_at')->first()->toArray();
         $movimiento = Movimiento::findOrFail($id);
-
         if ($caja['concepto_id'] != '2') {
             $movimiento->update([
                 'situacion' => 'Pago Realizado',
             ]);
+            //guardando movimiento en caja
             $habitacion = $request->habitacion;
             $caja = Caja::create([
                 'fecha' => $request->fecha,
@@ -313,7 +315,21 @@ class CajaController extends Controller
                 'usuario_id' => session()->all()['usuario_id'],
                 'movimiento_id' => $id,
             ]);
-            return view('control.caja.checkout.updatehabitacion', compact('habitacion'));
+            $comprobante = Comprobante::latest('id')->first();
+            if (!is_null($comprobante)) {
+                $comprobante->get()->toArray();
+                $numero = $comprobante['numero'] + 1;
+                $numero = $this->zero_fill($numero, 8);
+            } else {
+                $numero = $this->zero_fill(1, 8);
+            }
+            //creando datos de la factura
+            $total = $request->total;
+            $igv = (0.18) * ($total);
+            $igv = round($igv, 2);
+            $subtotal = $total - $igv;
+            //retornanr a vista de generar factura y cambiar estado de la 'habitacion' de disponible a 'en limpieza'
+            return view('control.caja.checkout.updatehabitacion', compact('habitacion', 'total', 'igv', 'subtotal', 'id', 'numero'));
         }
         return redirect()
             ->route('habitaciones')
@@ -321,11 +337,29 @@ class CajaController extends Controller
     }
     public function updateHabitacion(Request $request, $id)
     {
+        $movimiento =
+            Movimiento::with('caja.persona')
+            ->where('situacion', 'Pago Realizado')
+            ->latest()
+            ->first()
+            ->toArray();
+
+        $comprobante = Comprobante::create([
+            'tipodocumento' => $request->tipodocumento,
+            'numero' => $request->numero,
+            'fecha' => $request->fecha,
+            'subtotal' => $request->subtotal,
+            'total' => $request->total,
+            'igv' => $request->igv,
+            'comentario' => $request->comentario,
+            'movimiento_id' => $movimiento['id'],
+        ]);
         $habitacion = Habitacion::findOrFail($id);
         $habitacion->update([
             'situacion' => 'En limpieza',
-
         ]);
+
+
         return redirect()
             ->route('caja')
             ->with('success', 'Registro agregado correctamente');
