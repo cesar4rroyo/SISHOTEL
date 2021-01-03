@@ -116,6 +116,6 @@ class ReservaController extends Controller
             'situacion' => 'Cancelado',
         ]);
 
-        return response()->json(['respuesta' => 'El reserva se cancelo correctamente']);
+        return response()->json(['mensaje' => 'ok']);
     }
 }

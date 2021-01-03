@@ -7,7 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Concepto;
 use App\Models\Persona;
 use App\Models\Procesos\Caja;
+use App\Models\Procesos\Comprobante;
 use App\Models\Procesos\DetalleCaja;
+use App\Models\Procesos\DetalleComprobante;
 use App\Models\Producto;
 use App\Models\Servicios;
 use Carbon\Carbon;
@@ -152,7 +154,15 @@ class VentasController extends Controller
             return response()->json(['respuesta' => 'Se eliminó correctamente']);
         }
     }
-
+    //esta funcion es para generar los ceros a la izquierda de un número
+    public function zero_fill($valor, $long = 0)
+    {
+        return str_pad($valor, $long, '0', STR_PAD_LEFT);
+    }
+    //estax funciones addFromDetallePdto y addFromDetalleService se encargara de verificar 
+    //si la caja esta aperturada o no, además de enviar
+    //los datos necesarios que serán utilizados en la vista para agregarlo a las tablas caja,
+    //comprobante y/o detalleComprobante
     public function addFromDetallePdto(Request $request)
     {
         $caja =
@@ -174,7 +184,10 @@ class VentasController extends Controller
                 $numero = $this->zero_fill(1, 8);
             }
             $comentario = $request->comentario;
-            $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
+            $conceptos = Concepto::with('caja')
+                ->whereNotIn('id', array(1, 2))
+                ->orderBy('nombre')
+                ->get();
             $today = Carbon::now()->toDateString();
             $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
             return view('control.ventas.createProducto', compact('numero', 'conceptos', 'personas', 'today', 'total', 'comentario'));
@@ -183,10 +196,7 @@ class VentasController extends Controller
             ->route('habitaciones')
             ->with('error', 'La caja no ha sido aperturada');
     }
-    public function zero_fill($valor, $long = 0)
-    {
-        return str_pad($valor, $long, '0', STR_PAD_LEFT);
-    }
+
     public function addFromDetalleService(Request $request)
     {
         $caja =
@@ -208,7 +218,10 @@ class VentasController extends Controller
                 $numero = $this->zero_fill(1, 8);
             }
             $comentario = $request->comentario;
-            $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
+            $conceptos = Concepto::with('caja')
+                ->whereNotIn('id', array(1, 2))
+                ->orderBy('nombre')
+                ->get();
             $today = Carbon::now()->toDateString();
             $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
             return view('control.ventas.createServicio', compact('numero', 'conceptos', 'personas', 'today', 'total', 'comentario'));
@@ -217,25 +230,42 @@ class VentasController extends Controller
             ->route('habitaciones')
             ->with('error', 'La caja no ha sido aperturada');
     }
+    //funcion para enviar a caja y generar la primera parte del comprobante,
+    //solo es para productos que no pertenezca a ninguna habitacion;
     public function storeProducto(Request $request)
     {
+        //comentario es variable compartida tanto para Caja y Detallecaja
         $comentario = $request->comentario;
-
+        //capturar datos para generar el comprobante :)
+        $total = $request->total;
+        $igv = (0.18) * ($total);
+        $igv = round($igv, 2);
+        $subtotal = $total - $igv;
+        //crear número para el parámetro número de comprobante
+        $comprobante = Comprobante::latest('id')->first();
+        if (!is_null($comprobante)) {
+            $comprobante->get()->toArray();
+            $numero = $comprobante['numero'] + 1;
+            $numero = $this->zero_fill($numero, 8);
+        } else {
+            $numero = $this->zero_fill(1, 8);
+        }
+        //crear el registro de caja :)
         $cajaAdd = Caja::create([
             'fecha' => $request->fecha,
             'numero' => $request->numero,
             'concepto_id' => $request->concepto,
             'tipo' => $request->tipo,
             'persona_id' => $request->persona,
-            'total' => $request->total,
+            'total' => $total,
             'comentario' => $comentario,
             'usuario_id' => session()->all()['usuario_id'],
-
         ]);
+        //obtener id del ultimo registro de caja es decir del registro anterior 
+        // y con eso pasar a la tabla DeatalleCaja cada producto seleccionado
         $caja =
             Caja::with('movimiento', 'persona', 'concepto')
             ->latest('created_at')->first()->toArray();
-
         $id_caja = $caja['id'];
         $productos = session()->all()['cart_ventas'];
         foreach ($productos as $key => $item) {
@@ -248,17 +278,55 @@ class VentasController extends Controller
                 'caja_id' => $id_caja,
             ]);
         }
-
+        //crear el registro de comprobante con los datos que se tiene 
+        $createComprobante = Comprobante::create([
+            'numero' => $numero,
+            'tipodocumento' => $request->tipodocumento,
+            'fecha' => Carbon::now()->toDateString(),
+            'igv' => $igv,
+            'total' => $total,
+            'subtotal' => $subtotal,
+            'comentario' => $comentario
+        ]);
+        //traer el id del comprobante generado anteriormente para relacionarlo con DetalleComprobante
+        $id_ComprobanteAnterior = Comprobante::latest('id')->first()->toArray()['id'];
+        foreach ($productos as $key => $item) {
+            $detalleComprobante = DetalleComprobante::create([
+                'cantidad' => $item['cantidad'],
+                'preciocompra' => $item['precio'],
+                'precioventa' => ($item['cantidad'] * $item['precio']),
+                'comentario' => $comentario,
+                'producto_id' => $key,
+                'comprobante_id' => $id_ComprobanteAnterior,
+            ]);
+        }
+        //limpiar la session donde se encuentran los productos
         session()->pull('cart_ventas', []);
-
         return redirect()
             ->route('caja')
             ->with('success', 'Registro agregado correctamente');
     }
+    //funcion para enviar a caja y generar la primera parte del comprobante,
+    //solo es para servicios que no pertenezca a ninguna habitacion;
     public function storeServicio(Request $request)
     {
+        //comentario es variable compartida tanto para Caja y Detallecaja
         $comentario = $request->comentario;
-
+        //capturar datos para generar el comprobante :)
+        $total = $request->total;
+        $igv = (0.18) * ($total);
+        $igv = round($igv, 2);
+        $subtotal = $total - $igv;
+        //crear número para el parámetro número de comprobante
+        $comprobante = Comprobante::latest('id')->first();
+        if (!is_null($comprobante)) {
+            $comprobante->get()->toArray();
+            $numero = $comprobante['numero'] + 1;
+            $numero = $this->zero_fill($numero, 8);
+        } else {
+            $numero = $this->zero_fill(1, 8);
+        }
+        //crear el registro de caja :)
         $cajaAdd = Caja::create([
             'fecha' => $request->fecha,
             'numero' => $request->numero,
@@ -274,7 +342,7 @@ class VentasController extends Controller
             ->latest('created_at')->first()->toArray();
 
         $id_caja = $caja['id'];
-        $servicios = session()->all()['servicio'];
+        $servicios = session()->all()['servicio_ventas'];
         foreach ($servicios as $key => $item) {
             $detallecaja = DetalleCaja::create([
                 'cantidad' => $item['cantidad'],
@@ -285,6 +353,29 @@ class VentasController extends Controller
                 'caja_id' => $id_caja,
             ]);
         }
+        //crear el registro de comprobante con los datos que se tiene 
+        $createComprobante = Comprobante::create([
+            'numero' => $numero,
+            'tipodocumento' => $request->tipodocumento,
+            'fecha' => Carbon::now()->toDateString(),
+            'igv' => $igv,
+            'total' => $total,
+            'subtotal' => $subtotal,
+            'comentario' => $comentario
+        ]);
+        //traer el id del comprobante generado anteriormente para relacionarlo con DetalleComprobante
+        $id_ComprobanteAnterior = Comprobante::latest('id')->first()->toArray()['id'];
+        foreach ($servicios as $key => $item) {
+            $detalleComprobante = DetalleComprobante::create([
+                'cantidad' => $item['cantidad'],
+                'preciocompra' => $item['precio'],
+                'precioventa' => ($item['cantidad'] * $item['precio']),
+                'comentario' => $comentario,
+                'producto_id' => $key,
+                'comprobante_id' => $id_ComprobanteAnterior,
+            ]);
+        }
+        //limpiar la session donde se encuentran los productos
         session()->pull('servicio_ventas', []);
         return redirect()
             ->route('caja')

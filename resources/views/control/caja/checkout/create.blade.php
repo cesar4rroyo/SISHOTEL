@@ -33,6 +33,7 @@
                             <div class="form-group col-sm {{ $errors->has('tipo') ? 'has-error' : ''}}">
                                 <label for="tipo" class="control-label">{{ 'Tipo' }}</label>
                                 <select required class="form-control" name="tipo" id="tipo">
+                                    <option value="">Seleccionar una opción</option>
                                     <option value="Ingreso">
                                         {{ 'Ingreso'}}
                                     </option>
@@ -47,12 +48,12 @@
                                         {{'Seleccione una opcion'}}
                                     </option>
                                     @foreach ($conceptos as $item)
-                                    @if (($item->id)!=1 && ($item->id)!=2)
-                                    <option value="{{$item->id}}">
+                                    @if (($item->tipo)=="Ingreso")
+                                    <option data-attribute="Ingreso" value="{{$item->id}}">
                                         {{$item->nombre}}
                                     </option>
                                     @else
-                                    <option hidden value="{{$item->id}}">
+                                    <option data-attribute="Egreso" value="{{$item->id}}">
                                         {{$item->nombre}}
                                     </option>
                                     @endif
@@ -106,19 +107,27 @@
 </div>
 </div>
 @endsection
-{{-- <script type="text/javascript">
+
+<script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) {
-    $("#dias").on('change',function(){
-        
-       
-    });
-    document.getElementById("persona").addEventListener("keyup", () => {
-            if((document.getElementById("persona").value.length)>=1)
-                fetch(`/admin/nombres/buscador?search=${document.getElementById("persona").value}`,{ method:'get' })
-                .then(response  =>  response.text() )
-                .then(html      =>  {   document.getElementById("persona_select").innerHTML = html  })
-            else
-                document.getElementById("persona_select").innerHTML = ""
-        })
- })
-</script> --}}
+        $("#tipo").change( function() {
+            filterSelectOptions($("#concepto"), "data-attribute", $(this).val());
+        });
+        function filterSelectOptions(selectElement, attributeName, attributeValue) {
+            if (selectElement.data("currentFilter") != attributeValue) {
+                selectElement.data("currentFilter", attributeValue);
+                var originalHTML = selectElement.data("originalHTML");
+                if (originalHTML)
+                    selectElement.html(originalHTML)
+                else {
+                    var clone = selectElement.clone();
+                    clone.children("option[selected]").removeAttr("selected");
+                    selectElement.data("originalHTML", clone.html());
+                }
+                if (attributeValue) {
+                    selectElement.children("option:not([" + attributeName + "='" + attributeValue + "'],:not([" + attributeName + "]))").remove();
+                }
+            }
+        }
+})
+</script>

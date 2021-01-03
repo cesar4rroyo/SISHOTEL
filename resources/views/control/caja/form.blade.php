@@ -29,12 +29,12 @@
                 {{ isset($caja->concepto->nombre) ? $caja->concepto->nombre : 'Seleccione una opcion'}}
             </option>
             @foreach ($conceptos as $item)
-            @if (($item->id)!=1 && ($item->id)!=2)
-            <option value="{{$item->id}}">
+            @if (($item->tipo)=="Ingreso")
+            <option data-attribute="Ingreso" value="{{$item->id}}">
                 {{$item->nombre}}
             </option>
             @else
-            <option hidden value="{{$item->id}}">
+            <option data-attribute="Egreso" value="{{$item->id}}">
                 {{$item->nombre}}
             </option>
             @endif
@@ -75,3 +75,26 @@
 <div class="form-group">
     <input class="btn btn-outline-success" type="submit" value="{{ $formMode === 'edit' ? 'Actualizar' : 'Agregar' }}">
 </div>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) {
+        $("#tipo").change( function() {
+            filterSelectOptions($("#concepto"), "data-attribute", $(this).val());
+        });
+        function filterSelectOptions(selectElement, attributeName, attributeValue) {
+            if (selectElement.data("currentFilter") != attributeValue) {
+                selectElement.data("currentFilter", attributeValue);
+                var originalHTML = selectElement.data("originalHTML");
+                if (originalHTML)
+                    selectElement.html(originalHTML)
+                else {
+                    var clone = selectElement.clone();
+                    clone.children("option[selected]").removeAttr("selected");
+                    selectElement.data("originalHTML", clone.html());
+                }
+                if (attributeValue) {
+                    selectElement.children("option:not([" + attributeName + "='" + attributeValue + "'],:not([" + attributeName + "]))").remove();
+                }
+            }
+        }
+})
+</script>

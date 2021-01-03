@@ -22,8 +22,9 @@ class CreateComprobanteTable extends Migration
             $table->decimal('igv', 10, 2);
             $table->decimal('total', 10, 2);
             $table->string('comentario', 500)->nullable();
-            $table->unsignedInteger('movimiento_id');
+            $table->unsignedInteger('movimiento_id')->nullable();
             $table->foreign('movimiento_id', 'fk_comprobante_movimiento')
+                ->nullable()
                 ->references('id')
                 ->on('movimiento')
                 ->onDelete('restrict')

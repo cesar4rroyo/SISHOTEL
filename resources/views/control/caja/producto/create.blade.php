@@ -16,6 +16,15 @@
                         class="form-horizontal" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="row">
+                            <div class="col-sm form-group">
+                                <label for="tipodocumento" class="control-label">{{ 'Tipo Documento' }}</label>
+                                <select class="form-control" required name="tipodocumento" id="tipodocumento">
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="boleta">Boleta</option>
+                                    <option value="factura">Factura</option>
+                                    <option value="ticket">Ticket</option>
+                                </select>
+                            </div>
                             <div class="form-group col-sm">
                                 <label class="control-label" for="fecha">Fecha</label>
                                 <input type="datetime-local" id="fecha" class="form-control" name="fecha"
@@ -46,12 +55,12 @@
                                         {{'Seleccione una opcion'}}
                                     </option>
                                     @foreach ($conceptos as $item)
-                                    @if (($item->id)!=1 && ($item->id)!=2)
-                                    <option value="{{$item->id}}">
+                                    @if (($item->tipo)=="Ingreso")
+                                    <option data-attribute="Ingreso" value="{{$item->id}}">
                                         {{$item->nombre}}
                                     </option>
                                     @else
-                                    <option hidden value="{{$item->id}}">
+                                    <option data-attribute="Egreso" value="{{$item->id}}">
                                         {{$item->nombre}}
                                     </option>
                                     @endif
@@ -102,3 +111,26 @@
 </div>
 </div>
 @endsection
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) {
+        $("#tipo").change( function() {
+            filterSelectOptions($("#concepto"), "data-attribute", $(this).val());
+        });
+        function filterSelectOptions(selectElement, attributeName, attributeValue) {
+            if (selectElement.data("currentFilter") != attributeValue) {
+                selectElement.data("currentFilter", attributeValue);
+                var originalHTML = selectElement.data("originalHTML");
+                if (originalHTML)
+                    selectElement.html(originalHTML)
+                else {
+                    var clone = selectElement.clone();
+                    clone.children("option[selected]").removeAttr("selected");
+                    selectElement.data("originalHTML", clone.html());
+                }
+                if (attributeValue) {
+                    selectElement.children("option:not([" + attributeName + "='" + attributeValue + "'],:not([" + attributeName + "]))").remove();
+                }
+            }
+        }
+})
+</script>
