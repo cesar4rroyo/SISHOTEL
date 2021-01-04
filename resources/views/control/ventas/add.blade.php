@@ -113,12 +113,49 @@
                     </div>
                     <form action="{{route('add_detail_producto_ventas')}}" method="POST">
                         @csrf
-                        <div class="form-group">
-                            <label for="comentario">{{'Comentario'}}</label>
+                        <div class="row">
+                            <div class="col-sm form-group">
+                                <label for="tipodocumento" class="control-label">{{ 'Tipo Documento' }}</label>
+                                <select class="form-control" required name="tipodocumento" id="tipodocumento">
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="boleta">Boleta</option>
+                                    <option value="factura">Factura</option>
+                                    <option value="ticket">Ticket</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm">
+                                <label class="control-label" for="fecha">Fecha</label>
+                                <input type="datetime-local" id="fecha" class="form-control" name="fecha"
+                                    value="{{Carbon\Carbon::now()->format('Y-m-d\TH:i')}}">
+                            </div>
+                            <div class="form-group col-sm">
+                                <label class="control-label" for="numero">Número</label>
+                                <input type="text" readonly class="form-control" name="numero_comprobante" id="numero"
+                                    value="{{$numero}}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm {{ $errors->has('persona') ? 'has-error' : ''}}">
+                                <label for="persona" class="control-label">{{ 'Personas' }}</label>
+                                <select class="form-control clientes-select2" required name="persona" id="persona">
+                                    <option value="">{{'Seleccione una opcion'}}</option>
+                                    @foreach ($personas as $item)
+                                    <option value="{{$item->id}}">
+                                        {{$item->nombres}} {{" "}}{{$item->apellidos}}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                {!! $errors->first('persona', '<p class="text-danger">:message</p>') !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="comentario">{{'Comentario'}}</label>
+                            </div>
                             <textarea class="form-control" name="comentario" id="comentario" cols="10"
                                 rows="5"></textarea>
                         </div>
-                        <div class="container text-center">
+                        <div class="container text-center mt-3">
                             <button type="submit" class="btn btn-outline-success col-6">
                                 Pago a caja
                             </button>
