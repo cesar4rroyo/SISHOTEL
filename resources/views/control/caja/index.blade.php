@@ -17,16 +17,20 @@
             <div class="card-header font-weight-bold">Caja</div>
             <div class="card-body">
                 <div class="btn-gtoup">
-                    <a href="{{ route('apertura_caja') }}" title="Apertura"><button
-                            class="btn btn-primary btn-sm mb-2"><i
-                                class="fas fa-plus-square {{($disabled)?'disabled':''}}" aria-hidden="true"></i>
-                            Apertura</button></a>
-                    <a href="{{ route('create_caja') }}" title="Nuevo"><button
-                            class="btn btn-secondary btn-sm mb-2 {{(!$disabled)?'disabled':''}}"><i
-                                class="fas fa-money-bill" aria-hidden="true"></i>
-                            Nuevo</button></a>
+                    <button class="btn btn-primary btn-sm mb-2" {{($btnApertura)?'':'disabled'}}>
+                        <i class="fas fa-plus-square" aria-hidden="true"></i>
+                        <a href="{{ route('apertura_caja') }}" class="text-decoration-none text-white" title="Apertura">
+                            Apertura
+                        </a>
+                    </button>
+                    <button class="btn btn-secondary btn-sm mb-2" {{($btnNuevo)?'':'disabled'}}>
+                        <i class="fas fa-money-bill" aria-hidden="true"></i>
+                        <a href="{{ route('create_caja') }}" class="text-decoration-none text-white" title="Nuevo">
+                            Nuevo
+                        </a>
+                    </button>
                     <form action="{{ route('cierre_caja') }}" class="d-inline" novalidate title="Cierre"><button
-                            class="btn btn-danger btn-sm mb-2 {{(!$disabled)?'disabled':''}}"><i
+                            class="btn btn-danger btn-sm mb-2" {{($btnCerrar)?'':'disabled'}}><i
                                 class="fas fa-external-link-alt" aria-hidden="true"></i>
                             <input hidden type="number" id="total" name="total">
                             Cierre</button></form>

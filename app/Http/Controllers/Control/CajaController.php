@@ -23,9 +23,15 @@ class CajaController extends Controller
         $cajaApertura =
             Caja::with('movimiento', 'persona', 'concepto')
             ->latest('created_at')->first()->toArray();
+        $btnApertura = true;
+        $btnCerrar = false;
+        $btnNuevo = false;
         $disabled = false;
 
         if ($cajaApertura['concepto_id'] != '2') {
+            $btnApertura = false;
+            $btnCerrar = true;
+            $btnNuevo = true;
             $disabled = true;
         }
         $caja =
@@ -41,7 +47,7 @@ class CajaController extends Controller
             ->paginate(10);
         // dd($cajas->toArray());
 
-        return view('control.caja.index', compact('disabled', 'cajas'));
+        return view('control.caja.index', compact('disabled', 'cajas', 'btnApertura', 'btnCerrar', 'btnNuevo'));
     }
 
     public function exportPdf()
