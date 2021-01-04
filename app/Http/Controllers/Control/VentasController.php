@@ -28,11 +28,23 @@ class VentasController extends Controller
             $numero = $separar[2] + 1;
             $numero = $this->zero_fill($numero, 8);
             $yearActual = Carbon::now()->year;
-            $numero = 'B-' . $yearActual . '-' . $numero;
+            if ($tipo == 'boleta') {
+                $numero = 'B-' . $yearActual . '-' . $numero;
+            } else if ($tipo == 'factura') {
+                $numero = 'F-' . $yearActual . '-' . $numero;
+            } else if ($tipo == 'ticket') {
+                $numero = 'T-' . $yearActual . '-' . $numero;
+            }
         } else {
             $numero = $this->zero_fill(1, 8);
             $yearActual = Carbon::now()->year;
-            $numero = 'B-' . $yearActual . '-' . $numero;
+            if ($tipo == 'boleta') {
+                $numero = 'B-' . $yearActual . '-' . $numero;
+            } else if ($tipo == 'factura') {
+                $numero = 'F-' . $yearActual . '-' . $numero;
+            } else if ($tipo == 'ticket') {
+                $numero = 'T-' . $yearActual . '-' . $numero;
+            }
         }
         return response()->json($numero);
     }

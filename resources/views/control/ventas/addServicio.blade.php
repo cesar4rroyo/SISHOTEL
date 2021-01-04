@@ -113,8 +113,7 @@
                             <div class="col-sm form-group">
                                 <label for="tipodocumento" class="control-label">{{ 'Tipo Documento' }}</label>
                                 <select class="form-control" required name="tipodocumento" id="tipodocumento">
-                                    <option value="">Seleccione una opción</option>
-                                    <option value="boleta">Boleta</option>
+                                    <option selected value="boleta">Boleta</option>
                                     <option value="factura">Factura</option>
                                     <option value="ticket">Ticket</option>
                                 </select>

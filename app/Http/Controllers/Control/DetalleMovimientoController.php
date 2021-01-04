@@ -72,30 +72,30 @@ class DetalleMovimientoController extends Controller
             ->where('movimiento_id', $movimientos['id'])
             ->get()
             ->toArray();
-        $comprobante = Comprobante::latest('id')->first();
+        $comprobante = Comprobante::latest('id')
+            ->where('tipodocumento', 'boleta')
+            ->first();
         if (!is_null($comprobante)) {
             $comprobante->get()->toArray();
-            $numero = $comprobante['id'] + 1;
+            $separar = explode('-', $comprobante['numero']);
+            $numero = $separar[2] + 1;
             $numero = $this->zero_fill($numero, 8);
-            $numero = 'B001-' . $numero;
+            $yearActual = Carbon::now()->year;
+            $numero = 'B-' . $yearActual . '-' . $numero;
         } else {
             $numero = $this->zero_fill(1, 8);
+            $yearActual = Carbon::now()->year;
+            $numero = 'B-' . $yearActual . '-' . $numero;
         }
 
         if (is_null($movimiento)) {
             $productos = Producto::get()->toArray();
 
-            // $pasajeros = Pasajero::with('persona', 'movimiento')->where('movimiento_id', $movimientos['id'])->get()->toArray();
 
             return view('control.detallemovimientos.add', compact('pasajeros', 'productos', 'movimientos', 'id', 'numero'));
         } else {
             $servicios = Servicios::get()->toArray();
-            // $movimientos =
-            //     Movimiento::with('pasajero', 'reserva', 'habitacion', 'detallemovimiento')
-            //     ->whereHas('habitacion', function ($q) use ($id) {
-            //         $q->where('id', $id);
-            //     })->latest('fechaingreso')->first()->toArray();
-            // $pasajeros = Pasajero::with('persona', 'movimiento')->where('movimiento_id', $movimientos['id'])->get()->toArray();
+
 
             return view('control.detallemovimientos.addServicio', compact('pasajeros', 'servicios', 'movimientos', 'id', 'numero'));
         }

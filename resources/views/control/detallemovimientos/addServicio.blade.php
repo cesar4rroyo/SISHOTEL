@@ -186,8 +186,7 @@
                                                     class="control-label">{{ 'Tipo Documento' }}</label>
                                                 <select class="form-control" required name="tipodocumento"
                                                     id="tipodocumento">
-                                                    <option value="">Seleccione una opción</option>
-                                                    <option value="boleta">Boleta</option>
+                                                    <option selected value="boleta">Boleta</option>
                                                     <option value="factura">Factura</option>
                                                     <option value="ticket">Ticket</option>
                                                 </select>
@@ -246,6 +245,18 @@
 @endsection
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) {
+        $(document.body).on('change',"#tipodocumento",function (e) {
+           var optVal= $("#tipodocumento option:selected").val();
+           $.ajax({
+                url:"{{url('admin/ventas')}}" + "/" + optVal,
+               success:function(r){
+                   $('#numero').val(r);
+               },
+               error:function(e){
+                   console.log(e);
+               }
+           })
+    });
     $('.addToCart').on('click', function(){
             var id = $(this).data('id');
             if(id){
