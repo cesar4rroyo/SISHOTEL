@@ -166,6 +166,18 @@
 @endsection
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) {
+        $(document.body).on('change',"#tipodocumento",function (e) {
+           var optVal= $("#tipodocumento option:selected").val();
+           $.ajax({
+               url:optVal,
+               success:function(r){
+                   $('#numero').val(r);
+               },
+               error:function(e){
+                   console.log(e);
+               }
+           })
+    });
     $('.addToCart').on('click', function(){
             var id = $(this).data('id');
             if(id){

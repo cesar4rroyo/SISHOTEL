@@ -237,6 +237,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     //caja desde movimientos detalle
     Route::post('addDetalle/producto', 'CajaController@storeProducto')->name('store_caja_producto');
     Route::post('addServicio/servicio', 'CajaController@storeServicio')->name('store_caja_servicio');
+
+    Route::get('ventas/{id}', 'VentasController@getComprobanteNumero')->name('getComprobanteNumero');
 });
 Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['auth', 'acceso']], function () {
     //Routas caja

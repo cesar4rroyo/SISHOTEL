@@ -16,18 +16,45 @@ use Carbon\Carbon;
 
 class VentasController extends Controller
 {
+    public function getComprobanteNumero($tipo)
+    {
+
+        $comprobante = Comprobante::latest('id')
+            ->where('tipodocumento', $tipo)
+            ->first();
+        if (!is_null($comprobante)) {
+            $comprobante->get()->toArray();
+            $separar = explode('-', $comprobante['numero']);
+            $numero = $separar[2] + 1;
+            $numero = $this->zero_fill($numero, 8);
+            $yearActual = Carbon::now()->year;
+            $numero = 'B-' . $yearActual . '-' . $numero;
+        } else {
+            $numero = $this->zero_fill(1, 8);
+            $yearActual = Carbon::now()->year;
+            $numero = 'B-' . $yearActual . '-' . $numero;
+        }
+        return response()->json($numero);
+    }
     public function indexProductos(Request $request)
     {
         $search = $request->get('search');
         $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
-        $comprobante = Comprobante::latest('id')->first();
+        $comprobante = Comprobante::latest('id')
+            ->where('tipodocumento', 'boleta')
+            ->first();
+
         if (!is_null($comprobante)) {
             $comprobante->get()->toArray();
-            $numero = $comprobante['id'] + 1;
+            $separar = explode('-', $comprobante['numero']);
+            $numero = $separar[2] + 1;
             $numero = $this->zero_fill($numero, 8);
-            $numero = 'B001-' . $numero;
+            $yearActual = Carbon::now()->year;
+            $numero = 'B-' . $yearActual . '-' . $numero;
         } else {
             $numero = $this->zero_fill(1, 8);
+            $yearActual = Carbon::now()->year;
+            $numero = 'B-' . $yearActual . '-' . $numero;
         }
         if (!empty($search)) {
             $productos = Producto::where('nombre', 'LIKE', '%' . $search . '%')->get()->toArray();
@@ -40,14 +67,20 @@ class VentasController extends Controller
     {
         $search = $request->get('search');
         $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
-        $comprobante = Comprobante::latest('id')->first();
+        $comprobante = Comprobante::latest('id')
+            ->where('tipodocumento', 'boleta')
+            ->first();
         if (!is_null($comprobante)) {
             $comprobante->get()->toArray();
-            $numero = $comprobante['id'] + 1;
+            $separar = explode('-', $comprobante['numero']);
+            $numero = $separar[2] + 1;
             $numero = $this->zero_fill($numero, 8);
-            $numero = 'B001-' . $numero;
+            $yearActual = Carbon::now()->year;
+            $numero = 'B-' . $yearActual . '-' . $numero;
         } else {
             $numero = $this->zero_fill(1, 8);
+            $yearActual = Carbon::now()->year;
+            $numero = 'B-' . $yearActual . '-' . $numero;
         }
         if (!empty($search)) {
             $servicios = Servicios::where('nombre', 'LIKE', '%' . $search . '%')->get()->toArray();
