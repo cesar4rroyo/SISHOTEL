@@ -16,7 +16,7 @@ class CreateComprobanteTable extends Migration
         Schema::create('comprobante', function (Blueprint $table) {
             $table->increments('id');
             $table->string('tipodocumento');
-            $table->integer('numero');
+            $table->string('numero');
             $table->date('fecha');
             $table->decimal('subtotal', 10, 2);
             $table->decimal('igv', 10, 2);

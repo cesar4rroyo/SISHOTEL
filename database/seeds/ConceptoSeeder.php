@@ -24,7 +24,7 @@ class ConceptoSeeder extends Seeder
             'tipo' => 'Egreso',
         ]);
         DB::table('concepto')->insert([
-            'nombre' => 'Concepto 1',
+            'nombre' => 'Pago de Cliente',
             'tipo' => 'Ingreso',
         ]);
         DB::table('concepto')->insert([

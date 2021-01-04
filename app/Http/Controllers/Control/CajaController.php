@@ -280,115 +280,73 @@ class CajaController extends Controller
 
     public function createCheckout(Request $request, $id)
     {
-
-        $movimiento = Movimiento::findOrFail($id);
-        $conceptos = Concepto::with('caja')
-            ->whereNotIn('id', array(1, 2))
-            ->orderBy('nombre')
-            ->get();
-        $today = Carbon::now()->toDateString();
-        $total = $request->total;
-        $habitacion = $request->habitacion_id;
-        $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
-        $caja = Caja::latest('id')->first();
-
-        if (!is_null($caja)) {
-            $caja->get()->toArray();
-            $numero = $caja['numero'] + 1;
-            $numero = $this->zero_fill($numero, 8);
-        } else {
-            $numero = $this->zero_fill(1, 8);
-        }
-        $movimiento->update([
-            'fechasalida' => $request->fechasalida,
-            'dias' => $request->dias,
-            'total' => $request->total,
-            'situacion' => 'En espera pago',
-        ]);
-
-        return view('control.caja.checkout.create', compact('numero', 'habitacion', 'conceptos', 'id', 'personas', 'today', 'total'));
-    }
-    public function checkout(Request $request, $id)
-    {
-        //validar si la caja esta aperturada o no
-        $caja =
+        $verificarApertura =
             Caja::with('movimiento', 'persona', 'concepto')
             ->latest('created_at')->first()->toArray();
-        $movimiento = Movimiento::findOrFail($id);
-        if ($caja['concepto_id'] != '2') {
-            $movimiento->update([
-                'situacion' => 'Pago Realizado',
+        if ($verificarApertura['concepto_id'] != '2') {
+            $movimiento = Movimiento::findOrFail($id);
+            //se actualiza el estado de la habitacion de 'Ocupado' a 'En limpieza'
+            $habitacion = Habitacion::findOrFail($request->habitacion_id);
+            $habitacion->update([
+                'situacion' => 'En limpieza',
             ]);
-            //guardando movimiento en caja
-            $habitacion = $request->habitacion;
-            $caja = Caja::create([
-                'fecha' => $request->fecha,
-                'numero' => $request->numero,
-                'concepto_id' => $request->concepto,
-                'tipo' => $request->tipo,
-                'persona_id' => $request->persona,
-                'total' => $request->total,
-                'comentario' => $request->comentario,
-                'usuario_id' => session()->all()['usuario_id'],
-                'movimiento_id' => $id,
-            ]);
-            $comprobante = Comprobante::latest('id')->first();
-            if (!is_null($comprobante)) {
-                $comprobante->get()->toArray();
-                $numero = $comprobante['numero'] + 1;
-                $numero = $this->zero_fill($numero, 8);
-            } else {
-                $numero = $this->zero_fill(1, 8);
-            }
-            //creando datos de la factura
+            //comprobante datos      
+            $today = Carbon::now()->toDateString();
             $total = $request->total;
             $igv = (0.18) * ($total);
             $igv = round($igv, 2);
             $subtotal = $total - $igv;
-            //retornanr a vista de generar factura y cambiar estado de la 'habitacion' de disponible a 'en limpieza'
-            return view('control.caja.checkout.updatehabitacion', compact('habitacion', 'total', 'igv', 'subtotal', 'id', 'numero'));
+            $habitacion = $request->habitacion_id;
+            //crear numero correlativo para caja
+            $caja = Caja::latest('id')->first();
+            if (!is_null($caja)) {
+                $caja->get()->toArray();
+                $numero = $caja['numero'] + 1;
+                $numero = $this->zero_fill($numero, 8);
+            } else {
+                $numero = $this->zero_fill(1, 8);
+            }
+            //actualiza movimiento con fecha salida, dias, total y la situación
+            $movimiento->update([
+                'fechasalida' => $request->fechasalida,
+                'dias' => $request->dias,
+                'total' => $request->total,
+                'situacion' => 'Pago Realizado',
+            ]);
+            //guardar un nuevo registro para caja 
+            $cajaStore = Caja::create([
+                'fecha' => $request->fechasalida,
+                'tipo' => 'Ingreso',
+                'numero' => $numero,
+                'total' => $total,
+                'persona_id' => $request->persona,
+                'movimiento_id' => $id,
+                'usuario_id' => session()->all()['usuario_id'],
+                'concepto_id' => 3,
+                'comentario' => $request->comentario,
+            ]);
+            //guardar nuevo registro de comprobante
+            $comprobante = Comprobante::create([
+                'tipodocumento' => $request->tipodocumento,
+                'numero' => $request->numero_comprobante,
+                'fecha' => $today,
+                'subtotal' => $subtotal,
+                'total' => $total,
+                'igv' => $igv,
+                'comentario' => $request->comentario,
+                'movimiento_id' => $id,
+            ]);
+
+            return redirect()
+                ->route('caja')
+                ->with('success', 'Registro agregado correctamente');
+        } else {
+            return redirect()
+                ->route('habitaciones')
+                ->with('error', 'La caja no ha sido aperturada');
         }
-        return redirect()
-            ->route('habitaciones')
-            ->with('error', 'La caja no ha sido aperturada');
     }
-
-    //esta funcion es para generar el comprobante de un movimiento cuando se hace checkout
-    public function updateHabitacion(Request $request, $id)
-    {
-        //se actualiza el movimiento su situación de 'Pago Pendiente' a 'Pago Realizado'
-        $movimiento =
-            Movimiento::with('caja.persona')
-            ->where('situacion', 'Pago Realizado')
-            ->latest()
-            ->first()
-            ->toArray();
-        //creacion del comprobante con los datos del Request
-        $comprobante = Comprobante::create([
-            'tipodocumento' => $request->tipodocumento,
-            'numero' => $request->numero,
-            'fecha' => $request->fecha,
-            'subtotal' => $request->subtotal,
-            'total' => $request->total,
-            'igv' => $request->igv,
-            'comentario' => $request->comentario,
-            'movimiento_id' => $movimiento['id'],
-        ]);
-        //se actualiza el estado de la habitacion de 'Ocupado' a 'En limpieza'
-        $habitacion = Habitacion::findOrFail($id);
-        $habitacion->update([
-            'situacion' => 'En limpieza',
-        ]);
-
-        return redirect()
-            ->route('caja')
-            ->with('success', 'Registro agregado correctamente');
-    }
-    //estax funciones addFromDetallePdto y addFromDetalleService se encargara de verificar 
-    //si la caja esta aperturada o no, además de enviar
-    //los datos necesarios que serán utilizados en la vista para agregarlo a las tablas caja,
-    //comprobante y/o detalleComprobante
-    public function addFromDetallePdto($id)
+    public function addFromDetallePdto(Request $request, $id)
     {
         //verificar si la caja esta abierta llamando al ultimo movimiento en la caja
         //que si su concepto_id  es diferente de '2' -> 'Concepto: Cierre Caja' dejará 
@@ -404,6 +362,10 @@ class CajaController extends Controller
             foreach ($cart as $key => $item) {
                 $total += ($item['precio'] * $item['cantidad']);
             }
+            $today = Carbon::now()->toDateString();
+            $igv = (0.18) * ($total);
+            $igv = round($igv, 2);
+            $subtotal = $total - $igv;
             //esta validación es para generar el número correlativo para la caja
             $cajaValidate = Caja::latest('id')->first();
             //si es diferente de nulo se le sumará uno al registro anterior
@@ -415,22 +377,69 @@ class CajaController extends Controller
                 //de lo contrario se le dará el número 1 por defecto, seria de esta forma '00000001'
                 $numero = $this->zero_fill(1, 8);
             }
-            //enviar hacia la vista las variables u objetos que se usarán posteriormente
-            $conceptos = Concepto::with('caja')
-                ->whereNotIn('id', array(1, 2))
-                ->orderBy('nombre')
-                ->get();
-            $today = Carbon::now()->toDateString();
-            $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
-            return view('control.caja.producto.create', compact('numero', 'conceptos', 'id', 'personas', 'today', 'total'));
+            //guardar un nuevo registro para caja 
+            $cajaStore = Caja::create([
+                'fecha' => $request->fecha,
+                'tipo' => 'Ingreso',
+                'numero' => $numero,
+                'total' => $total,
+                'persona_id' => $request->persona,
+                'usuario_id' => session()->all()['usuario_id'],
+                'concepto_id' => 3,
+                'comentario' => $request->comentario,
+            ]);
+            //obtener id del ultimo registro de caja es decir del registro anterior 
+            // y con eso pasar a la tabla DeatalleCaja cada producto seleccionado
+            $caja =
+                Caja::with('movimiento', 'persona', 'concepto')
+                ->latest('created_at')->first()->toArray();
+            $id_caja = $caja['id'];
+            $productos = session()->all()['cart'];
+            foreach ($productos as $key => $item) {
+                $detallecaja = DetalleCaja::create([
+                    'cantidad' => $item['cantidad'],
+                    'preciocompra' => $item['precio'],
+                    'precioventa' => ($item['cantidad'] * $item['precio']),
+                    'comentario' => $request->comentario,
+                    'producto_id' => $key,
+                    'caja_id' => $id_caja,
+                ]);
+            }
+            //guardar nuevo registro de comprobante
+            $comprobante = Comprobante::create([
+                'tipodocumento' => $request->tipodocumento,
+                'numero' => $request->numero_comprobante,
+                'fecha' => $today,
+                'subtotal' => $subtotal,
+                'total' => $total,
+                'igv' => $igv,
+                'comentario' => $request->comentario,
+            ]);
+            //traer el id del comprobante generado anteriormente para relacionarlo con DetalleComprobante
+            $id_ComprobanteAnterior = Comprobante::latest('id')->first()->toArray()['id'];
+            foreach ($productos as $key => $item) {
+                $detalleComprobante = DetalleComprobante::create([
+                    'cantidad' => $item['cantidad'],
+                    'preciocompra' => $item['precio'],
+                    'precioventa' => ($item['cantidad'] * $item['precio']),
+                    'comentario' => $request->comentario,
+                    'producto_id' => $key,
+                    'comprobante_id' => $id_ComprobanteAnterior,
+                ]);
+            }
+            //limpiar la session donde se encuentran los productos
+            session()->pull('cart', []);
+            //si la caja no esta aperturada entonces se lo devolverpa a la vista principal con un mensaje de error
+            return redirect()
+                ->route('caja')
+                ->with('success', 'Registro agregado correctamente');
         }
         //si la caja no esta aperturada entonces se lo devolverpa a la vista principal con un mensaje de error
         return redirect()
             ->route('habitaciones')
             ->with('error', 'La caja no ha sido aperturada');
     }
-
-    public function addFromDetalleService($id)
+    public function addFromDetalleService(Request $request, $id)
     {
         //verificar si la caja esta abierta llamando al ultimo movimiento en la caja
         //que si su concepto_id  es diferente de '2' -> 'Concepto: Cierre Caja' dejará 
@@ -446,6 +455,10 @@ class CajaController extends Controller
             foreach ($cart as $key => $item) {
                 $total += ($item['precio'] * $item['cantidad']);
             }
+            $today = Carbon::now()->toDateString();
+            $igv = (0.18) * ($total);
+            $igv = round($igv, 2);
+            $subtotal = $total - $igv;
             //esta validación es para generar el número correlativo para la caja
             $cajaValidate = Caja::latest('id')->first();
             //si es diferente de nulo se le sumará uno al registro anterior
@@ -457,20 +470,68 @@ class CajaController extends Controller
                 //de lo contrario se le dará el número 1 por defecto, seria de esta forma '00000001'
                 $numero = $this->zero_fill(1, 8);
             }
-            //enviar hacia la vista las variables u objetos que se usarán posteriormente
-            $conceptos = Concepto::with('caja')
-                ->whereNotIn('id', array(1, 2))
-                ->orderBy('nombre')
-                ->get();
-            $today = Carbon::now()->toDateString();
-            $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
-            return view('control.caja.servicio.create', compact('numero', 'conceptos', 'id', 'personas', 'today', 'total'));
+            //guardar un nuevo registro para caja 
+            $cajaStore = Caja::create([
+                'fecha' => $request->fecha,
+                'tipo' => 'Ingreso',
+                'numero' => $numero,
+                'total' => $total,
+                'persona_id' => $request->persona,
+                'usuario_id' => session()->all()['usuario_id'],
+                'concepto_id' => 3,
+                'comentario' => $request->comentario,
+            ]);
+            //obtener id del ultimo registro de caja es decir del registro anterior 
+            // y con eso pasar a la tabla DeatalleCaja cada producto seleccionado
+            $caja =
+                Caja::with('movimiento', 'persona', 'concepto')
+                ->latest('created_at')->first()->toArray();
+            $id_caja = $caja['id'];
+            $servicios = session()->all()['servicio'];
+            foreach ($servicios as $key => $item) {
+                $detallecaja = DetalleCaja::create([
+                    'cantidad' => $item['cantidad'],
+                    'preciocompra' => $item['precio'],
+                    'precioventa' => ($item['cantidad'] * $item['precio']),
+                    'comentario' => $request->comentario,
+                    'servicio_id' => $key,
+                    'caja_id' => $id_caja,
+                ]);
+            }
+            //guardar nuevo registro de comprobante
+            $comprobante = Comprobante::create([
+                'tipodocumento' => $request->tipodocumento,
+                'numero' => $request->numero_comprobante,
+                'fecha' => $today,
+                'subtotal' => $subtotal,
+                'total' => $total,
+                'igv' => $igv,
+                'comentario' => $request->comentario,
+            ]);
+            //traer el id del comprobante generado anteriormente para relacionarlo con DetalleComprobante
+            $id_ComprobanteAnterior = Comprobante::latest('id')->first()->toArray()['id'];
+            foreach ($servicios as $key => $item) {
+                $detalleComprobante = DetalleComprobante::create([
+                    'cantidad' => $item['cantidad'],
+                    'preciocompra' => $item['precio'],
+                    'precioventa' => ($item['cantidad'] * $item['precio']),
+                    'comentario' => $request->comentario,
+                    'producto_id' => $key,
+                    'comprobante_id' => $id_ComprobanteAnterior,
+                ]);
+            }
+            //limpiar la session donde se encuentran los productos
+            session()->pull('servicio', []);
+            return redirect()
+                ->route('caja')
+                ->with('success', 'Registro agregado correctamente');
         }
         return redirect()
             ->route('habitaciones')
             ->with('error', 'La caja no ha sido aperturada');
     }
-    //funcion para enviar a caja y generar la primera parte del comprobante,
+}
+    /* //funcion para enviar a caja y generar la primera parte del comprobante,
     //solo es para productos seleccionados desde la habítación;
     public function storeProducto(Request $request)
     {
@@ -547,10 +608,10 @@ class CajaController extends Controller
         return redirect()
             ->route('caja')
             ->with('success', 'Registro agregado correctamente');
-    }
+    } */
     //funcion para enviar a caja y generar la primera parte del comprobante,
     //solo es para servicios seleccionados desde la habítación;
-    public function storeServicio(Request $request)
+    /* public function storeServicio(Request $request)
     {
         //comentario es variable compartida tanto para Caja y Detallecaja
         $comentario = $request->comentario;
@@ -624,5 +685,88 @@ class CajaController extends Controller
         return redirect()
             ->route('caja')
             ->with('success', 'Registro agregado correctamente');
+    } */
+
+
+    /* public function checkout(Request $request, $id)
+    {
+        //validar si la caja esta aperturada o no
+        $caja =
+            Caja::with('movimiento', 'persona', 'concepto')
+            ->latest('created_at')->first()->toArray();
+        $movimiento = Movimiento::findOrFail($id);
+        if ($caja['concepto_id'] != '2') {
+            $movimiento->update([
+                'situacion' => 'Pago Realizado',
+            ]);
+            //guardando movimiento en caja
+            $habitacion = $request->habitacion;
+            $caja = Caja::create([
+                'fecha' => $request->fecha,
+                'numero' => $request->numero,
+                'concepto_id' => $request->concepto,
+                'tipo' => $request->tipo,
+                'persona_id' => $request->persona,
+                'total' => $request->total,
+                'comentario' => $request->comentario,
+                'usuario_id' => session()->all()['usuario_id'],
+                'movimiento_id' => $id,
+            ]);
+            $comprobante = Comprobante::latest('id')->first();
+            if (!is_null($comprobante)) {
+                $comprobante->get()->toArray();
+                $numero = $comprobante['numero'] + 1;
+                $numero = $this->zero_fill($numero, 8);
+            } else {
+                $numero = $this->zero_fill(1, 8);
+            }
+            //creando datos de la factura
+            $total = $request->total;
+            $igv = (0.18) * ($total);
+            $igv = round($igv, 2);
+            $subtotal = $total - $igv;
+            //retornanr a vista de generar factura y cambiar estado de la 'habitacion' de disponible a 'en limpieza'
+            return view('control.caja.checkout.updatehabitacion', compact('habitacion', 'total', 'igv', 'subtotal', 'id', 'numero'));
+        }
+        return redirect()
+            ->route('habitaciones')
+            ->with('error', 'La caja no ha sido aperturada');
+    } */
+
+    //esta funcion es para generar el comprobante de un movimiento cuando se hace checkout
+    /* public function updateHabitacion(Request $request, $id)
+    {
+        //se actualiza el movimiento su situación de 'Pago Pendiente' a 'Pago Realizado'
+        $movimiento =
+            Movimiento::with('caja.persona')
+            ->where('situacion', 'Pago Realizado')
+            ->latest()
+            ->first()
+            ->toArray();
+        //creacion del comprobante con los datos del Request
+        $comprobante = Comprobante::create([
+            'tipodocumento' => $request->tipodocumento,
+            'numero' => $request->numero,
+            'fecha' => $request->fecha,
+            'subtotal' => $request->subtotal,
+            'total' => $request->total,
+            'igv' => $request->igv,
+            'comentario' => $request->comentario,
+            'movimiento_id' => $movimiento['id'],
+        ]);
+        //se actualiza el estado de la habitacion de 'Ocupado' a 'En limpieza'
+        $habitacion = Habitacion::findOrFail($id);
+        $habitacion->update([
+            'situacion' => 'En limpieza',
+        ]);
+
+        return redirect()
+            ->route('caja')
+            ->with('success', 'Registro agregado correctamente');
     }
-}
+    //estax funciones addFromDetallePdto y addFromDetalleService se encargara de verificar 
+    //si la caja esta aperturada o no, además de enviar
+    //los datos necesarios que serán utilizados en la vista para agregarlo a las tablas caja,
+    //comprobante y/o detalleComprobante
+    
+ */

@@ -8,6 +8,8 @@ use App\Models\Concepto;
 use App\Models\Habitacion;
 use App\Models\Nacionalidad;
 use App\Models\Persona;
+use App\Models\Procesos\Caja;
+use App\Models\Procesos\Comprobante;
 use App\Models\Procesos\DetalleMovimiento;
 use App\Models\Procesos\Movimiento;
 use App\Models\Procesos\Pasajero;
@@ -113,14 +115,17 @@ class MovimientoController extends Controller
 
     public function edit($id)
     {
-        $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
+        $conceptos = Concepto::with('caja')
+            ->whereNotIn('id', array(1, 2))
+            ->orderBy('nombre')
+            ->get();
         $habitacion = Habitacion::with('tipohabitacion', 'piso', 'reserva')->find($id)->toArray();
+
         if ($habitacion['situacion'] == 'Disponible' || $habitacion['situacion'] == 'Limpieza') {
-            $personas = Persona::getClientes();
             $initialDate = Carbon::now()->format('Y-m-d\TH:i');
             $roles = Rol::orderBy('id')->pluck('nombre', 'id')->toArray();
             $nacionalidades = Nacionalidad::with('persona')->get();
-
+            $personas = Persona::getClientes();
             return view('control.checkin.index', compact('roles', 'nacionalidades', 'habitacion', 'personas', 'initialDate'));
         } else if ($habitacion['situacion'] == 'Ocupada') {
             $initialDate = Carbon::now()->format('Y-m-d\TH:i');
@@ -142,10 +147,27 @@ class MovimientoController extends Controller
                 ->where('movimiento_id', $movimiento['id'])
                 ->get()
                 ->toArray();
+            $comprobante = Comprobante::latest('id')->first();
+            if (!is_null($comprobante)) {
+                $comprobante->get()->toArray();
+                $numero = $comprobante['id'] + 1;
+                $numero = $this->zero_fill($numero, 8);
+                $numero = 'B001-' . $numero;
+            } else {
+                $numero = $this->zero_fill(1, 8);
+            }
 
-
-            return view('control.checkout.index', compact('conceptos', 'habitacion', 'initialDate', 'detalles', 'movimiento', 'pasajeros'));
+            return
+                view(
+                    'control.checkout.index',
+                    compact('id_movimiento', 'numero', 'conceptos', 'habitacion', 'initialDate', 'detalles', 'movimiento', 'pasajeros')
+                );
         }
+    }
+
+    public function zero_fill($valor, $long = 0)
+    {
+        return str_pad($valor, $long, '0', STR_PAD_LEFT);
     }
 
 

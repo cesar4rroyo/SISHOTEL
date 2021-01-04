@@ -252,6 +252,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     Route::put('caja/{id}', 'CajaController@update')->name('update_caja');
     Route::delete('caja/{id}/destroy', 'CajaController@destroy')->name('destroy_caja');
     //caja desde movimientos detalle
-    Route::get('caja/{id}/addDetalle/producto', 'CajaController@addFromDetallePdto')->name('add_detail_producto');
-    Route::get('caja/{id}/addDetalle/servicio', 'CajaController@addFromDetalleService')->name('add_detail_servicio');
+    Route::post('caja/{id}/addDetalle/producto', 'CajaController@addFromDetallePdto')->name('add_detail_producto');
+    Route::post('caja/{id}/addDetalle/servicio', 'CajaController@addFromDetalleService')->name('add_detail_servicio');
 });

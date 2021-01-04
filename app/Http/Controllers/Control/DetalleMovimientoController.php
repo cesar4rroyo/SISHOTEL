@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Control;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Procesos\Caja;
+use App\Models\Procesos\Comprobante;
 use App\Models\Procesos\DetalleMovimiento;
 use App\Models\Procesos\Movimiento;
 use App\Models\Procesos\Pasajero;
@@ -53,29 +54,50 @@ class DetalleMovimientoController extends Controller
             })->latest('fechaingreso')->first()->toArray();
         return view('control.detallemovimientos.add', compact('productos', 'movimientos', 'id'));
     }
+    public function zero_fill($valor, $long = 0)
+    {
+        return str_pad($valor, $long, '0', STR_PAD_LEFT);
+    }
     public function movimiento($id, $movimiento = null)
     {
+        $movimientos =
+            Movimiento::with('pasajero', 'reserva', 'habitacion', 'detallemovimiento')
+            ->whereHas('habitacion', function ($q) use ($id) {
+                $q->where('id', $id);
+            })->latest('fechaingreso')->first()->toArray();
+        $pasajeros = Pasajero::with('persona', 'movimiento')
+            ->whereHas('movimiento', function ($q) use ($id) {
+                $q->where('habitacion_id', $id);
+            })
+            ->where('movimiento_id', $movimientos['id'])
+            ->get()
+            ->toArray();
+        $comprobante = Comprobante::latest('id')->first();
+        if (!is_null($comprobante)) {
+            $comprobante->get()->toArray();
+            $numero = $comprobante['id'] + 1;
+            $numero = $this->zero_fill($numero, 8);
+            $numero = 'B001-' . $numero;
+        } else {
+            $numero = $this->zero_fill(1, 8);
+        }
 
         if (is_null($movimiento)) {
             $productos = Producto::get()->toArray();
-            $movimientos =
-                Movimiento::with('pasajero', 'reserva', 'habitacion', 'detallemovimiento')
-                ->whereHas('habitacion', function ($q) use ($id) {
-                    $q->where('id', $id);
-                })->latest('fechaingreso')->first()->toArray();
-            $pasajeros = Pasajero::with('persona', 'movimiento')->where('movimiento_id', $movimientos['id'])->get()->toArray();
 
-            return view('control.detallemovimientos.add', compact('pasajeros', 'productos', 'movimientos', 'id'));
+            // $pasajeros = Pasajero::with('persona', 'movimiento')->where('movimiento_id', $movimientos['id'])->get()->toArray();
+
+            return view('control.detallemovimientos.add', compact('pasajeros', 'productos', 'movimientos', 'id', 'numero'));
         } else {
             $servicios = Servicios::get()->toArray();
-            $movimientos =
-                Movimiento::with('pasajero', 'reserva', 'habitacion', 'detallemovimiento')
-                ->whereHas('habitacion', function ($q) use ($id) {
-                    $q->where('id', $id);
-                })->latest('fechaingreso')->first()->toArray();
-            $pasajeros = Pasajero::with('persona', 'movimiento')->where('movimiento_id', $movimientos['id'])->get()->toArray();
+            // $movimientos =
+            //     Movimiento::with('pasajero', 'reserva', 'habitacion', 'detallemovimiento')
+            //     ->whereHas('habitacion', function ($q) use ($id) {
+            //         $q->where('id', $id);
+            //     })->latest('fechaingreso')->first()->toArray();
+            // $pasajeros = Pasajero::with('persona', 'movimiento')->where('movimiento_id', $movimientos['id'])->get()->toArray();
 
-            return view('control.detallemovimientos.addServicio', compact('pasajeros', 'servicios', 'movimientos', 'id'));
+            return view('control.detallemovimientos.addServicio', compact('pasajeros', 'servicios', 'movimientos', 'id', 'numero'));
         }
     }
     /**

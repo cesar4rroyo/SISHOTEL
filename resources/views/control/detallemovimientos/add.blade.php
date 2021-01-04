@@ -158,12 +158,89 @@
                             <button id="btnAddToRoom" type="submit" class="btn btn-outline-success col-6">
                                 Agregar a habitacion
                             </button>
-                            <a id="btnAddToCaja" href="{{route('add_detail_producto', $movimientos['id'])}}"
+                            <button id="btnAddToCaja" type="button" data-toggle="modal" data-target="#modalCaja"
+                                {{-- href="{{route('add_detail_producto', $movimientos['id'])}}" --}}
                                 class="btn btn-outline-info col-6 mt-1 btnSubmit">
                                 Pago Caja
-                            </a>
+                            </button>
                         </div>
                     </form>
+                    <div class="modal fade" id="modalCaja" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+                        <form method="POST" action="{{route('add_detail_producto', $movimientos['id'])}}">
+                            @csrf
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Datos de Documento</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="form-group col-sm">
+                                                <label class="control-label" for="numero">Número</label>
+                                                <input type="text" readonly class="form-control"
+                                                    name="numero_comprobante" id="numero" value="{{$numero}}">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm form-group">
+                                                <label for="tipodocumento"
+                                                    class="control-label">{{ 'Tipo Documento' }}</label>
+                                                <select class="form-control" required name="tipodocumento"
+                                                    id="tipodocumento">
+                                                    <option value="">Seleccione una opción</option>
+                                                    <option value="boleta">Boleta</option>
+                                                    <option value="factura">Factura</option>
+                                                    <option value="ticket">Ticket</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-sm">
+                                                <label class="control-label" for="fecha">Fecha</label>
+                                                <input type="datetime-local" id="fecha" class="form-control"
+                                                    name="fecha" value="{{Carbon\Carbon::now()->format('Y-m-d\TH:i')}}">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div
+                                                class="form-group col-sm {{ $errors->has('persona') ? 'has-error' : ''}}">
+                                                <label for="persona" class="control-label">{{ 'Persona' }}</label>
+                                                {{-- <input type="text" id="persona"> --}}
+                                                <select class="form-control" required name="persona"
+                                                    id="persona_select">
+                                                    <option value="{{$pasajeros[0]['persona']['id']}}">
+                                                        {{$pasajeros[0]['persona']['nombres'] . ' ' . $pasajeros[0]['persona']['apellidos']}}
+                                                    </option>
+                                                    @foreach ($pasajeros as $item)
+                                                    @if ($item['persona']['id']!=$pasajeros[0]['persona']['id'])
+                                                    <option value="{{$item['persona']['id']}}">
+                                                        {{$item['persona']['nombres']}}
+                                                        {{" "}}{{$item['persona']['apellidos']}}
+                                                    </option>
+                                                    @endif
+                                                    @endforeach
+                                                </select>
+                                                {!! $errors->first('persona', '<p class="text-danger">:message</p>') !!}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label for="comentario" class="control-label">{{ 'Comentario' }}</label>
+                                            </div>
+                                            <textarea class="form-control" name="comentario" id="comentario" cols="3"
+                                                rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar
+                                            Operación</button>
+                                        <button type="submit" class="btn btn-primary">Registrar en Caja</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
