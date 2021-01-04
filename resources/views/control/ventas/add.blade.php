@@ -76,8 +76,9 @@
                                                 {{ $details['nombre']}}
                                             </td>
                                             <td data-th="Quantity" style="width: 20%">
-                                                <input type="number" class="form-control text-center quantity"
-                                                    value="{{$details['cantidad']}}">
+                                                <input type="number"
+                                                    class="txtCantidad form-control text-center quantity"
+                                                    value="{{$details['cantidad']}}" data-id="{{$id}}">
                                             </td>
                                             <td>
                                                 {{ $details['precio'] * $details['cantidad']}}
@@ -93,7 +94,7 @@
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
                                                 <button data-id="{{$id}}" type="button"
-                                                    class="btn btn-outline-secondary updateCart">
+                                                    class="btn btn-outline-secondary updateCart d-none">
                                                     <i class="fas fa-save"></i>
                                                 </button>
 
@@ -169,7 +170,34 @@
 @endsection
 
 <script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", function(event) {  
+    document.addEventListener("DOMContentLoaded", function(event) {
+        /* $(".updateCart").click(function (e) {
+           e.preventDefault();
+           var ele = $(this);
+            $.ajax({
+               url: "{{ url('admin/ventas/productos/updateCart') }}",
+               method: "PATCH",
+               data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id"), cantidad: ele.parents("tr").find(".quantity").val()},
+               success: function (respuesta) {
+                    Hotel.notificaciones(respuesta.respuesta, 'Hotel', 'success');
+                    location.reload();
+            }
+        }); */
+    $('.txtCantidad').on('change', function(e){
+        
+           e.preventDefault();
+           var ele = $(this);
+            $.ajax({
+               url: "{{ url('admin/ventas/productos/updateCart') }}",
+               method: "PATCH",
+               data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id"), cantidad: ele.parents("tr").find(".quantity").val()},
+               success: function (respuesta) {
+                    Hotel.notificaciones(respuesta.respuesta, 'Hotel', 'success');
+                    location.reload();
+            }
+       
+    });
+    }); 
     $(document.body).on('change',"#tipodocumento",function (e) {
            var optVal= $("#tipodocumento option:selected").val();
            $.ajax({
@@ -216,19 +244,7 @@
             });
         }
     });
-    $(".updateCart").click(function (e) {
-           e.preventDefault();
-           var ele = $(this);
-            $.ajax({
-               url: "{{ url('admin/ventas/productos/updateCart') }}",
-               method: "PATCH",
-               data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id"), cantidad: ele.parents("tr").find(".quantity").val()},
-               success: function (respuesta) {
-                    Hotel.notificaciones(respuesta.respuesta, 'Hotel', 'success');
-                    location.reload();
-            }
-        });
-    });
+    
 
     });
 
