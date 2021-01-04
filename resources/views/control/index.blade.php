@@ -113,7 +113,7 @@
                                                 <i class="fas fa-check-circle"></i>
                                                 Check-In
                                             </a>
-                                            <a href="{{route('edit_habitacion' , $item['id'])}}"
+                                            <a href="{{route('actualizarHabitacion' , $item['id'])}}"
                                                 class="btn btn-app bg-warning text-decoration-none">
                                                 <i class="fas fa-check-circle"></i>
                                                 Actualizar Habitación

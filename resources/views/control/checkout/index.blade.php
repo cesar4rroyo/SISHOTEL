@@ -43,7 +43,7 @@
                             </div>
                             <div class="col-sm form-group">
                                 <label class="control-label" for="dias">{{'Dias'}}</label>
-                                <input required type="number" class="form-control" name="dias" id="dias">
+                                <input required type="number" class="form-control" step="0.01" name="dias" id="dias">
                             </div>
                             <div class="col-sm form-group">
                                 <label class="control-label" for="total">{{'Total'}}</label>

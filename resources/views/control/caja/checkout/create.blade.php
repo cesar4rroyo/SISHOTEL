@@ -85,7 +85,7 @@
                             </div>
                             <div class="col-sm form-group">
                                 <label for="persona" class="control-label">{{ 'Total' }}</label>
-                                <input type="number" readonly class="form-control" name="total" id="total"
+                                <input type="number" step="0.01" readonly class="form-control" name="total" id="total"
                                     value="{{ isset($total) ? $total : ''}}">
                             </div>
                         </div>

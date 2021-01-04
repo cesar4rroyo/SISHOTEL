@@ -38,14 +38,22 @@ class CajaController extends Controller
             Caja::with('movimiento', 'persona', 'concepto')->whereHas('concepto', function ($q) {
                 $q->where('id', 2);
             })
-            ->latest('fecha')->first()->toArray();
+            ->latest('created_at')->first()->toArray();
+
+        $fecha = $caja['created_at'];
+
+        if (!$fecha) {
+            $fecha = $caja['fecha'];
+        }
 
         $cajas =
             Caja::with('concepto', 'usuario', 'persona', 'movimiento')
-            ->where('fecha', '>', $caja['fecha'])
-            ->orderBy('fecha', 'DESC')
+            ->where('created_at', '>', $fecha)
+            ->orderBy('created_at', 'DESC')
             ->paginate(10);
+
         // dd($cajas->toArray());
+
 
         return view('control.caja.index', compact('disabled', 'cajas', 'btnApertura', 'btnCerrar', 'btnNuevo'));
     }
@@ -530,6 +538,19 @@ class CajaController extends Controller
             ->route('habitaciones')
             ->with('error', 'La caja no ha sido aperturada');
     }
+    public function updateHabitacion($id)
+    {
+
+        //se actualiza el estado de la habitacion de 'Ocupado' a 'En limpieza'
+        $habitacion = Habitacion::findOrFail($id);
+        $habitacion->update([
+            'situacion' => 'Disponible',
+        ]);
+
+        return redirect()
+            ->route('habitaciones')
+            ->with('success', 'Actualizado correctamente');
+    }
 }
     /* //funcion para enviar a caja y generar la primera parte del comprobante,
     //solo es para productos seleccionados desde la habítación;
@@ -734,36 +755,7 @@ class CajaController extends Controller
     } */
 
     //esta funcion es para generar el comprobante de un movimiento cuando se hace checkout
-    /* public function updateHabitacion(Request $request, $id)
-    {
-        //se actualiza el movimiento su situación de 'Pago Pendiente' a 'Pago Realizado'
-        $movimiento =
-            Movimiento::with('caja.persona')
-            ->where('situacion', 'Pago Realizado')
-            ->latest()
-            ->first()
-            ->toArray();
-        //creacion del comprobante con los datos del Request
-        $comprobante = Comprobante::create([
-            'tipodocumento' => $request->tipodocumento,
-            'numero' => $request->numero,
-            'fecha' => $request->fecha,
-            'subtotal' => $request->subtotal,
-            'total' => $request->total,
-            'igv' => $request->igv,
-            'comentario' => $request->comentario,
-            'movimiento_id' => $movimiento['id'],
-        ]);
-        //se actualiza el estado de la habitacion de 'Ocupado' a 'En limpieza'
-        $habitacion = Habitacion::findOrFail($id);
-        $habitacion->update([
-            'situacion' => 'En limpieza',
-        ]);
-
-        return redirect()
-            ->route('caja')
-            ->with('success', 'Registro agregado correctamente');
-    }
+    /* 
     //estax funciones addFromDetallePdto y addFromDetalleService se encargara de verificar 
     //si la caja esta aperturada o no, además de enviar
     //los datos necesarios que serán utilizados en la vista para agregarlo a las tablas caja,

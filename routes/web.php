@@ -217,7 +217,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
 
 
     //actualizar habitacion
-    Route::post('caja/habitacion/actualizar/{id}', 'CajaController@updateHabitacion')->name('actualizarHabitacion');
+    Route::get('caja/habitacion/actualizar/{id}', 'CajaController@updateHabitacion')->name('actualizarHabitacion');
     //ventas de Productos
     Route::get('ventas/productos', 'VentasController@indexProductos')->name('ventas_productos');
     Route::get('ventas/servicios', 'VentasController@indexServicios')->name('ventas_servicios');
