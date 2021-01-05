@@ -20,13 +20,13 @@ class TipoUsuarioSeeder extends Seeder
             'nombre' => 'Administrador',
         ]);
         DB::table('tipousuario')->insert([
-            'nombre' => 'Almacen',
+            'nombre' => 'Recepcionista',
         ]);
         DB::table('tipousuario')->insert([
             'nombre' => 'Cajero',
         ]);
-        DB::table('tipousuario')->insert([
-            'nombre' => 'Usuario',
-        ]);
+        // DB::table('tipousuario')->insert([
+        //     'nombre' => 'Usuario',
+        // ]);
     }
 }
