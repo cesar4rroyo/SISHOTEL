@@ -28,8 +28,6 @@ class ValidatePersona extends FormRequest
             'ruc' => 'nullable|max:12|min:12|numeric | unique:persona,ruc,' . $this->route('id'),
             'nombres' => 'required |max:20',
             'apellidos' => 'max:20',
-            'direccion' => 'nullable| required |max:50',
-            'telefono' => 'nullable |min:9|numeric'
         ];
     }
 }

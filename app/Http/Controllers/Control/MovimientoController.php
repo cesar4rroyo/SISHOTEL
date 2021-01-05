@@ -152,7 +152,8 @@ class MovimientoController extends Controller
                 $comprobante->get()->toArray();
                 $numero = $comprobante['id'] + 1;
                 $numero = $this->zero_fill($numero, 8);
-                $numero = 'B001-' . $numero;
+                $yearActual = Carbon::now()->year;
+                $numero = 'B-' . $yearActual . '-' . $numero;
             } else {
                 $numero = $this->zero_fill(1, 8);
             }
