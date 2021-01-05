@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Check-Out</title>
 </head>
 <style>
     .title {
@@ -18,7 +18,6 @@
         margin-top: 10px;
 
     }
-
     .head-title {
         text-align: center;
         font-weight: bold;
@@ -35,17 +34,12 @@
         display: flex;
         text-align: center;
     }
-
-
-
     .group {
         display: flex;
     }
 
     .label {
         text-transform: uppercase;
-
-
 
     }
 
@@ -84,12 +78,11 @@
         margin-top: 4px;
     }
 </style>
-
 <body>
     @foreach ($movimiento['pasajero'] as $persona)
-    <div class="img-container">
+    {{-- <div class="img-container">
         <img src="{{asset("assets/$theme/dist/img/logo.jpeg")}}" width="80px" alt="">
-    </div>
+    </div> --}}
     <div class="head-title">
         Ficha de Registro Nro. {{($loop->index)+1}}
     </div>
@@ -163,12 +156,7 @@
             </tr>
         </tbody>
     </table>
-
     <div class="page-break"></div>
-
-
-
     @endforeach
 </body>
-
 </html>
