@@ -23,7 +23,7 @@ class ProductoSeeder extends Seeder
             'nombre' => 'Heno de Pravia Jabón Verde',
             'precioventa' => 5,
             'categoria_id' => 1,
-            'unidad_id' => 2
+            'unidad_id' => 1
         ]);
         DB::table('producto')->insert([
             'nombre' => 'Jabón SPA',
@@ -49,7 +49,7 @@ class ProductoSeeder extends Seeder
             'nombre' => 'Gillette Venus Simply 3',
             'precioventa' => 5,
             'categoria_id' => 1,
-            'unidad_id' => 2
+            'unidad_id' => 1
         ]);
         DB::table('producto')->insert([
             'nombre' => 'Gillette Prestobarba 3',
