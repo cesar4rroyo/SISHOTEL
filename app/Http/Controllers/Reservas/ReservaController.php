@@ -51,6 +51,7 @@ class ReservaController extends Controller
         foreach ($habitaciones as $key => $item) {
             $reserva = Reserva::create([
                 'fecha' => $request->txtFecha,
+                'fechasalida' => $request->txtFechaSalida,
                 'observacion' => $request->observacion,
                 'persona_id' => $request->persona,
                 'habitacion_id' => $item,
@@ -73,6 +74,7 @@ class ReservaController extends Controller
                 $data[] = [
                     'id' => $reserva->id,
                     'start' => $reserva->fecha,
+                    'end' => $reserva->fechasalida,
                     'title' => $reserva->habitacion->numero . ' Reserva de ' . $reserva->persona->nombres,
                     'observacion' => $reserva->observacion,
                     'situacion' => $reserva->situacion,

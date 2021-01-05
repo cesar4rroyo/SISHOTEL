@@ -10,10 +10,17 @@
             <div class="modal-body">
                 <form method='POST' id="reservaForm" action="{{route('store_reserva')}}">
                     @csrf
-                    <div class="form-group">
-                        <label for="txtFecha" class="control-label">{{'Fecha'}}</label>
-                        <input class="form-control" type="date" name="txtFecha" id="txtFecha" required>
+                    <div class="row">
+                        <div class="form-group col-sm">
+                            <label for="txtFecha" class="control-label">{{'Fecha Entrada'}}</label>
+                            <input class="form-control" type="date" name="txtFecha" id="txtFecha" required>
+                        </div>
+                        <div class="form-group col-sm">
+                            <label for="txtFechaSalida" class="control-label">{{'Fecha Salida'}}</label>
+                            <input class="form-control" type="date" name="txtFechaSalida" id="txtFechaSalida" required>
+                        </div>
                     </div>
+
                     <div class="row">
                         <div class="form-group col-sm">
                             <label for="persona" class="control-label">{{ 'Cliente' }}</label>

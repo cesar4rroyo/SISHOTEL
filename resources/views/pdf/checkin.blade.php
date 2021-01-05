@@ -19,6 +19,19 @@
 
     }
 
+    .firma-span {
+        font-weight: bold;
+
+    }
+
+    .firma {
+        border: 1px solid black;
+        padding: 2px;
+        height: 100px;
+        border-radius: 5px;
+        width: 100%;
+    }
+
     .head-title {
         text-align: center;
         font-weight: bold;
@@ -79,6 +92,10 @@
     .table tbody tr {
         margin-top: 4px;
     }
+
+    .width {
+        margin: auto;
+    }
 </style>
 
 <body>
@@ -87,7 +104,7 @@
         <img src="{{asset("assets/$theme/dist/img/logo.jpeg")}}" width="80px" alt="">
     </div> --}}
     <div class="head-title">
-        Ficha de Registro Nro. {{($loop->index)+1}}
+        Ficha de Registro Huésped Nro. {{($loop->index)+1}}
     </div>
     <div class="title">Información del Húesped</div>
     <table class="table table-hover text-center">
@@ -154,13 +171,44 @@
             <tr>
                 <th>Check-In</th>
                 <td class="input">{{$movimiento['fechaingreso']}}</td>
-                <th>Check-Out</th>
+                <th>Posible Check-Out</th>
                 <td class="input">{{$movimiento['fechasalida']}}</td>
-                <th>Días</th>
-                <td class="input">{{$movimiento['dias']}}</td>
             </tr>
         </tbody>
     </table>
+    @if (($loop->index)==0)
+    @isset($movimiento['tarjeta'])
+    <div class="title">Pago y garantía</div>
+    <p>Todas las reservas de hotel deben de ser garantizadas con un número de tarjeta de crédito</p>
+    <table class="table table-hover text-center">
+        <tbody>
+            <tr>
+                <th> Tarjeta de Crédito </th>
+                <td class="input"> {{ $movimiento['tarjeta']['tipo'] }} </td>
+            </tr>
+            <tr>
+                <th> Tarjeta Número </th>
+                <td class="input"> {{ $movimiento['tarjeta']['numero'] }}
+                </td>
+            </tr>
+            <tr>
+                <th> Fecha de Vencimiento </th>
+                <td class="input">
+                    {{ $movimiento['tarjeta']['fechavencimiento'] }}
+                </td>
+            </tr>
+            <tr>
+                <th> Nombre del Titular </th>
+                <td class="input">
+                    {{ $movimiento['tarjeta']['titular'] }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <span class="firma-span">Firma del Titular</span>
+    <div class="firma"></div>
+    @endisset
+    @endif
     <div class="page-break"></div>
     @endforeach
 </body>

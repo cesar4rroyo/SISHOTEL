@@ -17,7 +17,8 @@ class Reserva extends Model
         'situacion',
         'persona_id',
         'usuario_id',
-        'habitacion_id'
+        'habitacion_id',
+        'fechasalida'
     ];
 
     public function persona()

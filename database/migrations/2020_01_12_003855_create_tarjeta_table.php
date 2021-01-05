@@ -17,7 +17,7 @@ class CreateTarjetaTable extends Migration
             $table->increments('id');
             $table->string('tipo')->nullable();
             $table->string('numero')->nullable();
-            $table->date('fechavencimiento')->nullable();
+            $table->string('fechavencimiento')->nullable();
             $table->string('titular')->nullable();
             $table->timestamps();
         });

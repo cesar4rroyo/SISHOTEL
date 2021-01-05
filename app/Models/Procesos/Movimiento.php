@@ -21,7 +21,10 @@ class Movimiento extends Model
         'situacion',
         'habitacion_id',
         'reserva_id',
-        'usuario_id'
+        'usuario_id',
+        'tarjeta_id',
+        'comentario',
+        'descuento'
     ];
     public function reserva()
     {
@@ -31,6 +34,10 @@ class Movimiento extends Model
     // {
     //     return $this->belongsTo(Persona::class, 'persona_id');
     // }
+    public function tarjeta()
+    {
+        return $this->belongsTo(Tarjeta::class, 'tarjeta_id');
+    }
     public function habitacion()
     {
         return $this->belongsTo(Habitacion::class, 'habitacion_id');

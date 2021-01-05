@@ -14,6 +14,11 @@ class PersonaSeeder extends Seeder
     public function run()
     {
         DB::table('persona')->insert([
+            'nombres' => 'Varios',
+            'ciudad' => 'Chiclayo'
+
+        ]);
+        DB::table('persona')->insert([
             'nombres' => 'Santiago Ronald',
             'apellidos' => 'Rodas Ipanaque',
             'dni' => '45841576',
@@ -25,22 +30,18 @@ class PersonaSeeder extends Seeder
             'apellidos' => 'Serrano Bautista',
             'dni' => '75020436',
             'telefono' => '986783159',
-
-
         ]);
         DB::table('persona')->insert([
             'nombres' => 'Juan Eduardo',
             'apellidos' => 'Bazan Guerrero',
             'dni' => '45841576',
             'telefono' => '932827302',
-
         ]);
         DB::table('persona')->insert([
             'nombres' => 'Carlos Enrique',
             'apellidos' => 'Mauriola Huamanchumo',
             'dni' => '75767335',
             'telefono' => '939067566',
-
         ]);
     }
 }

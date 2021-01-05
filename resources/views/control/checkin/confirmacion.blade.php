@@ -11,13 +11,16 @@
                     Regresar</button></a> --}}
                 <div class="container">
                     <div class="row text-center m-auto">
-                        <p class="font-weight-bold text-center">¿Desea continuar con el proceso?</p>
+                        <p class="font-weight-bold text-center">¿Desea continuar con el proceso?
+                        </p>
                     </div>
                     <div class="container text-center">
                         <form method="POST" action="{{route('update_movimiento', $habitacion)}}">
                             {{ method_field('PUT') }}
                             {{ csrf_field() }}
-                            <input type="text" id="movimiento" name="movimiento" hidden>
+                            <input type="text" id="movimiento" value="{{$movimiento}}" name="movimiento" hidden>
+                            <input type="text" id="pasajeroPrincipal" value="{{$pasajeroPrincipal}}"
+                                name="pasajeroPrincipal" hidden>
                             <button type="submit" class="btn btn-outline-success col-sm-6">
                                 Continuar
                             </button>
@@ -30,7 +33,7 @@
 </div>
 </div>
 @endsection
-<script type="text/javascript">
+{{-- <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
        
         getMovimiento();
@@ -48,4 +51,4 @@
                 });   
         }
     });
-</script>
+</script> --}}

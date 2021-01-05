@@ -2,6 +2,7 @@
 
 use App\Models\Servicios;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ServiciosSeeder extends Seeder
 {
@@ -12,6 +13,9 @@ class ServiciosSeeder extends Seeder
      */
     public function run()
     {
-        factory(Servicios::class, 3)->create();
+        DB::table('servicios')->insert([
+            'nombre' => 'Desayuno Incluido',
+            'precio' => 1,
+        ]);
     }
 }

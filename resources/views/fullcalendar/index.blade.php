@@ -33,9 +33,10 @@
             month=(month<10)?'0'+month:month;
             day=(day<10)?'0'+day:day;
             fecha=year+"-"+month+"-"+day;
+          
             var data = {
                     fecha: fecha,
-                    '_token': $('input[name=_token]').val(),
+                   '_token': $('input[name=_token]').val(),
                 }
             getHabitaciones(data, '#selectHabitacionShow');
             $('#txtFechaShow').val(fecha);
@@ -50,6 +51,7 @@
           events:"{{route('show_reserva')}}",
         });
         calendar.render();
+        
          //$('#btnAgregar').click(function(evento){
         //     evento.preventDefault();
         //      event = getDatosForm('POST');
@@ -95,6 +97,7 @@
         function getDatosForm(method){            
             newEvent={
                 txtFecha:$('#txtFecha').val(),
+                txtFechaSalida:$('#txtFechaSalida').val(),
                 observacion:$('#observacion').val(),
                 persona:$('#persona').val(),
                 habitacion:$('#selectHabitacion').val(),
@@ -107,6 +110,7 @@
         function getDatosActualizados(method){            
             newEvent={
                 txtFecha:$('#txtFechaShow').val(),
+                txtFechaSalida:$('#txtFechaSalida').val(),
                 id:$('#txtId').val(),
                 observacion:$('#observacionShow').val(),
                 persona:$('#personaShow').val(),

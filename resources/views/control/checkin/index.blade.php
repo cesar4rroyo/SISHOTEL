@@ -46,6 +46,11 @@
                                 <input class="form-control" id="fechaingreso" name="fechaingreso" type="datetime-local"
                                     value="{{$initialDate}}">
                             </div>
+                            <div class="col-sm form-group">
+                                <label class="control-label" for="fechasalida">{{'Fecha Salida'}}</label>
+                                <input class="form-control" id="fechasalida" name="fechasalida" required
+                                    type="datetime-local">
+                            </div>
                             @isset($reserva)
                             <div class="col-sm form-group">
                                 <label class="control-label" for="reserva">{{'Reserva Nro.'}}</label>
@@ -56,37 +61,114 @@
                         </div>
                         <div class="row">
                             <div class="col-sm form-group">
-                                <label class="control-label" for="persona">{{'Pasajeros'}}</label>
-                                <a type="button" data-toggle="modal" data-target="#modal-pasajero">
-                                    <span class="badge badge-success">
-                                        <i class="fas fa-plus-circle"></i>
-                                        {{'Agregar Nuevo Cliente'}}</span>
-                                </a>
-                                <select class="form-control clientes-select2" multiple='multiple' name="persona[]"
-                                    id="persona" required>
-                                    <option value="">Seleccione Uno</option>
-                                    @foreach ($personas as $persona)
-                                    <option value="{{$persona['id']}}">
-                                        {{$persona['nombres']}}{{" "}}{{$persona['apellidos']}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-sm form-group">
                                 <label class="control-label" for="preciohabitacion">{{'Precio Habitacion'}}</label>
                                 <input class="form-control" readonly value="{{$habitacion['tipohabitacion']['precio']}}"
                                     type="number" name="preciohabitacion" id="preciohabitacion">
                             </div>
-                        </div>
-                        <div class="container text-center">
-                            <button type="submit" class="btn btn-outline-success col-sm-6">
-                                Check-In
-                            </button>
-                        </div>
-                    </form>
+                            <div class="col-sm form-group">
+                                <label class="control-label" for="capacidad">{{'Capacidad Habitacion'}}</label>
+                                <input class="form-control" readonly
+                                    value="{{$habitacion['tipohabitacion']['capacidad']}}" type="number"
+                                    name="capacidad" id="capacidad">
+                            </div>
+                            {{-- <div class="col-sm form-group">
+                                <label class="control-label" for="descuento">{{'Descuento'}}</label>
+                            <input class="form-control" type="number" name="descuento" id="descuento">
+                        </div> --}}
+                        {{-- <div class="col-sm form-group">
+                            <label class="control-label" for="total">{{'Total'}}</label>
+                        <input class="form-control" readonly type="number" name="total" id="total">
+                </div> --}}
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="persona">{{'Pasajero Principal'}}</label>
+                <a type="button" data-toggle="modal" data-target="#modal-pasajero">
+                    <span class="badge badge-success">
+                        <i class="fas fa-plus-circle"></i>
+                        {{'Agregar Nuevo Cliente'}}</span>
+                </a>
+                <select class="form-control clientes-select2" name="persona_principal" id="persona_principal" required>
+                    <option value="">Seleccione Uno</option>
+                    @foreach ($personas as $persona)
+                    <option value="{{$persona['id']}}">
+                        {{$persona['nombres']}}{{" "}}{{$persona['apellidos']}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="persona">{{'Acompañantes'}}</label>
+                <a type="button" data-toggle="modal" data-target="#modal-pasajero">
+                    <span class="badge badge-success">
+                        <i class="fas fa-plus-circle"></i>
+                        {{'Agregar Nuevo Cliente'}}</span>
+                </a>
+                <select class="form-control clientes-select2" multiple='multiple' name="persona[]" id="persona">
+                    <option value="">Seleccione Uno</option>
+                    @foreach ($personas as $persona)
+                    <option value="{{$persona['id']}}">
+                        {{$persona['nombres']}}{{" "}}{{$persona['apellidos']}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="row">
+                <label for="comentario">{{'Comentario'}}</label>
+                <textarea class="form-control" name="comentario" id="comentario" cols="5" rows="5"></textarea>
+            </div>
+            <p class="font-weight-bold mt-4">Datos de Tarjeta</p>
+            <hr>
+            <div class="form-group">
+                <label class="control-label" for="tipo">{{'Tipo de Tarjeta'}}</label>
+                <select class="form-control" name="tipo" id="tipo">
+                    <option value="">Seleccione Uno</option>
+                    <option value="amex">{{'American Express'}}</option>
+                    <option value="visa">{{'Visa'}}</option>
+                    <option value="mastercard">{{'Master Card'}}</option>
+                    <option value="diners">{{'Diners'}}</option>
+                </select>
+            </div>
+            <div class="row">
+                <div class="col-sm form-group">
+                    <label for="numero">{{'Número de Tarjeta'}}</label>
+                    <input autocomplete="false" class="form-control" id="numero" type="text" name="numero">
+                </div>
+                <div class="col-sm form-group">
+                    <label for="fechavencimiento">{{'Fecha de Vencimiento(ej.: 01/21)'}}</label>
+                    <input autocomplete="false" class="form-control" id="fechavencimiento" type="text"
+                        name="fechavencimiento">
                 </div>
             </div>
+            <div class="form-group">
+                <label for="titular">{{'Nombre del Titular'}}</label>
+                <input autocomplete="false" class="form-control" id="titular" type="text" name="titular">
+            </div>
+            <div class="container text-center">
+                <button type="submit" class="btn btn-outline-success col-sm-6">
+                    Check-In
+                </button>
+            </div>
+            </form>
         </div>
     </div>
 </div>
 </div>
+</div>
+</div>
 @endsection
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) {
+    
+    $("#descuento").on('change',function(){
+        var dscto = $(this).val();
+        console.log(dscto);
+        $('#total').val(parseFloat({{isset($total) ? $total : 0}}));     
+        var preciohabitacion = $('#preciohabitacion').val();
+        var habitaciontotal = preciohabitacion - (dscto*preciohabitacion/100);
+        var total = $('#total').val();
+        total = parseFloat(habitaciontotal) + parseFloat(total);
+        $('#total').val(parseFloat(total));
+       
+    });
+ })
+
+
+</script>

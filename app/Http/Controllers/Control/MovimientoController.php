@@ -14,11 +14,13 @@ use App\Models\Procesos\DetalleMovimiento;
 use App\Models\Procesos\Movimiento;
 use App\Models\Procesos\Pasajero;
 use App\Models\Procesos\Reserva;
+use App\Models\Procesos\Tarjeta;
 use App\Models\Rol;
 use App\Models\Seguridad\Usuario;
 use Carbon\Carbon;
 use Illuminate\Contracts\Session\Session;
 use Barryvdh\DomPDF\Facade as PDF;
+
 
 
 class MovimientoController extends Controller
@@ -82,30 +84,50 @@ class MovimientoController extends Controller
 
     public function store(Request $request, $id_reserva)
     {
+        // dd($request->all());
+        $personas = $request->persona;
+        if (session()->get('pasajeros')) {
+            session()->pull('pasajeros', []);
+        }
+        session()->push('pasajeros', $personas);
+        $pasajeroPrincipal = $request->persona_principal;
+
+        // dd(session()->all());
+        if (!empty($request->numero)) {
+            $tarjeta = Tarjeta::create([
+                'tipo' => $request->tipo,
+                'titular' => $request->titular,
+                'numero' => $request->numero,
+                'fechavencimiento' => $request->fechavencimiento,
+            ]);
+            $id_tarjeta = Tarjeta::latest('id')->first()->toArray()['id'];
+        }
+
         if ($id_reserva != 'no') {
             $reserva = Reserva::findOrFail($id_reserva);
             $reserva->update([
                 'situacion' => 'Usada',
             ]);
         }
-        $personas = $request->persona;
-        if (session()->get('pasajeros')) {
-            session()->pull('pasajeros', []);
-        }
-        session()->push('pasajeros', $personas);
 
 
         $movimiento = Movimiento::create([
             'fechaingreso' => $request->fechaingreso,
+            'fechasalida' => isset($request->fechasalida) ? $request->fechasalida : null,
+            'total' => isset($request->total) ? $request->total : null,
+            'comentario' => isset($request->comentario) ? $request->comentario : '-',
+            'descuento' => isset($request->descuento) ? $request->descuento : null,
             'preciohabitacion' => $request->preciohabitacion,
             'usuario_id' => session()->all()['usuario_id'],
             'habitacion_id' => $request->habitacion,
-            'situacion' => 'Pendiente'
+            'situacion' => 'Pendiente',
+            'tarjeta_id' => isset($id_tarjeta) ? $id_tarjeta : null,
         ]);
         $habitacion = $request->habitacion;
+        $movimiento = Movimiento::latest('id')->first()->toArray()['id'];
 
 
-        return view('control.checkin.confirmacion', compact('habitacion'));
+        return view('control.checkin.confirmacion', compact('habitacion', 'movimiento', 'pasajeroPrincipal'));
     }
     public function show()
     {
@@ -156,6 +178,8 @@ class MovimientoController extends Controller
                 $numero = 'B-' . $yearActual . '-' . $numero;
             } else {
                 $numero = $this->zero_fill(1, 8);
+                $yearActual = Carbon::now()->year;
+                $numero = 'B-' . $yearActual . '-' . $numero;
             }
 
             return
@@ -171,21 +195,41 @@ class MovimientoController extends Controller
         return str_pad($valor, $long, '0', STR_PAD_LEFT);
     }
 
+    public function exportPdfCheckIn($id)
+    {
+        $movimiento =
+            Movimiento::with('pasajero.persona.nacionalidad', 'habitacion.tipohabitacion', 'tarjeta')
+                ->where('id', $id)
+                ->get()
+                ->toArray()[0];
+        // dd($movimiento);
+        $pdf = PDF::loadView('pdf.checkin', compact('movimiento'))->setPaper('a4');
+        return $pdf->download('registros-check-in.pdf');
+    }
 
     public function update(Request $request, $id)
     {
         try {
+            $pasajero = Pasajero::create([
+                'movimiento_id' => $request->movimiento,
+                'persona_id' => $request->pasajeroPrincipal
+            ]);
             $pasajeros = session()->get('pasajeros')[0];
-            foreach ($pasajeros as $key => $item) {
-                $pasajero = Pasajero::create([
-                    'movimiento_id' => $request->movimiento,
-                    'persona_id' => $item
-                ]);
+            if (!is_null($pasajeros)) {
+                foreach ($pasajeros as $key => $item) {
+                    $pasajero = Pasajero::create([
+                        'movimiento_id' => $request->movimiento,
+                        'persona_id' => $item
+                    ]);
+                }
             }
+
             $habitacion = Habitacion::find($id);
             $habitacion->update([
                 'situacion' => 'Ocupada'
             ]);
+
+
             return redirect()
                 ->route('habitaciones')
                 ->with('success', 'El Check-in se ha realizado correctamente');

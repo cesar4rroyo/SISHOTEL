@@ -63,7 +63,15 @@ class HabitacionesController extends Controller
 
     public function store(Request $request)
     {
+
         $fecha = $request->get('fecha');
+        $reservas = Reserva::where('situacion', ['Reservado', 'Actualizado'])->get()->toArray();
+        $fechasDeReserva = [];
+        foreach ($reservas as $key => $item) {
+            array_push($fechasDeReserva, $item['fechasalida']);
+        }
+        array_push($fechasDeReserva, $fecha);
+
         $habitacion = Habitacion::with('tipohabitacion', 'piso', 'reserva')->whereDoesntHave('reserva', function ($query) use ($fecha) {
             $query->where('fecha', '=', $fecha);
         })->get()->toArray();
