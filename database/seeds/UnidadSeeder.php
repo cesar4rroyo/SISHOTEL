@@ -13,11 +13,11 @@ class UnidadSeeder extends Seeder
     public function run()
     {
         DB::table('unidad')->insert([
-            'nombre' => 'Unidad 1',
+            'nombre' => 'Unidad',
         ]);
 
         DB::table('unidad')->insert([
-            'nombre' => 'Unidad 2',
+            'nombre' => 'Caja',
         ]);
     }
 }

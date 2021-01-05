@@ -81,7 +81,7 @@
                                 </tr>
                                 <tr>
                                     <th> Nacionalidad </th>
-                                    <td> {{ $persona->nacionalidad->nombre }} </td>
+                                    <td> {{ isset($item->nacionalidad) ? $item->nacionalidad->nombre : '-' }} </td>
                                 </tr>
                             </tbody>
                         </table>

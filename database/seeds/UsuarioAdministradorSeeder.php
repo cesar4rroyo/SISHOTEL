@@ -21,7 +21,6 @@ class UsuarioAdministradorSeeder extends Seeder
             'login' => 'hotel',
             'password' => bcrypt('hotel'),
             'tipousuario_id' => 2,
-            'persona_id' => 2
         ]);
     }
 }

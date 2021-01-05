@@ -74,7 +74,7 @@
                                     <td>
                                         {{ isset($item->dni ) ? $item->dni  : '-'}}
                                     </td>
-                                    <td>{{ $item->nacionalidad->nombre }}</td>
+                                    <td>{{ isset($item->nacionalidad) ? $item->nacionalidad->nombre : '-'  }}</td>
                                     {{-- <td>{{ $item->telefono }}</td> --}}
                                     <td>{{ $item->observacion }}</td>
                                     <td>

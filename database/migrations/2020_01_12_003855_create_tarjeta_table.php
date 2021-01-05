@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTipoHabitacionTable extends Migration
+class CreateTarjetaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateTipoHabitacionTable extends Migration
      */
     public function up()
     {
-        Schema::create('tipohabitacion', function (Blueprint $table) {
+        Schema::create('tarjeta', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre', 100);
-            $table->integer('capacidad')->nullable();
-            $table->decimal('precio', 10, 2);
+            $table->string('tipo')->nullable();
+            $table->string('numero')->nullable();
+            $table->date('fechavencimiento')->nullable();
+            $table->string('titular')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateTipoHabitacionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipohabitacion');
+        Schema::dropIfExists('tarjeta');
     }
 }
