@@ -26,14 +26,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('grupomenu/{id}/edit', 'GrupoMenuController@edit')->name('edit_grupomenu');
     Route::put('grupomenu/{id}', 'GrupoMenuController@update')->name('update_grupomenu');
     Route::delete('grupomenu/{id}/destroy', 'GrupoMenuController@destroy')->name('destroy_grupomenu');
-    /* Rutas de NACIONALIDAD */
-    Route::get('nacionalidad/create', 'NacionalidadController@create')->name('create_nacionalidad');
-    Route::get('nacionalidad', 'NacionalidadController@index')->name('nacionalidad');
-    Route::get('nacionalidad/{id}', 'NacionalidadController@show')->name('show_nacionalidad');
-    Route::post('nacionalidad', 'NacionalidadController@store')->name('store_nacionalidad');
-    Route::get('nacionalidad/{id}/edit', 'NacionalidadController@edit')->name('edit_nacionalidad');
-    Route::put('nacionalidad/{id}', 'NacionalidadController@update')->name('update_nacionalidad');
-    Route::delete('nacionalidad/{id}/destroy', 'NacionalidadController@destroy')->name('destroy_nacionalidad');
+   
     /* Rutas de OPCIONMENU */
     Route::get('opcionmenu/create', 'OpcionMenuController@create')->name('create_opcionmenu');
     Route::get('opcionmenu', 'OpcionMenuController@index')->name('opcionmenu');
@@ -42,17 +35,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('opcionmenu/{id}/edit', 'OpcionMenuController@edit')->name('edit_opcionmenu');
     Route::put('opcionmenu/{id}', 'OpcionMenuController@update')->name('update_opcionmenu');
     Route::delete('opcionmenu/{id}/destroy', 'OpcionMenuController@destroy')->name('destroy_opcionmenu');
-    /* Rutas de PERSONA */
-    Route::get('persona/create', 'PersonaController@create')->name('create_persona');
-    Route::get('persona', 'PersonaController@index')->name('persona');
-    Route::get('persona/{id}', 'PersonaController@show')->name('show_persona');
-    Route::post('persona', 'PersonaController@store')->name('store_persona');
-    Route::post('persona/checkin', 'PersonaController@store_checkin')->name('store_persona_checkin');
-    Route::post('persona/checkin/reserva/{id}', 'PersonaController@store_checkin_reserva')->name('store_persona_checkin_reserva');
-    Route::get('persona/{id}/edit', 'PersonaController@edit')->name('edit_persona');
-    Route::put('persona/{id}', 'PersonaController@update')->name('update_persona');
-    Route::delete('persona/{id}/destroy', 'PersonaController@destroy')->name('destroy_persona');
-    /* Rutas de ROL */
+       /* Rutas de ROL */
     Route::get('rol/create', 'RolController@create')->name('create_rol');
     Route::get('rol', 'RolController@index')->name('rol');
     Route::get('rol/{id}', 'RolController@show')->name('show_rol');
@@ -79,6 +62,26 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('usuario/{id}/edit', 'UsuarioController@edit')->name('edit_usuario');
     Route::put('usuario/{id}', 'UsuarioController@update')->name('update_usuario');
     Route::delete('usuario/{id}/destroy', 'UsuarioController@destroy')->name('destroy_usuario');
+});
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'acceso']], function () {
+    /* Rutas de PERSONA */
+    Route::get('persona/create', 'PersonaController@create')->name('create_persona');
+    Route::get('persona', 'PersonaController@index')->name('persona');
+    Route::get('persona/{id}', 'PersonaController@show')->name('show_persona');
+    Route::post('persona', 'PersonaController@store')->name('store_persona');
+    Route::post('persona/checkin', 'PersonaController@store_checkin')->name('store_persona_checkin');
+    Route::post('persona/checkin/reserva/{id}', 'PersonaController@store_checkin_reserva')->name('store_persona_checkin_reserva');
+    Route::get('persona/{id}/edit', 'PersonaController@edit')->name('edit_persona');
+    Route::put('persona/{id}', 'PersonaController@update')->name('update_persona');
+    Route::delete('persona/{id}/destroy', 'PersonaController@destroy')->name('destroy_persona');
+     /* Rutas de NACIONALIDAD */
+     Route::get('nacionalidad/create', 'NacionalidadController@create')->name('create_nacionalidad');
+     Route::get('nacionalidad', 'NacionalidadController@index')->name('nacionalidad');
+     Route::get('nacionalidad/{id}', 'NacionalidadController@show')->name('show_nacionalidad');
+     Route::post('nacionalidad', 'NacionalidadController@store')->name('store_nacionalidad');
+     Route::get('nacionalidad/{id}/edit', 'NacionalidadController@edit')->name('edit_nacionalidad');
+     Route::put('nacionalidad/{id}', 'NacionalidadController@update')->name('update_nacionalidad');
+     Route::delete('nacionalidad/{id}/destroy', 'NacionalidadController@destroy')->name('destroy_nacionalidad');
 });
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Habitacion', 'middleware' => ['auth', 'acceso']], function () {
