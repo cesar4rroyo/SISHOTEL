@@ -32,8 +32,10 @@
             year=(info.event.start.getFullYear());
             month=(month<10)?'0'+month:month;
             day=(day<10)?'0'+day:day;
-            fecha=year+"-"+month+"-"+day;
-          
+            fecha=year+"-"+month+"-"+day;  
+
+                        
+            
             var data = {
                     fecha: fecha,
                    '_token': $('input[name=_token]').val(),
@@ -50,7 +52,18 @@
           },
           events:"{{route('show_reserva')}}",
         });
+        
         calendar.render();
+        $('#consultarHabitaciones').on('click', function(){
+                var fechaSalida = $('#txtFechaSalida').val();
+                var fechaEntrada = $('#txtFecha').val(); 
+                var data ={
+                    fechaSalida: fechaSalida,
+                    fechaEntrada: fechaEntrada,
+                    '_token': $('input[name=_token]').val(),
+                }
+                getHabitaciones(data, '#selectHabitacion');       
+        });
         
          //$('#btnAgregar').click(function(evento){
         //     evento.preventDefault();

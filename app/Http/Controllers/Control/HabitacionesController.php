@@ -63,14 +63,21 @@ class HabitacionesController extends Controller
 
     public function store(Request $request)
     {
+        if (!empty($request->fechaSalida)) {
+            $fechaSalida = $request->fechaSalida;
+            $fechaEntrada = $request->fechaEntrada;
+            $habitaciones = Habitacion::with('tipohabitacion', 'piso', 'reserva')->whereNotIn('id', function ($q) use ($fechaEntrada, $fechaSalida) {
+                $q->from('reserva')
+                    ->select('habitacion_id')
+                    ->where('fecha', '<=', $fechaSalida)
+                    ->where('fechasalida', '>=', $fechaEntrada);
+            })->get()->toArray();
+
+            return response()->json($habitaciones);
+        }
 
         $fecha = $request->get('fecha');
-        $reservas = Reserva::where('situacion', ['Reservado', 'Actualizado'])->get()->toArray();
-        $fechasDeReserva = [];
-        foreach ($reservas as $key => $item) {
-            array_push($fechasDeReserva, $item['fechasalida']);
-        }
-        array_push($fechasDeReserva, $fecha);
+
 
         $habitacion = Habitacion::with('tipohabitacion', 'piso', 'reserva')->whereDoesntHave('reserva', function ($query) use ($fecha) {
             $query->where('fecha', '=', $fecha);

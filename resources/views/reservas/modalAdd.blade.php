@@ -19,8 +19,13 @@
                             <label for="txtFechaSalida" class="control-label">{{'Fecha Salida'}}</label>
                             <input class="form-control" type="date" name="txtFechaSalida" id="txtFechaSalida" required>
                         </div>
+                        <div class="form-group col-sm">
+                            <button type="button" id="consultarHabitaciones" class="btn btn-info">
+                                <i class=" fas fa-search"></i>
+                                Consultar
+                            </button>
+                        </div>
                     </div>
-
                     <div class="row">
                         <div class="form-group col-sm">
                             <label for="persona" class="control-label">{{ 'Cliente' }}</label>
