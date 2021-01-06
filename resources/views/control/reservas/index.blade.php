@@ -19,7 +19,8 @@
                     <table class="table text-center table-hover" id="tabla-data">
                         <thead>
                             <tr>
-                                <th>Fecha</th>
+                                <th>Fecha Entrada</th>
+                                <th>Fecha Salida</th>
                                 <th>Cliente</th>
                                 {{-- <th>Cliente DNI</th> --}}
                                 <th>Habitacion Nro.</th>
@@ -31,6 +32,9 @@
                             @foreach($reservas as $item)
                             <tr>
                                 <td>{{ $item->fecha }}</td>
+                                <td>
+                                    {{isset($item->fechasalida) ?$item->fechasalida : ''}}
+                                </td>
                                 <td>
                                     {{ $item->persona->nombres}} {{" "}} {{ $item->persona->apellidos}}
                                 </td>
