@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Procesos\Caja;
+use App\Models\Procesos\Comprobante;
 use App\Models\Procesos\Movimiento;
 use App\Models\Procesos\Pasajero;
 use App\Models\Procesos\Reserva;
@@ -43,6 +44,10 @@ class Persona extends Model
 
     //funciones para el proceso
 
+    public function comprobante()
+    {
+        return $this->hasMany(Comprobante::class);
+    }
     public function reserva()
     {
         return $this->hasMany(Reserva::class);

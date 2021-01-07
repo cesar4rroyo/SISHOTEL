@@ -29,6 +29,13 @@ class CreateComprobanteTable extends Migration
                 ->on('movimiento')
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
+            $table->unsignedInteger('persona_id')->nullable();
+            $table->foreign('persona_id', 'fk_comprobante_persona')
+                ->nullable()
+                ->references('id')
+                ->on('persona')
+                ->onDelete('restrict')
+                ->onUpdate('cascade');
             $table->timestamps();
         });
     }

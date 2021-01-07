@@ -288,7 +288,9 @@ class VentasController extends Controller
                 'igv' => $igv,
                 'total' => $total,
                 'subtotal' => $subtotal,
-                'comentario' => $comentario
+                'comentario' => $comentario,
+                'persona_id' => $request->persona,
+
             ]);
             //traer el id del comprobante generado anteriormente para relacionarlo con DetalleComprobante
             $id_ComprobanteAnterior = Comprobante::latest('id')->first()->toArray()['id'];
@@ -374,7 +376,9 @@ class VentasController extends Controller
                 'igv' => $igv,
                 'total' => $total,
                 'subtotal' => $subtotal,
-                'comentario' => $comentario
+                'comentario' => $comentario,
+                'persona_id' => $request->persona,
+
             ]);
             //traer el id del comprobante generado anteriormente para relacionarlo con DetalleComprobante
             $id_ComprobanteAnterior = Comprobante::latest('id')->first()->toArray()['id'];

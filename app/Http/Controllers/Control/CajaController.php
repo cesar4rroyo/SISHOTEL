@@ -343,6 +343,16 @@ class CajaController extends Controller
                 'igv' => $igv,
                 'comentario' => $request->comentario,
                 'movimiento_id' => $id,
+                'persona_id' => $request->persona,
+            ]);
+            $id_ComprobanteAnterior = Comprobante::latest('id')->first()->toArray()['id'];
+            $detalleComprobante = DetalleComprobante::create([
+                'cantidad' => 1,
+                'preciocompra' => $total,
+                'precioventa' => $total,
+                'comentario' => 'Servicio de Hotel - ' . $request->comentario,
+                'servicio_id' => 2,
+                'comprobante_id' => $id_ComprobanteAnterior,
             ]);
 
             return redirect()
@@ -411,6 +421,7 @@ class CajaController extends Controller
                     'comentario' => $request->comentario,
                     'producto_id' => $key,
                     'caja_id' => $id_caja,
+
                 ]);
             }
             //guardar nuevo registro de comprobante
@@ -422,6 +433,8 @@ class CajaController extends Controller
                 'total' => $total,
                 'igv' => $igv,
                 'comentario' => $request->comentario,
+                'persona_id' => $request->persona,
+
             ]);
             //traer el id del comprobante generado anteriormente para relacionarlo con DetalleComprobante
             $id_ComprobanteAnterior = Comprobante::latest('id')->first()->toArray()['id'];
@@ -515,6 +528,8 @@ class CajaController extends Controller
                 'total' => $total,
                 'igv' => $igv,
                 'comentario' => $request->comentario,
+                'persona_id' => $request->persona,
+
             ]);
             //traer el id del comprobante generado anteriormente para relacionarlo con DetalleComprobante
             $id_ComprobanteAnterior = Comprobante::latest('id')->first()->toArray()['id'];
