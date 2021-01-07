@@ -25,7 +25,7 @@ class VentasController extends Controller
         if (!is_null($comprobante)) {
             $comprobante->get()->toArray();
             $separar = explode('-', $comprobante['numero']);
-            $numero = $separar[2] + 1;
+            $numero = $separar[1] + 1;
             $numero = $this->zero_fill($numero, 8);
             $yearActual = Carbon::now()->year;
             if ($tipo == 'boleta') {
@@ -59,7 +59,7 @@ class VentasController extends Controller
         if (!is_null($comprobante)) {
             $comprobante->get()->toArray();
             $separar = explode('-', $comprobante['numero']);
-            $numero = $separar[2] + 1;
+            $numero = $separar[1] + 1;
             $numero = $this->zero_fill($numero, 8);
             $yearActual = Carbon::now()->year;
             $numero = 'B001-' . $numero;
@@ -85,7 +85,7 @@ class VentasController extends Controller
         if (!is_null($comprobante)) {
             $comprobante->get()->toArray();
             $separar = explode('-', $comprobante['numero']);
-            $numero = $separar[2] + 1;
+            $numero = $separar[1] + 1;
             $numero = $this->zero_fill($numero, 8);
             $yearActual = Carbon::now()->year;
             $numero = 'B001-' . $numero;
