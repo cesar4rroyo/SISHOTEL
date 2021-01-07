@@ -50,6 +50,7 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->nombre }}</td>
                                     <td>{{ $item->precio }}</td>
+                                    @if (($item->id)!=1)
                                     <td>
                                         <a href="{{ route('show_servicios', $item->id) }}" title="Ver servicio"><button
                                                 class="btn btn-outline-secondary btn-sm"><i class="fa fa-eye"
@@ -71,6 +72,7 @@
                                             </button>
                                         </form>
                                     </td>
+                                    @endif
                                 </tr>
                                 @endforeach
                             </tbody>

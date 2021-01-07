@@ -81,11 +81,11 @@ class DetalleMovimientoController extends Controller
             $numero = $separar[1] + 1;
             $numero = $this->zero_fill($numero, 8);
             $yearActual = Carbon::now()->year;
-            $numero = 'B-' . $yearActual . '-' . $numero;
+            $numero = 'B001-' . $numero;
         } else {
             $numero = $this->zero_fill(1, 8);
             $yearActual = Carbon::now()->year;
-            $numero = 'B-' . $yearActual . '-' . $numero;
+            $numero = 'B001-' . $numero;
         }
 
         if (is_null($movimiento)) {

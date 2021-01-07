@@ -213,5 +213,28 @@
         $('#ingresos').text(sumIngreso.toFixed(2));
         $('#egresos').text(sumaEgreso.toFixed(2));
 
- })
+
+    $("#generar").on('click', function(ev){
+        ev.preventDefault();
+        tipo="enviarBoleta";
+        idVenta=5;
+        $.ajax({
+            type:'GET',
+            url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+tipo,
+            data:"idventa="+idVenta+"&_token="+ $('input[name=_token]').val(),
+            success: function(r){
+                console.log(r);
+            },
+            error: function(e){
+                console.log(e.message);
+            }
+        });
+    });
+
+
+ });
+
+
+
+
 </script>

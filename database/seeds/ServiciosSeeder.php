@@ -13,12 +13,14 @@ class ServiciosSeeder extends Seeder
      */
     public function run()
     {
+        //id = 1 
+        DB::table('servicios')->insert([
+            'nombre' => 'Servicio de Hotel',
+        ]);
+
         DB::table('servicios')->insert([
             'nombre' => 'Desayuno Incluido',
             'precio' => 1,
-        ]);
-        DB::table('servicios')->insert([
-            'nombre' => 'Servicio de Hotel',
         ]);
     }
 }

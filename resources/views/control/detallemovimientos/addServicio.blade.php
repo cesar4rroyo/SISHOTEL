@@ -103,9 +103,10 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <p id="errMessage" class="text-center text-danger">Inserte al menos un servicio</p>
                             <div class="container">
                                 <p class="font-weight-bold ">Total: </p>
-                                <input class="form-control" readonly type="number" value="{{$total}}">
+                                <input class="form-control" id="total" readonly type="number" value="{{$total}}">
                             </div>
                         </div>
                     </div>
@@ -163,7 +164,8 @@
                         </div>
                     </form>
                     <div class="modal fade" id="modalCaja" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
-                        <form method="POST" action="{{route('add_detail_servicio', $movimientos['id'])}}">
+                        <form method="POST" id="formVentaServicios"
+                            action="{{route('add_detail_servicio', $movimientos['id'])}}">
                             @csrf
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -228,10 +230,12 @@
                                                 rows="3"></textarea>
                                         </div>
                                     </div>
+                                    <p id="loading" class="text-center text-info font-weight-bold mt-4">Espere...</p>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar
                                             Operación</button>
-                                        <button type="submit" class="btn btn-primary">Registrar en Caja</button>
+                                        <button id="btnPagoCaja" type="button" class="btn btn-primary">Registrar en
+                                            Caja</button>
                                     </div>
                                 </div>
                             </div>
@@ -246,6 +250,53 @@
 @endsection
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) {
+        $('#errMessage').hide();
+        $('#loading').hide();
+        const btnPagoCaja = document.getElementById('btnPagoCaja').onclick=function(e){
+        const data = new FormData(document.getElementById('formVentaServicios'));  
+        e.preventDefault();
+        const idventa = '';
+        if($('#total').val().trim()!='0'){
+            $('#loading').show();            
+            fetch("{{route('add_detail_servicio',  $movimientos['id'])}}",{
+            method:'POST',
+            body:data
+            }).then(res=>res.json())
+              .then(function(data){
+                if(data.respuesta=='ok'){
+                    var idComprobante =data.id_comprobante
+                    if(idComprobante)
+                    if(data.tipoDoc=="boleta"){
+                        var funcion ='enviarBoleta'
+                    }else if(data.tipoDoc=="factura"){
+                        var funcion ='enviarFactura'
+                    }
+                    $.ajax({
+                        type:'GET',
+                        url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
+                        data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
+                        success: function(r){
+                            window.location.href = "{{route('caja')}}";
+                            console.log(r);
+                        },
+                        error: function(e){
+                            console.log(e.message);
+                        }
+                    });    
+                }else{
+                    Hotel.notificaciones(data.mensaje, 'Hotel', 'error');
+                    $('#loading').hide();
+                }                           
+            })
+            .catch(function (e){
+                console.log(e);
+            });
+        }else{
+            console.log('ERROR');
+            $('#errMessage').show();
+        }   
+        
+    }
         $('.txtCantidad').on('change', function(e){
         
         e.preventDefault();

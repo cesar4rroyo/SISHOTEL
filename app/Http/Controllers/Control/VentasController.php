@@ -230,7 +230,11 @@ class VentasController extends Controller
     //comprobante y/o detalleComprobante
     public function addFromDetallePdto(Request $request)
     {
-
+        $persona = $request->persona;
+        $tipoDoc = $request->tipodocumento;
+        if (is_null($persona)) {
+            $persona = 1;
+        }
         $caja =
             Caja::with('movimiento', 'persona', 'concepto')
             ->latest('created_at')->first()->toArray();
@@ -260,7 +264,7 @@ class VentasController extends Controller
                 'tipo' => 'Ingreso',
                 'numero' => $numero,
                 'total' => $total,
-                'persona_id' => $request->persona,
+                'persona_id' => $persona,
                 'usuario_id' => session()->all()['usuario_id'],
                 'concepto_id' => 3,
                 'comentario' => $comentario,
@@ -289,7 +293,7 @@ class VentasController extends Controller
                 'total' => $total,
                 'subtotal' => $subtotal,
                 'comentario' => $comentario,
-                'persona_id' => $request->persona,
+                'persona_id' => $persona,
 
             ]);
             //traer el id del comprobante generado anteriormente para relacionarlo con DetalleComprobante
@@ -306,17 +310,22 @@ class VentasController extends Controller
             }
             //limpiar la session donde se encuentran los productos
             session()->pull('cart_ventas', []);
-            return redirect()
-                ->route('caja')
-                ->with('success', 'Registro agregado correctamente');
+
+            return response()->json(['respuesta' => 'ok', 'id_comprobante' => $id_ComprobanteAnterior, 'tipoDoc' => $tipoDoc]);
+            // return redirect()
+            //     ->route('caja')
+            //     ->with('success', 'Registro agregado correctamente');
         }
-        return redirect()
-            ->route('habitaciones')
-            ->with('error', 'La caja no ha sido aperturada');
+        return response()->json(['respuesta' => 'no', 'mensaje' => 'La caja no ha sido aperturada']);
     }
 
     public function addFromDetalleService(Request $request)
     {
+        $persona = $request->persona;
+        $tipoDoc = $request->tipodocumento;
+        if (is_null($persona)) {
+            $persona = 1;
+        }
         $caja =
             Caja::with('movimiento', 'persona', 'concepto')
             ->latest('created_at')->first()->toArray();
@@ -348,7 +357,7 @@ class VentasController extends Controller
                 'numero' => $numero,
                 'concepto_id' => 3,
                 'tipo' => 'Ingreso',
-                'persona_id' => $request->persona,
+                'persona_id' => $persona,
                 'total' => $total,
                 'comentario' => $comentario,
                 'usuario_id' => session()->all()['usuario_id'],
@@ -377,7 +386,7 @@ class VentasController extends Controller
                 'total' => $total,
                 'subtotal' => $subtotal,
                 'comentario' => $comentario,
-                'persona_id' => $request->persona,
+                'persona_id' => $persona,
 
             ]);
             //traer el id del comprobante generado anteriormente para relacionarlo con DetalleComprobante
@@ -394,13 +403,15 @@ class VentasController extends Controller
             }
             //limpiar la session donde se encuentran los productos
             session()->pull('servicio_ventas', []);
-            return redirect()
-                ->route('caja')
-                ->with('success', 'Registro agregado correctamente');
+            return response()->json(['respuesta' => 'ok', 'id_comprobante' => $id_ComprobanteAnterior, 'tipoDoc' => $tipoDoc]);
+            // return redirect()
+            //     ->route('caja')
+            //     ->with('success', 'Registro agregado correctamente');
         }
-        return redirect()
-            ->route('habitaciones')
-            ->with('error', 'La caja no ha sido aperturada');
+        // return redirect()
+        //     ->route('habitaciones')
+        //     ->with('error', 'La caja no ha sido aperturada');
+        return response()->json(['respuesta' => 'no', 'mensaje' => 'La caja no ha sido aperturada']);
     }
 }
     /*  //funcion para enviar a caja y generar la primera parte del comprobante,

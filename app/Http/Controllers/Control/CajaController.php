@@ -369,6 +369,11 @@ class CajaController extends Controller
         //verificar si la caja esta abierta llamando al ultimo movimiento en la caja
         //que si su concepto_id  es diferente de '2' -> 'Concepto: Cierre Caja' dejará 
         //ya se crear un nuevo registro o aperturar la caja.
+        $persona = $request->persona;
+        $tipoDoc = $request->tipodocumento;
+        if (is_null($persona)) {
+            $persona = 1;
+        }
         $caja =
             Caja::with('movimiento', 'persona', 'concepto')
             ->latest('created_at')->first()->toArray();
@@ -401,7 +406,7 @@ class CajaController extends Controller
                 'tipo' => 'Ingreso',
                 'numero' => $numero,
                 'total' => $total,
-                'persona_id' => $request->persona,
+                'persona_id' => $persona,
                 'usuario_id' => session()->all()['usuario_id'],
                 'concepto_id' => 3,
                 'comentario' => $request->comentario,
@@ -433,7 +438,7 @@ class CajaController extends Controller
                 'total' => $total,
                 'igv' => $igv,
                 'comentario' => $request->comentario,
-                'persona_id' => $request->persona,
+                'persona_id' => $persona,
 
             ]);
             //traer el id del comprobante generado anteriormente para relacionarlo con DetalleComprobante
@@ -451,20 +456,27 @@ class CajaController extends Controller
             //limpiar la session donde se encuentran los productos
             session()->pull('cart', []);
             //si la caja no esta aperturada entonces se lo devolverpa a la vista principal con un mensaje de error
-            return redirect()
-                ->route('caja')
-                ->with('success', 'Registro agregado correctamente');
+            return response()->json(['respuesta' => 'ok', 'id_comprobante' => $id_ComprobanteAnterior, 'tipoDoc' => $tipoDoc]);
+            // return redirect()
+            //     ->route('caja')
+            //     ->with('success', 'Registro agregado correctamente');
         }
         //si la caja no esta aperturada entonces se lo devolverpa a la vista principal con un mensaje de error
-        return redirect()
-            ->route('habitaciones')
-            ->with('error', 'La caja no ha sido aperturada');
+        // return redirect()
+        //     ->route('habitaciones')
+        //     ->with('error', 'La caja no ha sido aperturada');
+        return response()->json(['respuesta' => 'no', 'mensaje' => 'La caja no ha sido aperturada']);
     }
     public function addFromDetalleService(Request $request, $id)
     {
         //verificar si la caja esta abierta llamando al ultimo movimiento en la caja
         //que si su concepto_id  es diferente de '2' -> 'Concepto: Cierre Caja' dejará 
         //ya se crear un nuevo registro o aperturar la caja.
+        $persona = $request->persona;
+        $tipoDoc = $request->tipodocumento;
+        if (is_null($persona)) {
+            $persona = 1;
+        }
         $caja =
             Caja::with('movimiento', 'persona', 'concepto')
             ->latest('created_at')->first()->toArray();
@@ -497,7 +509,7 @@ class CajaController extends Controller
                 'tipo' => 'Ingreso',
                 'numero' => $numero,
                 'total' => $total,
-                'persona_id' => $request->persona,
+                'persona_id' => $persona,
                 'usuario_id' => session()->all()['usuario_id'],
                 'concepto_id' => 3,
                 'comentario' => $request->comentario,
@@ -528,7 +540,7 @@ class CajaController extends Controller
                 'total' => $total,
                 'igv' => $igv,
                 'comentario' => $request->comentario,
-                'persona_id' => $request->persona,
+                'persona_id' => $persona,
 
             ]);
             //traer el id del comprobante generado anteriormente para relacionarlo con DetalleComprobante
@@ -545,13 +557,16 @@ class CajaController extends Controller
             }
             //limpiar la session donde se encuentran los productos
             session()->pull('servicio', []);
-            return redirect()
-                ->route('caja')
-                ->with('success', 'Registro agregado correctamente');
+            return response()->json(['respuesta' => 'ok', 'id_comprobante' => $id_ComprobanteAnterior, 'tipoDoc' => $tipoDoc]);
+
+            // return redirect()
+            //     ->route('caja')
+            //     ->with('success', 'Registro agregado correctamente');
         }
-        return redirect()
-            ->route('habitaciones')
-            ->with('error', 'La caja no ha sido aperturada');
+        // return redirect()
+        //     ->route('habitaciones')
+        //     ->with('error', 'La caja no ha sido aperturada');
+        return response()->json(['respuesta' => 'no', 'mensaje' => 'La caja no ha sido aperturada']);
     }
     public function updateHabitacion($id)
     {

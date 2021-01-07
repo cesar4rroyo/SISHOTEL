@@ -52,7 +52,8 @@
                                 </tr>
                                 <tr>
                                     <th> Persona </th>
-                                    <td> {{ $caja->persona->nombres ." ". $caja->persona->apellidos }} </td>
+                                    <td> {{ isset($caja->persona->nombres) ? $caja->persona->nombres ." ". $caja->persona->apellidos : 'Varios' }}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th> Total </th>

@@ -106,13 +106,15 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <p id="errMessage" class="text-center text-danger">Inserte al menos un producto</p>
                             <div class="container">
                                 <p class="font-weight-bold ">Total: </p>
-                                <input class="form-control" readonly type="number" value="{{$total}}">
+                                <input class="form-control" name="total" id="total" readonly type="number"
+                                    value="{{$total}}">
                             </div>
                         </div>
                     </div>
-                    <form action="{{route('add_detail_producto_ventas')}}" method="POST">
+                    <form action="{{route('add_detail_producto_ventas')}}" id="formVentaProductos" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-sm form-group">
@@ -155,8 +157,9 @@
                             <textarea class="form-control" name="comentario" id="comentario" cols="10"
                                 rows="5"></textarea>
                         </div>
+                        <p id="loading" class="text-center text-info font-weight-bold mt-4">Espere...</p>
                         <div class="container text-center mt-3">
-                            <button type="submit" class="btn btn-outline-success col-6">
+                            <button id="btnPagoCaja" type="button" class="btn btn-outline-success col-6">
                                 Pago a caja
                             </button>
                         </div>
@@ -171,6 +174,54 @@
 
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) {
+    $('#errMessage').hide();
+    $('#loading').hide();
+    
+    const btnPagoCaja = document.getElementById('btnPagoCaja').onclick=function(e){
+        const data = new FormData(document.getElementById('formVentaProductos'));  
+        e.preventDefault();
+        const idventa = '';
+        if($('#total').val().trim()!='0'){
+            $('#loading').show();            
+            fetch("{{route('add_detail_producto_ventas')}}",{
+            method:'POST',
+            body:data
+            }).then(res=>res.json())
+              .then(function(data){
+                if(data.respuesta=='ok'){
+                    var idComprobante =data.id_comprobante
+                    if(data.tipoDoc=="boleta"){
+                        var funcion ='enviarBoleta'
+                    }else if(data.tipoDoc=="factura"){
+                        var funcion ='enviarFactura'
+                    }
+                    $.ajax({
+                        type:'GET',
+                        url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
+                        data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
+                        success: function(r){
+                            // window.location.href = "{{route('caja')}}";
+                            console.log(r);
+                        },
+                        error: function(e){
+                            console.log(e.message);
+                        }
+                    });    
+                }else{
+                    Hotel.notificaciones(data.mensaje, 'Hotel', 'error');
+                    $('#loading').hide();
+                }                           
+            })
+            .catch(function (e){
+                console.log(e);
+            });
+        }else{
+            console.log('ERROR');
+            $('#errMessage').show();
+        }   
+        
+    }
+
         /* $(".updateCart").click(function (e) {
            e.preventDefault();
            var ele = $(this);
