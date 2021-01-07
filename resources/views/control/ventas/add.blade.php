@@ -190,23 +190,27 @@
               .then(function(data){
                 if(data.respuesta=='ok'){
                     var idComprobante =data.id_comprobante
-                    if(data.tipoDoc=="boleta"){
+                    if(data.tipoDoc != "ticket"){
+                        if(data.tipoDoc=="boleta"){
                         var funcion ='enviarBoleta'
-                    }else if(data.tipoDoc=="factura"){
-                        var funcion ='enviarFactura'
-                    }
-                    $.ajax({
-                        type:'GET',
-                        url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
-                        data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
-                        success: function(r){
-                            // window.location.href = "{{route('caja')}}";
-                            console.log(r);
-                        },
-                        error: function(e){
-                            console.log(e.message);
-                        }
-                    });    
+                        }else if(data.tipoDoc=="factura"){
+                            var funcion ='enviarFactura'
+                        }                    
+                        $.ajax({
+                            type:'GET',
+                            url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
+                            data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
+                            success: function(r){
+                                window.location.href = "{{route('caja')}}";
+                                console.log(r);
+                            },
+                            error: function(e){
+                                console.log(e.message);
+                            }
+                        });  
+                    }else{
+                        window.location.href = "{{route('caja')}}";
+                    }  
                 }else{
                     Hotel.notificaciones(data.mensaje, 'Hotel', 'error');
                     $('#loading').hide();
