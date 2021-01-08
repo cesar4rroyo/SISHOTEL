@@ -265,7 +265,7 @@
               .then(function(data){
                 if(data.respuesta=='ok'){
                     var idComprobante =data.id_comprobante
-                    if(data.tipoDoc != "ticket"){
+                    /* if(data.tipoDoc != "ticket"){
                         if(data.tipoDoc=="boleta"){
                         var funcion ='enviarBoleta'
                         }else if(data.tipoDoc=="factura"){
@@ -285,7 +285,9 @@
                         });  
                     }else{
                         window.location.href = "{{route('caja')}}";
-                    }    
+                    }   */
+                    window.location.href = "{{route('caja')}}";
+
                 }else{
                     Hotel.notificaciones(data.mensaje, 'Hotel', 'error');
                     $('#loading').hide();

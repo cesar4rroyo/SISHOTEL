@@ -271,7 +271,7 @@
                 if(data.respuesta=='ok'){
                     var idComprobante =data.id_comprobante
                     if(data.tipoDoc != "ticket"){
-                        if(data.tipoDoc=="boleta"){
+                        /* if(data.tipoDoc=="boleta"){
                         var funcion ='enviarBoleta'
                         }else if(data.tipoDoc=="factura"){
                             var funcion ='enviarFactura'
@@ -287,7 +287,8 @@
                             error: function(e){
                                 console.log(e.message);
                             }
-                        });  
+                        });   */
+                        window.location.href = "{{route('caja')}}";
                     }else{
                         window.location.href = "{{route('caja')}}";
                     }   
