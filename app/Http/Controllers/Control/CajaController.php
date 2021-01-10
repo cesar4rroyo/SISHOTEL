@@ -288,6 +288,8 @@ class CajaController extends Controller
 
     public function createCheckout(Request $request, $id)
     {
+        $persona = $request->persona;
+        $tipoDoc = $request->tipodocumento;
         $verificarApertura =
             Caja::with('movimiento', 'persona', 'concepto')
             ->latest('created_at')->first()->toArray();
@@ -320,6 +322,7 @@ class CajaController extends Controller
                 'dias' => $request->dias,
                 'total' => $request->total,
                 'situacion' => 'Pago Realizado',
+                'descuento' => $request->descuento,
             ]);
             //guardar un nuevo registro para caja 
             $cajaStore = Caja::create([
@@ -327,7 +330,7 @@ class CajaController extends Controller
                 'tipo' => 'Ingreso',
                 'numero' => $numero,
                 'total' => $total,
-                'persona_id' => $request->persona,
+                'persona_id' => $persona,
                 'movimiento_id' => $id,
                 'usuario_id' => session()->all()['usuario_id'],
                 'concepto_id' => 3,
@@ -343,7 +346,7 @@ class CajaController extends Controller
                 'igv' => $igv,
                 'comentario' => $request->comentario,
                 'movimiento_id' => $id,
-                'persona_id' => $request->persona,
+                'persona_id' => $persona,
             ]);
             $id_ComprobanteAnterior = Comprobante::latest('id')->first()->toArray()['id'];
             $detalleComprobante = DetalleComprobante::create([
@@ -354,14 +357,16 @@ class CajaController extends Controller
                 'servicio_id' => 2,
                 'comprobante_id' => $id_ComprobanteAnterior,
             ]);
+            return response()->json(['respuesta' => 'ok', 'id_comprobante' => $id_ComprobanteAnterior, 'tipoDoc' => $tipoDoc]);
 
-            return redirect()
-                ->route('caja')
-                ->with('success', 'Registro agregado correctamente');
+            // return redirect()
+            //     ->route('caja')
+            //     ->with('success', 'Registro agregado correctamente');
         } else {
-            return redirect()
-                ->route('habitaciones')
-                ->with('error', 'La caja no ha sido aperturada');
+            return response()->json(['respuesta' => 'no', 'mensaje' => 'La caja no ha sido aperturada']);
+            // return redirect()
+            //     ->route('habitaciones')
+            //     ->with('error', 'La caja no ha sido aperturada');
         }
     }
     public function addFromDetallePdto(Request $request, $id)

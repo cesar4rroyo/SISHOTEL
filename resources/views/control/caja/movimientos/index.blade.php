@@ -140,8 +140,8 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <div class="pagination-wrapper"> {!! $cajas->appends(['search' =>
-                            Request::get('search')])->render() !!} </div>
+                        <div class="pagination-wrapper"> {!! $cajas->appends(['tipo' =>
+                            Request::get('tipo')])->render() !!} </div>
                     </div>
 
                 </div>

@@ -6,7 +6,6 @@
     <script src="{{asset('assets/fullcalendar/lib/main.js')}}"></script>
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function() {
-                   
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
           initialView: 'dayGridMonth',
@@ -14,6 +13,8 @@
           locale:'es',
           timeZone: 'local',
           dateClick:function(info){
+                $('#divSelectHabitacion').hide();
+                $('#loadingRoons').hide();
                 $('#txtFecha').val(info.dateStr);
                 var fecha = info.dateStr;
                 $('#modal-default').modal();
@@ -22,7 +23,7 @@
                     fecha: fecha,
                     '_token': $('input[name=_token]').val(),
                 }
-                getHabitaciones(data, '#selectHabitacion');
+                // getHabitaciones(data, '#selectHabitacion');
                   
              
           },
@@ -55,6 +56,7 @@
         
         calendar.render();
         $('#consultarHabitaciones').on('click', function(){
+                $('#divSelectHabitacion').show();
                 var fechaSalida = $('#txtFechaSalida').val();
                 var fechaEntrada = $('#txtFecha').val(); 
                 var data ={
@@ -90,6 +92,8 @@
                     type: 'POST',
                     data: data,
                     success: function (respuesta) {
+                        $('#loadingRoons').hide();
+                        $('#divSelectHabitacion').show();
                         var $select =$(selectName);
                         $(selectName).empty();
                         if(Object.keys(respuesta).length==0){

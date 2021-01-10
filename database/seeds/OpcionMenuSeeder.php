@@ -187,7 +187,7 @@ class OpcionMenuSeeder extends Seeder
         DB::table('opcionmenu')->insert([
             'nombre' => 'Productos',
             'link' => 'admin/ventas/productos',
-            'icono' => 'fas fa-clipboard-list',
+            'icono' => 'fa fa-gift',
             'orden' => 1,
             'grupomenu_id' => 7
         ]);
@@ -197,6 +197,14 @@ class OpcionMenuSeeder extends Seeder
             'icono' => 'fas fa-clipboard-list',
             'orden' => 2,
             'grupomenu_id' => 7
+        ]);
+
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Lista',
+            'link' => 'admin/comprobantes',
+            'icono' => 'fas fa-clipboard-list',
+            'orden' => 1,
+            'grupomenu_id' => 8
         ]);
     }
 }

@@ -49,5 +49,10 @@ class GrupoMenuSeeder extends Seeder
             'icono' => 'fas fa-store',
             'orden' => 7,
         ]);
+        DB::table('grupomenu')->insert([
+            'nombre' => 'Comprobantes',
+            'icono' => 'fas fa-list-ol',
+            'orden' => 8,
+        ]);
     }
 }

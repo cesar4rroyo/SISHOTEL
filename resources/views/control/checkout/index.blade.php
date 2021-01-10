@@ -11,11 +11,14 @@
                         class="btn btn-outline-secondary btn-sm mb-2"><i class="fa fa-arrow-left"
                             aria-hidden="true"></i>
                         Regresar</button></a>
-                <a href="{{ route('check_in_pdf', $movimiento['id'] ) }}" title="Imprimir"><button
+                <a href="{{ route('check_in_pdf', $movimiento['id'])}}" title="Imprimir"><button
                         class="btn btn-warning btn-sm mb-2"><i class="fas fa-print" aria-hidden="true"></i>
                         Imprimir Check-In</button></a>
                 <div class="container">
-                    <form  onsubmit="return confirm('Desea continuar con el check-out');" action="{{route('add_checkout', $movimiento['id'])}}" method="POST">
+
+                    <form action="{{route('add_checkout', $movimiento['id'])}}" id="checkoutForm" method="POST"
+                        onsubmit="return confirm('¿Está seguro que desea hacer finalizar el Check-Out?')">
+
                         @csrf
                         <div class="row">
                             <div class="col-sm form-group">
@@ -47,6 +50,55 @@
                         <div class="row">
                             <div class="col-sm form-group">
                                 <label class="control-label" for="preciohabitacion">{{'Precio Habitacion'}}</label>
+                                <span class=" badge badge-info" type="button" data-toggle="modal"
+                                    data-target="#descuento">
+                                    <i class="fas fa-plus-circle"></i>
+                                    Descuento
+                                </span>
+                                <input type="number" name="txtDsctoForm" id="txtDsctoForm" hidden>
+                                <div class="modal fade" id="descuento" tabindex="-1" aria-labelledby="modalDscto"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="modalDscto">Añadir Descuento</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-sm form-group">
+                                                        <label class="control-label"
+                                                            for="preciosugerido">{{'Precio Sugerido'}}</label>
+                                                        <input class="form-control" readonly
+                                                            value="{{$habitacion['tipohabitacion']['precio']}}"
+                                                            type="number" name="preciosugerido" id="preciosugerido">
+                                                    </div>
+                                                    <div class="col-sm form-group">
+                                                        <label class="control-label"
+                                                            for="txtDescuento">{{'Descuento'}}</label>
+                                                        <input class="form-control" step="0.01" value="{{0}}"
+                                                            type="number" name="txtDescuento" id="txtDescuento">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <label class="control-label"
+                                                        for="precioFinal">{{'Precio con Descuento'}}</label>
+                                                    <input class="form-control" readonly value="{{0}}" type="number"
+                                                        name="precioFinal" id="precioFinal">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Cerrar</button>
+                                                <button type="button" id="btnDscto" class="btn btn-primary">Guardar
+                                                    Cambios</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <input class="form-control" readonly value="{{$habitacion['tipohabitacion']['precio']}}"
                                     type="number" name="preciohabitacion" id="preciohabitacion">
                             </div>
@@ -59,12 +111,14 @@
                         <div class="col-sm form-group">
                             <label class="control-label" for="dias">{{'Dias'}}</label>
                             <input required type="number" class="form-control" step="0.01" name="dias" id="dias">
+                            <p id="errMessage" class="text-center text-danger">Este campo es obligatorio</p>
                         </div>
                         <div class="col-sm form-group">
                             <label class="control-label" for="total">{{'Total'}}</label>
                             <input class="form-control" readonly value="{{isset($total) ? $total : 0}}" type="number"
                                 name="total" id="total">
                         </div>
+
                         {{-- @isset($reserva)
                         <div class="col-sm form-group">
                             <label class="control-label" for="reserva">{{'Reserva Nro.'}}</label>
@@ -188,7 +242,7 @@
                 <textarea class="form-control" name="comentario" id="comentario" cols="5" rows="5"></textarea>
             </div>
             <div class="container text-center">
-                <button type="submit" class="btn btn-outline-success col-sm-6">
+                <button type="button" id="btnCheckOut" class="btn btn-outline-success col-sm-6">
                     Check-Out
                 </button>
             </div>
@@ -202,6 +256,97 @@
 @endsection
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) {
+        $('#errMessage').hide();
+        const btnCheckOut = document.getElementById('btnCheckOut').onclick=function(event){
+            event.preventDefault();
+            const data = new FormData(document.getElementById('checkoutForm'));
+            var dias = document.getElementById('dias').value;
+            var total = document.getElementById('total').value;
+            if(dias.trim()!='' && total.trim()!=0){
+                swal({
+                    title:'¿Está seguro que desea continuar con esta operación?',
+                    text:'Está a punto de finalizar el Check-Out.',
+                    icon:'warning',
+                    buttons: {
+                        cancel: "Cancelar",
+                        confirm: "Aceptar"
+                    },
+                }).then(function(){
+                    fetch("{{route('add_checkout', $movimiento['id'])}}", {
+                        method:'POST',
+                        body:data,
+                    })
+                    .then(res=>res.json())
+                    .then(function(data){
+                        if(data.respuesta=='ok'){
+                            var idComprobante =data.id_comprobante
+                            var tipoDoc = data.tipoDoc 
+                            if(tipoDoc !="ticket"){
+                                if(tipoDoc=="boleta"){
+                                    var funcion ='enviarBoleta'
+                                }else if(tipoDoc=="factura"){
+                                    var funcion ='enviarFactura'
+                                }                    
+                                $.ajax({
+                                    type:'GET',
+                                    url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
+                                    data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
+                                    success: function(r){
+                                        window.location.href = "{{route('caja')}}";
+                                        console.log(r);
+                                    },
+                                    error: function(e){
+                                        console.log(e.message);
+                                    }
+                                });  
+                            }else{
+                                window.location.href = "{{route('caja')}}";
+                            }   
+                        }else{
+                            swal({
+                                title:'Ha ocurrido un error',
+                                text:data.mensaje,
+                                icon:'error',
+                            });
+                            // $('#loading').hide();
+                        } 
+                    })
+                    .catch(function(e){
+                        swal({
+                            title:'Ha ocurrido un error',
+                            text:'Oops, el checkout no se ha podido realizar',
+                            icon:'error',
+                        });
+                    });
+                    
+                });
+            }else{
+                $('#errMessage').show();
+            }            
+        }        
+       
+       
+        $('#txtDescuento').on('change', function(){
+            var dscto = $(this).val();
+            var preciosugerido = $('#preciosugerido').val();
+            var precioFinal = $('#precioFinal').val();
+            precioFinal = preciosugerido - parseFloat(preciosugerido*dscto/100);
+            $('#precioFinal').val(precioFinal);
+            console.log(precioFinal); 
+
+        });
+        $('#btnDscto').on('click', function(){
+            var dscto = $(this).val();
+            var precioFinal = $('#precioFinal').val();
+            if(dscto.trim()!='0' && precioFinal.trim()!=0){
+                $('#preciohabitacion').val(precioFinal);
+                $('#txtDsctoForm').val(dscto);
+                $('#descuento').modal('toggle');
+            }else{
+                $('#descuento').modal('toggle');
+            }
+
+        })
         $(document.body).on('change',"#tipodocumento",function (e) {
            var optVal= $("#tipodocumento option:selected").val();
            $.ajax({

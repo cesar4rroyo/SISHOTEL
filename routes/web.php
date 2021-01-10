@@ -26,7 +26,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('grupomenu/{id}/edit', 'GrupoMenuController@edit')->name('edit_grupomenu');
     Route::put('grupomenu/{id}', 'GrupoMenuController@update')->name('update_grupomenu');
     Route::delete('grupomenu/{id}/destroy', 'GrupoMenuController@destroy')->name('destroy_grupomenu');
-   
+
     /* Rutas de OPCIONMENU */
     Route::get('opcionmenu/create', 'OpcionMenuController@create')->name('create_opcionmenu');
     Route::get('opcionmenu', 'OpcionMenuController@index')->name('opcionmenu');
@@ -35,7 +35,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('opcionmenu/{id}/edit', 'OpcionMenuController@edit')->name('edit_opcionmenu');
     Route::put('opcionmenu/{id}', 'OpcionMenuController@update')->name('update_opcionmenu');
     Route::delete('opcionmenu/{id}/destroy', 'OpcionMenuController@destroy')->name('destroy_opcionmenu');
-       /* Rutas de ROL */
+    /* Rutas de ROL */
     Route::get('rol/create', 'RolController@create')->name('create_rol');
     Route::get('rol', 'RolController@index')->name('rol');
     Route::get('rol/{id}', 'RolController@show')->name('show_rol');
@@ -74,14 +74,14 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('persona/{id}/edit', 'PersonaController@edit')->name('edit_persona');
     Route::put('persona/{id}', 'PersonaController@update')->name('update_persona');
     Route::delete('persona/{id}/destroy', 'PersonaController@destroy')->name('destroy_persona');
-     /* Rutas de NACIONALIDAD */
-     Route::get('nacionalidad/create', 'NacionalidadController@create')->name('create_nacionalidad');
-     Route::get('nacionalidad', 'NacionalidadController@index')->name('nacionalidad');
-     Route::get('nacionalidad/{id}', 'NacionalidadController@show')->name('show_nacionalidad');
-     Route::post('nacionalidad', 'NacionalidadController@store')->name('store_nacionalidad');
-     Route::get('nacionalidad/{id}/edit', 'NacionalidadController@edit')->name('edit_nacionalidad');
-     Route::put('nacionalidad/{id}', 'NacionalidadController@update')->name('update_nacionalidad');
-     Route::delete('nacionalidad/{id}/destroy', 'NacionalidadController@destroy')->name('destroy_nacionalidad');
+    /* Rutas de NACIONALIDAD */
+    Route::get('nacionalidad/create', 'NacionalidadController@create')->name('create_nacionalidad');
+    Route::get('nacionalidad', 'NacionalidadController@index')->name('nacionalidad');
+    Route::get('nacionalidad/{id}', 'NacionalidadController@show')->name('show_nacionalidad');
+    Route::post('nacionalidad', 'NacionalidadController@store')->name('store_nacionalidad');
+    Route::get('nacionalidad/{id}/edit', 'NacionalidadController@edit')->name('edit_nacionalidad');
+    Route::put('nacionalidad/{id}', 'NacionalidadController@update')->name('update_nacionalidad');
+    Route::delete('nacionalidad/{id}/destroy', 'NacionalidadController@destroy')->name('destroy_nacionalidad');
 });
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Habitacion', 'middleware' => ['auth', 'acceso']], function () {
@@ -160,7 +160,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Reservas', 'middleware' => ['
     Route::get('reserva/create', 'ReservaController@create')->name('create_reserva');
     Route::get('reserva', 'ReservaController@index')->name('reserva');
     Route::get('reserva/todas/list', 'ReservaController@listarReservas')->name('reserva_lista_todas');
-
     // Route::get('reserva/{id}', 'ReservaController@show')->name('show_reserva');
     Route::get('reserva/show', 'ReservaController@show')->name('show_reserva');
     Route::post('reserva', 'ReservaController@store')->name('store_reserva');
@@ -170,7 +169,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Reservas', 'middleware' => ['
     //reserva buscador
     Route::get('nombres/buscador', 'PersonaController@buscador');
 });
-Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['auth', 'acceso']], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['auth']], function () {
+    /* Rutas de COMPROBANTE */
+    Route::get('comprobantes', 'ComprobanteController@index')->name('comprobantes');
+    Route::get('comprobantes/pdf/{id}', 'ComprobanteController@exportPDF')->name('comprobante_pdf');
+    Route::get('comprobantes/{id}', 'ComprobanteController@show')->name('show_comprobante');
+
     /* Rutas de HABITACIONES */
     Route::get('habitaciones/create', 'HabitacionesController@create')->name('create_habitaciones');
     Route::get('habitaciones', 'HabitacionesController@index')->name('habitaciones');
