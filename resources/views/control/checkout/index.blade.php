@@ -279,7 +279,8 @@
                     .then(res=>res.json())
                     .then(function(data){
                         if(data.respuesta=='ok'){
-                            var idComprobante =data.id_comprobante
+                            window.location.href = "{{route('caja')}}";
+                            /* var idComprobante =data.id_comprobante
                             var tipoDoc = data.tipoDoc 
                             if(tipoDoc !="ticket"){
                                 if(tipoDoc=="boleta"){
@@ -301,7 +302,7 @@
                                 });  
                             }else{
                                 window.location.href = "{{route('caja')}}";
-                            }   
+                            }  */  
                         }else{
                             swal({
                                 title:'Ha ocurrido un error',
