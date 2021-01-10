@@ -354,7 +354,7 @@ class CajaController extends Controller
                 'preciocompra' => $total,
                 'precioventa' => $total,
                 'comentario' => 'Servicio de Hotel - ' . $request->comentario,
-                'servicio_id' => 2,
+                'servicio_id' => 1,
                 'comprobante_id' => $id_ComprobanteAnterior,
             ]);
             return response()->json(['respuesta' => 'ok', 'id_comprobante' => $id_ComprobanteAnterior, 'tipoDoc' => $tipoDoc]);
