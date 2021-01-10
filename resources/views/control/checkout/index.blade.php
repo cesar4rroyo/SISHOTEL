@@ -15,8 +15,10 @@
                         class="btn btn-warning btn-sm mb-2"><i class="fas fa-print" aria-hidden="true"></i>
                         Imprimir Check-In</button></a>
                 <div class="container">
+
                     <form action="{{route('add_checkout', $movimiento['id'])}}" id="checkoutForm" method="POST"
                         onsubmit="return confirm('¿Está seguro que desea hacer finalizar el Check-Out?')">
+
                         @csrf
                         <div class="row">
                             <div class="col-sm form-group">
