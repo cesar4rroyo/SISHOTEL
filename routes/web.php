@@ -169,7 +169,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Reservas', 'middleware' => ['
     //reserva buscador
     Route::get('nombres/buscador', 'PersonaController@buscador');
 });
-Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['auth', 'acceso']], function () {
     /* Rutas de COMPROBANTE */
     Route::get('comprobantes', 'ComprobanteController@index')->name('comprobantes');
     Route::get('comprobantes/pdf/{id}', 'ComprobanteController@exportPDF')->name('comprobante_pdf');
