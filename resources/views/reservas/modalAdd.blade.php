@@ -24,6 +24,9 @@
                                 <i class=" fas fa-search"></i>
                                 Consultar
                             </button>
+                            <span id="loadingRoons" class="badge badge-warning">
+                                Cargando...
+                            </span>
                         </div>
                     </div>
                     <div class="row">
@@ -43,7 +46,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="divSelectHabitacion">
                         <label for="selectHabitacion"
                             class="control-label selectHabitacion">{{ 'Habitaciones Disponibles' }}</label>
                         <select name="habitacion[]" multiple='multiple' class="form-control habitacion-select2"
