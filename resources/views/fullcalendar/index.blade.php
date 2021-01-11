@@ -28,13 +28,19 @@
              
           },
           eventClick:function(info){
+            $("#btnActualizar").prop('disabled', false);
+            $("#btnEliminar").prop('disabled', false);
             month=(info.event.start.getMonth()+1);
             day=(info.event.start.getDate());
             year=(info.event.start.getFullYear());
             month=(month<10)?'0'+month:month;
             day=(day<10)?'0'+day:day;
-            fecha=year+"-"+month+"-"+day;  
+            fecha=year+"-"+month+"-"+day; 
 
+            if(info.event.extendedProps.situacion==='Ocupada'){
+                $("#btnActualizar").prop('disabled', true);
+                $("#btnEliminar").prop('disabled', true);
+            }
                         
             
             var data = {

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Habitacion;
 use App\Models\Piso;
+use App\Models\Procesos\Movimiento;
 use App\Models\Procesos\Reserva;
 use Carbon\Carbon;
 
@@ -32,6 +33,10 @@ class HabitacionesController extends Controller
             })->get()->toArray();
             $pisos = Piso::with('habitacion')->get()->toArray();
             $piso = Piso::find($piso);
+            $disponibles = Habitacion::with('tipohabitacion', 'piso', 'reserva', 'movimiento')
+                ->where('situacion', 'Disponible')->get()->toArray();
+            $ocupadas = Movimiento::with('habitacion.tipohabitacion', 'pasajero.persona')
+                ->where('situacion', 'Pendiente')->get()->toArray();
         } else {
             $fechaActual = Carbon::now()->toDateString();
             $habitacion = Habitacion::with('tipohabitacion', 'piso', 'reserva', 'movimiento')->whereHas('piso', function ($query) {
@@ -49,9 +54,14 @@ class HabitacionesController extends Controller
             // })->whereHas('movimiento', function ($q) use ($fechaActual) {
             //     $q->whereDate('fechaingreso', '%LIKE%', $fechaActual);
             // })->get()->toArray();
+            $disponibles = Habitacion::with('tipohabitacion', 'piso', 'reserva', 'movimiento')
+                ->where('situacion', 'Disponible')->get()->toArray();
+            $ocupadas = Movimiento::with('habitacion.tipohabitacion', 'pasajero.persona')
+                ->where('situacion', 'Pendiente')->get()->toArray();
+            // dd($disponibles);
         }
         // dd($habitacion);
-        return view('control.index', compact('habitacion', 'pisos', 'piso', 'fechaActual', 'reservas'));
+        return view('control.index', compact('disponibles', 'ocupadas', 'habitacion', 'pisos', 'piso', 'fechaActual', 'reservas'));
     }
 
 
@@ -66,12 +76,33 @@ class HabitacionesController extends Controller
         if (!empty($request->fechaSalida)) {
             $fechaSalida = $request->fechaSalida;
             $fechaEntrada = $request->fechaEntrada;
-            $habitaciones = Habitacion::with('tipohabitacion', 'piso', 'reserva')->whereNotIn('id', function ($q) use ($fechaEntrada, $fechaSalida) {
+            /*  $habitaciones = Habitacion::with('tipohabitacion', 'piso', 'reserva', 'movimiento')->whereNotIn('id', function ($q) use ($fechaEntrada, $fechaSalida) {
                 $q->from('reserva')
                     ->select('habitacion_id')
                     ->where('fecha', '<=', $fechaSalida)
                     ->where('fechasalida', '>=', $fechaEntrada);
-            })->get()->toArray();
+            })->WhereNotIn('id', function ($q2) use ($fechaEntrada, $fechaSalida) {
+                $q2->from('movimiento')
+                    ->select('habitacion_id')
+                    ->where('fechaingreso', '<=', $fechaSalida)
+                    ->where('fechasalida', '>=', $fechaEntrada);
+            })->get()->toArray(); */
+            $habitaciones = Habitacion::with('tipohabitacion', 'piso', 'reserva', 'movimiento')
+                ->where(function ($q) use ($fechaEntrada, $fechaSalida) {
+                    $q->whereNotIn('id', function ($q2) use ($fechaEntrada, $fechaSalida) {
+                        $q2->from('reserva')
+                            ->select('habitacion_id')
+                            ->where('fecha', '<=', $fechaSalida)
+                            ->where('fechasalida', '>=', $fechaEntrada);
+                    });
+                    $q->whereNotIn('id', function ($q3) use ($fechaEntrada, $fechaSalida) {
+                        $q3->from('movimiento')
+                            ->select('habitacion_id')
+                            ->where('fechaingreso', '<=', $fechaSalida)
+                            ->where('fechasalida', '>=', $fechaEntrada)
+                            ->where('situacion', 'Pendiente');
+                    });
+                })->get()->toArray();
 
             return response()->json($habitaciones);
         }

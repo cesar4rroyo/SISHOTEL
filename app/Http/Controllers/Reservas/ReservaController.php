@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\ValidateReserva;
 use App\Models\Habitacion;
 use App\Models\Persona;
 use App\Models\Piso;
+use App\Models\Procesos\Movimiento;
 use App\Models\Procesos\Reserva;
 use Carbon\Carbon;
 
@@ -69,6 +70,9 @@ class ReservaController extends Controller
     {
         $data = [];
         $reservas = Reserva::with('habitacion', 'persona')->get();
+        $habitacionesOcupadas = Movimiento::with('habitacion.tipohabitacion', 'pasajero.persona')
+            ->where('situacion', 'Pendiente')->get();
+        // dd($habitacionesOcupadas->toArray());
         foreach ($reservas as $reserva) {
             if ($reserva->situacion == 'Reservado' || $reserva->situacion == 'Actualizado') {
                 $data[] = [
@@ -87,6 +91,18 @@ class ReservaController extends Controller
 
                 ];
             }
+        }
+        foreach ($habitacionesOcupadas as $habitacion) {
+            $data[] = [
+                'start' => $habitacion->fechaingreso,
+                'end' => $habitacion->fechasalida,
+                'title' => $habitacion->habitacion->numero . '- Habitación Ocupada',
+                'color' => 'red',
+                'persona_id' => $habitacion->pasajero[0]->persona->id,
+                'situacion' => 'Ocupada',
+                'habitacion_id' => $habitacion->habitacion->id
+
+            ];
         }
 
         return response()->json($data);

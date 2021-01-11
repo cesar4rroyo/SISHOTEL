@@ -18,6 +18,12 @@
             <div class="card">
                 <div class="card-header font-weight-bold">Habitaciones</div>
                 <div class="card-body">
+                    <button type="button" data-toggle="modal" data-target=".bd-example-modal-lg"
+                        class="btn btn-outline-info mb-2 mt-1 float-right">
+                        <i class="fas fa-chart-bar"></i>
+                        Estado General
+                    </button>
+                    @include('control.modal')
                     <form method="GET" action="{{ route('habitaciones') }}" accept-charset="UTF-8" class="my-2 my-lg-0"
                         role="piso">
                         <div class="input-group">
