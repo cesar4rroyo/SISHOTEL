@@ -131,6 +131,11 @@ class PersonaController extends Controller
 
         $personas = Persona::getClientes();
 
+        if (!empty($request->reserva)) {
+            $id_reserva = $request->reserva;
+            return view('control.checkin.index', compact('roles', 'nacionalidades', 'habitacion', 'personas', 'initialDate', 'id_reserva'));
+        }
+
         return view('control.checkin.index', compact('roles', 'nacionalidades', 'habitacion', 'personas', 'initialDate'));
     }
 

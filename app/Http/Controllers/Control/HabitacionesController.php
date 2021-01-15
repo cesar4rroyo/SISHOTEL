@@ -73,33 +73,31 @@ class HabitacionesController extends Controller
 
     public function store(Request $request)
     {
+        //fecha de salida de cada habitacion es 12.00 medio dia
+
         if (!empty($request->fechaSalida)) {
+            $horaCheck_in = 14;
+            $horaCheck_out = 12;
             $fechaSalida = $request->fechaSalida;
+            $fechaSalida2 = Carbon::parse($fechaSalida)->addHours($horaCheck_out)->toDateTimeString();
             $fechaEntrada = $request->fechaEntrada;
-            /*  $habitaciones = Habitacion::with('tipohabitacion', 'piso', 'reserva', 'movimiento')->whereNotIn('id', function ($q) use ($fechaEntrada, $fechaSalida) {
-                $q->from('reserva')
-                    ->select('habitacion_id')
-                    ->where('fecha', '<=', $fechaSalida)
-                    ->where('fechasalida', '>=', $fechaEntrada);
-            })->WhereNotIn('id', function ($q2) use ($fechaEntrada, $fechaSalida) {
-                $q2->from('movimiento')
-                    ->select('habitacion_id')
-                    ->where('fechaingreso', '<=', $fechaSalida)
-                    ->where('fechasalida', '>=', $fechaEntrada);
-            })->get()->toArray(); */
+            $fechaEntrada2 = Carbon::parse($fechaEntrada)->addHours($horaCheck_in)->toDateTimeString();
+
+
             $habitaciones = Habitacion::with('tipohabitacion', 'piso', 'reserva', 'movimiento')
-                ->where(function ($q) use ($fechaEntrada, $fechaSalida) {
-                    $q->whereNotIn('id', function ($q2) use ($fechaEntrada, $fechaSalida) {
+                ->where(function ($q) use ($fechaEntrada2, $fechaSalida2) {
+                    $q->whereNotIn('id', function ($q2) use ($fechaEntrada2, $fechaSalida2) {
                         $q2->from('reserva')
                             ->select('habitacion_id')
-                            ->where('fecha', '<=', $fechaSalida)
-                            ->where('fechasalida', '>=', $fechaEntrada);
+                            ->where('fecha', '<=', $fechaSalida2)
+                            ->where('fechasalida', '>=', $fechaEntrada2)
+                            ->where('situacion', 'Reservado');
                     });
-                    $q->whereNotIn('id', function ($q3) use ($fechaEntrada, $fechaSalida) {
+                    $q->whereNotIn('id', function ($q3) use ($fechaEntrada2, $fechaSalida2) {
                         $q3->from('movimiento')
                             ->select('habitacion_id')
-                            ->where('fechaingreso', '<=', $fechaSalida)
-                            ->where('fechasalida', '>=', $fechaEntrada)
+                            ->where('fechaingreso', '<=', $fechaSalida2)
+                            ->where('fechasalida', '>=', $fechaEntrada2)
                             ->where('situacion', 'Pendiente');
                     });
                 })->get()->toArray();

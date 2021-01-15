@@ -189,7 +189,7 @@
             }).then(res=>res.json())
               .then(function(data){
                 if(data.respuesta=='ok'){
-                    /* var idComprobante =data.id_comprobante
+                    var idComprobante =data.id_comprobante
                     if(data.tipoDoc != "ticket"){
                         if(data.tipoDoc=="boleta"){
                         var funcion ='enviarBoleta'
@@ -201,6 +201,7 @@
                             url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
                             data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
                             success: function(r){
+                                window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                                 window.location.href = "{{route('caja')}}";
                                 console.log(r);
                             },
@@ -209,14 +210,14 @@
                             }
                         });  
                     }else{
+                        window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                         window.location.href = "{{route('caja')}}";
-                    }   */
-                    window.location.href = "{{route('caja')}}";
+                    }    
                 }else{
                     Hotel.notificaciones(data.mensaje, 'Hotel', 'error');
                     $('#loading').hide();
                 }                           
-            })
+            })            
             .catch(function (e){
                 console.log(e);
             });
@@ -227,18 +228,6 @@
         
     }
 
-        /* $(".updateCart").click(function (e) {
-           e.preventDefault();
-           var ele = $(this);
-            $.ajax({
-               url: "{{ url('admin/ventas/productos/updateCart') }}",
-               method: "PATCH",
-               data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id"), cantidad: ele.parents("tr").find(".quantity").val()},
-               success: function (respuesta) {
-                    Hotel.notificaciones(respuesta.respuesta, 'Hotel', 'success');
-                    location.reload();
-            }
-        }); */
     $('.txtCantidad').on('change', function(e){
         
            e.preventDefault();
@@ -252,7 +241,7 @@
                     location.reload();
             }
        
-    });
+            });
     }); 
     $(document.body).on('change',"#tipodocumento",function (e) {
            var optVal= $("#tipodocumento option:selected").val();

@@ -224,10 +224,11 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group">
-                                                <label for="comentario" class="control-label">{{ 'Comentario' }}</label>
+                                                <label for="comentario_caja"
+                                                    class="control-label">{{ 'Comentario' }}</label>
                                             </div>
-                                            <textarea class="form-control" name="comentario" id="comentario" cols="3"
-                                                rows="3"></textarea>
+                                            <textarea class="form-control" name="comentario_caja" id="comentario_caja"
+                                                cols="3" rows="3"></textarea>
                                         </div>
                                     </div>
                                     <p id="loading" class="text-center text-info font-weight-bold mt-4">Espere...</p>
@@ -265,7 +266,7 @@
               .then(function(data){
                 if(data.respuesta=='ok'){
                     var idComprobante =data.id_comprobante
-                    /* if(data.tipoDoc != "ticket"){
+                    if(data.tipoDoc != "ticket"){
                         if(data.tipoDoc=="boleta"){
                         var funcion ='enviarBoleta'
                         }else if(data.tipoDoc=="factura"){
@@ -276,6 +277,7 @@
                             url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
                             data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
                             success: function(r){
+                                window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                                 window.location.href = "{{route('caja')}}";
                                 console.log(r);
                             },
@@ -284,10 +286,9 @@
                             }
                         });  
                     }else{
+                        window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                         window.location.href = "{{route('caja')}}";
-                    }   */
-                    window.location.href = "{{route('caja')}}";
-
+                    }                  
                 }else{
                     Hotel.notificaciones(data.mensaje, 'Hotel', 'error');
                     $('#loading').hide();

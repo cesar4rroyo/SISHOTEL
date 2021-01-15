@@ -26,13 +26,15 @@
                                     {{ csrf_field() }}
                                     @include ('control.checkin.form', ['formMode' => 'create'])
                                     <input type="text" name="habitacion" hidden value="{{$habitacion['id']}}">
+                                    <input type="text" name="reserva" hidden
+                                        value="{{isset($id_reserva) ? $id_reserva : null}}">
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="container">
-                    <form method="POST" action="{{route('store_movimiento', isset($reserva) ? $reserva : 'no')}}">
+                    <form method="POST" action="{{route('store_movimiento', isset($id_reserva) ? $id_reserva : null)}}">
                         @csrf
                         <div class="row">
                             <div class="col-sm form-group">
@@ -51,11 +53,11 @@
                                 <input class="form-control" id="fechasalida" name="fechasalida" required
                                     type="datetime-local">
                             </div>
-                            @isset($reserva)
+                            @isset($id_reserva)
                             <div class="col-sm form-group">
                                 <label class="control-label" for="reserva">{{'Reserva Nro.'}}</label>
-                                <input readonly class="form-control" value="{{$reserva}}" type="number" name="reserva"
-                                    id="reserva">
+                                <input readonly class="form-control" value="{{$id_reserva}}" type="number"
+                                    name="reserva" id="reserva">
                             </div>
                             @endisset
                         </div>
@@ -120,10 +122,10 @@
                 <label class="control-label" for="tipo">{{'Tipo de Tarjeta'}}</label>
                 <select class="form-control" name="tipo" id="tipo">
                     <option value="">Seleccione Uno</option>
-                    <option value="amex">{{'American Express'}}</option>
-                    <option value="visa">{{'Visa'}}</option>
-                    <option value="mastercard">{{'Master Card'}}</option>
-                    <option value="diners">{{'Diners'}}</option>
+                    <option value="Amex">{{'American Express'}}</option>
+                    <option value="Visa">{{'Visa'}}</option>
+                    <option value="Mastercard">{{'Master Card'}}</option>
+                    <option value="Diners">{{'Diners'}}</option>
                 </select>
             </div>
             <div class="row">

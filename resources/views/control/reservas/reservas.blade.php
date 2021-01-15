@@ -31,9 +31,9 @@
                         <tbody>
                             @foreach($reservas as $item)
                             <tr>
-                                <td>{{ $item->fecha }}</td>
+                                <td>{{ \Carbon\Carbon::parse($item->fecha)->formatLocalized('%d %B %Y %H:%M:00') }}</td>
                                 <td>
-                                    {{isset($item->fechasalida) ?$item->fechasalida : ''}}
+                                    {{isset($item->fechasalida) ?\Carbon\Carbon::parse($item->fechasalida)->formatLocalized('%d %B %Y %H:%M:00') : ''}}
 
                                 </td>
                                 <td>
@@ -49,7 +49,7 @@
                                     {{ isset($item->observacion) ? $item->observacion : '-'}}
                                 </td>
                                 <td>
-                                    <a href="{{ route('edit_movimiento_reserva' , ['id_habitacion'=>$item->habitacion->id, 'id_reserva'=>$item->id] ) }}"
+                                    <a href="{{ route('edit_movimiento' , ['id'=>$item->habitacion->id, 'id_reserva'=>$item->id] ) }}"
                                         title="Editar reserva"><button class="btn btn-outline-success btn-sm"><i
                                                 class="fas fa-edit" aria-hidden="true"></i>
                                             Check-In

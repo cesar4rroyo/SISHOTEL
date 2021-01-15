@@ -190,7 +190,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     Route::get('movimiento', 'MovimientoController@index')->name('movimiento');
     Route::get('movimiento/show', 'MovimientoController@show')->name('show_movimiento');
     Route::post('movimiento/{id_reserva?}', 'MovimientoController@store')->name('store_movimiento');
-    Route::get('movimiento/{id}/edit', 'MovimientoController@edit')->name('edit_movimiento');
+    Route::get('movimiento/{id}/edit/{id_reserva?}', 'MovimientoController@edit')->name('edit_movimiento');
+    //con reserva
     Route::get('movimiento/reserva/{id_habitacion}/{id_reserva}', 'MovimientoController@editConReserva')->name('edit_movimiento_reserva');
     Route::put('movimiento/{id}', 'MovimientoController@update')->name('update_movimiento');
     Route::delete('movimiento/{id}/destroy', 'MovimientoController@destroy')->name('destroy_movimiento');

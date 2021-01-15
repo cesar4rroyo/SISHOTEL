@@ -184,7 +184,7 @@
               .then(function(data){
                 if(data.respuesta=='ok'){
                     var idComprobante =data.id_comprobante;
-                    /* if(data.tipoDoc != "ticket"){
+                    if(data.tipoDoc != "ticket"){
                         if(data.tipoDoc=="boleta"){
                         var funcion ='enviarBoleta'
                         }else if(data.tipoDoc=="factura"){
@@ -195,6 +195,7 @@
                             url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
                             data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
                             success: function(r){
+                                window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                                 window.location.href = "{{route('caja')}}";
                                 console.log(r);
                             },
@@ -203,10 +204,9 @@
                             }
                         });  
                     }else{
+                        window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                         window.location.href = "{{route('caja')}}";
-                    } */
-                    window.location.href = "{{route('caja')}}";
-                     
+                    }                                
                 }else{
                     Hotel.notificaciones(data.mensaje, 'Hotel', 'error');
                 }                           

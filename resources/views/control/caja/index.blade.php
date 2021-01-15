@@ -62,7 +62,8 @@
                                 @foreach($cajas as $item)
                                 @if (($item->tipo)!='Configuración Inicial Caja')
                                 <tr>
-                                    <td>{{ $item->fecha }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($item->fecha)->formatLocalized('%d %B %Y %H:%M:00') }}
+                                    </td>
                                     @if ( ($item->tipo)=='Ingreso' )
                                     <td>
                                         <span class="badge badge-success">

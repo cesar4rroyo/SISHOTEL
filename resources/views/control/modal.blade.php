@@ -20,6 +20,7 @@
                                         <th scope="col">Tipo</th>
                                         <th scope="col">Húespedes</th>
                                         <th scope="col">Capacidad</th>
+                                        <th scope="col">Fecha Salida</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -31,6 +32,8 @@
                                         <td>{{$item['habitacion']['tipohabitacion']['nombre']}}</td>
                                         <td>{{count($item['pasajero'])}}</td>
                                         <td>{{$item['habitacion']['tipohabitacion']['capacidad']}}</td>
+                                        <td>{{\Carbon\Carbon::parse($item['fechasalida'])->formatLocalized('%d %B %Y %H:%M:00')}}
+                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>

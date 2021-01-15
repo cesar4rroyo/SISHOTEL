@@ -239,7 +239,8 @@
             </div>
             <div class="form-group">
                 <label for="comentario" class="control-label">{{'Comentario'}}</label>
-                <textarea class="form-control" name="comentario" id="comentario" cols="5" rows="5"></textarea>
+                <textarea class="form-control" name="comentario" id="comentario" rows="5">
+                </textarea>
             </div>
             <div class="container text-center">
                 <button type="button" id="btnCheckOut" class="btn btn-outline-success col-sm-6">
@@ -279,8 +280,8 @@
                     .then(res=>res.json())
                     .then(function(data){
                         if(data.respuesta=='ok'){
-                            window.location.href = "{{route('caja')}}";
-                            /* var idComprobante =data.id_comprobante
+                            // window.location.href = "{{route('caja')}}";
+                            var idComprobante =data.id_comprobante
                             var tipoDoc = data.tipoDoc 
                             if(tipoDoc !="ticket"){
                                 if(tipoDoc=="boleta"){
@@ -293,6 +294,7 @@
                                     url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
                                     data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
                                     success: function(r){
+                                        window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                                         window.location.href = "{{route('caja')}}";
                                         console.log(r);
                                     },
@@ -301,8 +303,9 @@
                                     }
                                 });  
                             }else{
+                                window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                                 window.location.href = "{{route('caja')}}";
-                            }  */  
+                            }  
                         }else{
                             swal({
                                 title:'Ha ocurrido un error',

@@ -108,7 +108,7 @@
             <tr>
                 <th> DNI / Nro. Pasaporte </th>
                 <td class="input">
-                    {{ isset($persona['persona']['dni']) ? $persona['persona']['dni'] : $persona['persona']['pasaporte'] }}
+                    {{ isset($persona['persona']['dni']) ? $persona['persona']['dni'] : '-' }}
                 </td>
                 <th> Fecha de nacimiento </th>
                 <td class="input"> {{ $persona['persona']['fechanacimiento'] }} </td>

@@ -47,11 +47,11 @@ class ComprobanteController extends Controller
             $comprobantes =
                 Comprobante::with('movimiento', 'persona', 'detallecomprobante.producto', 'detallecomprobante.servicios')
                 ->where('tipodocumento', $tipo)
-                ->orderBy('fecha')->paginate(10);
+                ->orderBy('created_at', 'desc')->paginate(10);
         } else {
             $comprobantes =
                 Comprobante::with('movimiento', 'persona', 'detallecomprobante.producto', 'detallecomprobante.servicios')
-                ->orderBy('fecha')->paginate(10);
+                ->orderBy('created_at', 'desc')->paginate(10);
         }
         return view('control.comprobante.index', compact('comprobantes'));
     }

@@ -229,6 +229,10 @@
         width: 70%;
         margin: auto;
     }
+
+    .fc-event-time {
+        display: none;
+    }
 </style>
 
 <body>

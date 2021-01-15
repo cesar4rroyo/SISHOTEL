@@ -271,7 +271,7 @@
                 if(data.respuesta=='ok'){
                     var idComprobante =data.id_comprobante
                     if(data.tipoDoc != "ticket"){
-                        /* if(data.tipoDoc=="boleta"){
+                        if(data.tipoDoc=="boleta"){
                         var funcion ='enviarBoleta'
                         }else if(data.tipoDoc=="factura"){
                             var funcion ='enviarFactura'
@@ -281,15 +281,16 @@
                             url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
                             data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
                             success: function(r){
+                                window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                                 window.location.href = "{{route('caja')}}";
                                 console.log(r);
                             },
                             error: function(e){
                                 console.log(e.message);
                             }
-                        });   */
-                        window.location.href = "{{route('caja')}}";
+                        });
                     }else{
+                        window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                         window.location.href = "{{route('caja')}}";
                     }   
                 }else{

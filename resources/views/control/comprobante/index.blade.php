@@ -34,13 +34,15 @@
                                     <th>Total</th>
                                     <th>Persona</th>
                                     <th>Comentario</th>
+                                    {{-- <th>Usuario</th> --}}
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($comprobantes as $item)
                                 <tr>
-                                    <td>{{ $item->fecha }}</td>
+                                    <td>{{  \Carbon\Carbon::parse($item->created_at)->formatLocalized('%d %B %Y %H:%M:00') }}
+                                    </td>
                                     <td class="text-capitalize">{{ $item->tipodocumento }}</td>
                                     <td>
                                         {{ $item->numero }}
@@ -52,6 +54,9 @@
                                         {{ isset($item->persona) ? $item->persona->nombres : 'Varios'}}
                                     </td>
                                     <td>{{ isset($item->comentario) ? $item->comentario : '-'  }}</td>
+                                    {{-- <td>
+                                        {{$item->usuario->login}}
+                                    </td> --}}
                                     <td>
                                         <div class="btn-group">
                                             <a href="{{route('show_comprobante', $item->id)}}">

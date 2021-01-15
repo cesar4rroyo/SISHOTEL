@@ -82,7 +82,7 @@ class MovimientoController extends Controller
         return view('control.checkin.index');
     }
 
-    public function store(Request $request, $id_reserva)
+    public function store(Request $request, $id_reserva = null)
     {
         // dd($request->all());
         $personas = $request->persona;
@@ -103,7 +103,7 @@ class MovimientoController extends Controller
             $id_tarjeta = Tarjeta::latest('id')->first()->toArray()['id'];
         }
 
-        if ($id_reserva != 'no') {
+        if (!is_null($id_reserva)) {
             $reserva = Reserva::findOrFail($id_reserva);
             $reserva->update([
                 'situacion' => 'Usada',
@@ -122,6 +122,7 @@ class MovimientoController extends Controller
             'habitacion_id' => $request->habitacion,
             'situacion' => 'Pendiente',
             'tarjeta_id' => isset($id_tarjeta) ? $id_tarjeta : null,
+            'reserva_id' => isset($id_reserva) ? $id_reserva : null,
         ]);
         $habitacion = $request->habitacion;
         $movimiento = Movimiento::latest('id')->first()->toArray()['id'];
@@ -135,8 +136,11 @@ class MovimientoController extends Controller
         return response()->json($movimiento);
     }
 
-    public function edit($id)
+    public function edit($id, $id_reserva = null)
     {
+
+        //$id ====> es el id de la habitacion,
+        //$id_reserva ====> es el id de la reserva (es opcional)
         $conceptos = Concepto::with('caja')
             ->whereNotIn('id', array(1, 2))
             ->orderBy('nombre')
@@ -148,7 +152,7 @@ class MovimientoController extends Controller
             $roles = Rol::orderBy('id')->pluck('nombre', 'id')->toArray();
             $nacionalidades = Nacionalidad::with('persona')->get();
             $personas = Persona::getClientes();
-            return view('control.checkin.index', compact('roles', 'nacionalidades', 'habitacion', 'personas', 'initialDate'));
+            return view('control.checkin.index', compact('roles', 'nacionalidades', 'habitacion', 'personas', 'initialDate', 'id_reserva'));
         } else if ($habitacion['situacion'] == 'Ocupada') {
             $initialDate = Carbon::now()->format('Y-m-d\TH:i');
             $movimiento =

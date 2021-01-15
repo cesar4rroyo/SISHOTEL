@@ -288,6 +288,7 @@ class CajaController extends Controller
 
     public function createCheckout(Request $request, $id)
     {
+
         $persona = $request->persona;
         $tipoDoc = $request->tipodocumento;
         $verificarApertura =
@@ -323,6 +324,7 @@ class CajaController extends Controller
                 'total' => $request->total,
                 'situacion' => 'Pago Realizado',
                 'descuento' => $request->descuento,
+                // 'comentario' => $request->comentario,
             ]);
             //guardar un nuevo registro para caja 
             $cajaStore = Caja::create([
@@ -517,7 +519,7 @@ class CajaController extends Controller
                 'persona_id' => $persona,
                 'usuario_id' => session()->all()['usuario_id'],
                 'concepto_id' => 3,
-                'comentario' => $request->comentario,
+                'comentario' => $request->comentario_caja,
             ]);
             //obtener id del ultimo registro de caja es decir del registro anterior 
             // y con eso pasar a la tabla DeatalleCaja cada producto seleccionado
@@ -531,7 +533,7 @@ class CajaController extends Controller
                     'cantidad' => $item['cantidad'],
                     'preciocompra' => $item['precio'],
                     'precioventa' => ($item['cantidad'] * $item['precio']),
-                    'comentario' => $request->comentario,
+                    'comentario' => $request->comentario_caja,
                     'servicio_id' => $key,
                     'caja_id' => $id_caja,
                 ]);
@@ -544,7 +546,7 @@ class CajaController extends Controller
                 'subtotal' => $subtotal,
                 'total' => $total,
                 'igv' => $igv,
-                'comentario' => $request->comentario,
+                'comentario' => $request->comentario_caja,
                 'persona_id' => $persona,
 
             ]);
@@ -555,7 +557,7 @@ class CajaController extends Controller
                     'cantidad' => $item['cantidad'],
                     'preciocompra' => $item['precio'],
                     'precioventa' => ($item['cantidad'] * $item['precio']),
-                    'comentario' => $request->comentario,
+                    'comentario' => $request->comentario_caja,
                     'producto_id' => $key,
                     'comprobante_id' => $id_ComprobanteAnterior,
                 ]);

@@ -114,7 +114,7 @@
                                             </a>
                                             @break
                                             @default
-                                            <a href="{{route('edit_movimiento', $item['id'])}}"
+                                            <a href="{{route('edit_movimiento', ['id'=>$item['id']])}}"
                                                 class="btn btn-app bg-success disabled text-decoration-none">
                                                 <i class="fas fa-check-circle"></i>
                                                 Check-In

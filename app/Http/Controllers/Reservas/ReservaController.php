@@ -11,6 +11,7 @@ use App\Models\Piso;
 use App\Models\Procesos\Movimiento;
 use App\Models\Procesos\Reserva;
 use Carbon\Carbon;
+use DateTime;
 
 class ReservaController extends Controller
 {
@@ -48,11 +49,19 @@ class ReservaController extends Controller
 
     public function store(Request $request)
     {
+
+        $horaCheck_in = 14;
+        $horaCheck_out = 12;
+        $fechaentrada = Carbon::parse($request->txtFecha)->addHours($horaCheck_in)->toDateTimeString();
+        $fechaSalida = Carbon::parse($request->txtFechaSalida)->addHours($horaCheck_out)->toDateTimeString();
+
+
+
         $habitaciones = $request->habitacion;
         foreach ($habitaciones as $key => $item) {
             $reserva = Reserva::create([
-                'fecha' => $request->txtFecha,
-                'fechasalida' => $request->txtFechaSalida,
+                'fecha' => $fechaentrada,
+                'fechasalida' => $fechaSalida,
                 'observacion' => $request->observacion,
                 'persona_id' => $request->persona,
                 'habitacion_id' => $item,
@@ -75,6 +84,7 @@ class ReservaController extends Controller
         // dd($habitacionesOcupadas->toArray());
         foreach ($reservas as $reserva) {
             if ($reserva->situacion == 'Reservado' || $reserva->situacion == 'Actualizado') {
+                // $date = Carbon::createFromFormat('Y-m-d', $reserva->fechasalida)->addDay()->toDateString();
                 $data[] = [
                     'id' => $reserva->id,
                     'start' => $reserva->fecha,
@@ -130,10 +140,7 @@ class ReservaController extends Controller
     public function destroy($id)
     {
         $reserva = Reserva::findOrFail($id);
-        $reserva->update([
-            'situacion' => 'Cancelado',
-        ]);
-
+        $reserva->destroy($id);
         return response()->json(['mensaje' => 'ok']);
     }
 }
