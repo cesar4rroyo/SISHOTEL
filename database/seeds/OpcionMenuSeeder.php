@@ -206,5 +206,69 @@ class OpcionMenuSeeder extends Seeder
             'orden' => 1,
             'grupomenu_id' => 8
         ]);
+        //reportes
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Reportes Caja',
+            'link' => 'admin/reportes/caja',
+            'icono' => 'fas fa-chart-line',
+            'orden' => 1,
+            'grupomenu_id' => 9
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Reportes Ventas en Caja',
+            'link' => 'admin/reportes/ventas',
+            'icono' => 'fas fa-chart-line',
+            'orden' => 2,
+            'grupomenu_id' => 9
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Reportes Ventas en Habitacion',
+            'link' => 'admin/reportes/ventas/habitacion',
+            'icono' => 'fas fa-chart-line',
+            'orden' => 3,
+            'grupomenu_id' => 9
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Reportes de Check Ins',
+            'link' => 'admin/reportes/checkin',
+            'icono' => 'fas fa-chart-line',
+            'orden' => 4,
+            'grupomenu_id' => 9
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Reportes de Check Outs',
+            'link' => 'admin/reportes/checkout',
+            'icono' => 'fas fa-chart-line',
+            'orden' => 5,
+            'grupomenu_id' => 9
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Reportes de Huespedes',
+            'link' => 'admin/reportes/huespedes',
+            'icono' => 'fas fa-chart-line',
+            'orden' => 6,
+            'grupomenu_id' => 9
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Reportes de Reservas',
+            'link' => 'admin/reportes/reservas',
+            'icono' => 'fas fa-chart-line',
+            'orden' => 7,
+            'grupomenu_id' => 9
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Reportes de Productos',
+            'link' => 'admin/reportes/productos',
+            'icono' => 'fas fa-chart-line',
+            'orden' => 8,
+            'grupomenu_id' => 9
+        ]);
+        DB::table('opcionmenu')->insert([
+            'nombre' => 'Reportes de Servicios',
+            'link' => 'admin/reportes/servicios',
+            'icono' => 'fas fa-chart-line',
+            'orden' => 9,
+            'grupomenu_id' => 9
+        ]);
     }
 }

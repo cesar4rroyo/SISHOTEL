@@ -10,6 +10,10 @@
                     <a href="{{ route('caja') }}" title="Regresar"><button class="btn btn-primary btn-sm mb-2"><i
                                 class="fas fa-arrow-left" aria-hidden="true"></i>
                             Regresar</button></a>
+                    <a href="{{route('caja_pdf')}}">
+                        <button class="btn btn-warning btn-sm mb-2"><i class="fas fa-print" aria-hidden="true"></i>
+                            Imprimir</button>
+                    </a>
                 </div>
                 <div class="container mt-2">
                     <form method="POST" action="{{ route('store_caja') }}" accept-charset="UTF-8"

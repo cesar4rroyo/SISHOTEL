@@ -54,8 +54,9 @@ class PersonaController extends Controller
     }
 
 
-    public function store(ValidatePersona $request)
+    public function store(Request $request)
     {
+
         $persona = Persona::create([
             'nombres' => $request->nombres,
             'apellidos' => $request->apellidos,
@@ -98,6 +99,9 @@ class PersonaController extends Controller
             'telefono' => $request->telefono,
             'observacion' => $request->observacion,
             'nacionalidad_id' => $request->nacionalidad_id,
+            'edad' => $request->edad,
+            'email' => $request->email,
+            'ciudad' => $request->ciudad,
 
         ]);
         $persona->roles()->sync($request->rol_id);
@@ -125,6 +129,9 @@ class PersonaController extends Controller
             'telefono' => $request->telefono,
             'observacion' => $request->observacion,
             'nacionalidad_id' => $request->nacionalidad_id,
+            'edad' => $request->edad,
+            'email' => $request->email,
+            'ciudad' => $request->ciudad,
 
         ]);
         $persona->roles()->sync($request->rol_id);
@@ -156,7 +163,7 @@ class PersonaController extends Controller
     }
 
 
-    public function update(ValidatePersona $request, $id)
+    public function update(Request $request, $id)
     {
         $persona = Persona::findOrFail($id);
         $persona->update([

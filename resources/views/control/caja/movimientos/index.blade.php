@@ -54,18 +54,6 @@
                     </div>
                 </div>
                 <br>
-                {{-- <form method="GET" action="{{ route('caja_lista') }}" accept-charset="UTF-8" class="my-2 my-lg-0"
-                role="search">
-                <div class="input-group">
-                    <input placeholder="Buscar..." class="form-control" name="search" value="{{ request('search') }}" />
-                    <span class="input-group-append">
-                        <button class="btn btn-secondary" type="submit">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </span>
-                </div>
-                </form>
-                <br> --}}
                 <div class="container mt-2">
                     <div class="table-responsive">
                         <table class="table text-center table-hover" id="tabla-data">
@@ -85,6 +73,7 @@
                             </thead>
                             <tbody>
                                 @foreach($cajas as $item)
+                                @if($item->id != 1)
                                 <tr>
                                     <td>{{ $item->fecha }}</td>
                                     @if ( ($item->tipo)=='Ingreso' )
@@ -137,6 +126,7 @@
                                     <td>{{ $item->usuario->login }}</td>
                                     <td>{{ $item->numero }}</td>
                                 </tr>
+                                @endif
                                 @endforeach
                             </tbody>
                         </table>

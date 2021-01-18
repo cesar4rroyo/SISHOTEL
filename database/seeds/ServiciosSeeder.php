@@ -17,7 +17,15 @@ class ServiciosSeeder extends Seeder
         DB::table('servicios')->insert([
             'nombre' => 'Servicio de Hotel',
         ]);
-
+        DB::table('servicios')->insert([
+            'nombre' => 'Early Check In',
+        ]);
+        DB::table('servicios')->insert([
+            'nombre' => 'Early Check Out',
+        ]);
+        DB::table('servicios')->insert([
+            'nombre' => 'Day Use',
+        ]);
         DB::table('servicios')->insert([
             'nombre' => 'Desayuno Incluido',
             'precio' => 1,

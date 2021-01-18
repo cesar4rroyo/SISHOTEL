@@ -63,11 +63,25 @@
             value="{{ isset($persona->fechanacimiento) ? $persona->fechanacimiento : ''}}">
         {!! $errors->first('fechanacimiento', '<p class="text-danger">:message</p>') !!}
     </div>
+    <div class="form-group col-sm {{ $errors->has('edad') ? 'has-error' : ''}}">
+        <label for="edad" class="control-label">{{ 'Edad' }}</label>
+        <input class="form-control" name="edad" type="number" id="edad"
+            value="{{ isset($persona->edad) ? $persona->edad : ''}}">
+        {!! $errors->first('edad', '<p class="text-danger">:message</p>') !!}
+    </div>
+</div>
+<div class="row">
     <div class="form-group col-sm {{ $errors->has('telefono') ? 'has-error' : ''}}">
         <label for="telefono" class="control-label">{{ 'Teléfono' }}</label>
         <input class="form-control" name="telefono" type="text" id="telefono"
             value="{{ isset($persona->telefono) ? $persona->telefono : ''}}">
         {!! $errors->first('telefono', '<p class="text-danger">:message</p>') !!}
+    </div>
+    <div class="form-group col-sm {{ $errors->has('email') ? 'has-error' : ''}}">
+        <label for="email" class="control-label">{{ 'Email' }}</label>
+        <input class="form-control" name="email" type="text" id="email"
+            value="{{ isset($persona->email) ? $persona->email : ''}}">
+        {!! $errors->first('email', '<p class="text-danger">:message</p>') !!}
     </div>
 </div>
 <div class="row">
@@ -85,12 +99,18 @@
         </select>
         {!! $errors->first('nacionalidad_id', '<p class="text-danger">:message</p>') !!}
     </div>
-    <div class="form-group col-sm {{ $errors->has('direccion') ? 'has-error' : ''}}">
-        <label for="direccion" class="control-label">{{ 'Dirección' }}</label>
-        <input class="form-control" name="direccion" type="text" id="direccion"
-            value="{{ isset($persona->direccion) ? $persona->direccion : ''}}">
-        {!! $errors->first('direccion', '<p class="text-danger">:message</p>') !!}
+    <div class="form-group col-sm {{ $errors->has('ciudad') ? 'has-error' : ''}}">
+        <label for="ciudad" class="control-label">{{ 'Ciudad' }}</label>
+        <input class="form-control" name="ciudad" type="text" id="ciudad"
+            value="{{ isset($persona->ciudad) ? $persona->ciudad : ''}}">
+        {!! $errors->first('ciudad', '<p class="text-danger">:message</p>') !!}
     </div>
+</div>
+<div class="form-group {{ $errors->has('direccion') ? 'has-error' : ''}}">
+    <label for="direccion" class="control-label">{{ 'Dirección' }}</label>
+    <input class="form-control" name="direccion" type="text" id="direccion"
+        value="{{ isset($persona->direccion) ? $persona->direccion : ''}}">
+    {!! $errors->first('direccion', '<p class="text-danger">:message</p>') !!}
 </div>
 <div class="form-group {{ $errors->has('observacion') ? 'has-error' : ''}}">
     <label for="observacion" class="control-label">{{ 'Observacion' }}</label>

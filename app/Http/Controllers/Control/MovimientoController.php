@@ -179,11 +179,11 @@ class MovimientoController extends Controller
                 $numero = $comprobante['id'] + 1;
                 $numero = $this->zero_fill($numero, 8);
                 $yearActual = Carbon::now()->year;
-                $numero = 'B001-' . $numero;
+                $numero = 'B030-' . $numero;
             } else {
                 $numero = $this->zero_fill(1, 8);
                 $yearActual = Carbon::now()->year;
-                $numero = 'B001-' . $numero;
+                $numero = 'B030-' . $numero;
             }
 
             return

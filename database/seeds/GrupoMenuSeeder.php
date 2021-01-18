@@ -54,5 +54,10 @@ class GrupoMenuSeeder extends Seeder
             'icono' => 'fas fa-list-ol',
             'orden' => 8,
         ]);
+        DB::table('grupomenu')->insert([
+            'nombre' => 'Reportes',
+            'icono' => 'fas fa-chart-bar',
+            'orden' => 9,
+        ]);
     }
 }

@@ -24,7 +24,10 @@ class Movimiento extends Model
         'usuario_id',
         'tarjeta_id',
         'comentario',
-        'descuento'
+        'descuento',
+        'late_checkout',
+        'early_checkin',
+        'day_use'
     ];
     public function reserva()
     {

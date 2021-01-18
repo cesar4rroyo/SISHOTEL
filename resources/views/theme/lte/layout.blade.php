@@ -14,8 +14,51 @@
     <link rel="stylesheet" href="{{asset("assets/$theme/dist/css/adminlte.min.css")}}">
     <link rel="stylesheet" href="{{asset("assets/$theme/plugins/overlayScrollbars/css/OverlayScrollbars.min.css")}}">
     <link rel="stylesheet" href="{{asset("select2/css/select2.min.css")}}">
-
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
 </head>
+<style>
+    .buttons-excel {
+        color: #fff;
+        background-color: #28a745;
+        border-color: #28a745;
+        box-shadow: none;
+        display: inline-block;
+        font-weight: 400;
+        border: 1px solid transparent;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: .25rem;
+    }
+
+    .buttons-pdf {
+        color: #fff;
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+        box-shadow: none;
+        display: inline-block;
+        font-weight: 400;
+        border: 1px solid transparent;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: .25rem;
+    }
+
+    .buttons-print {
+        color: #fff;
+        background-color: #dc3545;
+        border-color: #dc3545;
+        box-shadow: none;
+        display: inline-block;
+        font-weight: 400;
+        border: 1px solid transparent;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: .25rem;
+    }
+</style>
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -49,6 +92,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
         integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
         crossorigin="anonymous" />
+    @yield('scripts')
+
+
 
 </body>
 

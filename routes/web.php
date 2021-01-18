@@ -267,3 +267,29 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     Route::post('caja/{id}/addDetalle/producto', 'CajaController@addFromDetallePdto')->name('add_detail_producto');
     Route::post('caja/{id}/addDetalle/servicio', 'CajaController@addFromDetalleService')->name('add_detail_servicio');
 });
+
+Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['auth']], function () {
+    Route::get('reportes/huespedes', 'ReportesController@indexHuespedes')->name('reportes_huespedes');
+    Route::post('reportes/huespedes/pdf/{formato?}', 'ReportesController@pdfHuespedes')->name('reportes_huespedes_pdf');
+    Route::get('reportes/checkout', 'ReportesController@indexCheckout')->name('reportes_checkout');
+    Route::post('reportes/checkout/pdf/{formato?}', 'ReportesController@pdfCheckout')->name('reportes_checkout_pdf');
+    Route::get('reportes/checkin', 'ReportesController@indexCheckin')->name('reportes_checkin');
+    Route::post('reportes/checkin/pdf/{formato?}', 'ReportesController@pdfCheckin')->name('reportes_checkin_pdf');
+    Route::get('reportes/reservas', 'ReportesController@indexReservas')->name('reportes_reservas');
+    Route::post('reportes/reservas/pdf/{formato?}', 'ReportesController@pdfReservas')->name('reportes_reservas_pdf');
+    Route::get('reportes/productos', 'ReportesController@indexProductos')->name('reportes_productos');
+    Route::get('reportes/servicios', 'ReportesController@indexServicios')->name('reportes_servicios');
+    Route::post('reportes/productos/pdf/{formato?}', 'ReportesController@pdfProductos')->name('reportes_productos_pdf');
+    Route::get('reportes/ventas', 'ReportesController@indexVentas')->name('reportes_ventas');
+    Route::get('reportes/ventas/habitacion', 'ReportesController@indexVentasHabitacion')->name('reportes_ventas_habitacion');
+    Route::post('reportes/ventas/pdf/{formato?}', 'ReportesController@pdfVentas')->name('reportes_ventas_pdf');
+    Route::get('reportes/caja', 'ReportesController@indexCaja')->name('reportes_caja');
+    Route::post('reportes/caja/pdf/{formato?}', 'ReportesController@pdfCaja')->name('reportes_caja_pdf');
+    Route::get('data/movimientos', 'ReportesController@movimientos')->name('data_movimientos');
+    Route::get('data/reservas', 'ReportesController@reservas')->name('data_reservas');
+    Route::get('data/caja', 'ReportesController@caja')->name('data_caja');
+    Route::get('data/productos', 'ReportesController@productos')->name('data_productos');
+    Route::get('data/servicios', 'ReportesController@servicios')->name('data_servicios');
+    Route::get('data/detallecaja', 'ReportesController@detallecaja')->name('data_detallecaja');
+    Route::get('data/detallemovimiento', 'ReportesController@detallemovimiento')->name('data_detallemovimiento');
+});

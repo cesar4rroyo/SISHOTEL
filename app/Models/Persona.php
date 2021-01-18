@@ -24,7 +24,10 @@ class Persona extends Model
         'fechanacimiento',
         'telefono',
         'observacion',
-        'nacionalidad_id'
+        'nacionalidad_id',
+        'edad',
+        'ciudad',
+        'email'
     ];
     //funciones para el mantenimiento
 

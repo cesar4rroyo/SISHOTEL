@@ -102,162 +102,173 @@
                                 <input class="form-control" readonly value="{{$habitacion['tipohabitacion']['precio']}}"
                                     type="number" name="preciohabitacion" id="preciohabitacion">
                             </div>
-                            {{-- <div class="col-sm form-group">
-                                <label class="control-label" for="descuento">{{'Descuento'}}</label>
-                            <input class="form-control" type="number"
-                                value="{{is_null($movimiento['descuento']?$movimiento['descuento']:0)}}"
-                                name="descuento" id="descuento">
-                        </div> --}}
-                        <div class="col-sm form-group">
-                            <label class="control-label" for="dias">{{'Dias'}}</label>
-                            <input required type="number" class="form-control" step="0.01" name="dias" id="dias">
-                            <p id="errMessage" class="text-center text-danger">Este campo es obligatorio</p>
+                            <div class="col-sm form-group">
+                                <label class="control-label" for="dias">{{'Dias'}}</label>
+                                <input required type="number" class="form-control" step="0.01" name="dias" id="dias">
+                                <p id="errMessage" class="text-center text-danger">Este campo es obligatorio</p>
+                            </div>
                         </div>
-                        <div class="col-sm form-group">
-                            <label class="control-label" for="total">{{'Total'}}</label>
-                            <input class="form-control" readonly value="{{isset($total) ? $total : 0}}" type="number"
-                                name="total" id="total">
+                        <div class="row">
+                            <div class="col-sm form-group">
+                                <label class="control-label" for="early_checkin">{{'Early Check In'}}</label>
+                                <input class="form-control" step="0.01" type="number" name="early_checkin"
+                                    id="early_checkin">
+                            </div>
+                            <div class="col-sm form-group">
+                                <label class="control-label" for="late_checkout">{{'Late Check Out'}}</label>
+                                <input class="form-control" step="0.01" type="number" name="late_checkout"
+                                    id="late_checkout">
+                            </div>
+                            <div class="col-sm form-group">
+                                <label class="control-label" for="day_use">{{'Day Use'}}</label>
+                                <input class="form-control" step="0.01" type="number" name="day_use" id="day_use">
+                            </div>
                         </div>
+                        <div class="container mb-3">
+                            <button type="button" id="calcularTotal" class="btn btn-success float-right">Calcular
+                                Total</button>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm form-group" id="totalContainer">
+                                <label class="control-label" for="total">{{'Total'}}</label>
+                                <input class="form-control" readonly value="{{isset($total) ? $total : 0}}"
+                                    type="number" name="total" id="total">
+                            </div>
+                        </div>
+                        @if (count($movimiento['detallemovimiento'])!=0)
+                        <div class="container">
+                            <label for="movimientos" class=" text-uppercase font-weight-bold">Movimientos</label>
+                            <div id="movimientos" class="table-responsive">
+                                <table class="table text-center table-hover" id="tabla-data">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Precio Total</th>
+                                            <th>Cantidad</th>
+                                            <th>Comentario</th>
+                                            <th>Servicio/Producto</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $total = 0 ?>
+                                        @foreach($detalles as $item)
+                                        <?php $total += $item['precioventa'] ?>
+                                        <tr>
+                                            <td>{{$item['fecha']}}</td>
+                                            <td>
+                                                {{$item['precioventa']}}
+                                            </td>
+                                            <td>
+                                                {{$item['cantidad']}}
+                                            </td>
+                                            <td>
+                                                {{$item['comentario']}}
+                                            </td>
+                                            <td>
+                                                {{isset($item['producto']) ? $item['producto']['nombre'] : $item['servicios']['nombre'] }}
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
 
-                        {{-- @isset($reserva)
-                        <div class="col-sm form-group">
-                            <label class="control-label" for="reserva">{{'Reserva Nro.'}}</label>
-                        <input readonly class="form-control" value="{{$reserva}}" type="number" name="reserva"
-                            id="reserva">
-                </div>
-                @endisset --}}
-            </div>
-            @if (count($movimiento['detallemovimiento'])!=0)
-            <div class="container">
-                <label for="movimientos" class=" text-uppercase font-weight-bold">Movimientos</label>
-                <div id="movimientos" class="table-responsive">
-                    <table class="table text-center table-hover" id="tabla-data">
-                        <thead>
-                            <tr>
-                                <th>Fecha</th>
-                                <th>Precio Total</th>
-                                <th>Cantidad</th>
-                                <th>Comentario</th>
-                                <th>Servicio/Producto</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $total = 0 ?>
-                            @foreach($detalles as $item)
-                            <?php $total += $item['precioventa'] ?>
-                            <tr>
-                                <td>{{$item['fecha']}}</td>
-                                <td>
-                                    {{$item['precioventa']}}
-                                </td>
-                                <td>
-                                    {{$item['cantidad']}}
-                                </td>
-                                <td>
-                                    {{$item['comentario']}}
-                                </td>
-                                <td>
-                                    {{isset($item['producto']) ? $item['producto']['nombre'] : $item['servicios']['nombre'] }}
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </div>
+                        </div>
+                        @endif
+                        <p class=" font-weight-bold text-uppercase">Datos del documento</p>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm form-group">
+                                <label for="tipodocumento" class="control-label">{{ 'Tipo Documento' }}</label>
+                                <select class="form-control" name="tipodocumento" id="tipodocumento">
+                                    {{-- <option value="">Seleccione una opción</option> --}}
+                                    <option selected value="boleta">Boleta</option>
+                                    <option value="factura">Factura</option>
+                                    <option value="ticket">Ticket</option>
+                                </select>
+                            </div>
+                            <div class="col-sm form-group">
+                                <label class="control-label" for="numero">Número de Comprobante</label>
+                                <input type="text" readonly class="form-control" name="numero_comprobante" id="numero"
+                                    value="{{$numero}}">
+                            </div>
+                        </div>
+                        <div class="form-group col-sm {{ $errors->has('persona') ? 'has-error' : ''}}">
+                            <label for="persona" class="control-label">{{ 'Persona' }}</label>
+                            {{-- <input type="text" id="persona"> --}}
+                            <select class="form-control" required name="persona" id="persona_select">
+                                <option value="{{$pasajeros[0]['persona']['id']}}">
+                                    {{$pasajeros[0]['persona']['nombres'] . ' ' . $pasajeros[0]['persona']['apellidos']}}
+                                </option>
+                                @foreach ($pasajeros as $item)
+                                @if ($item['persona']['id']!=$pasajeros[0]['persona']['id'])
+                                <option value="{{$item['persona']['id']}}">
+                                    {{$item['persona']['nombres']}} {{" "}}{{$item['persona']['apellidos']}}
+                                </option>
+                                @endif
+                                @endforeach
+                            </select>
+                            {!! $errors->first('persona', '<p class="text-danger">:message</p>') !!}
+                        </div>
+                        <div class="row">
+                            <label for="movimientos" class=" font-weight-bold text-uppercase">{{'Húespedes'}}</label>
+                            <div id="personas" class="table-responsive">
+                                <table class="table text-center table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>DNI / RUC</th>
+                                            <th>Teléfono</th>
+                                            <th>Dirección</th>
 
-                </div>
-            </div>
-            @endif
-            <p class=" font-weight-bold text-uppercase">Datos del documento</p>
-            <hr>
-            <div class="row">
-                <div class="col-sm form-group">
-                    <label for="tipodocumento" class="control-label">{{ 'Tipo Documento' }}</label>
-                    <select class="form-control" name="tipodocumento" id="tipodocumento">
-                        {{-- <option value="">Seleccione una opción</option> --}}
-                        <option selected value="boleta">Boleta</option>
-                        <option value="factura">Factura</option>
-                        <option value="ticket">Ticket</option>
-                    </select>
-                </div>
-                <div class="col-sm form-group">
-                    <label class="control-label" for="numero">Número de Comprobante</label>
-                    <input type="text" readonly class="form-control" name="numero_comprobante" id="numero"
-                        value="{{$numero}}">
-                </div>
-            </div>
-            <div class="form-group col-sm {{ $errors->has('persona') ? 'has-error' : ''}}">
-                <label for="persona" class="control-label">{{ 'Persona' }}</label>
-                {{-- <input type="text" id="persona"> --}}
-                <select class="form-control" required name="persona" id="persona_select">
-                    <option value="{{$pasajeros[0]['persona']['id']}}">
-                        {{$pasajeros[0]['persona']['nombres'] . ' ' . $pasajeros[0]['persona']['apellidos']}}
-                    </option>
-                    @foreach ($pasajeros as $item)
-                    @if ($item['persona']['id']!=$pasajeros[0]['persona']['id'])
-                    <option value="{{$item['persona']['id']}}">
-                        {{$item['persona']['nombres']}} {{" "}}{{$item['persona']['apellidos']}}
-                    </option>
-                    @endif
-                    @endforeach
-                </select>
-                {!! $errors->first('persona', '<p class="text-danger">:message</p>') !!}
-            </div>
-            <div class="row">
-                <label for="movimientos" class=" font-weight-bold text-uppercase">{{'Húespedes'}}</label>
-                <div id="personas" class="table-responsive">
-                    <table class="table text-center table-hover">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>DNI / RUC</th>
-                                <th>Teléfono</th>
-                                <th>Dirección</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($pasajeros as $item)
+                                        <tr>
+                                            <td>
+                                                {{isset($item['persona']['nombres'])? $item['persona']['nombres'] . " " . $item['persona']['apellidos'] : $item['persona']['nombres']}}
+                                            </td>
+                                            <td>
+                                                {{isset($item['persona']['ruc'])?$item['persona']['ruc']:$item['persona']['dni']}}
+                                            </td>
+                                            <td>
+                                                {{$item['persona']['telefono']}}
+                                            </td>
+                                            <td>
+                                                {{$item['persona']['direccion']}}
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($pasajeros as $item)
-                            <tr>
-                                <td>
-                                    {{isset($item['persona']['nombres'])? $item['persona']['nombres'] . " " . $item['persona']['apellidos'] : $item['persona']['nombres']}}
-                                </td>
-                                <td>
-                                    {{isset($item['persona']['ruc'])?$item['persona']['ruc']:$item['persona']['dni']}}
-                                </td>
-                                <td>
-                                    {{$item['persona']['telefono']}}
-                                </td>
-                                <td>
-                                    {{$item['persona']['direccion']}}
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="comentario" class="control-label">{{'Comentario'}}</label>
-                <textarea class="form-control" name="comentario" id="comentario" rows="5">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="comentario" class="control-label">{{'Comentario'}}</label>
+                            <textarea class="form-control" name="comentario" id="comentario" rows="5">
                 </textarea>
+                        </div>
+                        <div class="container text-center">
+                            <button type="button" id="btnCheckOut" class="btn btn-outline-success col-sm-6">
+                                Check-Out
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="container text-center">
-                <button type="button" id="btnCheckOut" class="btn btn-outline-success col-sm-6">
-                    Check-Out
-                </button>
-            </div>
-            </form>
         </div>
     </div>
-</div>
-</div>
 </div>
 </div>
 @endsection
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) {
         $('#errMessage').hide();
+        $('#calcularTotal').hide();
+        $('#totalContainer').hide();
+
         const btnCheckOut = document.getElementById('btnCheckOut').onclick=function(event){
             event.preventDefault();
             const data = new FormData(document.getElementById('checkoutForm'));
@@ -292,9 +303,11 @@
                                 $.ajax({
                                     type:'GET',
                                     url:'http://192.168.0.200:81/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
+                                    //url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
                                     data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
                                     success: function(r){
-                                        window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
+                                        window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");
+                                        //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                                         window.location.href = "{{route('caja')}}";
                                         console.log(r);
                                     },
@@ -303,7 +316,8 @@
                                     }
                                 });  
                             }else{
-                                window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
+                                window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank"); 
+                                //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                                 window.location.href = "{{route('caja')}}";
                             }  
                         }else{
@@ -364,17 +378,41 @@
            })
     });
     $("#dias").on('change',function(){
-        $('#total').val(parseFloat({{isset($total) ? $total : 0}}));        
+        if($(this).val().trim()==''){
+            $('#calcularTotal').hide();
+            $('#totalContainer').hide();
+        }else{
+            $('#calcularTotal').show();
+        }
+        // $('#total').val(parseFloat({{isset($total) ? $total : 0}}));        
 
-        var dias =$(this).val();
+        // var dias =$(this).val();
+        // var preciohabitacion = $('#preciohabitacion').val();
+        // console.log(dias);
+        // var habitaciontotal = dias*preciohabitacion;
+        // var total = $('#total').val();
+        // total = parseFloat(habitaciontotal) + parseFloat(total);
+        // $('#total').val(parseFloat(total));       
+    });
+    $('#calcularTotal').on('click', function(){
+        var early = ($('#early_checkin').val().trim());
+        var late = $('#late_checkout').val().trim();
+        var use =$('#day_use').val().trim();
+        var dias = $('#dias').val().trim();
+        $('#total').val(parseFloat({{isset($total) ? $total : 0}}));        
+        early = (early=='' || early==undefined || early==0) ? 0 : parseFloat(early);
+        late = (late=='' || late==undefined || late==0) ? 0 : parseFloat(late);
+        use = (use=='' || use==undefined || use==0) ? 0 : parseFloat(use);
         var preciohabitacion = $('#preciohabitacion').val();
-        console.log(dias);
         var habitaciontotal = dias*preciohabitacion;
         var total = $('#total').val();
-        total = parseFloat(habitaciontotal) + parseFloat(total);
+        total = early + late + use + parseFloat(habitaciontotal) + parseFloat(total);
         $('#total').val(parseFloat(total));
-       
+        $('#totalContainer').show();
+
+
+
     });
-  
+     
  })
 </script>

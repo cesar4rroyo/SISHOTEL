@@ -1,19 +1,19 @@
 <div class="row">
     <div class="form-group col-sm {{ $errors->has('nombres') ? 'has-error' : ''}}">
         <label for="nombres" class="control-label">{{ 'Nombres' }}</label>
-        <input class="form-control" name="nombres" type="text" id="nombres"
+        <input class="form-control" required name="nombres" type="text" id="nombres"
             value="{{ isset($persona->nombres) ? $persona->nombres : ''}}">
         {!! $errors->first('nombres', '<p class="text-danger">:message</p>') !!}
     </div>
     <div class="form-group col-sm {{ $errors->has('apellidos') ? 'has-error' : ''}}">
         <label for="apellidos" class="control-label">{{ 'Apellidos' }}</label>
-        <input class="form-control" name="apellidos" type="text" id="apellidos"
+        <input class="form-control" required name="apellidos" type="text" id="apellidos"
             value="{{ isset($persona->apellidos) ? $persona->apellidos : ''}}">
         {!! $errors->first('apellidos', '<p class="text-danger">:message</p>') !!}
     </div>
     <div class="form-group col-sm {{ $errors->has('rol') ? 'has-er ror' : ''}}">
         <label for="rol_id[]" class="control-label">{{ 'Roles' }}</label>
-        <select class="form-control select2" id="rol_id[]" name="rol_id[]" multiple="multiple"
+        <select class="form-control select2" required id="rol_id[]" name="rol_id[]" multiple="multiple"
             data-placeholder="Seleccionar rol" style="width: 100%;">
             @foreach ($roles as $id => $nombre)
             <option value="{{$id}}"
@@ -50,8 +50,9 @@
 <div class="row">
     <div class="form-group col-sm {{ $errors->has('sexo') ? 'has-error' : ''}}">
         <label for="sexo" class="control-label">{{ 'Sexo' }}</label>
-        <select name="sexo" class="form-control" id="sexo">
-            <option value="">Seleccione una opcion</option>
+        <select name="sexo" class="form-control" id="sexo" value="{{ isset($persona->sexo) ? $persona->sexo : ''}}">
+            <option value="{{isset($persona->sexo) ? $persona->sexo : ''}}">
+                {{isset($persona->sexo) ? $persona->sexo : 'Seleccione una opcion'}}</option>
             <option value="femenino">Femenino</option>
             <option value="masculino">Masculino</option>
         </select>
@@ -65,7 +66,7 @@
     </div>
     <div class="form-group col-sm {{ $errors->has('edad') ? 'has-error' : ''}}">
         <label for="edad" class="control-label">{{ 'Edad' }}</label>
-        <input class="form-control" name="edad" type="text" id="edad"
+        <input class="form-control" name="edad" type="number" id="edad"
             value="{{ isset($persona->edad) ? $persona->edad : ''}}">
         {!! $errors->first('edad', '<p class="text-danger">:message</p>') !!}
     </div>

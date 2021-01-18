@@ -64,13 +64,13 @@ class CajaController extends Controller
             Caja::with('movimiento', 'persona', 'concepto')->whereHas('concepto', function ($q) {
                 $q->where('id', 2);
             })
-            ->latest('fecha')->first()->toArray();
+            ->latest('created_at')->first()->toArray();
         $cajas =
             Caja::with('concepto', 'usuario', 'persona', 'movimiento')
-            ->where('fecha', '>', $caja['fecha'])
-            ->orderBy('fecha', 'DESC')
+            ->where('created_at', '>', $caja['created_at'])
+            ->orderBy('created_at', 'DESC')
             ->get();
-        $pdf = PDF::loadView('pdf.caja', compact('cajas'))->setPaper('a4', 'landscape');;
+        $pdf = PDF::loadView('pdf.caja', compact('cajas'))->setPaper('a4', 'landscape');
         return $pdf->download('registros-list.pdf');
     }
 
@@ -288,7 +288,18 @@ class CajaController extends Controller
 
     public function createCheckout(Request $request, $id)
     {
-
+        $early_checkin = $request->early_checkin;
+        $late_checkout = $request->late_checkout;
+        $day_use = $request->day_use;
+        if (is_null($early_checkin)) {
+            $early_checkin = 0;
+        }
+        if (is_null($late_checkout)) {
+            $late_checkout = 0;
+        }
+        if (is_null($day_use)) {
+            $day_use = 0;
+        }
         $persona = $request->persona;
         $tipoDoc = $request->tipodocumento;
         $verificarApertura =
@@ -323,12 +334,15 @@ class CajaController extends Controller
                 'dias' => $request->dias,
                 'total' => $request->total,
                 'situacion' => 'Pago Realizado',
-                'descuento' => $request->descuento,
+                'descuento' => $request->txtDescuento,
+                'early_checkin' => $early_checkin,
+                'late_checkout' => $late_checkout,
+                'day_use' => $day_use,
                 // 'comentario' => $request->comentario,
             ]);
             //guardar un nuevo registro para caja 
             $cajaStore = Caja::create([
-                'fecha' => $request->fechasalida,
+                'fecha' => Carbon::now()->toDateTimeLocalString(),
                 'tipo' => 'Ingreso',
                 'numero' => $numero,
                 'total' => $total,
@@ -353,12 +367,42 @@ class CajaController extends Controller
             $id_ComprobanteAnterior = Comprobante::latest('id')->first()->toArray()['id'];
             $detalleComprobante = DetalleComprobante::create([
                 'cantidad' => 1,
-                'preciocompra' => $total,
-                'precioventa' => $total,
+                'preciocompra' => $total - $day_use - $early_checkin - $late_checkout,
+                'precioventa' => $total - $day_use - $early_checkin - $late_checkout,
                 'comentario' => 'Servicio de Hotel - ' . $request->comentario,
                 'servicio_id' => 1,
                 'comprobante_id' => $id_ComprobanteAnterior,
             ]);
+            if (($early_checkin) != 0) {
+                $detalleComprobante = DetalleComprobante::create([
+                    'cantidad' => 1,
+                    'preciocompra' => $early_checkin,
+                    'precioventa' => $early_checkin,
+                    'comentario' => 'Early Check In - ' . $request->comentario,
+                    'servicio_id' => 2,
+                    'comprobante_id' => $id_ComprobanteAnterior,
+                ]);
+            }
+            if (($late_checkout) != 0) {
+                $detalleComprobante = DetalleComprobante::create([
+                    'cantidad' => 1,
+                    'preciocompra' => $late_checkout,
+                    'precioventa' => $late_checkout,
+                    'comentario' => 'Late Check Out - ' . $request->comentario,
+                    'servicio_id' => 3,
+                    'comprobante_id' => $id_ComprobanteAnterior,
+                ]);
+            }
+            if (($day_use) != 0) {
+                $detalleComprobante = DetalleComprobante::create([
+                    'cantidad' => 1,
+                    'preciocompra' => $day_use,
+                    'precioventa' => $day_use,
+                    'comentario' => 'Day Use - ' . $request->comentario,
+                    'servicio_id' => 4,
+                    'comprobante_id' => $id_ComprobanteAnterior,
+                ]);
+            }
             return response()->json(['respuesta' => 'ok', 'id_comprobante' => $id_ComprobanteAnterior, 'tipoDoc' => $tipoDoc]);
 
             // return redirect()
