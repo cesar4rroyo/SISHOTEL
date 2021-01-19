@@ -166,8 +166,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Reservas', 'middleware' => ['
     Route::get('reserva/{id}/edit', 'ReservaController@edit')->name('edit_reserva');
     Route::put('reserva/{id}', 'ReservaController@update')->name('update_reserva');
     Route::delete('reserva/{id}/destroy', 'ReservaController@destroy')->name('destroy_reserva');
-    //reserva buscador
-    Route::get('nombres/buscador', 'PersonaController@buscador');
+    /* //reserva buscador
+    Route::get('nombres/buscador', 'PersonaController@buscador'); */
 });
 Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['auth', 'acceso']], function () {
     /* Rutas de COMPROBANTE */
