@@ -24,7 +24,7 @@ class ValidateServicios extends FormRequest
     public function rules()
     {
         return [
-            'nombre' => 'required | max:20 | unique:servicios,nombre,' . $this->route('id'),
+            'nombre' => 'required | max:45 | unique:servicios,nombre,' . $this->route('id'),
             'precio' => 'required'
         ];
     }

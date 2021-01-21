@@ -326,7 +326,7 @@ class ReportesController extends Controller
             }
         }
         if ($tipo == 'servicio') {
-            $response = Servicios::with('detallecomprobante')
+            $response = Servicios::with('detallecomprobante', 'detallemovimiento')
                 ->get()->toArray();
             $data = [];
             foreach ($response as $item) {
@@ -334,6 +334,11 @@ class ReportesController extends Controller
                 if (count($item['detallecomprobante']) != 0) {
                     foreach ($item['detallecomprobante'] as $venta) {
                         $cantidad = $cantidad + $venta['cantidad'];
+                    }
+                }
+                if (count($item['detallemovimiento']) != 0) {
+                    foreach ($item['detallemovimiento'] as $movimiento) {
+                        $cantidad = $cantidad + $movimiento['cantidad'];
                     }
                 }
 
