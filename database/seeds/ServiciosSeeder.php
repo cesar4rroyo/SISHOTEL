@@ -30,5 +30,8 @@ class ServiciosSeeder extends Seeder
             'nombre' => 'Desayuno Incluido',
             'precio' => 1,
         ]);
+        DB::table('servicios')->insert([
+            'nombre' => 'Servicio de Restaurant',
+        ]);
     }
 }

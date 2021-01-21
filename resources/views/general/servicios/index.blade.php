@@ -50,7 +50,7 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->nombre }}</td>
                                     <td>{{ $item->precio }}</td>
-                                    @if (($item->id)!=1 && ($item->id)!=2 && ($item->id)!=3 && ($item->id)!=4 )
+                                    @if (($item->id)!=1 && ($item->id)!=2 && ($item->id)!=3 && ($item->id)!=4 && ($item->id)!=6)
                                     <td>
                                         <a href="{{ route('show_servicios', $item->id) }}" title="Ver servicio"><button
                                                 class="btn btn-outline-secondary btn-sm"><i class="fa fa-eye"
