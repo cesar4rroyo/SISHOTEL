@@ -174,7 +174,7 @@ class ReportesController extends Controller
             'pasajero.persona',
             'habitacion.tipohabitacion',
             'detallemovimiento.producto',
-            'detallemovimiento.servicios',
+            'detallemovimiento.servicios'
         )->whereBetween('fechaingreso', [$fechaInicio, $fechaFin])
             ->when($habitacion, function ($q) use ($habitacion) {
                 return $q->where('habitacion_id', $habitacion);
@@ -548,7 +548,7 @@ class ReportesController extends Controller
             'habitacion.tipohabitacion',
             'habitacion.piso',
             'usuario.persona',
-            'movimiento',
+            'movimiento'
 
         )->get()->toArray();
         return response()->json($reservas);
