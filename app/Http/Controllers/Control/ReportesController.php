@@ -102,9 +102,6 @@ class ReportesController extends Controller
                 'day_use' => $item['movimiento']['day_use'],
             ];
         }
-
-
-
         return response()->json(array('data' => $data));
     }
     public function pdfCheckout(Request $request)
@@ -362,7 +359,7 @@ class ReportesController extends Controller
 
         if ($pago == 'habitacion') {
             $tipohabitacion = $request->tipohabitacion;
-            $detallemovimiento = DetalleMovimiento::with('movimiento.habitacion.tipohabitacion', 'producto', 'servicios')
+            $detallemovimiento = DetalleMovimiento::with('movimiento.habitacion.tipohabitacion', 'producto', 'servicios', 'movimiento.pasajero.persona')
                 ->whereBetween('created_at', [$fechaInicio, $fechaFin])
                 ->when($tipo, function ($q) use ($tipo) {
                     if ($tipo == 'productos') {
@@ -387,9 +384,10 @@ class ReportesController extends Controller
                     'venta' => !is_null($item['producto_id']) ? $item['producto']['nombre'] : $item['servicios']['nombre'],
                     'cantidad' => $item['cantidad'],
                     'total' => $item['precioventa'],
-                    'numero' => 'Hbitacion Nro: ' . $item['movimiento']['habitacion']['numero'],
+                    'numero' => 'Habitacion Nro: ' . $item['movimiento']['habitacion']['numero'],
                     'tipo' => $item['movimiento']['habitacion']['tipohabitacion']['nombre'],
                     'comentario' => !is_null($item['comentario']) ? $item['comentario'] : '-',
+                    'cliente' => $item['movimiento']['pasajero'][0]['persona']['nombres'] . ' ' . $item['movimiento']['pasajero'][0]['persona']['apellidos'],
                 ];
             }
             return response()->json(array('data' => $data));

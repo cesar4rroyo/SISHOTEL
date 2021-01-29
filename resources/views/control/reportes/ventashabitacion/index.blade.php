@@ -58,6 +58,7 @@
                                     <th>Total</th>
                                     <th>Numero de Habitación</th>
                                     <th>Tipo de Habitación</th>
+                                    <th>Cliente</th>
                                     <th>Comentario</th>
                                 </tr>
                             </thead>
@@ -69,6 +70,7 @@
                                     <th>Total</th>
                                     <th>Numero de Habitación</th>
                                     <th>Tipo de Habitación</th>
+                                    <th>Cliente</th>
                                     <th>Comentario</th>
                                 </tr>
                             </tfoot>
@@ -138,6 +140,7 @@
                                 { "data": "total" },
                                 { "data": "numero" },
                                 { "data": "tipo" },
+                                { "data":"cliente" },
                                 { "data": "comentario" },
                             ],
                             dom: 'lBfrtip',

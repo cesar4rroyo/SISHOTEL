@@ -18,7 +18,8 @@ class RestaurantController extends Controller
         $huespedes = Pasajero::with('movimiento.habitacion.tipohabitacion', 'persona.nacionalidad')
             ->whereHas('movimiento', function ($q) use ($today) {
                 $q->where('fechaingreso', '<=', $today)
-                    ->where('fechasalida', '>=', $today);
+                    ->where('fechasalida', '>=', $today)
+                    ->where('situacion', 'Pendiente');
             })
             ->get()
             ->toArray();
