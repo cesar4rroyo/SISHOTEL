@@ -108,7 +108,7 @@
                                         {{ isset($item->comentario ) ? $item->comentario  : '-'}}
                                     </td>
                                     <td>
-                                        {{ isset($item->movimiento ) ? $item->movimiento->id  : '-'}}
+                                        {{ isset($item->movimiento ) ? 'Pago Servicio de Hotel Nro. : 000'.$item->movimiento->id  : '-'}}
                                     </td>
                                     <td>{{ $item->usuario->login }}</td>
 

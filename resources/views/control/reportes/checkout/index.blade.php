@@ -70,6 +70,7 @@
                                     <th>Late Check Out</th>
                                     <th>Day Use</th>
                                     <th>Húespedes</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -83,6 +84,7 @@
                                     <th>Late Check Out</th>
                                     <th>Day Use</th>
                                     <th>Húespedes</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -107,6 +109,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function(event) {
         $('#btnsReport').hide();
+        var table = '';
         $('#btnGenerar').on('click', function(e){
             e.preventDefault();
             const data = new FormData(document.getElementById('formMovimientos'));
@@ -116,7 +119,7 @@
             }).then(res=>res.json())
             .then((data)=>{
                 $('#btnsReport').show();
-                $('#checkouttable').DataTable( {
+                table = $('#checkouttable').DataTable( {
                         "language": {
                             "decimal": "",
                             "emptyTable": "No hay información",
@@ -153,17 +156,51 @@
                             { "data": "early_checkin" },
                             { "data": "late_checkout" },
                             { "data": "day_use" },
-                            { "data": "pasajeros" },         
+                            { "data": "pasajeros" },
+                            {"data":"acciones"}
                         ],
                         dom: 'lBfrtip',
                         buttons: [
-                            'excel', 'pdf', 'print'
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
+                                }
+                            },
+                        ],
+                        "columnDefs":[
+                            {
+                                "targets": -1,
+                                "data": "id",
+                                "defaultContent": 
+                                "<button class='btn btn-warning btn-sm mb-2'><i class='fas fa-print'></i> Imprimir</button>"                           
+                            },                           
                         ],
                         "lengthMenu": [5,10,25,50,100],
                         "bDestroy": true
                     });
+                    $('#checkouttable tbody').on('click','button', function () {
+                        var data = table.row( $(this).parents('tr') ).data();
+                        var id = data.id;
+                        //window.open('http://localhost/test/public/admin/movimiento/pdf/out'+'/'+id, "_blank");
+                        window.open('http://192.168.0.200:81/hotel/public/admin/movimiento/pdf/out'+'/'+id, "_blank"); 
+
+                    } );
             })
             .catch(e=>console.log(e));
-        });       
+        });
+              
     });
 </script>

@@ -56,7 +56,7 @@ class MovimientoController extends Controller
                 ->toArray()[0];
         // dd($movimiento);
         $pdf = PDF::loadView('pdf.checkout', compact('movimiento'))->setPaper('a4');
-        return $pdf->download('registros-check-out.pdf');
+        return $pdf->stream('registros-check-out.pdf');
     }
     public function editConReserva($id_habitacion, $id_reserva)
     {
@@ -208,7 +208,7 @@ class MovimientoController extends Controller
                 ->toArray()[0];
         // dd($movimiento);
         $pdf = PDF::loadView('pdf.checkin', compact('movimiento'))->setPaper('a4');
-        return $pdf->download('registros-check-in.pdf');
+        return $pdf->stream('registros-check-in.pdf');
     }
 
     public function update(Request $request, $id)

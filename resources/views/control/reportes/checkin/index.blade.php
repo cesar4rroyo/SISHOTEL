@@ -67,6 +67,7 @@
                                     <th>Reserva</th>
                                     <th>Comentario</th>
                                     <th>Húespedes</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -78,6 +79,7 @@
                                     <th>Reserva</th>
                                     <th>Comentario</th>
                                     <th>Húespedes</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -116,7 +118,7 @@
                 contentType: false,
                 success: function(response){
                     $('#btnsReport').show();                   
-                    $('#checkintable').DataTable( {
+                    var table = $('#checkintable').DataTable( {
                         "language": {
                             "decimal": "",
                             "emptyTable": "No hay información",
@@ -151,15 +153,47 @@
                             { "data": "tipohabitacion" },
                             { "data": "reserva" },
                             { "data": "comentario" },
-                            { "data": "pasajeros[, ]" },            
+                            { "data": "pasajeros[, ]" },
+                            { "data": "acciones"}            
                         ],
                         dom: 'lBfrtip',
                         buttons: [
-                            'excel', 'pdf', 'print'
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: [ 0, 1, 2, 3, 4, 5, 6]
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: [ 0, 1, 2, 3, 4, 5, 6]
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: [ 0, 1, 2, 3, 4, 5, 6]
+                                }
+                            },
                         ],
                         "lengthMenu": [5,10,25,50,100],
-                        "bDestroy": true
+                        "bDestroy": true,
+                        "columnDefs":[
+                            {
+                                "targets": -1,
+                                "data": "id",
+                                "defaultContent": 
+                                "<button class='btn btn-warning btn-sm mb-2'><i class='fas fa-print'></i> Imprimir</button>"                           
+                            },                           
+                        ],
                     });
+                    $('#checkintable tbody').on('click','button', function () {
+                        var data = table.row( $(this).parents('tr') ).data();
+                        var id = data.id;
+                        //window.open('http://localhost/test/public/admin/movimiento/pdf/in'+'/'+id, "_blank");
+                        window.open('http://192.168.0.200:81/hotel/public/admin/movimiento/pdf/in'+'/'+id, "_blank"); 
+                    } );
                 },
                 error: function(e){
                     console.log(e);

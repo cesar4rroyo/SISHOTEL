@@ -148,6 +148,7 @@ class ReportesController extends Controller
                     $pasajero['persona']['nombres'] . " " . $pasajero['persona']['apellidos'];
             }
             $data[] = [
+                'id' => $item['id'],
                 'fechaingreso' => $item['fechaingreso'],
                 'fechasalida' => $item['fechasalida'],
                 'numero' => $item['habitacion']['numero'],
@@ -207,6 +208,7 @@ class ReportesController extends Controller
                         $pasajero['persona']['nombres'] . " " . $pasajero['persona']['apellidos'];
                 }
                 $data[] = [
+                    'id' => $item['id'],
                     'fechaingreso' => $item['fechaingreso'],
                     'fechasalida' => $item['fechasalida'],
                     'numero' => $item['habitacion']['numero'],
@@ -469,7 +471,7 @@ class ReportesController extends Controller
                     'total' => $item['total'],
                     'concepto' => $item['concepto']['nombre'],
                     'comentario' => !is_null($item['comentario']) ? $item['comentario'] : '-',
-                    'movimiento' => !is_null($item['movimiento']) ? 'Pago Servicio Hotel Nro. ' . $item['movimiento']['id']  : '-',
+                    'movimiento' => !is_null($item['movimiento']) ? 'Pago Servicio Hotel Nro.  000' . $item['movimiento']['id']  : '-',
                     'usuario' => $item['usuario']['login'],
                 ];
             }
