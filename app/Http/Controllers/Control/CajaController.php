@@ -71,7 +71,7 @@ class CajaController extends Controller
             ->orderBy('created_at', 'DESC')
             ->get();
         $pdf = PDF::loadView('pdf.caja', compact('cajas'))->setPaper('a4', 'landscape');
-        return $pdf->download('registros-list.pdf');
+        return $pdf->stream('registros-list.pdf');
     }
 
     public function indexLista(Request $request)
