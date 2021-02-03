@@ -35,8 +35,10 @@ class ReservaController extends Controller
 
     public function listarReservas()
     {
+        $hoy = Carbon::now()->toDateTimeLocalString();
         $reservas = Reserva::with('habitacion', 'persona')
             ->where('situacion', "Reservado")
+            ->where('fecha', '>', $hoy)
             ->orderBy('fecha')
             ->paginate(10);
         return view('control.reservas.index', compact('reservas'));
