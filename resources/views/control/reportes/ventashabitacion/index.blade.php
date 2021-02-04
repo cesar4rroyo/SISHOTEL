@@ -145,11 +145,38 @@
                             ],
                             dom: 'lBfrtip',
                             buttons: [
-                                'excel', 'pdf', 'print'
+                                {extend:'excel', footer:true, },
+                                {extend:'pdf', footer:true, orientation: 'landscape',},
+                                {extend:'print', footer:true},
                             ],
-                            "lengthMenu": [5,10,25,50,100],                   
-
-                            "bDestroy": true
+                            "lengthMenu": [5,10,25,50,100],  
+                            "bDestroy": true,
+                            "footerCallback": function( row, data, start, end, display ){
+                                var api = this.api();
+                                var intVal = function ( i ) {
+                                    return typeof i === 'string' ?
+                                    i.replace(/[\$,]/g, '')*1 :
+                                    typeof i === 'number' ?
+                                    i : 0;
+                                };
+                                total = api
+                                    .column( 3 )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+                                pageTotal = api
+                                    .column( 3, { page: 'current'} )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+                                
+                                // Update footer
+                                $( api.column( 3 ).footer() ).html(
+                                    'Total: S./'+pageTotal +' ( S/.'+ total +' total)'
+                                );
+                            }
                         });
             })
             .catch(e=>console.log(e));

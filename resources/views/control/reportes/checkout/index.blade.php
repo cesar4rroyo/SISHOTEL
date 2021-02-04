@@ -157,7 +157,7 @@
                             { "data": "late_checkout" },
                             { "data": "day_use" },
                             { "data": "pasajeros" },
-                            {"data":"acciones"}
+                            { "data": "acciones"}
                         ],
                         dom: 'lBfrtip',
                         buttons: [
@@ -165,19 +165,23 @@
                                 extend: 'print',
                                 exportOptions: {
                                     columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
-                                }
+                                },
+                                footer:true, 
                             },
                             {
-                                extend: 'excelHtml5',
+                                extend: 'excel',
                                 exportOptions: {
                                     columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
-                                }
+                                },
+                                footer:true, 
                             },
                             {
-                                extend: 'pdfHtml5',
+                                extend: 'pdf',
                                 exportOptions: {
                                     columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
-                                }
+                                },
+                                footer:true, 
+                                orientation: 'landscape',
                             },
                         ],
                         "columnDefs":[
@@ -189,7 +193,34 @@
                             },                           
                         ],
                         "lengthMenu": [5,10,25,50,100],
-                        "bDestroy": true
+                        "bDestroy": true,
+                        "footerCallback": function( row, data, start, end, display ){
+                                var api = this.api();
+                                var intVal = function ( i ) {
+                                    return typeof i === 'string' ?
+                                    i.replace(/[\$,]/g, '')*1 :
+                                    typeof i === 'number' ?
+                                    i : 0;
+                                };
+                                total = api
+                                    .column( 4 )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+                                pageTotal = api
+                                    .column( 4, { page: 'current'} )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+                                
+                                // Update footer
+                                $( api.column( 4 ).footer() ).html(
+                                    'Total: S./'+pageTotal +' ( S/.'+ total +' total)'
+                                );
+                        }
+
                     });
                     $('#checkouttable tbody').on('click','button', function () {
                         var data = table.row( $(this).parents('tr') ).data();
