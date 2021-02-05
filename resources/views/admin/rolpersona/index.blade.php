@@ -36,7 +36,11 @@
                                 @foreach ($personas as $key=>$persona)
                                 <tr>
                                     <td>
+                                        @if (trim($persona['razonsocial'])=='' || is_null($persona['razonsocial']))
                                         {{$persona["nombres"] }}{{" "}}{{$persona["apellidos"]}}
+                                        @else
+                                        {{$persona['razonsocial']}}
+                                        @endif
                                     </td>
                                     @foreach ($roles as $id=>$nombre)
                                     <td class="text-center">
