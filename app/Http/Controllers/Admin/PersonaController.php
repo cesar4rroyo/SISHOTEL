@@ -106,7 +106,7 @@ class PersonaController extends Controller
         ]);
         $persona->roles()->sync($request->rol_id);
 
-        $personas = Persona::getClientes();
+        $personas = Persona::getClientesConRucDni();
 
         return view('control.checkin.conreserva', compact('reserva', 'roles', 'nacionalidades', 'habitacion', 'personas', 'initialDate'));
     }
@@ -136,7 +136,7 @@ class PersonaController extends Controller
         ]);
         $persona->roles()->sync($request->rol_id);
 
-        $personas = Persona::getClientes();
+        $personas = Persona::getClientesConRucDni();
 
         if (!empty($request->reserva)) {
             $id_reserva = $request->reserva;
