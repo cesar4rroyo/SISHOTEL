@@ -86,9 +86,14 @@ class ReportesController extends Controller
         $data = [];
         foreach ($huespedes as $item) {
 
+            if ($item['persona']['razonsocial'] && trim($item['persona']['razonsocial']) != '') {
+                $nombres = $item['persona']['razonsocial'];
+            } else {
+                $nombres =  $item['persona']['nombres'] . ' ' . $item['persona']['apellidos'];
+            }
+
             $data[] = [
-                'nombres' => $item['persona']['nombres'],
-                'apellidos' => $item['persona']['apellidos'],
+                'nombres' => $nombres,
                 'edad' => $item['persona']['edad'],
                 'sexo' => $item['persona']['sexo'],
                 'ciudad' => $item['persona']['ciudad'],
@@ -144,8 +149,13 @@ class ReportesController extends Controller
 
             $pasajeros = [];
             foreach ($item['pasajero'] as $pasajero) {
-                $pasajeros[] =
-                    $pasajero['persona']['nombres'] . " " . $pasajero['persona']['apellidos'];
+                if ($pasajero['persona']['razonsocial'] && trim($pasajero['persona']['razonsocial']) != '') {
+                    $pasajeros[] =
+                        $pasajero['persona']['razonsocial'];
+                } else {
+                    $pasajeros[] =
+                        $pasajero['persona']['nombres'] . " " . $pasajero['persona']['apellidos'];
+                }
             }
             $data[] = [
                 'id' => $item['id'],
@@ -204,8 +214,13 @@ class ReportesController extends Controller
 
                 $pasajeros = [];
                 foreach ($item['pasajero'] as $pasajero) {
-                    $pasajeros[] =
-                        $pasajero['persona']['nombres'] . " " . $pasajero['persona']['apellidos'];
+                    if ($pasajero['persona']['razonsocial'] && trim($pasajero['persona']['razonsocial']) != '') {
+                        $pasajeros[] =
+                            $pasajero['persona']['razonsocial'];
+                    } else {
+                        $pasajeros[] =
+                            $pasajero['persona']['nombres'] . " " . $pasajero['persona']['apellidos'];
+                    }
                 }
                 $data[] = [
                     'id' => $item['id'],
@@ -278,11 +293,16 @@ class ReportesController extends Controller
         $data = [];
         foreach ($reservas as $item) {
 
+            if ($item['persona']['razonsocial'] && trim($item['persona']['razonsocial']) != '') {
+                $nombres = $item['persona']['razonsocial'];
+            } else {
+                $nombres =  $item['persona']['nombres'] . ' ' . $item['persona']['apellidos'];
+            }
 
             $data[] = [
                 'fechaingreso' => $item['fecha'],
                 'fechasalida' => $item['fechasalida'],
-                'persona' => $item['persona']['nombres'] . ' ' . $item['persona']['apellidos'],
+                'persona' => $nombres,
                 'edad' => $item['persona']['edad'],
                 'sexo' => $item['persona']['sexo'],
                 'ciudad' => $item['persona']['ciudad'],
@@ -381,6 +401,11 @@ class ReportesController extends Controller
                 ->toArray();
             $data = [];
             foreach ($detallemovimiento as $item) {
+                if ($item['movimiento']['pasajero'][0]['persona']['razonsocial'] && trim($item['movimiento']['pasajero'][0]['persona']['razonsocial']) != '') {
+                    $nombres = $item['movimiento']['pasajero'][0]['persona']['razonsocial'];
+                } else {
+                    $nombres = !is_null($item['movimiento']['pasajero'][0]['persona']) ? $item['movimiento']['pasajero'][0]['persona']['nombres'] . ' ' . $item['movimiento']['pasajero'][0]['persona']['apellidos']  : '-';
+                }
                 $data[] = [
                     'fecha' => $item['created_at'],
                     'venta' => !is_null($item['producto_id']) ? $item['producto']['nombre'] : $item['servicios']['nombre'],
@@ -389,7 +414,7 @@ class ReportesController extends Controller
                     'numero' => 'Habitacion Nro: ' . $item['movimiento']['habitacion']['numero'],
                     'tipo' => $item['movimiento']['habitacion']['tipohabitacion']['nombre'],
                     'comentario' => !is_null($item['comentario']) ? $item['comentario'] : '-',
-                    'cliente' => $item['movimiento']['pasajero'][0]['persona']['nombres'] . ' ' . $item['movimiento']['pasajero'][0]['persona']['apellidos'],
+                    'cliente' => $nombres,
                 ];
             }
             return response()->json(array('data' => $data));
@@ -417,13 +442,18 @@ class ReportesController extends Controller
 
             $data = [];
             foreach ($detallecaja as $item) {
+                if ($item['caja']['persona']['razonsocial'] && trim($item['caja']['persona']['razonsocial']) != '') {
+                    $nombres = $item['caja']['persona']['razonsocial'];
+                } else {
+                    $nombres = !is_null($item['caja']['persona']) ? $item['caja']['persona']['nombres'] . ' ' . $item['caja']['persona']['apellidos']  : '-';
+                }
                 $data[] = [
                     'fecha' => $item['created_at'],
                     'venta' => !is_null($item['producto_id']) ? $item['producto']['nombre'] : $item['servicios']['nombre'],
                     'cantidad' => $item['cantidad'],
                     'total' => $item['precioventa'],
                     'caja' => 'Caja Nro: ' . $item['caja']['numero'],
-                    'persona' => $item['caja']['persona']['nombres'] . ' ' . $item['caja']['persona']['apellidos'],
+                    'persona' => $nombres,
                     'usuario' => $item['caja']['usuario']['login'],
                     'comentario' => !is_null($item['comentario']) ? $item['comentario'] : '-',
                 ];
@@ -463,11 +493,17 @@ class ReportesController extends Controller
         } else {
             $data = [];
             foreach ($caja as $item) {
+                if ($item['persona']['razonsocial'] && trim($item['persona']['razonsocial']) != '') {
+                    $nombres = $item['persona']['razonsocial'];
+                } else {
+                    $nombres = !is_null($item['persona']) ? $item['persona']['nombres'] . ' ' . $item['persona']['apellidos']  : '-';
+                }
+
                 $data[] = [
                     'fecha' => $item['fecha'],
                     'numero' => $item['numero'],
                     'tipo' => $item['tipo'],
-                    'persona' => !is_null($item['persona']) ? $item['persona']['nombres'] . ' ' . $item['persona']['apellidos']  : '-',
+                    'persona' => $nombres,
                     'total' => $item['total'],
                     'concepto' => $item['concepto']['nombre'],
                     'comentario' => !is_null($item['comentario']) ? $item['comentario'] : '-',

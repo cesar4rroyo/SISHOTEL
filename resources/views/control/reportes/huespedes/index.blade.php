@@ -71,7 +71,6 @@
                             <thead>
                                 <tr>
                                     <th>Nombres</th>
-                                    <th>Apellidos</th>
                                     <th>Edad</th>
                                     <th>Sexo</th>
                                     <th>Ciudad</th>
@@ -89,7 +88,6 @@
                             <tfoot>
                                 <tr>
                                     <th>Nombres</th>
-                                    <th>Apellidos</th>
                                     <th>Edad</th>
                                     <th>Sexo</th>
                                     <th>Ciudad</th>
@@ -164,7 +162,6 @@
                         'data': data.data,
                         "columns": [
                             { "data": "nombres" },
-                            { "data": "apellidos" },
                             { "data": "edad" },
                             { "data": "sexo" },
                             { "data": "ciudad" },
