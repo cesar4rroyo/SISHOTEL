@@ -20,7 +20,7 @@ class PersonaController extends Controller
         //search es el filtro seleccionado para buscar a las personas
         $rol = $request->get('rol');
         //rol es el rol_id seleccionado como filtro de las personas
-        $paginate_number = 10;
+        $paginate_number = 20;
         if (!empty($rol)) {
             $persona = Persona::whereHas('roles', function ($query) use ($rol) {
                 $query->where('rol_id', $rol);
@@ -58,19 +58,19 @@ class PersonaController extends Controller
     {
 
         $persona = Persona::create([
-            'nombres' => $request->nombres,
-            'apellidos' => $request->apellidos,
-            'razonsocial' => $request->razonsocial,
+            'nombres' => strtoupper($request->nombres),
+            'apellidos' => strtoupper($request->apellidos),
+            'razonsocial' => strtoupper($request->razonsocial),
             'ruc' => $request->ruc,
             'dni' => $request->dni,
-            'direccion' => $request->direccion,
+            'direccion' => strtoupper($request->direccion),
             'sexo' => $request->sexo,
             'fechanacimiento' => $request->fechanacimiento,
             'telefono' => $request->telefono,
-            'observacion' => $request->observacion,
+            'observacion' => strtoupper($request->observacion),
             'nacionalidad_id' => $request->nacionalidad_id,
             'email' => $request->email,
-            'ciudad' => $request->ciudad,
+            'ciudad' => strtoupper($request->ciudad),
             'edad' => $request->edad,
 
         ]);
@@ -88,20 +88,20 @@ class PersonaController extends Controller
         $nacionalidades = Nacionalidad::with('persona')->get();
 
         $persona = Persona::create([
-            'nombres' => $request->nombres,
-            'apellidos' => $request->apellidos,
-            'razonsocial' => $request->razonsocial,
+            'nombres' => strtoupper($request->nombres),
+            'apellidos' => strtoupper($request->apellidos),
+            'razonsocial' => strtoupper($request->razonsocial),
             'ruc' => $request->ruc,
             'dni' => $request->dni,
-            'direccion' => $request->direccion,
+            'direccion' => strtoupper($request->direccion),
             'sexo' => $request->sexo,
             'fechanacimiento' => $request->fechanacimiento,
             'telefono' => $request->telefono,
-            'observacion' => $request->observacion,
+            'observacion' => strtoupper($request->observacion),
             'nacionalidad_id' => $request->nacionalidad_id,
             'edad' => $request->edad,
             'email' => $request->email,
-            'ciudad' => $request->ciudad,
+            'ciudad' => strtoupper($request->ciudad),
 
         ]);
         $persona->roles()->sync($request->rol_id);
@@ -118,20 +118,20 @@ class PersonaController extends Controller
         $nacionalidades = Nacionalidad::with('persona')->get();
 
         $persona = Persona::create([
-            'nombres' => $request->nombres,
-            'apellidos' => $request->apellidos,
-            'razonsocial' => $request->razonsocial,
+            'nombres' => strtoupper($request->nombres),
+            'apellidos' => strtoupper($request->apellidos),
+            'razonsocial' => strtoupper($request->razonsocial),
             'ruc' => $request->ruc,
             'dni' => $request->dni,
-            'direccion' => $request->direccion,
+            'direccion' => strtoupper($request->direccion),
             'sexo' => $request->sexo,
             'fechanacimiento' => $request->fechanacimiento,
             'telefono' => $request->telefono,
-            'observacion' => $request->observacion,
+            'observacion' => strtoupper($request->observacion),
             'nacionalidad_id' => $request->nacionalidad_id,
             'edad' => $request->edad,
             'email' => $request->email,
-            'ciudad' => $request->ciudad,
+            'ciudad' => strtoupper($request->ciudad),
 
         ]);
         $persona->roles()->sync($request->rol_id);

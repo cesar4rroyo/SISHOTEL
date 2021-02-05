@@ -79,8 +79,14 @@
                                     @endif
                                     {{-- <td>{{ $item->numero }}</td> --}}
                                     <td>
+
                                         @if ($item->persona)
-                                        {{isset($item->persona->razonsocial) ? $item->persona->razonsocial : $item->persona->nombres .' ' . $item->persona->apellidos}}
+                                        @if (is_null($item->persona->razonsocial) ||
+                                        trim($item->persona->razonsocial)=='')
+                                        {{$item->persona->nombres .' ' . $item->persona->apellidos}}
+                                        @else
+                                        {{isset($item->persona->razonsocial) ? $item->persona->razonsocial : 'VARIOS'}}
+                                        @endif
                                         @endif
                                     </td>
                                     @if ( ($item->tipo)=='Ingreso' )

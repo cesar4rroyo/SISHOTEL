@@ -78,7 +78,7 @@ class CajaController extends Controller
                 $movimiento = '';
             }
             if (!is_null($item['persona'])) {
-                if (!is_null($item['persona']['razonsocial'])) {
+                if (!is_null($item['persona']['razonsocial']) && trim($item['persona']['razonsocial']) != '') {
                     $cliente = $item['persona']['razonsocial'];
                 } else {
                     if (!is_null($item['persona'])) {

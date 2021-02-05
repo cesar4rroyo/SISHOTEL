@@ -52,7 +52,7 @@
                                     </td>
                                     <td>
                                         @if ($item->persona)
-                                        {{isset($item->persona->razonsocial) ? $item->persona->razonsocial : $item->persona->nombres .' ' . $item->persona->apellidos}}
+                                        {{(isset($item->persona->razonsocial) && trim($item->persona->razonsocial)!="") ? $item->persona->razonsocial : $item->persona->nombres .' ' . $item->persona->apellidos}}
                                         @else
                                         {{'VARIOS'}}
                                         @endif

@@ -64,7 +64,11 @@
                                 @foreach($persona as $item)
                                 <tr>
                                     <td>
-                                        {{isset($item->razonsocial) ? $item->razonsocial : $item->nombres .' ' . $item->apellidos}}
+                                        @if (is_null($item->razonsocial) || trim($item->razonsocial)=='')
+                                        {{$item->nombres .' ' . $item->apellidos}}
+                                        @else
+                                        {{isset($item->razonsocial) ? $item->razonsocial : 'ERROR'}}
+                                        @endif
                                     </td>
                                     <td>
                                         {{ isset($item->ruc ) ? $item->ruc  : '-'}}

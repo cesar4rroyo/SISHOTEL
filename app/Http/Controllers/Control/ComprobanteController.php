@@ -34,12 +34,20 @@ class ComprobanteController extends Controller
             }
         }
         if ($comprobante['tipodocumento'] == 'boleta') {
-            $nombre = $comprobante['persona']['nombres'] . ' ' . $comprobante['persona']['apellidos'];
+            if ($comprobante['persona']['nombres'] == '-' && !is_null($comprobante['persona']['razonsocial'])) {
+                $nombre = $comprobante['persona']['razonsocial'];
+            } else {
+                $nombre = $comprobante['persona']['nombres'] . ' ' . $comprobante['persona']['apellidos'];
+            }
             $direccion = $comprobante['persona']['direccion'];
             $pdf = PDF::loadView('pdf.boleta', compact('comprobante', 'detalles', 'dniRuc', 'direccion', 'nombre'))->setPaper('a4');
         }
         if ($comprobante['tipodocumento'] == 'ticket') {
-            $nombre = $comprobante['persona']['nombres'] . ' ' . $comprobante['persona']['apellidos'];
+            if ($comprobante['persona']['nombres'] == '-' && !is_null($comprobante['persona']['razonsocial'])) {
+                $nombre = $comprobante['persona']['razonsocial'];
+            } else {
+                $nombre = $comprobante['persona']['nombres'] . ' ' . $comprobante['persona']['apellidos'];
+            }
             $direccion = $comprobante['persona']['direccion'];
             $pdf = PDF::loadView('pdf.ticket', compact('comprobante', 'detalles', 'dniRuc', 'direccion', 'nombre'))->setPaper('a4');
         }
