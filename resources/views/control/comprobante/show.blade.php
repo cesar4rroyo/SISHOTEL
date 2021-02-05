@@ -47,6 +47,22 @@
                 </div>
                 <hr>
                 <p class="font-weight-bold">Datos de la Persona</p>
+                @if (!is_null($comprobante['persona']['ruc']) && $comprobante['persona']['nombres']=='-')
+                <div class="row">
+                    <div class="form-group col-sm">
+                        <label for="nombres">Cliente</label>
+                        <input class="form-control" type="text"
+                            value="{{!is_null($comprobante['persona'])?$comprobante['persona']['razonsocial']:'Varios'}}"
+                            readonly id="nombres" name="nombres">
+                    </div>
+                    <div class="form-group col-sm">
+                        <label for="dni">RUC</label>
+                        <input class="form-control" type="text"
+                            value="{{!is_null($comprobante['persona']['ruc'])?$comprobante['persona']['ruc']:'-'}}"
+                            readonly id="dni" name="dni">
+                    </div>
+                </div>
+                @else
                 <div class="row">
                     <div class="form-group col-sm">
                         <label for="nombres">Nombres</label>
@@ -66,13 +82,8 @@
                             value="{{!is_null($comprobante['persona']['dni'])?$comprobante['persona']['dni']:'-'}}"
                             readonly id="dni" name="dni">
                     </div>
-                    <div class="form-group col-sm">
-                        <label for="dni">RUC</label>
-                        <input class="form-control" type="text"
-                            value="{{!is_null($comprobante['persona']['ruc'])?$comprobante['persona']['ruc']:'-'}}"
-                            readonly id="dni" name="dni">
-                    </div>
                 </div>
+                @endif
                 <hr>
                 <p class="font-weight-bold">Detalle Movimientos</p>
                 <div class="row">

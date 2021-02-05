@@ -31,51 +31,52 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($cajas as $item)
-                @if (($item->tipo)!='Configuración Inicial Caja')
+                @foreach($data as $item)
+                @if (($item['tipo'])!='Configuración Inicial Caja')
                 <tr>
-                    <td>{{ $item->fecha }}</td>
-                    @if ( ($item->tipo)=='Ingreso' )
+                    <td>{{ $item['fecha'] }}</td>
+                    @if ( ($item['tipo'])=='Ingreso' )
                     <td>
                         <span class="badge badge-success">
-                            {{ $item->tipo }}
+                            {{ $item['tipo'] }}
                         </span>
                     </td>
                     @else
                     <td>
                         <span class="badge badge-danger">
-                            {{ $item->tipo }}
+                            {{ $item['tipo'] }}
                         </span>
                     </td>
                     @endif
                     <td>
-                        @if ($item->persona)
-                        {{ $item->persona->nombres}}{{" "}}{{$item->persona->apellidos}}
-                        @endif
+                        {{$item['persona']}}
                     </td>
-                    @if ( ($item->tipo)=='Ingreso' )
+                    @if ( ($item['tipo'])=='Ingreso' )
                     <td class="subtotal sumaIngreso">
                         <span class="badge badge-success">
-                            {{ $item->total }}
+                            {{ $item['total'] }}
                         </span>
                     </td>
                     @else
                     <td>
                         <span class="badge badge-danger sumaEgreso">
-                            {{ $item->total }}
+                            {{ $item['total'] }}
                         </span>
                     </td>
                     @endif
                     <td>
-                        {{ $item->concepto->nombre }}
+                        {{ $item['concepto'] }}
                     </td>
                     <td>
-                        {{ isset($item->comentario ) ? $item->comentario  : '-'}}
+                        {{ $item['comentario'] }}
                     </td>
                     <td>
-                        {{ isset($item->movimiento ) ? $item->movimiento->id  : '-'}}
+                        {{ $item['movimiento'] }}
                     </td>
-                    <td>{{ $item->usuario->login }}</td>
+                    <td>
+                        {{ $item['usuario'] }}
+
+                    </td>
                 </tr>
                 @endif
                 @endforeach

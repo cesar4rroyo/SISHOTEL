@@ -151,7 +151,7 @@ class MovimientoController extends Controller
             $initialDate = Carbon::now()->format('Y-m-d\TH:i');
             $roles = Rol::orderBy('id')->pluck('nombre', 'id')->toArray();
             $nacionalidades = Nacionalidad::with('persona')->get();
-            $personas = Persona::getClientes();
+            $personas = Persona::getClientesConRucDni();
             return view('control.checkin.index', compact('roles', 'nacionalidades', 'habitacion', 'personas', 'initialDate', 'id_reserva'));
         } else if ($habitacion['situacion'] == 'Ocupada') {
             $initialDate = Carbon::now()->format('Y-m-d\TH:i');
@@ -173,6 +173,23 @@ class MovimientoController extends Controller
                 ->where('movimiento_id', $movimiento['id'])
                 ->get()
                 ->toArray();
+            $pasajerosSelect = [];
+            foreach ($pasajeros as $item) {
+                if (!is_null($item['persona']['razonsocial'])) {
+                    $nombres = $item['persona']['razonsocial'];
+                } else if ($item['persona']['nombres'] != '-' && !is_null($item['persona']['nombres'])) {
+                    $nombres = $item['persona']['nombres'] . ' ' . $item['persona']['apellidos'];
+                }
+                $pasajerosSelect[] = [
+                    "id" => $item['persona']['id'],
+                    "nombres" => $nombres,
+                    "ruc" => $item['persona']['ruc'],
+                    "dni" => $item['persona']['dni'],
+                    "telefono" => $item['persona']['telefono'],
+                    "direccion" => $item['persona']['direccion'],
+                ];
+            }
+            $personas = Persona::getClientesConRucDni();
             $comprobante = Comprobante::latest('id')->first();
             if (!is_null($comprobante)) {
                 $comprobante->get()->toArray();
@@ -189,7 +206,7 @@ class MovimientoController extends Controller
             return
                 view(
                     'control.checkout.index',
-                    compact('id_movimiento', 'numero', 'conceptos', 'habitacion', 'initialDate', 'detalles', 'movimiento', 'pasajeros')
+                    compact('id_movimiento', 'numero', 'conceptos', 'habitacion', 'initialDate', 'detalles', 'movimiento', 'pasajerosSelect', 'personas')
                 );
         }
     }

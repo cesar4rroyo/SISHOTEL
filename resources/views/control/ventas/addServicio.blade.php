@@ -138,12 +138,11 @@
                                 <select class="form-control clientes-select2" required name="persona" id="persona">
                                     <option value="">{{'Seleccione una opcion'}}</option>
                                     @foreach ($personas as $item)
-                                    <option value="{{$item->id}}">
-                                        {{$item->nombres}} {{" "}}{{$item->apellidos}}
+                                    <option value="{{$item['id']}}">
+                                        {{$item['nombres']}}
                                     </option>
                                     @endforeach
                                 </select>
-                                {!! $errors->first('persona', '<p class="text-danger">:message</p>') !!}
                             </div>
                         </div>
                         <div class="row">

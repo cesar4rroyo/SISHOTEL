@@ -28,7 +28,7 @@
                                 <option value="">Seleccione una opcion</option>
                                 @foreach ($clientes as $cliente)
                                 <option value="{{$cliente['id']}}">
-                                    {{$cliente['nombres']}} {{$cliente['apellidos']}}</option>
+                                    {{$cliente['nombres']}}</option>
                                 @endforeach
                             </select>
                         </div>

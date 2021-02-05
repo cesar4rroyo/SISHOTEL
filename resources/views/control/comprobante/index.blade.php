@@ -51,7 +51,11 @@
                                         {{ $item->total }}
                                     </td>
                                     <td>
-                                        {{ isset($item->persona) ? $item->persona->nombres : 'Varios'}}
+                                        @if ($item->persona)
+                                        {{isset($item->persona->razonsocial) ? $item->persona->razonsocial : $item->persona->nombres .' ' . $item->persona->apellidos}}
+                                        @else
+                                        {{'VARIOS'}}
+                                        @endif
                                     </td>
                                     <td>{{ isset($item->comentario) ? $item->comentario : '-'  }}</td>
                                     {{-- <td>

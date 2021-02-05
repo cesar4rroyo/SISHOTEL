@@ -93,7 +93,7 @@
                     <option value="">Seleccione Uno</option>
                     @foreach ($personas as $persona)
                     <option value="{{$persona['id']}}">
-                        {{$persona['nombres']}}{{" "}}{{$persona['apellidos']}}</option>
+                        {{$persona['nombres']}}</option>
                     @endforeach
                 </select>
             </div>
@@ -108,7 +108,7 @@
                     <option value="">Seleccione Uno</option>
                     @foreach ($personas as $persona)
                     <option value="{{$persona['id']}}">
-                        {{$persona['nombres']}}{{" "}}{{$persona['apellidos']}}</option>
+                        {{$persona['nombres']}}</option>
                     @endforeach
                 </select>
             </div>
@@ -158,6 +158,24 @@
 @endsection
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) {
+    $("#btnBuscarRuc").on('click', function(){
+        var ruc = $('#ruc').val();
+        $.ajax({
+            type:'GET',
+            url: 'http://157.245.85.164/facturacion/buscaCliente/BuscaClienteRuc.php?fe=N',
+            data:"&token=qusEj_w7aHEpX"+"&ruc="+ruc,
+            success:function(r){
+                var data = JSON.parse(r);
+                if(data.code == 0){
+                    $('#razonsocial').val(data.RazonSocial);
+                    $('#direccion').val(data.Direccion);
+                    $('#nombres').val('-');
+                    $('#apellidos').val('-');
+                }
+            }
+
+        })
+    })
     
     $("#descuento").on('change',function(){
         var dscto = $(this).val();

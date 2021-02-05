@@ -69,8 +69,40 @@ class CajaController extends Controller
             Caja::with('concepto', 'usuario', 'persona', 'movimiento')
             ->where('created_at', '>', $caja['created_at'])
             ->orderBy('created_at', 'DESC')
-            ->get();
-        $pdf = PDF::loadView('pdf.caja', compact('cajas'))->setPaper('a4', 'landscape');
+            ->get()->toArray();
+        $data = [];
+        foreach ($cajas as $item) {
+            if (!is_null($item['movimiento'])) {
+                $movimiento = 'Pago Servicio de Hotel Nro. : 000' . $item['movimiento']['id'];
+            } else {
+                $movimiento = '';
+            }
+            if (!is_null($item['persona'])) {
+                if (!is_null($item['persona']['razonsocial'])) {
+                    $cliente = $item['persona']['razonsocial'];
+                } else {
+                    if (!is_null($item['persona'])) {
+                        $cliente = $item['persona']['nombres'] . ' ' . (!is_null($item['persona']['apellidos']) ? $item['persona']['apellidos'] : ' ');
+                    } else {
+                        $cliente = 'VARIOS';
+                    }
+                }
+            } else {
+                $cliente = '-';
+            }
+
+            $data[] = [
+                'fecha' => $item['fecha'],
+                'tipo' => $item['tipo'],
+                'total' => $item['total'],
+                'concepto' => $item['concepto']['nombre'],
+                'comentario' => isset($item['comentario']) ? $item['comentario'] : '-',
+                'movimiento' => $movimiento,
+                'usuario' => $item['usuario']['login'],
+                'persona' => $cliente,
+            ];
+        }
+        $pdf = PDF::loadView('pdf.caja', compact('cajas', 'data'))->setPaper('a4', 'landscape');
         return $pdf->stream('registros-list.pdf');
     }
 
@@ -127,7 +159,7 @@ class CajaController extends Controller
                 ->get();
             // dd($conceptos->toArray());
             $today = Carbon::now();
-            $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
+            $personas = Persona::getClientesConRucDni();
             return view('control.caja.create', compact('numero', 'conceptos', 'personas', 'today'));
         } else {
             return redirect()
@@ -179,7 +211,7 @@ class CajaController extends Controller
                 ->orderBy('nombre')
                 ->get();
             $today = Carbon::now()->toDateString();
-            $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
+            $personas = Persona::getClientesConRucDni();
             return view('control.caja.edit', compact('caja', 'conceptos', 'personas', 'today'));
         } else {
             return redirect()

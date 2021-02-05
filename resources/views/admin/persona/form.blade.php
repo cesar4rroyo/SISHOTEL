@@ -1,3 +1,8 @@
+<style>
+    #btnBuscarRuc:hover {
+        cursor: pointer;
+    }
+</style>
 <div class="row">
     <div class="form-group col-sm {{ $errors->has('nombres') ? 'has-error' : ''}}">
         <label for="nombres" class="control-label">{{ 'Nombres' }}</label>
@@ -29,14 +34,17 @@
 </div>
 <div class="row">
     <div class="form-group col-sm {{ $errors->has('razonsocial') ? 'has-error' : ''}}">
-        <label for="razonsocial" class="control-label">{{ 'Razón Social' }}</label>
+        <label for="razonsocial" class="control-label">{{ 'Razón Social (Solo Clientes RUC)' }}</label>
         <input class="form-control" name="razonsocial" type="text" id="razonsocial"
             value="{{ isset($persona->razonsocial) ? $persona->razonsocial : ''}}">
         {!! $errors->first('razonsocial', '<p class="text-danger">:message</p>') !!}
     </div>
     <div class="form-group col-sm {{ $errors->has('ruc') ? 'has-error' : ''}}">
         <label for="ruc" class="control-label">{{ 'RUC' }}</label>
-        <input class="form-control" name="ruc" type="text" id="ruc"
+        <span class="badge badge-primary" id="btnBuscarRuc">
+            <i class="fas fa-search"></i>
+            {{'Buscar'}}</span>
+        <input class="form-control" name="ruc" type="number" id="ruc"
             value="{{ isset($persona->ruc) ? $persona->ruc : ''}}">
         {!! $errors->first('ruc', '<p class="text-danger">:message</p>') !!}
     </div>

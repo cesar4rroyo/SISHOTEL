@@ -116,8 +116,9 @@
                 <td class="input"> {{ $persona['persona']['apellidos'] }} </td>
             </tr>
             <tr>
-                <th> Empresa </th>
-                <td class="input"> {{ isset($persona['persona']['empresa']) ? $persona['persona']['empresa'] :' - ' }}
+                <th> Razon Social </th>
+                <td class="input">
+                    {{ isset($persona['persona']['razonsocial']) ? $persona['persona']['razonsocial'] :' - ' }}
                 </td>
                 <th> RUC </th>
                 <td class="input"> {{ isset($persona['persona']['ruc']) ? $persona['persona']['ruc'] : ' - ' }} </td>

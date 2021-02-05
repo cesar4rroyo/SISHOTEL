@@ -51,7 +51,7 @@ class VentasController extends Controller
     public function indexProductos(Request $request)
     {
         $search = $request->get('search');
-        $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
+        $personas = Persona::getClientesConRucDni();
         $comprobante = Comprobante::latest('id')
             ->where('tipodocumento', 'boleta')
             ->first();
@@ -78,7 +78,7 @@ class VentasController extends Controller
     public function indexServicios(Request $request)
     {
         $search = $request->get('search');
-        $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
+        $personas = Persona::getClientesConRucDni();
         $comprobante = Comprobante::latest('id')
             ->where('tipodocumento', 'boleta')
             ->first();

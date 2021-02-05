@@ -54,7 +54,7 @@ class PersonaController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(ValidatePersona $request)
     {
 
         $persona = Persona::create([

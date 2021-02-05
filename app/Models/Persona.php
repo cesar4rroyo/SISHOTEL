@@ -71,4 +71,21 @@ class Persona extends Model
         })->get()->toArray();
         return $personas;
     }
+    public static function getClientesConRucDni()
+    {
+        $personas = Persona::getClientes();
+        $data = [];
+        foreach ($personas as $item) {
+            if ($item['nombres'] == '-' && $item['apellidos'] == '-' && !is_null($item['razonsocial'])) {
+                $nombres = $item['razonsocial'];
+            } else if ($item['nombres'] != '-' && !is_null($item['nombres'])) {
+                $nombres = $item['nombres'] . ' ' . $item['apellidos'];
+            }
+            $data[] = [
+                "id" => $item['id'],
+                "nombres" => $nombres,
+            ];
+        }
+        return $data;
+    }
 }

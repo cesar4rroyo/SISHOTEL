@@ -49,11 +49,11 @@
         <label for="persona" class="control-label">{{ 'Personas' }}</label>
         <select required class="form-control clientes-select2" name="persona" id="persona">
             <option value="{{ isset($caja->persona) ? $caja->persona->id : ''}}">
-                {{ isset($caja->persona->nombres) ? $caja->persona->nombres : 'Seleccione una opcion'}}
+                {{ isset($caja->persona->nombres) ? (($caja->persona->nombres!='-')?($caja->persona->nombres . ' ' . $caja->persona->apellidos):($caja->persona->razonsocial))  : 'Seleccione una opcion'}}
             </option>
             @foreach ($personas as $item)
-            <option value="{{$item->id}}">
-                {{$item->nombres}} {{" "}}{{$item->apellidos}}
+            <option value="{{$item['id']}}">
+                {{$item['nombres']}}
             </option>
             @endforeach
         </select>

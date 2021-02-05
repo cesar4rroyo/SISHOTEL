@@ -80,7 +80,7 @@
                                     {{-- <td>{{ $item->numero }}</td> --}}
                                     <td>
                                         @if ($item->persona)
-                                        {{ $item->persona->nombres}}{{" "}}{{$item->persona->apellidos}}
+                                        {{isset($item->persona->razonsocial) ? $item->persona->razonsocial : $item->persona->nombres .' ' . $item->persona->apellidos}}
                                         @endif
                                     </td>
                                     @if ( ($item->tipo)=='Ingreso' )

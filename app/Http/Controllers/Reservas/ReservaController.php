@@ -27,7 +27,7 @@ class ReservaController extends Controller
             $initialDate = $initialDate->toDateString();
         }
 
-        $clientes = Persona::getClientes();
+        $clientes = Persona::getClientesConRucDni();
         $habitaciones = Habitacion::with('reserva', 'piso', 'tipohabitacion')->get()->toArray();
 
         return view('reservas.index', compact('initialDate', 'clientes', 'habitaciones'));
@@ -86,15 +86,20 @@ class ReservaController extends Controller
         // dd($habitacionesOcupadas->toArray());
         foreach ($reservas as $reserva) {
             if ($reserva->situacion == 'Reservado' || $reserva->situacion == 'Actualizado') {
+                if ($reserva->persona->nombres == '-' || !is_null($reserva->persona->razonsocial)) {
+                    $persona = $reserva->persona->razonsocial;
+                } else {
+                    $persona = $reserva->persona->nombres . " " . $reserva->persona->apellidos;
+                }
                 // $date = Carbon::createFromFormat('Y-m-d', $reserva->fechasalida)->addDay()->toDateString();
                 $data[] = [
                     'id' => $reserva->id,
                     'start' => $reserva->fecha,
                     'end' => $reserva->fechasalida,
-                    'title' => $reserva->habitacion->numero . ' Reserva de ' . $reserva->persona->nombres,
+                    'title' => $reserva->habitacion->numero . ' Reserva de ' . $persona,
                     'observacion' => $reserva->observacion,
                     'situacion' => $reserva->situacion,
-                    'persona' => $reserva->persona->nombres . $reserva->persona->apellidos,
+                    'persona' => $persona,
                     'nro_telefono' => $reserva->persona->telefono,
                     'persona_id' => $reserva->persona->id,
                     'dni' => $reserva->persona->dni,

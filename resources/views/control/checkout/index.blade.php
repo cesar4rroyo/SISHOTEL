@@ -197,13 +197,13 @@
                             <label for="persona" class="control-label">{{ 'Persona' }}</label>
                             {{-- <input type="text" id="persona"> --}}
                             <select class="form-control" required name="persona" id="persona_select">
-                                <option value="{{$pasajeros[0]['persona']['id']}}">
-                                    {{$pasajeros[0]['persona']['nombres'] . ' ' . $pasajeros[0]['persona']['apellidos']}}
+                                <option value="{{$pasajerosSelect[0]['id']}}">
+                                    {{$pasajerosSelect[0]['nombres']}}
                                 </option>
-                                @foreach ($pasajeros as $item)
-                                @if ($item['persona']['id']!=$pasajeros[0]['persona']['id'])
-                                <option value="{{$item['persona']['id']}}">
-                                    {{$item['persona']['nombres']}} {{" "}}{{$item['persona']['apellidos']}}
+                                @foreach ($personas as $item)
+                                @if ($item['id']!=$pasajerosSelect[0]['id'])
+                                <option value="{{$item['id']}}">
+                                    {{$item['nombres']}}
                                 </option>
                                 @endif
                                 @endforeach
@@ -224,19 +224,19 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($pasajeros as $item)
+                                        @foreach($pasajerosSelect as $item)
                                         <tr>
                                             <td>
-                                                {{isset($item['persona']['nombres'])? $item['persona']['nombres'] . " " . $item['persona']['apellidos'] : $item['persona']['nombres']}}
+                                                {{isset($item['nombres'])? $item['nombres'] : '-'}}
                                             </td>
                                             <td>
-                                                {{isset($item['persona']['ruc'])?$item['persona']['ruc']:$item['persona']['dni']}}
+                                                {{isset($item['ruc']) ? $item['ruc'] : $item['dni']}}
                                             </td>
                                             <td>
-                                                {{$item['persona']['telefono']}}
+                                                {{$item['telefono']}}
                                             </td>
                                             <td>
-                                                {{$item['persona']['direccion']}}
+                                                {{$item['direccion']}}
                                             </td>
                                         </tr>
                                         @endforeach

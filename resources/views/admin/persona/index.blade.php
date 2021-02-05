@@ -51,8 +51,7 @@
                         <table class="table text-center table-hover" id="tabla-data">
                             <thead>
                                 <tr>
-                                    <th>Nombres</th>
-                                    <th>Apellidos</th>
+                                    <th>Cliente</th>
                                     <th>RUC</th>
                                     <th>DNI</th>
                                     <th>Nacionalidad</th>
@@ -64,9 +63,8 @@
                             <tbody>
                                 @foreach($persona as $item)
                                 <tr>
-                                    <td>{{ $item->nombres }}</td>
                                     <td>
-                                        {{ isset($item->apellidos ) ? $item->apellidos  : '-'}}
+                                        {{isset($item->razonsocial) ? $item->razonsocial : $item->nombres .' ' . $item->apellidos}}
                                     </td>
                                     <td>
                                         {{ isset($item->ruc ) ? $item->ruc  : '-'}}

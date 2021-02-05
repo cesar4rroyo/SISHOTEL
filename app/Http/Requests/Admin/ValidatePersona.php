@@ -24,10 +24,8 @@ class ValidatePersona extends FormRequest
     public function rules()
     {
         return [
-            /* 'dni' => 'nullable|min:8 | unique:persona,dni,' . $this->route('id'),
-            'ruc' => 'nullable|min:12|numeric | unique:persona,ruc,' . $this->route('id'), */
-            'nombres' => 'required |max:20',
-            'apellidos' => 'max:20',
+            'dni' => 'nullable|numeric|unique:persona,dni,' . $this->route('id'),
+            'ruc' => 'nullable|numeric|unique:persona,ruc,' . $this->route('id'),
         ];
     }
 }

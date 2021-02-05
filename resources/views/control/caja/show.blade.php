@@ -52,7 +52,11 @@
                                 </tr>
                                 <tr>
                                     <th> Persona </th>
+                                    @if ($caja->persona->nombres=='-' && $caja->persona->apellidos=='-')
+                                    <td>{{$caja->persona->razonsocial}}</td>
+                                    @else
                                     <td> {{ isset($caja->persona->nombres) ? $caja->persona->nombres ." ". $caja->persona->apellidos : 'Varios' }}
+                                        @endif
                                     </td>
                                 </tr>
                                 <tr>

@@ -35,9 +35,8 @@
                 <h3>MARAKOS GRIL S.A.C.</h3>
                 <pre>
                 RUC 20605066942
-                AV. SANTA VICTORIA NRO. 472 URB.
-                SANTA VICTORIA LAMBAYEQUE -
-                CHICLAYO - CHICLAYO
+                CALLE MIGUEL GRAU NRO. 795
+                LAMBAYEQUE - CHICLAYO - PIMENTEL
             </pre>
             </td>
         </tr>
@@ -60,11 +59,11 @@
         </tr>
         <tr>
             <td><strong>NOMBRE:</strong>
-                {{!is_null($comprobante['persona'])?$comprobante['persona']['nombres'] . $comprobante['persona']['apellidos'] :'Varios'}}
+                {{!is_null($nombre)?$nombre:'Varios'}}
             </td>
         </tr>
         <tr>
-            <td><strong>DIRECCION:</strong>{{!is_null($comprobante['persona'])?$comprobante['persona']['direccion'] :'-'}}
+            <td><strong>DIRECCION:</strong>{{!is_null($direccion)?$direccion :'-'}}
             </td>
         </tr>
     </table>

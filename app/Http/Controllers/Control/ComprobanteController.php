@@ -23,7 +23,9 @@ class ComprobanteController extends Controller
         $dniRuc = "";
         if ($comprobante['tipodocumento'] == 'factura') {
             $dniRuc = $comprobante['persona']['ruc'];
-            $pdf = PDF::loadView('pdf.factura', compact('comprobante', 'detalles', 'dniRuc'))->setPaper('a4');
+            $nombre = $comprobante['persona']['razonsocial'];
+            $direccion = $comprobante['persona']['direccion'];
+            $pdf = PDF::loadView('pdf.factura', compact('comprobante', 'detalles', 'dniRuc', 'nombre', 'direccion'))->setPaper('a4');
         } else {
             if (!is_null($comprobante['persona']['dni'])) {
                 $dniRuc = $comprobante['persona']['dni'];
@@ -32,10 +34,14 @@ class ComprobanteController extends Controller
             }
         }
         if ($comprobante['tipodocumento'] == 'boleta') {
-            $pdf = PDF::loadView('pdf.boleta', compact('comprobante', 'detalles', 'dniRuc'))->setPaper('a4');
+            $nombre = $comprobante['persona']['nombres'] . ' ' . $comprobante['persona']['apellidos'];
+            $direccion = $comprobante['persona']['direccion'];
+            $pdf = PDF::loadView('pdf.boleta', compact('comprobante', 'detalles', 'dniRuc', 'direccion', 'nombre'))->setPaper('a4');
         }
         if ($comprobante['tipodocumento'] == 'ticket') {
-            $pdf = PDF::loadView('pdf.ticket', compact('comprobante', 'detalles', 'dniRuc'))->setPaper('a4');
+            $nombre = $comprobante['persona']['nombres'] . ' ' . $comprobante['persona']['apellidos'];
+            $direccion = $comprobante['persona']['direccion'];
+            $pdf = PDF::loadView('pdf.ticket', compact('comprobante', 'detalles', 'dniRuc', 'direccion', 'nombre'))->setPaper('a4');
         }
 
         return $pdf->download('factura.pdf');
