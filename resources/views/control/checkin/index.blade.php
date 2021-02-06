@@ -171,10 +171,24 @@
                     $('#direccion').val(data.Direccion);
                     $('#nombres').val('-');
                     $('#apellidos').val('-');
+                    $('#nombres').prop('readonly', true);
+                    $('#apellidos').prop('readonly', true);
                 }
             }
 
         })
+    });
+
+    $('#modal-pasajero').on('hidden.bs.modal', function (e) {
+        $(this)
+            .find("input,textarea,select")
+            .val('')
+            .end()
+            .find("input[type=checkbox], input[type=radio]")
+            .prop("checked", "")
+            .end();
+        $('#nombres').prop('readonly', false);
+        $('#apellidos').prop('readonly', false);
     })
     
     $("#descuento").on('change',function(){
