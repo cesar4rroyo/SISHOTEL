@@ -2,6 +2,11 @@
 
 @section('content')
 {{-- {{dd($movimiento)}} --}}
+<style>
+    #btnBuscarRuc:hover {
+        cursor: pointer;
+    }
+</style>
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -195,6 +200,11 @@
                         </div>
                         <div class="form-group col-sm {{ $errors->has('persona') ? 'has-error' : ''}}">
                             <label for="persona" class="control-label">{{ 'Persona' }}</label>
+                            <span class=" badge badge-info" id="btnAddRuc" type="button" data-toggle="modal"
+                                data-target="#rucModal">
+                                <i class="fas fa-plus-circle"></i>
+                                Agregar Cliente RUC
+                            </span>
                             {{-- <input type="text" id="persona"> --}}
                             <select class="form-control" required name="persona" id="persona_select">
                                 <option value="{{$pasajerosSelect[0]['id']}}">
@@ -210,7 +220,8 @@
                             </select>
                             {!! $errors->first('persona', '<p class="text-danger">:message</p>') !!}
                         </div>
-                        <div class="row">
+                        <hr>
+                        <div class="row mt-2">
                             <label for="movimientos" class=" font-weight-bold text-uppercase">{{'Húespedes'}}</label>
                             <div id="personas" class="table-responsive">
                                 <table class="table text-center table-hover">
@@ -262,12 +273,127 @@
     </div>
 </div>
 </div>
+<div class="modal fade" id="rucModal" tabindex="-1" aria-labelledby="rucModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rucModal">Añadir Cliente RUC</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm form-group">
+                        <label class="control-label" for="ruc">{{'RUC'}}</label>
+                        <span class="badge badge-primary" id="btnBuscarRuc">
+                            <i class="fas fa-search"></i>
+                            {{'Buscar'}}</span>
+                        <input class="form-control" type="number" name="ruc" id="ruc">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm form-group">
+                        <label class="control-label" for="razonsocial">{{'Razon Social'}}</label>
+                        <input class="form-control" readonly type="text" name="razonsocial" id="razonsocial">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm form-group">
+                        <label class="control-label" for="direccion">{{'Direccion'}}</label>
+                        <input class="form-control" readonly type="text" name="direccion" id="direccion">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" id="btnGuardarCliente" class="btn btn-primary">Guardar
+                    Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) {
         $('#errMessage').hide();
         $('#calcularTotal').hide();
         $('#totalContainer').hide();
+        $('#btnAddRuc').hide();
+
+        $("#btnBuscarRuc").on('click', function(){
+            var ruc = $('#ruc').val();
+            $.ajax({
+                type:'GET',
+                url: 'http://157.245.85.164/facturacion/buscaCliente/BuscaClienteRuc.php?fe=N',
+                data:"&token=qusEj_w7aHEpX"+"&ruc="+ruc,
+                success:function(r){
+                    var data = JSON.parse(r);
+                    if(data.code == 0){
+                        $('#razonsocial').val(data.RazonSocial);
+                        $('#direccion').val(data.Direccion);                    
+                    }
+                }
+            });
+        });
+
+        $('#btnGuardarCliente').on('click', function(){
+            var ruc = $('#ruc').val();
+            var razonsocial = $('#razonsocial').val();
+            var direccion = $('#direccion').val();
+            var select = $('#persona_select');
+            if(ruc.trim()=='' || razonsocial.trim()=='' || direccion.trim()==''){
+                alert('Uno o más campos están vacios');
+            }else{
+                $.ajax({
+                    type:'POST',
+                    url:"{{route('storeClienteRuc')}}",
+                    data:{
+                        "ruc":ruc,
+                        "razonsocial":razonsocial,
+                        "direccion":direccion,
+                        "_token": $('input[name=_token]').val(),
+                    },
+                    success: function(r){
+                        if(r.mensaje=='ok'){                            
+                            $.ajax({
+                                type:'GET',
+                                url:"{{route('getClientesRuc')}}",
+                                success:function(res){
+                                    select.find('option').remove();
+                                    $.each(res.data, function(key,value){
+                                        select.append("<option value='" + value.id + "'>" + value.nombre + "</option>");
+                                    });
+                                    $('#rucModal').modal('hide');
+                                    Hotel.notificaciones('Se agrego correctamente', 'Hotel', 'success');
+                                },
+                                error:function(e){
+                                    console.log(e);
+                                    $('#rucModal').modal('hide');
+                                    Hotel.notificaciones('Ha ocurrido un error', 'Hotel', 'error');   
+                                }
+                            });                            
+                        }
+                        console.log(r);
+                    },
+                    error: function(e){
+                        console.log(e);
+                        $('#rucModal').modal('hide');
+                        Hotel.notificaciones('Ha ocurrido un error', 'Hotel', 'error');                            
+                    }
+                })
+            }
+        });
+
+        $('#rucModal').on('hidden.bs.modal', function (e) {
+        $(this)
+            .find("input,textarea,select")
+            .val('')
+            .end()
+            .find("input[type=checkbox], input[type=radio]")
+            .prop("checked", "")
+            .end();        
+        });
 
         const btnCheckOut = document.getElementById('btnCheckOut').onclick=function(event){
             event.preventDefault();
@@ -365,18 +491,47 @@
             }
 
         })
-        $(document.body).on('change',"#tipodocumento",function (e) {
-           var optVal= $("#tipodocumento option:selected").val();
-           $.ajax({
-               url:"{{url('admin/ventas')}}" + "/" + optVal,
-               success:function(r){
-                   $('#numero').val(r);
-               },
-               error:function(e){
-                   console.log(e);
-               }
-           })
-    });
+    $(document.body).on('change',"#tipodocumento",function (e) {
+        var optVal= $("#tipodocumento option:selected").val();
+        var select = $('#persona_select');
+        if(optVal=='factura'){
+            $('#btnAddRuc').show();
+        }else{
+            $('#btnAddRuc').hide();
+        }
+            $.ajax({
+                url:"{{url('admin/ventas')}}" + "/" + optVal,
+                success:function(r){
+                    $('#numero').val(r);
+                    if(optVal=='factura'){
+                        $.ajax({
+                            type:'GET',
+                            url: "{{route('getClientesRuc')}}",
+                            success:function(res){
+                                select.find('option').remove();
+                                $.each(res.data, function(key,value){
+                                    select.append("<option value='" + value.id + "'>" + value.nombre + "</option>");
+                                });
+                            }
+                        });
+                    }else{
+                        $.ajax({
+                            type:'GET',
+                            url: "{{route('getTodosClientes')}}",
+                            success:function(res){
+                                select.find('option').remove();
+                                $.each(res.data, function(key,value){
+                                    select.append("<option value='" + value.id + "'>" + value.nombre + "</option>");
+                                });
+                            }
+                        }); 
+                    }
+                },
+                error:function(e){
+                    console.log(e);
+                }
+            });
+        });
     $("#dias").on('change',function(){
         if($(this).val().trim()==''){
             $('#calcularTotal').hide();

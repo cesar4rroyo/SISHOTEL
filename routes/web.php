@@ -74,6 +74,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('persona/{id}/edit', 'PersonaController@edit')->name('edit_persona');
     Route::put('persona/{id}', 'PersonaController@update')->name('update_persona');
     Route::delete('persona/{id}/destroy', 'PersonaController@destroy')->name('destroy_persona');
+    //obetener solo los clientes con RUC para combobox
+    Route::get('persona/clientes/ruc', 'PersonaController@getClientesRuc')->name('getClientesRuc');
+    //obetner todos los clientes
+    Route::get('persona/clientes/generales', 'PersonaController@getClientesSinRuc')->name('getTodosClientes');
+    //agregar persona RUC desde el checkout
+    Route::post('persona/store/checkout', 'PersonaController@storeClienteRuc')->name('storeClienteRuc');
     /* Rutas de NACIONALIDAD */
     Route::get('nacionalidad/create', 'NacionalidadController@create')->name('create_nacionalidad');
     Route::get('nacionalidad', 'NacionalidadController@index')->name('nacionalidad');

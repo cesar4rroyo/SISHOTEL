@@ -237,10 +237,34 @@
         }); 
         $(document.body).on('change',"#tipodocumento",function (e) {
            var optVal= $("#tipodocumento option:selected").val();
+           var select = $('#persona');
            $.ajax({
                url:optVal,
                success:function(r){
-                   $('#numero').val(r);
+                    $('#numero').val(r);
+                    if(optVal=='factura'){
+                        $.ajax({
+                            type:'GET',
+                            url: "{{route('getClientesRuc')}}",
+                            success:function(res){
+                                select.find('option').remove();
+                                $.each(res.data, function(key,value){
+                                    select.append("<option value='" + value.id + "'>" + value.nombre + "</option>");
+                                });
+                            }
+                        });
+                    }else{
+                        $.ajax({
+                            type:'GET',
+                            url: "{{route('getTodosClientes')}}",
+                            success:function(res){
+                                select.find('option').remove();
+                                $.each(res.data, function(key,value){
+                                    select.append("<option value='" + value.id + "'>" + value.nombre + "</option>");
+                                });
+                            }
+                        }); 
+                    }
                },
                error:function(e){
                    console.log(e);

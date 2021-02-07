@@ -189,7 +189,7 @@
             .end();
         $('#nombres').prop('readonly', false);
         $('#apellidos').prop('readonly', false);
-    })
+    });
     
     $("#descuento").on('change',function(){
         var dscto = $(this).val();

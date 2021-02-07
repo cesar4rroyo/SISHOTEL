@@ -95,9 +95,15 @@ class VentasController extends Controller
             $numero = 'B063-' . $numero;
         }
         if (!empty($search)) {
-            $servicios = Servicios::where('nombre', 'LIKE', '%' . $search . '%')->get()->toArray();
+            $servicios =
+                Servicios::where('nombre', 'LIKE', '%' . $search . '%')
+                ->whereNotIn('id', [1, 2, 3, 4, 6])
+                ->get()
+                ->toArray();
         } else {
-            $servicios = Servicios::get()->toArray();
+            $servicios = Servicios::whereNotIn('id', [1, 2, 3, 4, 6])
+                ->get()
+                ->toArray();
         }
         return view('control.ventas.addServicio', compact('personas', 'numero', 'servicios'));
     }

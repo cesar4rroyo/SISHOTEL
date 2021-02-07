@@ -45,6 +45,37 @@ class PersonaController extends Controller
         return view('admin.persona.index', compact('persona', 'rol'));
     }
 
+    public function getClientesSinRuc()
+    {
+        $persona = Persona::get()->toArray();
+        $data = [];
+        foreach ($persona as $item) {
+            if (!is_null($item['ruc']) && !is_null($item['razonsocial'])) {
+                $nombres = $item['razonsocial'];
+            } else {
+                $nombres = $item['nombres'] . " " . $item['apellidos'];
+            }
+            $data[] = [
+                'id' => $item['id'],
+                'nombre' => $nombres,
+            ];
+        }
+        $response = ['data' => $data];
+        return response()->json($response);
+    }
+    public function getClientesRuc()
+    {
+        $persona = Persona::whereNotNull('ruc')->get()->toArray();
+        $data = [];
+        foreach ($persona as $item) {
+            $data[] = [
+                'id' => $item['id'],
+                'nombre' => $item['razonsocial'],
+            ];
+        }
+        $response = ['data' => $data];
+        return response()->json($response);
+    }
 
     public function create()
     {
@@ -109,6 +140,20 @@ class PersonaController extends Controller
         $personas = Persona::getClientesConRucDni();
 
         return view('control.checkin.conreserva', compact('reserva', 'roles', 'nacionalidades', 'habitacion', 'personas', 'initialDate'));
+    }
+    public function storeClienteRuc(Request $request)
+    {
+        $persona = Persona::create([
+            'nombres' => '-',
+            'apellidos' => '-',
+            'razonsocial' => strtoupper($request->razonsocial),
+            'ruc' => $request->ruc,
+            'direccion' => strtoupper($request->direccion),
+            'nacionalidad_id' => '155',
+        ]);
+        $persona->roles()->sync('2');
+
+        return response()->json(['mensaje' => 'ok']);
     }
     public function store_checkin(Request $request)
     {

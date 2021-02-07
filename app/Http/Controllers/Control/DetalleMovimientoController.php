@@ -36,7 +36,14 @@ class DetalleMovimientoController extends Controller
             ->whereHas('habitacion', function ($q) use ($id) {
                 $q->where('id', $id);
             })->latest('fechaingreso')->first()->toArray();
-        return view('control.detallemovimientos.addServicio', compact('servicios', 'movimientos', 'id'));
+        $pasajeros = Pasajero::with('persona', 'movimiento')
+            ->whereHas('movimiento', function ($q) use ($id) {
+                $q->where('habitacion_id', $id);
+            })
+            ->where('movimiento_id', $movimientos['id'])
+            ->get()
+            ->toArray();
+        return view('control.detallemovimientos.addServicio', compact('pasajeros', 'servicios', 'movimientos', 'id'));
     }
     //consultar productos search
     public function productos($id, Request $request)
@@ -45,14 +52,21 @@ class DetalleMovimientoController extends Controller
         if (!empty($search)) {
             $productos = Producto::where('nombre', 'LIKE', '%' . $search . '%')->get()->toArray();
         } else {
-            $productos = Producto::get()->toArray();
+            $productos = Producto::orderBy('nombre')->get()->toArray();
         }
         $movimientos =
             Movimiento::with('pasajero', 'reserva', 'habitacion', 'detallemovimiento')
             ->whereHas('habitacion', function ($q) use ($id) {
                 $q->where('id', $id);
             })->latest('fechaingreso')->first()->toArray();
-        return view('control.detallemovimientos.add', compact('productos', 'movimientos', 'id'));
+        $pasajeros = Pasajero::with('persona', 'movimiento')
+            ->whereHas('movimiento', function ($q) use ($id) {
+                $q->where('habitacion_id', $id);
+            })
+            ->where('movimiento_id', $movimientos['id'])
+            ->get()
+            ->toArray();
+        return view('control.detallemovimientos.add', compact('pasajeros', 'productos', 'movimientos', 'id'));
     }
     public function zero_fill($valor, $long = 0)
     {
@@ -94,7 +108,9 @@ class DetalleMovimientoController extends Controller
 
             return view('control.detallemovimientos.add', compact('pasajeros', 'productos', 'movimientos', 'id', 'numero'));
         } else {
-            $servicios = Servicios::get()->toArray();
+            $servicios = Servicios::whereNotIn('id', [1, 2, 3, 4, 6])
+                ->get()
+                ->toArray();
 
 
             return view('control.detallemovimientos.addServicio', compact('pasajeros', 'servicios', 'movimientos', 'id', 'numero'));
