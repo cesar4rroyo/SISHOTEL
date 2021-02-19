@@ -242,7 +242,7 @@
                                     <tbody>
                                         @foreach($pasajerosSelect as $item)
                                         <tr>
-                                            <td>
+                                            {{-- <td>
                                                 <form class="eliminarPasajeroForm" method="POST"
                                                     action="{{ route('destroy_pasajero', $item['id_pasajero']) }}"
                                                     accept-charset="UTF-8" style="display:inline">
@@ -253,7 +253,7 @@
                                                             aria-hidden="true"></i>
                                                     </button>
                                                 </form>
-                                            </td>
+                                            </td> --}}
                                             <td>
                                                 {{isset($item['nombres'])? $item['nombres'] : '-'}}
                                             </td>
