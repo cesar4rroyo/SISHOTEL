@@ -190,18 +190,9 @@
         $('#nombres').prop('readonly', false);
         $('#apellidos').prop('readonly', false);
     });
+   
     
-    $("#descuento").on('change',function(){
-        var dscto = $(this).val();
-        console.log(dscto);
-        $('#total').val(parseFloat({{isset($total) ? $total : 0}}));     
-        var preciohabitacion = $('#preciohabitacion').val();
-        var habitaciontotal = preciohabitacion - (dscto*preciohabitacion/100);
-        var total = $('#total').val();
-        total = parseFloat(habitaciontotal) + parseFloat(total);
-        $('#total').val(parseFloat(total));
-       
-    });
+    
  })
 
 

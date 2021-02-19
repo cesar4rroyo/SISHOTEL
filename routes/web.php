@@ -74,12 +74,20 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('persona/{id}/edit', 'PersonaController@edit')->name('edit_persona');
     Route::put('persona/{id}', 'PersonaController@update')->name('update_persona');
     Route::delete('persona/{id}/destroy', 'PersonaController@destroy')->name('destroy_persona');
+    Route::delete('persona/pasajero/{id}/destroy', 'PersonaController@pasajeroDestroy')->name('destroy_pasajero');
+
+    //store in checkout
+    Route::post('persona/checkout/store', 'PersonaController@store_checkout')->name('store_persona_checkout');
     //obetener solo los clientes con RUC para combobox
     Route::get('persona/clientes/ruc', 'PersonaController@getClientesRuc')->name('getClientesRuc');
     //obetner todos los clientes
     Route::get('persona/clientes/generales', 'PersonaController@getClientesSinRuc')->name('getTodosClientes');
     //agregar persona RUC desde el checkout
     Route::post('persona/store/checkout', 'PersonaController@storeClienteRuc')->name('storeClienteRuc');
+    //buscar persona por DNI en BD
+    Route::get('persona/dni/buscar', 'PersonaController@getPersonaDNI')->name('getPersonaDni');
+    //agregar nuevo pasajero a la habitación
+    Route::post('persona/huesped/habitacion', 'PersonaController@addHuespedHabitacion')->name('add_huesped_habitacion');
     /* Rutas de NACIONALIDAD */
     Route::get('nacionalidad/create', 'NacionalidadController@create')->name('create_nacionalidad');
     Route::get('nacionalidad', 'NacionalidadController@index')->name('nacionalidad');

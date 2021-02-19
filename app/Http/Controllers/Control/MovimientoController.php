@@ -181,6 +181,7 @@ class MovimientoController extends Controller
                     $nombres = $item['persona']['nombres'] . ' ' . $item['persona']['apellidos'];
                 }
                 $pasajerosSelect[] = [
+                    "id_pasajero"=>$item['id'],
                     "id" => $item['persona']['id'],
                     "nombres" => $nombres,
                     "ruc" => $item['persona']['ruc'],
@@ -202,11 +203,12 @@ class MovimientoController extends Controller
                 $yearActual = Carbon::now()->year;
                 $numero = 'B063-' . $numero;
             }
-
+            $roles = Rol::orderBy('id')->pluck('nombre', 'id')->toArray();
+            $nacionalidades = Nacionalidad::with('persona')->get();
             return
                 view(
                     'control.checkout.index',
-                    compact('id_movimiento', 'numero', 'conceptos', 'habitacion', 'initialDate', 'detalles', 'movimiento', 'pasajerosSelect', 'personas')
+                    compact('roles', 'nacionalidades','id_movimiento', 'numero', 'conceptos', 'habitacion', 'initialDate', 'detalles', 'movimiento', 'pasajerosSelect', 'personas')
                 );
         }
     }
