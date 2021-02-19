@@ -228,7 +228,7 @@
                                 {{'Agregar huésped'}}
                             </span>
                             <div id="personas" class="table-responsive">
-                                <table id="pasajerosTable" class="table text-center table-hover">
+                                <table class="table text-center table-hover">
                                     <thead>
                                         <tr>
                                             <th>Accion</th>
@@ -242,18 +242,18 @@
                                     <tbody>
                                         @foreach($pasajerosSelect as $item)
                                         <tr>
-                                            {{-- <td>
-                                                <form class="eliminarPasajeroForm" method="POST"
-                                                    action="{{ route('destroy_pasajero', $item['id_pasajero']) }}"
-                                                    accept-charset="UTF-8" style="display:inline">
-                                                    {{ method_field('DELETE') }}
-                                                    {{ csrf_field() }}
-                                                    <button type="submit" class="btn btn-outline-danger btn-sm"
-                                                        title="Eliminar persona"><i class="fa fa-trash"
-                                                            aria-hidden="true"></i>
+                                            @if (count($pasajerosSelect)!=1)
+                                                <td>
+                                                    <button type="submit" data-id="{{$item['id_pasajero']}}" class="btn btn-outline-danger btn-sm btnELiminarHuesped"
+                                                            title="Eliminar persona"><i class="fa fa-trash"
+                                                                aria-hidden="true"></i>
                                                     </button>
-                                                </form>
-                                            </td> --}}
+                                                </td> 
+                                            @else
+                                            <td>
+                                                
+                                            </td> 
+                                            @endif                                           
                                             <td>
                                                 {{isset($item['nombres'])? $item['nombres'] : '-'}}
                                             </td>
@@ -276,7 +276,7 @@
                         <div class="form-group">
                             <label for="comentario" class="control-label">{{'Comentario'}}</label>
                             <textarea class="form-control" name="comentario" id="comentario" rows="5">
-                </textarea>
+                            </textarea>
                         </div>
                         <div class="container text-center">
                             <button type="button" id="btnCheckOut" class="btn btn-outline-success col-sm-6">
@@ -342,9 +342,13 @@
             $('#modalHuesped').modal('toggle');
         });
 
-        $('#pasajerosTable').on('submit', '.eliminarPasajeroForm', function(e){
+        $('.btnELiminarHuesped').on('click', function(e){
             e.preventDefault();
-            const form = $(this);
+            var id = $(this).attr('data-id');
+            var data = {
+                id: id,
+                _token: $('input[name=_token]').val(),
+            }
             swal({
                 title: '¿ Está seguro que desea eliminar el huesped ?',
                 text: "Si lo elimina ahora ya no lo podrá usar despues!",
@@ -356,13 +360,18 @@
             }).then((value) => {
                 if (value) {
                     $.ajax({
-                        url: form.attr('action'),
+                        url: "{{route('destroy_pasajero')}}",
                         type: 'POST',
-                        data: form.serialize(),
+                        data: data,
                         success: function (respuesta) {
                             if (respuesta.mensaje == "ok") {
-                                form.parents('tr').remove();
                                 Hotel.notificaciones('El registro fue eliminado correctamente', 'Hotel', 'success');
+                                if (data.type != 'error') {
+                                    setTimeout(function() {
+                                        location.reload();
+                                    }, 1000);
+                                }
+
                             } else {
                                 Hotel.notificaciones('El registro no pudo ser eliminado, hay recursos usandolo', 'Hotel', 'error');
                             }
@@ -375,6 +384,7 @@
             });
         });
 
+        
         $('#huespedForm').on('submit', function(e){
             e.preventDefault();
             //const formData = new FormData(document.getElementById('huespedForm'));

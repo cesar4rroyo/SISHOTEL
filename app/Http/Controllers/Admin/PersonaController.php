@@ -64,8 +64,9 @@ class PersonaController extends Controller
 
     }
 
-    public function pasajeroDestroy(Request $request, $id){
+    public function pasajeroDestroy(Request $request){
         if ($request->ajax()) {
+            $id = $request->id;
             Pasajero::destroy($id);
             return response()->json(['mensaje' => 'ok']);
         } else {
