@@ -175,7 +175,7 @@ class MovimientoController extends Controller
                 ->toArray();
             $pasajerosSelect = [];
             foreach ($pasajeros as $item) {
-                if (!is_null($item['persona']['razonsocial'])) {
+                if (!is_null($item['persona']['razonsocial']) && trim($item['persona']['razonsocial'])!='') {
                     $nombres = $item['persona']['razonsocial'];
                 } else if ($item['persona']['nombres'] != '-' && !is_null($item['persona']['nombres'])) {
                     $nombres = $item['persona']['nombres'] . ' ' . $item['persona']['apellidos'];
