@@ -1,13 +1,13 @@
 @extends("theme.$theme.layout")
 
 @section('content')
-{{-- {{dd($movimiento)}} --}}
 <style>
     #btnBuscarRuc:hover {
         cursor: pointer;
     }
 </style>
 <div class="row">
+    @include ('control.checkout.modalHuesped')
     <div class="col-md-12">
         <div class="card">
             <div class="card-header font-weight-bold">Check Out</div>
@@ -23,11 +23,11 @@
 
                     <form action="{{route('add_checkout', $movimiento['id'])}}" id="checkoutForm" method="POST"
                         onsubmit="return confirm('¿Está seguro que desea hacer finalizar el Check-Out?')">
-
+                        <input type="hidden" id="nro_movimiento" name="nro_movimiento" value="{{$movimiento['id']}}">
                         @csrf
                         <div class="row">
                             <div class="col-sm form-group">
-                                <label for="habitacion">{{'Habitacion'}}</label>
+                                <label for="habitacion">Habitacion</label>
                                 <input class="form-control" type="text" name="habitacion" readonly
                                     value="{{$habitacion['numero']}}">
                                 <input class="form-control" type="number" name="habitacion_id" hidden
@@ -223,10 +223,15 @@
                         <hr>
                         <div class="row mt-2">
                             <label for="movimientos" class=" font-weight-bold text-uppercase">{{'Húespedes'}}</label>
+                            <span type="button" class="badge badge-secondary ml-2 pb-0" id="btnAgregarHuesped">
+                                <i class="fas fa-plus-circle"></i>
+                                {{'Agregar huésped'}}
+                            </span>
                             <div id="personas" class="table-responsive">
-                                <table class="table text-center table-hover">
+                                <table id="pasajerosTable" class="table text-center table-hover">
                                     <thead>
                                         <tr>
+                                            <th>Accion</th>
                                             <th>Nombre</th>
                                             <th>DNI / RUC</th>
                                             <th>Teléfono</th>
@@ -237,6 +242,18 @@
                                     <tbody>
                                         @foreach($pasajerosSelect as $item)
                                         <tr>
+                                            <td>
+                                                <form class="eliminarPasajeroForm" method="POST"
+                                                    action="{{ route('destroy_pasajero', $item['id_pasajero']) }}"
+                                                    accept-charset="UTF-8" style="display:inline">
+                                                    {{ method_field('DELETE') }}
+                                                    {{ csrf_field() }}
+                                                    <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                        title="Eliminar persona"><i class="fa fa-trash"
+                                                            aria-hidden="true"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
                                             <td>
                                                 {{isset($item['nombres'])? $item['nombres'] : '-'}}
                                             </td>
@@ -321,6 +338,129 @@
         $('#totalContainer').hide();
         $('#btnAddRuc').hide();
 
+        $('#btnAgregarHuesped').on('click', function(){
+            $('#modalHuesped').modal('toggle');
+        });
+
+        $('#pasajerosTable').on('submit', '.eliminarPasajeroForm', function(e){
+            e.preventDefault();
+            const form = $(this);
+            swal({
+                title: '¿ Está seguro que desea eliminar el huesped ?',
+                text: "Si lo elimina ahora ya no lo podrá usar despues!",
+                icon: 'warning',
+                buttons: {
+                    cancel: "Cancelar",
+                    confirm: "Aceptar"
+                },
+            }).then((value) => {
+                if (value) {
+                    $.ajax({
+                        url: form.attr('action'),
+                        type: 'POST',
+                        data: form.serialize(),
+                        success: function (respuesta) {
+                            if (respuesta.mensaje == "ok") {
+                                form.parents('tr').remove();
+                                Hotel.notificaciones('El registro fue eliminado correctamente', 'Hotel', 'success');
+                            } else {
+                                Hotel.notificaciones('El registro no pudo ser eliminado, hay recursos usandolo', 'Hotel', 'error');
+                            }
+                        },
+                        error: function (e) {
+                            console.log('Error: ', e);
+                        }
+                    });
+                }
+            });
+        });
+
+        $('#huespedForm').on('submit', function(e){
+            e.preventDefault();
+            //const formData = new FormData(document.getElementById('huespedForm'));
+            var formData = $('#huespedForm').serialize();
+            var dni = $('#dniH').val();
+            var isDisabled = $('#dniH').prop('disabled');
+            var id_movimiento = $('#nro_movimiento').val();
+            
+            if(isDisabled){
+                var id = $('#idHuesped').val();
+                var data = {
+                    id:id,
+                    id_movimiento: id_movimiento,
+                    _token: $('input[name=_token]').val(),
+                }
+                $.ajax({
+                    type:'POST',
+                    url:"{{route('add_huesped_habitacion')}}",
+                    data: data,
+                    success:function(r){
+                        Hotel.notificaciones(r.message, 'SISTEMA HOTEL', r.type);
+                        if (data.type != 'error') {
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1000);
+                        }
+                    },
+                    error: function(e){
+                        console.log(e);                      
+                    }
+                });
+            }else {
+                $.ajax({
+                    type:'POST',
+                    url: "{{route('store_persona_checkout')}}",
+                    data : formData,
+                    success: function(data){
+                        Hotel.notificaciones(data.message, 'SISTEMA', data.type);
+                        if (data.type != 'error') {
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1000);
+                        }
+                        $('#modalHuesped').modal('toggle');
+                    },
+                    error: function(e){
+                        Hotel.notificaciones(e.message, 'Error!', e.type);
+                    }
+                });               
+            }
+           
+        });
+
+        $('#btnBuscarDni').on('click', function(){
+            var dni = $('#dniH').val();
+            var data = {
+                dni:dni,
+            }
+            $.ajax({
+                type:'GET',
+                url:"{{route('getPersonaDni')}}",
+                data: data,
+                success: function(r){
+                    var persona = r.persona;
+                    $.each(persona, function(nombre, data){
+                        var input = $(document).find('[name="' +
+                                        nombre +
+                                        'H"]');
+                        input.val(data);                       
+                    });
+                    $('.selectRolHuesped').val(r.roles).trigger('change');
+                    $('#idHuesped').val(persona.id);
+                    console.log(persona.id);
+                    $('#modalHuesped')
+                        .find("input,textarea,select")
+                        .prop('disabled', true)
+                        .end()
+                        .find("input[type=checkbox], input[type=radio]")
+                        .prop("disabled", true)
+                        .end();  
+                },
+                error: function(e){
+                    console.log(e);
+                }
+            })
+        });
         $("#btnBuscarRuc").on('click', function(){
             var ruc = $('#ruc').val();
             $.ajax({
@@ -332,6 +472,24 @@
                     if(data.code == 0){
                         $('#razonsocial').val(data.RazonSocial);
                         $('#direccion').val(data.Direccion);                    
+                    }
+                }
+            });
+        });
+
+        $("#btnBuscarRucHuesped").on('click', function(){
+            var ruc = $('#rucH').val();
+            $.ajax({
+                type:'GET',
+                url: 'http://157.245.85.164/facturacion/buscaCliente/BuscaClienteRuc.php?fe=N',
+                data:"&token=qusEj_w7aHEpX"+"&ruc="+ruc,
+                success:function(r){
+                    var data = JSON.parse(r);
+                    if(data.code == 0){
+                        $('#razonsocialH').val(data.RazonSocial);
+                        $('#direccion').val(data.Direccion);
+                        $('#nombresH').val('-').prop('disabled', true);
+                        $('#apellidosH').val('-').prop('disabled', true);                    
                     }
                 }
             });
@@ -386,13 +544,25 @@
         });
 
         $('#rucModal').on('hidden.bs.modal', function (e) {
-        $(this)
-            .find("input,textarea,select")
-            .val('')
-            .end()
-            .find("input[type=checkbox], input[type=radio]")
-            .prop("checked", "")
-            .end();        
+            $(this)
+                .find("input,textarea,select")
+                .val('')
+                .end()
+                .find("input[type=checkbox], input[type=radio]")
+                .prop("checked", "")
+                .end();        
+        });
+
+        $('#modalHuesped').on('hidden.bs.modal', function (e) {
+            $(this)
+                .find("input,textarea,select")
+                .val('')
+                .prop('disabled', false)
+                .end()
+                .find("input[type=checkbox], input[type=radio]")
+                .prop("checked", "")
+                .end();  
+            $(".selectRolHuesped").val([]).trigger("change");      
         });
 
         const btnCheckOut = document.getElementById('btnCheckOut').onclick=function(event){

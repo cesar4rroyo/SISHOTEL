@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\ValidatePersona;
 use App\Models\Habitacion;
 use App\Models\Nacionalidad;
 use App\Models\Persona;
+use App\Models\Procesos\Pasajero;
 use App\Models\Rol;
 use Carbon\Carbon;
 
@@ -43,6 +44,106 @@ class PersonaController extends Controller
         }
 
         return view('admin.persona.index', compact('persona', 'rol'));
+    }
+
+    public function getPersonaDNI(Request $request){
+        $dni = $request->dni;
+        $persona = Persona::with('nacionalidad', 'roles')
+            ->where('dni', $dni)
+            ->get()
+            ->toArray()[0];
+     
+        $roles = [];
+        if (count($persona['roles']) != 0) {
+            foreach ($persona['roles'] as $item) {
+                $roles[] =
+                    $item['id'];
+            }
+        }
+        return response()->json(['persona' => $persona, 'roles' => $roles]);
+
+    }
+
+    public function pasajeroDestroy(Request $request, $id){
+        if ($request->ajax()) {
+            Pasajero::destroy($id);
+            return response()->json(['mensaje' => 'ok']);
+        } else {
+            abort(404);
+        }
+    }
+
+   
+    public function store_checkout(Request $request)
+    {
+        
+        try {
+            $persona = Persona::create([
+                'nombres' => strtoupper($request->nombresH),
+                'apellidos' => strtoupper($request->apellidosH),
+                'razonsocial' => strtoupper($request->razonsocialH),
+                'ruc' => $request->rucH,
+                'dni' => $request->dniH,
+                'direccion' => strtoupper($request->direccionH),
+                'sexo' => $request->sexoH,
+                'fechanacimiento' => $request->fechanacimientoH,
+                'telefono' => $request->telefonoH,
+                'observacion' => strtoupper($request->observacionH),
+                'nacionalidad_id' => $request->nacionalidad_idH,
+                'edad' => $request->edadH,
+                'email' => $request->emailH,
+                'ciudad' => strtoupper($request->ciudadH),    
+            ]);
+            $persona->roles()->sync($request->rol_idH);
+
+            $ultimapersona = Persona::latest('created_at')->first()->toArray();
+            $pasajero = Pasajero::create([
+                'movimiento_id' => $request->nro_movimientoH,
+                'persona_id' => $ultimapersona['id'],
+            ]);
+
+            return response()->json([
+                'message' => 'Se agregado correctamente',
+                'type' => 'success'
+            ]); 
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Ha ocurrido un error ' . $th->getMessage(),
+                'type' => 'error'
+            ]);
+        }
+
+    }
+
+    public function addHuespedHabitacion(Request $request)
+    {
+        try {
+            $id_persona = $request->id;
+            $id_movimiento = $request->id_movimiento;
+            $pasajeros = Pasajero::get()->toArray();
+            foreach ($pasajeros as $item) {
+                if($item['persona_id']==$id_persona && $item['movimiento_id']==$id_movimiento){
+                    return response()->json([
+                        'message' => 'Este pasajero ya se encuentra en la habitación',
+                        'type' => 'error'
+                    ]); 
+                }else{
+                    $pasajero = Pasajero::create([
+                        'movimiento_id' => $id_movimiento,
+                        'persona_id' => $id_persona
+                    ]);
+                    return response()->json([
+                        'message' => 'Se agregado correctamente',
+                        'type' => 'success'
+                    ]); 
+                }
+            }        
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Ha ocurrido un error ' . $th->getMessage(),
+                'type' => 'error'
+            ]);
+        }
     }
 
     public function getClientesSinRuc()
