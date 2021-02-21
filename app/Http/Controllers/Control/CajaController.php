@@ -349,22 +349,74 @@ class CajaController extends Controller
                 $caja =
                     Caja::with('concepto', 'usuario', 'persona', 'movimiento')->get()->toArray();
                 
-                $totalEfectivo = 0;
-                $totalTarjeta = 0;
-                $totalDeposito = 0;
-
-                foreach ($caja as $item) {            
-                    if(!is_null($item['movimiento'])){
-                        $totalEfectivo=$totalEfectivo + $item['movimiento']['efectivo'];
-                        $totalTarjeta=$totalTarjeta + $item['movimiento']['tarjeta'];
-                        $totalDeposito=$totalDeposito + $item['movimiento']['deposito'];
+                    $totalEfectivo = 0;
+                    $totalTarjeta = 0;
+                    $totalDeposito = 0;
+                    $totalVisa = 0;
+                    $totalMaster = 0;
+                    $totalOtrasTarjetas = 0;
+                    $apertura = 0;
+                    $totalGeneral = 0;
+            
+                    foreach ($caja as $item) {
+                        $totalGeneral = $totalGeneral + $item['total'];
+                        if($item['concepto']['id']==1){
+                            $apertura = $item['total'];
+                        }
+                        if($item['concepto']['id']==3 && is_null($item['movimiento'])){
+                            $totalEfectivo=$totalEfectivo + $item['efectivo'];
+                            $totalTarjeta=$totalTarjeta + $item['tarjeta'];
+                            $totalDeposito=$totalDeposito + $item['deposito'];
+                            if(($item['tipotarjeta'])!=''){
+                                switch ($item['tipotarjeta']) {
+                                    case 'visa':
+                                        $totalVisa = $totalVisa + $item['tarjeta'];
+                                        break;
+                                    case 'master':
+                                        $totalMaster = $totalMaster + $item['tarjeta'];
+                                        break;
+                                    case 'otro':
+                                        $totalOtrasTarjetas = $totalOtrasTarjetas + $item['tarjeta'];                            
+                                        break;                       
+                                }
+                            }
+                        }                    
+                        if(!is_null($item['movimiento'])){
+                            $totalEfectivo=$totalEfectivo + $item['movimiento']['efectivo'];
+                            $totalTarjeta=$totalTarjeta + $item['movimiento']['tarjeta'];
+                            $totalDeposito=$totalDeposito + $item['movimiento']['deposito'];
+                            if(($item['movimiento']['tipotarjeta'])!=''){
+                                switch ($item['movimiento']['tipotarjeta']) {
+                                    case 'visa':
+                                        $totalVisa = $totalVisa + $item['movimiento']['tarjeta'];
+                                        break;
+                                    case 'master':
+                                        $totalMaster = $totalMaster + $item['movimiento']['tarjeta'];
+                                        break;
+                                    case 'otro':
+                                        $totalOtrasTarjetas = $totalOtrasTarjetas + $item['movimiento']['tarjeta'];                            
+                                        break;                       
+                                }
+                            }
+                        }            
                     }
-                }
+            
+            
+                    $info=[
+                        'visa'=>$totalVisa,
+                        'master'=>$totalMaster,
+                        'otrasTarjetas'=>$totalOtrasTarjetas,
+                        'apertura'=>$apertura,
+                        'tarjetas'=>$totalTarjeta,
+                        'efectivo'=>$totalEfectivo,
+                        'depositos'=>$totalDeposito,
+                        'total'=>$totalGeneral,
+                    ];
 
                 $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
                 $today = Carbon::now()->toDateString();
                 $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
-                return view('control.caja.cierre.create', compact('numero', 'total', 'conceptos', 'personas', 'today', 'totalEfectivo', 'totalTarjeta', 'totalDeposito'));
+                return view('control.caja.cierre.create', compact('numero', 'total', 'conceptos', 'personas', 'today', 'info'));
             }
         }
         return redirect()

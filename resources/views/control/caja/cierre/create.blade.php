@@ -56,45 +56,12 @@
                         </div>
                     </form>
                 </div>
-            </div>
-            <div class="container mr-auto">
-                <div class="row justify-content-center">
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-success">
-                            <div class="inner">
-                                <h3 id="ingresos">S/. {{$totalEfectivo}}</h3>
-                                <p>Efectivo</p>                                      
-
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-shopping-cart"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-danger">
-                            <div class="inner">
-                                <h3 id="egresos">S/. {{$totalTarjeta}}</h3>
-                                <p>Tarjetas</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-chart-pie"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                <h3 id="balance">S/. {{$totalDeposito}}</h3>
-                                <p>Depósitos</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-chart-pie"></i>
-                            </div>
-                        </div>
-                    </div>                    
+                <div class="row d-flex justify-content-center">
+                    @include('control.caja.info')                           
                 </div>
             </div>
+            
+            
         </div>
     </div>
 </div>
