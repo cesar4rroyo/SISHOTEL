@@ -57,6 +57,7 @@
                                     <th>Cantidad</th>
                                     <th>Total</th>
                                     <th>Número Caja</th>
+                                    <th>Modalidad</th>
                                     <th>Cliente</th>
                                     <th>Comentario</th>
                                     <th>Usuario</th>
@@ -69,6 +70,7 @@
                                     <th>Cantidad</th>
                                     <th>Total</th>
                                     <th>Número Caja</th>
+                                    <th>Modalidad</th>
                                     <th>Cliente</th>
                                     <th>Comentario</th>
                                     <th>Usuario</th>
@@ -144,6 +146,7 @@
                                 { "data": "cantidad" },
                                 { "data": "total" },
                                 { "data": "caja" },
+                                { "data": "modalidad" },
                                 { "data": "persona" },
                                 { "data": "comentario" },
                                 { "data": "usuario" },

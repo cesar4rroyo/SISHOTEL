@@ -52,10 +52,80 @@ class CajaController extends Controller
             ->orderBy('created_at', 'DESC')
             ->paginate(10);
 
-        // dd($cajas->toArray());
+        $cajasArray= Caja::with('concepto', 'usuario', 'persona', 'movimiento')
+            ->where('created_at', '>', $fecha)
+            ->orderBy('created_at', 'DESC')
+            ->get()
+            ->toArray();
+
+        $totalEfectivo = 0;
+        $totalTarjeta = 0;
+        $totalDeposito = 0;
+        $totalVisa = 0;
+        $totalMaster = 0;
+        $totalOtrasTarjetas = 0;
+        $apertura = 0;
+        $totalGeneral = 0;
+
+        foreach ($cajasArray as $item) {
+            $totalGeneral = $totalGeneral + $item['total'];
+            if($item['concepto']['id']==1){
+                $apertura = $item['total'];
+            }
+            if($item['concepto']['id']==3 && is_null($item['movimiento'])){
+                $totalEfectivo=$totalEfectivo + $item['efectivo'];
+                $totalTarjeta=$totalTarjeta + $item['tarjeta'];
+                $totalDeposito=$totalDeposito + $item['deposito'];
+                if(($item['tipotarjeta'])!=''){
+                    switch ($item['tipotarjeta']) {
+                        case 'visa':
+                            $totalVisa = $totalVisa + $item['tarjeta'];
+                            break;
+                        case 'master':
+                            $totalMaster = $totalMaster + $item['tarjeta'];
+                            break;
+                        case 'otro':
+                            $totalOtrasTarjetas = $totalOtrasTarjetas + $item['tarjeta'];                            
+                            break;                       
+                    }
+                }
+            }                    
+            if(!is_null($item['movimiento'])){
+                $totalEfectivo=$totalEfectivo + $item['movimiento']['efectivo'];
+                $totalTarjeta=$totalTarjeta + $item['movimiento']['tarjeta'];
+                $totalDeposito=$totalDeposito + $item['movimiento']['deposito'];
+                if(($item['movimiento']['tipotarjeta'])!=''){
+                    switch ($item['movimiento']['tipotarjeta']) {
+                        case 'visa':
+                            $totalVisa = $totalVisa + $item['movimiento']['tarjeta'];
+                            break;
+                        case 'master':
+                            $totalMaster = $totalMaster + $item['movimiento']['tarjeta'];
+                            break;
+                        case 'otro':
+                            $totalOtrasTarjetas = $totalOtrasTarjetas + $item['movimiento']['tarjeta'];                            
+                            break;                       
+                    }
+                }
+            }            
+        }
 
 
-        return view('control.caja.index', compact('disabled', 'cajas', 'btnApertura', 'btnCerrar', 'btnNuevo'));
+        $info=[
+            'visa'=>$totalVisa,
+            'master'=>$totalMaster,
+            'otrasTarjetas'=>$totalOtrasTarjetas,
+            'apertura'=>$apertura,
+            'tarjetas'=>$totalTarjeta,
+            'efectivo'=>$totalEfectivo,
+            'depositos'=>$totalDeposito,
+            'total'=>$totalGeneral,
+        ];
+
+        //dd($totalEfectivo . " " . $totalTarjeta . " " . $totalDeposito);
+
+
+        return view('control.caja.index', compact('disabled', 'cajas', 'btnApertura', 'btnCerrar', 'btnNuevo','info'));
     }
 
     public function exportPdf()
@@ -65,6 +135,7 @@ class CajaController extends Controller
                 $q->where('id', 2);
             })
             ->latest('created_at')->first()->toArray();
+        
         $cajas =
             Caja::with('concepto', 'usuario', 'persona', 'movimiento')
             ->where('created_at', '>', $caja['created_at'])
@@ -277,10 +348,23 @@ class CajaController extends Controller
                 }
                 $caja =
                     Caja::with('concepto', 'usuario', 'persona', 'movimiento')->get()->toArray();
+                
+                $totalEfectivo = 0;
+                $totalTarjeta = 0;
+                $totalDeposito = 0;
+
+                foreach ($caja as $item) {            
+                    if(!is_null($item['movimiento'])){
+                        $totalEfectivo=$totalEfectivo + $item['movimiento']['efectivo'];
+                        $totalTarjeta=$totalTarjeta + $item['movimiento']['tarjeta'];
+                        $totalDeposito=$totalDeposito + $item['movimiento']['deposito'];
+                    }
+                }
+
                 $conceptos = Concepto::with('caja')->orderBy('nombre')->get();
                 $today = Carbon::now()->toDateString();
                 $personas = Persona::with('caja', 'reserva', 'pasajero')->orderBy('nombres')->get();
-                return view('control.caja.cierre.create', compact('numero', 'total', 'conceptos', 'personas', 'today'));
+                return view('control.caja.cierre.create', compact('numero', 'total', 'conceptos', 'personas', 'today', 'totalEfectivo', 'totalTarjeta', 'totalDeposito'));
             }
         }
         return redirect()
@@ -320,9 +404,55 @@ class CajaController extends Controller
 
     public function createCheckout(Request $request, $id)
     {
+        //servicios adicionales
         $early_checkin = $request->early_checkin;
         $late_checkout = $request->late_checkout;
         $day_use = $request->day_use;
+        //metodo de pago verficiacio
+        $efectivo=0;
+        $tarjeta=0;
+        $deposito=0;
+        $modalidad = $request->modalidadpago;
+        $tipotarjeta = "";
+        switch ($modalidad) {
+            case 'efectivo':
+                $efectivo = $request->txtEfectivoSolo;
+                break;
+            case 'tarjeta':
+                $tarjeta = $request->txtTarjetaSolo;
+                $tipotarjeta = $request->tipotarjetaSolo;                
+                break;
+            case 'deposito':
+                $deposito = $request->txtDepositoSolo;            
+                break;
+            case 'efectivotarjeta':
+                $efectivo = $request->txtEfectivoTarjeta;            
+                $tarjeta = $request->txtTarjetaEfectivo;
+                $tipotarjeta = $request->tipotarjetaEfectivo;                
+                break;
+            case 'depositoefectivo':
+                $deposito = $request->txtDepositoEfectivo;            
+                $efectivo = $request->txtEfectivoDeposito;  
+                break;
+            case 'depositotarjeta':
+                $deposito = $request->txtDepositoTarjeta;            
+                $tarjeta = $request->txtTarjetaDeposito;
+                $tipotarjeta = $request->tipotarjetaDeposito;                
+                break;            
+        }
+
+        if($deposito==0 && $tarjeta==0 && $efectivo==0){
+            return response()->json(['respuesta' => 'no', 'mensaje' => 'Debe de seleccionar el método de pago']);
+        }
+        $cobrado = $deposito + $tarjeta + $efectivo;
+        if($cobrado != $request->total){
+            return response()->json(['respuesta' => 'no', 'mensaje' => 'La modalidad de pago y el total no coinciden, recarge la página e intente de nuevo']);
+        } 
+        if($tipotarjeta=='' && $tarjeta!=0){
+            return response()->json(['respuesta' => 'no', 'mensaje' => 'No ha seleccionado el tipo de tarjeta, recarge la página e intentelo de nuevo']);
+        }
+        
+
         if (is_null($early_checkin)) {
             $early_checkin = 0;
         }
@@ -332,6 +462,7 @@ class CajaController extends Controller
         if (is_null($day_use)) {
             $day_use = 0;
         }
+        
         $persona = $request->persona;
         $tipoDoc = $request->tipodocumento;
         $verificarApertura =
@@ -370,6 +501,11 @@ class CajaController extends Controller
                 'early_checkin' => $early_checkin,
                 'late_checkout' => $late_checkout,
                 'day_use' => $day_use,
+                'tarjeta'=>$tarjeta,
+                'deposito'=>$deposito,
+                'efectivo'=>$efectivo,
+                'tipotarjeta'=>$tipotarjeta,
+                'modalidadpago'=>$modalidad
                 // 'comentario' => $request->comentario,
             ]);
             //guardar un nuevo registro para caja 
@@ -383,6 +519,8 @@ class CajaController extends Controller
                 'usuario_id' => session()->all()['usuario_id'],
                 'concepto_id' => 3,
                 'comentario' => $request->comentario,
+                'modalidadpago'=>$modalidad
+
             ]);
             //guardar nuevo registro de comprobante
             $comprobante = Comprobante::create([
@@ -452,8 +590,53 @@ class CajaController extends Controller
         //verificar si la caja esta abierta llamando al ultimo movimiento en la caja
         //que si su concepto_id  es diferente de '2' -> 'Concepto: Cierre Caja' dejará 
         //ya se crear un nuevo registro o aperturar la caja.
+        if($request->total==0){
+            return response()->json(['respuesta' => 'no', 'mensaje' => 'Al parecer no tiene ningún producto/servico agregado']);
+        }
         $persona = $request->persona;
         $tipoDoc = $request->tipodocumento;
+        $efectivo=0;
+        $tarjeta=0;
+        $deposito=0;
+        $modalidad = $request->modalidadpago;
+        $tipotarjeta = "";
+        switch ($modalidad) {
+            case 'efectivo':
+                $efectivo = $request->txtEfectivoSolo;
+                break;
+            case 'tarjeta':
+                $tarjeta = $request->txtTarjetaSolo;
+                $tipotarjeta = $request->tipotarjetaSolo;                
+                break;
+            case 'deposito':
+                $deposito = $request->txtDepositoSolo;            
+                break;
+            case 'efectivotarjeta':
+                $efectivo = $request->txtEfectivoTarjeta;            
+                $tarjeta = $request->txtTarjetaEfectivo;
+                $tipotarjeta = $request->tipotarjetaEfectivo;                
+                break;
+            case 'depositoefectivo':
+                $deposito = $request->txtDepositoEfectivo;            
+                $efectivo = $request->txtEfectivoDeposito;  
+                break;
+            case 'depositotarjeta':
+                $deposito = $request->txtDepositoTarjeta;            
+                $tarjeta = $request->txtTarjetaDeposito;
+                $tipotarjeta = $request->tipotarjetaDeposito;                
+                break;            
+        }
+
+        if($deposito==0 && $tarjeta==0 && $efectivo==0){
+            return response()->json(['respuesta' => 'no', 'mensaje' => 'Debe de seleccionar el método de pago']);
+        }
+        $cobrado = $deposito + $tarjeta + $efectivo;
+        if($cobrado != $request->total){
+            return response()->json(['respuesta' => 'no', 'mensaje' => 'La modalidad de pago y el total no coinciden, recarge la página e intente de nuevo']);
+        } 
+        if($tipotarjeta=='' && $tarjeta!=0){
+            return response()->json(['respuesta' => 'no', 'mensaje' => 'No ha seleccionado el tipo de tarjeta, recarge la página e intentelo de nuevo']);
+        }
         if (is_null($persona)) {
             $persona = 1;
         }
@@ -493,6 +676,11 @@ class CajaController extends Controller
                 'usuario_id' => session()->all()['usuario_id'],
                 'concepto_id' => 3,
                 'comentario' => $request->comentario,
+                'tarjeta'=>$tarjeta,
+                'deposito'=>$deposito,
+                'efectivo'=>$efectivo,
+                'tipotarjeta'=>$tipotarjeta,
+                'modalidadpago'=>$modalidad
             ]);
             //obtener id del ultimo registro de caja es decir del registro anterior 
             // y con eso pasar a la tabla DeatalleCaja cada producto seleccionado
@@ -555,8 +743,53 @@ class CajaController extends Controller
         //verificar si la caja esta abierta llamando al ultimo movimiento en la caja
         //que si su concepto_id  es diferente de '2' -> 'Concepto: Cierre Caja' dejará 
         //ya se crear un nuevo registro o aperturar la caja.
+        if($request->total==0){
+            return response()->json(['respuesta' => 'no', 'mensaje' => 'Al parecer no tiene ningún producto/servico agregado']);
+        }
         $persona = $request->persona;
         $tipoDoc = $request->tipodocumento;
+        $efectivo=0;
+        $tarjeta=0;
+        $deposito=0;
+        $modalidad = $request->modalidadpago;
+        $tipotarjeta = "";
+        switch ($modalidad) {
+            case 'efectivo':
+                $efectivo = $request->txtEfectivoSolo;
+                break;
+            case 'tarjeta':
+                $tarjeta = $request->txtTarjetaSolo;
+                $tipotarjeta = $request->tipotarjetaSolo;                
+                break;
+            case 'deposito':
+                $deposito = $request->txtDepositoSolo;            
+                break;
+            case 'efectivotarjeta':
+                $efectivo = $request->txtEfectivoTarjeta;            
+                $tarjeta = $request->txtTarjetaEfectivo;
+                $tipotarjeta = $request->tipotarjetaEfectivo;                
+                break;
+            case 'depositoefectivo':
+                $deposito = $request->txtDepositoEfectivo;            
+                $efectivo = $request->txtEfectivoDeposito;  
+                break;
+            case 'depositotarjeta':
+                $deposito = $request->txtDepositoTarjeta;            
+                $tarjeta = $request->txtTarjetaDeposito;
+                $tipotarjeta = $request->tipotarjetaDeposito;                
+                break;            
+        }
+
+        if($deposito==0 && $tarjeta==0 && $efectivo==0){
+            return response()->json(['respuesta' => 'no', 'mensaje' => 'Debe de seleccionar el método de pago']);
+        }
+        $cobrado = $deposito + $tarjeta + $efectivo;
+        if($cobrado != $request->total){
+            return response()->json(['respuesta' => 'no', 'mensaje' => 'La modalidad de pago y el total no coinciden, recarge la página e intente de nuevo']);
+        } 
+        if($tipotarjeta=='' && $tarjeta!=0){
+            return response()->json(['respuesta' => 'no', 'mensaje' => 'No ha seleccionado el tipo de tarjeta, recarge la página e intentelo de nuevo']);
+        }
         if (is_null($persona)) {
             $persona = 1;
         }
@@ -596,6 +829,11 @@ class CajaController extends Controller
                 'usuario_id' => session()->all()['usuario_id'],
                 'concepto_id' => 3,
                 'comentario' => $request->comentario_caja,
+                'tarjeta'=>$tarjeta,
+                'deposito'=>$deposito,
+                'efectivo'=>$efectivo,
+                'tipotarjeta'=>$tipotarjeta,
+                'modalidadpago'=>$modalidad
             ]);
             //obtener id del ultimo registro de caja es decir del registro anterior 
             // y con eso pasar a la tabla DeatalleCaja cada producto seleccionado

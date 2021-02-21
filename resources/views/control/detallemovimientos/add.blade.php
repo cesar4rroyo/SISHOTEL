@@ -169,6 +169,8 @@
                     <form method="POST" id="formVentaProductos"
                         action="{{route('add_detail_producto', $movimientos['id'])}}">
                         @csrf
+                        <input class="form-control" name="total" id="total1" readonly type="hidden"
+                                    value="{{$total}}">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -221,6 +223,7 @@
                                             </select>
                                         </div>
                                     </div>
+                                    @include('control.checkout.tipopago')
                                     <div class="row">
                                         <div class="form-group">
                                             <label for="comentario" class="control-label">{{ 'Comentario' }}</label>
@@ -251,6 +254,16 @@
     document.addEventListener("DOMContentLoaded", function(event) { 
         $('#errMessage').hide();
         $('#loading').hide();
+        $('#modalidadPago').hide();
+
+        $('input[type="radio"]').not(".tarjetatipo").click(function(){
+            $('#modalidadPago').show();
+            var inputValue = $(this).attr("value");
+            var targetBox = $('.' + inputValue);
+            $('.box').not(targetBox).hide();
+            $(targetBox).show();
+        });
+
         const btnPagoCaja = document.getElementById('btnPagoCaja').onclick=function(e){
         const data = new FormData(document.getElementById('formVentaProductos'));  
         e.preventDefault();

@@ -27,7 +27,13 @@ class Movimiento extends Model
         'descuento',
         'late_checkout',
         'early_checkin',
-        'day_use'
+        'day_use',
+        'efectivo',
+        'deposito',
+        'tarjeta',
+        'tipotarjeta',
+        'modalidadpago'
+        
     ];
     public function reserva()
     {

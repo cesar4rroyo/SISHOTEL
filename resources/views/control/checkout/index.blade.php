@@ -220,7 +220,7 @@
                             </select>
                             {!! $errors->first('persona', '<p class="text-danger">:message</p>') !!}
                         </div>
-                        <hr>
+                        @include('control.checkout.tipopago')
                         <div class="row mt-2">
                             <label for="movimientos" class=" font-weight-bold text-uppercase">{{'Húespedes'}}</label>
                             <span type="button" class="badge badge-secondary ml-2 pb-0" id="btnAgregarHuesped">
@@ -337,6 +337,15 @@
         $('#calcularTotal').hide();
         $('#totalContainer').hide();
         $('#btnAddRuc').hide();
+        $('#modalidadPago').hide();
+
+        $('input[type="radio"]').not(".tarjetatipo").click(function(){
+            $('#modalidadPago').show();
+            var inputValue = $(this).attr("value");
+            var targetBox = $('.' + inputValue);
+            $('.box').not(targetBox).hide();
+            $(targetBox).show();
+        });
 
         $('#btnAgregarHuesped').on('click', function(){
             $('#modalHuesped').modal('toggle');
@@ -633,12 +642,12 @@
                                 icon:'error',
                             });
                             // $('#loading').hide();
-                        } 
+                        }
                     })
                     .catch(function(e){
                         swal({
                             title:'Ha ocurrido un error',
-                            text:'Oops, el checkout no se ha podido realizar',
+                            text:'Oops, el checkout no se ha podido realizar, recarge la página e intentolo de nuevo',
                             icon:'error',
                         });
                     });

@@ -21,7 +21,12 @@ class Caja extends Model
         'concepto_id',
         'persona_id',
         'movimiento_id',
-        'usuario_id'
+        'usuario_id',
+        'efectivo',
+        'deposito',
+        'tarjeta',
+        'tipotarjeta',
+        'modalidadpago'
     ];
     public function concepto()
     {

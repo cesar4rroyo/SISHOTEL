@@ -447,6 +447,29 @@ class ReportesController extends Controller
                 } else {
                     $nombres = !is_null($item['caja']['persona']) ? $item['caja']['persona']['nombres'] . ' ' . $item['caja']['persona']['apellidos']  : '-';
                 }
+                switch ($item['caja']['modalidadpago']) {
+                    case 'efectivo':
+                        $modalidad = 'Efectivo';
+                        break;
+                    case 'tarjeta':
+                        $modalidad = 'Tarjeta';                        
+                        break;
+                    case 'deposito':
+                        $modalidad = 'Deposito';                        
+                        break;
+                    case 'efectivotarjeta':
+                        $modalidad = 'Efectivo y Tarjeta';                       
+                        break;
+                    case 'depositoefectivo':
+                        $modalidad = 'Depósito y Efectivo';               
+                        break;
+                    case 'depositotarjeta':
+                        $modalidad = 'Depósito y Tarjeta'; 
+                        break;
+                    default:
+                        $modalidad = '';
+                        break;               
+                }
                 $data[] = [
                     'fecha' => $item['created_at'],
                     'venta' => !is_null($item['producto_id']) ? $item['producto']['nombre'] : $item['servicios']['nombre'],
@@ -456,6 +479,7 @@ class ReportesController extends Controller
                     'persona' => $nombres,
                     'usuario' => $item['caja']['usuario']['login'],
                     'comentario' => !is_null($item['comentario']) ? $item['comentario'] : '-',
+                    'modalidad' => $modalidad,
                 ];
             }
             return response()->json(array('data' => $data));
@@ -499,6 +523,29 @@ class ReportesController extends Controller
                     $nombres = !is_null($item['persona']) ? $item['persona']['nombres'] . ' ' . $item['persona']['apellidos']  : '-';
                 }
 
+                switch ($item['modalidadpago']) {
+                    case 'efectivo':
+                        $modalidad = 'Efectivo';
+                        break;
+                    case 'tarjeta':
+                        $modalidad = 'Tarjeta';                        
+                        break;
+                    case 'deposito':
+                        $modalidad = 'Deposito';                        
+                        break;
+                    case 'efectivotarjeta':
+                        $modalidad = 'Efectivo y Tarjeta';                       
+                        break;
+                    case 'depositoefectivo':
+                        $modalidad = 'Depósito y Efectivo';               
+                        break;
+                    case 'depositotarjeta':
+                        $modalidad = 'Depósito y Tarjeta'; 
+                        break;
+                    default:
+                        $modalidad = '';
+                        break;               
+                }
                 $data[] = [
                     'fecha' => $item['fecha'],
                     'numero' => $item['numero'],
@@ -509,6 +556,7 @@ class ReportesController extends Controller
                     'comentario' => !is_null($item['comentario']) ? $item['comentario'] : '-',
                     'movimiento' => !is_null($item['movimiento']) ? 'Pago Servicio Hotel Nro.  000' . $item['movimiento']['id']  : '-',
                     'usuario' => $item['usuario']['login'],
+                    'modalidad' => $modalidad,
                 ];
             }
             return response()->json(array('data' => $data));

@@ -36,7 +36,7 @@
                                     {{isset($item->fechasalida) ?\Carbon\Carbon::parse($item->fechasalida)->formatLocalized('%d %B %Y %H:%M:00') : ''}}
                                 </td>
                                 <td>
-                                    @if (!is_null($item->persona->razonsocial))
+                                    @if (!is_null($item->persona->razonsocial) && trim($item->persona->razonsocia)!='')
                                     {{$item->persona->razonsocial}}
                                     @else
                                     {{ $item->persona->nombres}} {{" "}} {{ $item->persona->apellidos}}

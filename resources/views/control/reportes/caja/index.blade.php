@@ -62,6 +62,7 @@
                                     <th>Tipo</th>
                                     <th>Persona</th>
                                     <th>Total</th>
+                                    <th>Modalidad</th>
                                     <th>Concepto</th>
                                     <th>Comentario</th>
                                     <th>Movimiento</th>
@@ -75,6 +76,7 @@
                                     <th>Tipo</th>
                                     <th>Persona</th>
                                     <th>Total</th>
+                                    <th>Modalidad</th>
                                     <th>Concepto</th>
                                     <th>Comentario</th>
                                     <th>Movimiento</th>
@@ -149,6 +151,7 @@
                             { "data": "tipo" },
                             { "data": "persona" },
                             { "data": "total" },
+                            { "data": "modalidad" },
                             { "data": "concepto" },
                             { "data": "comentario" },
                             { "data": "movimiento" },

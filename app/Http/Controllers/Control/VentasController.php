@@ -238,6 +238,49 @@ class VentasController extends Controller
     {
         $persona = $request->persona;
         $tipoDoc = $request->tipodocumento;
+        $efectivo=0;
+        $tarjeta=0;
+        $deposito=0;
+        $modalidad = $request->modalidadpago;
+        $tipotarjeta = "";
+        switch ($modalidad) {
+            case 'efectivo':
+                $efectivo = $request->txtEfectivoSolo;
+                break;
+            case 'tarjeta':
+                $tarjeta = $request->txtTarjetaSolo;
+                $tipotarjeta = $request->tipotarjetaSolo;                
+                break;
+            case 'deposito':
+                $deposito = $request->txtDepositoSolo;            
+                break;
+            case 'efectivotarjeta':
+                $efectivo = $request->txtEfectivoTarjeta;            
+                $tarjeta = $request->txtTarjetaEfectivo;
+                $tipotarjeta = $request->tipotarjetaEfectivo;                
+                break;
+            case 'depositoefectivo':
+                $deposito = $request->txtDepositoEfectivo;            
+                $efectivo = $request->txtEfectivoDeposito;  
+                break;
+            case 'depositotarjeta':
+                $deposito = $request->txtDepositoTarjeta;            
+                $tarjeta = $request->txtTarjetaDeposito;
+                $tipotarjeta = $request->tipotarjetaDeposito;                
+                break;            
+        }
+
+        if($deposito==0 && $tarjeta==0 && $efectivo==0){
+            return response()->json(['respuesta' => 'no', 'mensaje' => 'Debe de seleccionar el método de pago']);
+        }
+        $cobrado = $deposito + $tarjeta + $efectivo;
+        if($cobrado != $request->total){
+            return response()->json(['respuesta' => 'no', 'mensaje' => 'La modalidad de pago y el total no coinciden, recarge la página e intente de nuevo']);
+        } 
+        if($tipotarjeta=='' && $tarjeta!=0){
+            return response()->json(['respuesta' => 'no', 'mensaje' => 'No ha seleccionado el tipo de tarjeta, recarge la página e intentelo de nuevo']);
+        }
+               
         if (is_null($persona)) {
             $persona = 1;
         }
@@ -274,6 +317,11 @@ class VentasController extends Controller
                 'usuario_id' => session()->all()['usuario_id'],
                 'concepto_id' => 3,
                 'comentario' => $comentario,
+                'tarjeta'=>$tarjeta,
+                'deposito'=>$deposito,
+                'efectivo'=>$efectivo,
+                'tipotarjeta'=>$tipotarjeta,
+                'modalidadpago'=>$modalidad
             ]);
             $caja =
                 Caja::with('movimiento', 'persona', 'concepto')
@@ -329,6 +377,48 @@ class VentasController extends Controller
     {
         $persona = $request->persona;
         $tipoDoc = $request->tipodocumento;
+        $efectivo=0;
+        $tarjeta=0;
+        $deposito=0;
+        $modalidad = $request->modalidadpago;
+        $tipotarjeta = "";
+        switch ($modalidad) {
+            case 'efectivo':
+                $efectivo = $request->txtEfectivoSolo;
+                break;
+            case 'tarjeta':
+                $tarjeta = $request->txtTarjetaSolo;
+                $tipotarjeta = $request->tipotarjetaSolo;                
+                break;
+            case 'deposito':
+                $deposito = $request->txtDepositoSolo;            
+                break;
+            case 'efectivotarjeta':
+                $efectivo = $request->txtEfectivoTarjeta;            
+                $tarjeta = $request->txtTarjetaEfectivo;
+                $tipotarjeta = $request->tipotarjetaEfectivo;                
+                break;
+            case 'depositoefectivo':
+                $deposito = $request->txtDepositoEfectivo;            
+                $efectivo = $request->txtEfectivoDeposito;  
+                break;
+            case 'depositotarjeta':
+                $deposito = $request->txtDepositoTarjeta;            
+                $tarjeta = $request->txtTarjetaDeposito;
+                $tipotarjeta = $request->tipotarjetaDeposito;                
+                break;            
+        }
+
+        if($deposito==0 && $tarjeta==0 && $efectivo==0){
+            return response()->json(['respuesta' => 'no', 'mensaje' => 'Debe de seleccionar el método de pago']);
+        }
+        $cobrado = $deposito + $tarjeta + $efectivo;
+        if($cobrado != $request->total){
+            return response()->json(['respuesta' => 'no', 'mensaje' => 'La modalidad de pago y el total no coinciden, recarge la página e intente de nuevo']);
+        } 
+        if($tipotarjeta=='' && $tarjeta!=0){
+            return response()->json(['respuesta' => 'no', 'mensaje' => 'No ha seleccionado el tipo de tarjeta, recarge la página e intentelo de nuevo']);
+        }
         if (is_null($persona)) {
             $persona = 1;
         }
@@ -367,6 +457,11 @@ class VentasController extends Controller
                 'total' => $total,
                 'comentario' => $comentario,
                 'usuario_id' => session()->all()['usuario_id'],
+                'tarjeta'=>$tarjeta,
+                'deposito'=>$deposito,
+                'efectivo'=>$efectivo,
+                'tipotarjeta'=>$tipotarjeta,
+                'modalidadpago'=>$modalidad
             ]);
             $caja =
                 Caja::with('movimiento', 'persona', 'concepto')

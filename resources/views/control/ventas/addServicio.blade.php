@@ -112,6 +112,8 @@
                     </div>
                     <form action="{{route('add_detail_servicio_ventas')}}" id="formVentaProductos" method="POST">
                         @csrf
+                        <input class="form-control" name="total" id="total1" readonly type="hidden"
+                                    value="{{$total}}">
                         <div class="row">
                             <div class="col-sm form-group">
                                 <label for="tipodocumento" class="control-label">{{ 'Tipo Documento' }}</label>
@@ -145,6 +147,7 @@
                                 </select>
                             </div>
                         </div>
+                        @include('control.checkout.tipopago')
                         <div class="row">
                             <div class="form-group">
                                 <label for="comentario">{{'Comentario'}}</label>
@@ -170,6 +173,15 @@
     document.addEventListener("DOMContentLoaded", function(event) {
         $('#errMessage').hide();
         $('#loading').hide();
+        $('#modalidadPago').hide();
+
+        $('input[type="radio"]').not(".tarjetatipo").click(function(){
+                $('#modalidadPago').show();
+                var inputValue = $(this).attr("value");
+                var targetBox = $('.' + inputValue);
+                $('.box').not(targetBox).hide();
+                $(targetBox).show();
+        });
         const btnPagoCaja = document.getElementById('btnPagoCaja').onclick=function(e){
         const data = new FormData(document.getElementById('formVentaProductos'));  
         e.preventDefault();
