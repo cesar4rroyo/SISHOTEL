@@ -159,7 +159,8 @@
                                 <div class="small-box bg-success">
                                     <div class="inner">
                                         <h3 id="ingresos">0</h3>
-                                        <p>Ingresos</p>
+                                        <p>Ingresos</p>                                      
+
                                     </div>
                                     <div class="icon">
                                         <i class="fas fa-shopping-cart"></i>
@@ -188,6 +189,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @include('control.caja.info')                            
                         </div>
                     </div>
                 </div>

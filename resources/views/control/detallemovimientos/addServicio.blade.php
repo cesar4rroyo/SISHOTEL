@@ -164,6 +164,8 @@
                     <form method="POST" id="formVentaServicios"
                         action="{{route('add_detail_servicio', $movimientos['id'])}}">
                         @csrf
+                        <input class="form-control" name="total" id="total1" readonly type="hidden"
+                                    value="{{$total}}">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -217,6 +219,7 @@
                                             {!! $errors->first('persona', '<p class="text-danger">:message</p>') !!}
                                         </div>
                                     </div>
+                                    @include('control.checkout.tipopago')
                                     <div class="row">
                                         <div class="form-group">
                                             <label for="comentario_caja"
@@ -248,6 +251,15 @@
     document.addEventListener("DOMContentLoaded", function(event) {
         $('#errMessage').hide();
         $('#loading').hide();
+        $('#modalidadPago').hide();
+
+        $('input[type="radio"]').not(".tarjetatipo").click(function(){
+            $('#modalidadPago').show();
+            var inputValue = $(this).attr("value");
+            var targetBox = $('.' + inputValue);
+            $('.box').not(targetBox).hide();
+            $(targetBox).show();
+        });
         const btnPagoCaja = document.getElementById('btnPagoCaja').onclick=function(e){
         const data = new FormData(document.getElementById('formVentaServicios'));  
         e.preventDefault();
@@ -269,10 +281,10 @@
                         }                    
                         $.ajax({
                             type:'GET',
-                            url:'http://localhost:81/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
+                            url:'http://192.168.0.200:81/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
                             data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
                             success: function(r){
-                                window.open('http://localhost:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
+                                window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                                 window.location.href = "{{route('caja')}}";
                                 console.log(r);
                             },
@@ -281,7 +293,7 @@
                             }
                         });  
                     }else{
-                        window.open('http://localhost:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
+                        window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                         window.location.href = "{{route('caja')}}";
                     }                  
                 }else{

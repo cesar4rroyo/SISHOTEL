@@ -35,7 +35,7 @@ class ReservaController extends Controller
 
     public function listarReservas()
     {
-        $hoy = Carbon::now()->toDateTimeLocalString();
+        $hoy = Carbon::now()->toDateString();
         $reservas = Reserva::with('habitacion', 'persona')
             ->where('situacion', "Reservado")
             ->where('fecha', '>', $hoy)
@@ -115,7 +115,7 @@ class ReservaController extends Controller
                 'end' => $habitacion->fechasalida,
                 'title' => $habitacion->habitacion->numero . '- Habitación Ocupada',
                 'color' => 'red',
-                'persona_id' => $habitacion->pasajero[0]->persona->id,
+                //'persona_id' => $habitacion->pasajero[0]->persona->id,
                 'situacion' => 'Ocupada',
                 'habitacion_id' => $habitacion->habitacion->id
 
@@ -151,3 +151,9 @@ class ReservaController extends Controller
         return response()->json(['mensaje' => 'ok']);
     }
 }
+
+
+
+
+
+
