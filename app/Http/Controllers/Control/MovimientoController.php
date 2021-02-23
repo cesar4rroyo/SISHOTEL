@@ -47,6 +47,16 @@ class MovimientoController extends Controller
         return view('control.checkout.list', compact('movimientos'));
     }
 
+    public function eliminar_checkout(Request $request, $id){
+        if ($request->ajax()) {
+            $mov = Movimiento::find($id);
+            $mov->delete();
+            return response()->json(['mensaje' => 'ok']);
+        } else {
+            abort(404);
+        }
+    }
+
     public function exportPdf($id)
     {
         $movimiento =

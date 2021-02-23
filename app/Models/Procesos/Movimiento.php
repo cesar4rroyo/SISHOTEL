@@ -2,6 +2,7 @@
 
 namespace App\Models\Procesos;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Habitacion;
 use App\Models\Persona;
 use App\Models\Producto;
@@ -10,8 +11,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Movimiento extends Model
 {
+    use SoftDeletes;
     protected $table = 'movimiento';
     protected $primaryKey = 'id';
+    protected $dates = ['deleted_at'];
     protected $fillable = [
         'fechaingreso',
         'fechasalida',
@@ -32,8 +35,11 @@ class Movimiento extends Model
         'deposito',
         'tarjeta',
         'tipotarjeta',
-        'modalidadpago'
-        
+        'modalidadpago',
+        'fechadeposito',
+        'nrooperacion',
+        'nombrebanco',
+        'urlimagen'
     ];
     public function reserva()
     {

@@ -61,8 +61,17 @@
                                                         aria-hidden="true"></i>
                                                     Imprimir</button>
                                             </a>
+                                            <form class="form-eliminar" method="POST"
+                                                action="{{ route('eliminar_checkout_lista', $item->id) }}" accept-charset="UTF-8"
+                                                style="display:inline">
+                                                {{ method_field('DELETE') }}
+                                                {{ csrf_field() }}
+                                                <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                    title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i>Eliminar
+                                                </button>
+                                            </form>
                                         </div>
-                                    </td>
+                                    </td>                                    
                                 </tr>
                                 @endforeach
                             </tbody>
