@@ -322,7 +322,8 @@ class CajaController extends Controller
 
         if ($cajaApertura['concepto_id'] != '2') {
             if ($request->ajax()) {
-                Caja::destroy($id);
+                $caja = Caja::find($id);
+                $caja->delete();
                 return response()->json(['mensaje' => 'ok']);
             } else {
                 abort(404);

@@ -238,6 +238,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     Route::get('movimiento/pdf/out/{id}', 'MovimientoController@exportPdf')->name('check_out_pdf');
     Route::get('movimiento/pdf/in/{id}', 'MovimientoController@exportPdfCheckIn')->name('check_in_pdf');
 
+    Route::delete('movimiento/{id}/eliminar', 'MovimientoController@eliminar_checkout')->name('eliminar_checkout_lista');
+
 
     Route::post('detallemovimiento/elimar/habitacion', 'DetalleMovimientoController@eliminarMovimiento')->name('eliminar_producto_from_habitacion');
 
