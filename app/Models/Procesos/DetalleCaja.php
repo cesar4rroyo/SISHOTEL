@@ -1,15 +1,17 @@
 <?php
 
 namespace App\Models\Procesos;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Producto;
 use App\Models\Servicios;
 use Illuminate\Database\Eloquent\Model;
 
 class DetalleCaja extends Model
 {
+    use SoftDeletes;
     protected $table = 'detallecaja';
     protected $primaryKey = 'id';
+    protected $dates = ['deleted_at'];
     protected $fillable = [
         'cantidad',
         'preciocompra',

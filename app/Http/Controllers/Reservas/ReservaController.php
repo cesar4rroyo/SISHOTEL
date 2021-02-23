@@ -146,9 +146,14 @@ class ReservaController extends Controller
 
     public function destroy($id)
     {
-        $reserva = Reserva::findOrFail($id);
-        $reserva->destroy($id);
-        return response()->json(['mensaje' => 'ok']);
+        try {
+            $reserva = Reserva::findOrFail($id);
+            $reserva->delete();
+            return response()->json(['mensaje' => 'ok']);
+        } catch (\Throwable $th) {
+            return response()->json(['mensaje' => $th->getMessage()]);
+            
+        }
     }
 }
 

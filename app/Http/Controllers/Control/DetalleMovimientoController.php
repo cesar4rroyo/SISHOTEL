@@ -167,7 +167,8 @@ class DetalleMovimientoController extends Controller
     public function eliminarMovimiento(Request $request){
         if ($request->ajax()) {
             $id = $request->id;
-            DetalleMovimiento::destroy($id);
+            $detalle = DetalleMovimiento::find($id);
+            $detalle->delete();
             return response()->json(['mensaje' => 'ok']);
         } else {
             abort(404);

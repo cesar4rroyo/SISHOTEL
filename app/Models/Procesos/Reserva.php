@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models\Procesos;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Habitacion;
 use App\Models\Persona;
 use App\Models\Seguridad\Usuario;
@@ -9,8 +9,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reserva extends Model
 {
+    use SoftDeletes;
     protected $table = 'reserva';
     protected $primaryKey = 'id';
+    protected $dates = ['deleted_at'];
     protected $fillable = [
         'fecha',
         'observacion',
