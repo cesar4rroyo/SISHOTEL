@@ -531,16 +531,18 @@ class ReportesController extends Controller
                         $modalidad = 'Tarjeta';                        
                         break;
                     case 'deposito':
-                        $modalidad = 'Deposito';                        
+                        $modalidad = 'Deposito';    
                         break;
                     case 'efectivotarjeta':
                         $modalidad = 'Efectivo y Tarjeta';                       
                         break;
                     case 'depositoefectivo':
-                        $modalidad = 'Depósito y Efectivo';               
+                        $modalidad = 'Depósito y Efectivo';
+
                         break;
                     case 'depositotarjeta':
-                        $modalidad = 'Depósito y Tarjeta'; 
+                        $modalidad = 'Depósito y Tarjeta';
+
                         break;
                     default:
                         $modalidad = '';

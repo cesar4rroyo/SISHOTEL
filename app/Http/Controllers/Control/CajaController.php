@@ -485,7 +485,7 @@ class CajaController extends Controller
                 $nrooperacion=$request->txtNroOperacionSolo;
                 $nombrebanco=strtoupper($request->txtNombreBancoSolo);
                 if(!is_null($request->imgDepositoSolo)){
-                    $imagen = $request->file('imgDepositoSolo')->store('public/depositos');
+                    $imagen = $request->file('imgDepositoSolo')->storeAs('public/depositos', $request->fecha.'.jpg');
                     $urlimagen = Storage::url($imagen);
                 }
                 $deposito = $request->txtDepositoSolo;            
@@ -502,7 +502,7 @@ class CajaController extends Controller
                 $nrooperacion=$request->txtNroOperacionEfectivo;
                 $nombrebanco=strtoupper($request->txtNombreBancoEfectivo);
                 if(!is_null($request->imgDepositoEfectivo)){
-                    $imagen = $request->file('imgDepositoEfectivo')->store('public/depositos');
+                    $imagen = $request->file('imgDepositoEfectivo')->storeAs('public/depositos', $request->fecha.'.jpg');
                     $urlimagen = Storage::url($imagen);
                 }
                 break;
@@ -514,7 +514,7 @@ class CajaController extends Controller
                 $nrooperacion=$request->txtNroOperacionTarjeta;
                 $nombrebanco=strtoupper($request->txtNombreBancoTarjeta);
                 if(!is_null($request->imgDepositoTarjeta)){
-                    $imagen = $request->file('imgDepositoTarjeta')->store('public/depositos');
+                    $imagen = $request->file('imgDepositoTarjeta')->storeAs('public/depositos', $request->fecha.'.jpg');
                     $urlimagen = Storage::url($imagen);
                 }              
                 break;            
@@ -702,7 +702,7 @@ class CajaController extends Controller
                 $nrooperacion=$request->txtNroOperacionSolo;
                 $nombrebanco=strtoupper($request->txtNombreBancoSolo);
                 if(!is_null($request->imgDepositoSolo)){
-                    $imagen = $request->file('imgDepositoSolo')->store('public/depositos');
+                    $imagen = $request->file('imgDepositoSolo')->storeAs('public/depositos', $request->fecha.'.jpg');
                     $urlimagen = Storage::url($imagen);
                 }         
                 break;
@@ -718,7 +718,7 @@ class CajaController extends Controller
                 $nrooperacion=$request->txtNroOperacionEfectivo;
                 $nombrebanco=strtoupper($request->txtNombreBancoEfectivo);
                 if(!is_null($request->imgDepositoEfectivo)){
-                    $imagen = $request->file('imgDepositoEfectivo')->store('public/depositos');
+                    $imagen = $request->file('imgDepositoEfectivo')->storeAs('public/depositos', $request->fecha.'.jpg');
                     $urlimagen = Storage::url($imagen);
                 }
                 break;
@@ -730,7 +730,7 @@ class CajaController extends Controller
                 $nrooperacion=$request->txtNroOperacionTarjeta;
                 $nombrebanco=strtoupper($request->txtNombreBancoTarjeta);
                 if(!is_null($request->imgDepositoTarjeta)){
-                    $imagen = $request->file('imgDepositoTarjeta')->store('public/depositos');
+                    $imagen = $request->file('imgDepositoTarjeta')->storeAs('public/depositos', $request->fecha.'.jpg');
                     $urlimagen = Storage::url($imagen);
                 }                  
                 break;            
@@ -884,7 +884,7 @@ class CajaController extends Controller
                 $nrooperacion=$request->txtNroOperacionSolo;
                 $nombrebanco=strtoupper($request->txtNombreBancoSolo);
                 if(!is_null($request->imgDepositoSolo)){
-                    $imagen = $request->file('imgDepositoSolo')->store('public/depositos');
+                    $imagen = $request->file('imgDepositoSolo')->storeAs('public/depositos', $request->fecha.'.jpg');
                     $urlimagen = Storage::url($imagen);
                 }              
                 break;
@@ -900,7 +900,7 @@ class CajaController extends Controller
                 $nrooperacion=$request->txtNroOperacionEfectivo;
                 $nombrebanco=strtoupper($request->txtNombreBancoEfectivo);
                 if(!is_null($request->imgDepositoEfectivo)){
-                    $imagen = $request->file('imgDepositoEfectivo')->store('public/depositos');
+                    $imagen = $request->file('imgDepositoEfectivo')->storeAs('public/depositos', $request->fecha.'.jpg');
                     $urlimagen = Storage::url($imagen);
                 }  
                 break;
@@ -912,7 +912,7 @@ class CajaController extends Controller
                 $nrooperacion=$request->txtNroOperacionTarjeta;
                 $nombrebanco=strtoupper($request->txtNombreBancoTarjeta);
                 if(!is_null($request->imgDepositoTarjeta)){
-                    $imagen = $request->file('imgDepositoTarjeta')->store('public/depositos');
+                    $imagen = $request->file('imgDepositoTarjeta')->storeAs('public/depositos', $request->fecha.'.jpg');
                     $urlimagen = Storage::url($imagen);
                 }                
                 break;            
