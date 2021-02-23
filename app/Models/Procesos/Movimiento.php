@@ -32,8 +32,11 @@ class Movimiento extends Model
         'deposito',
         'tarjeta',
         'tipotarjeta',
-        'modalidadpago'
-        
+        'modalidadpago',
+        'fechadeposito',
+        'nrooperacion',
+        'nombrebanco',
+        'urlimagen'
     ];
     public function reserva()
     {

@@ -22,7 +22,7 @@
                 <div class="container">
 
                     <form action="{{route('add_checkout', $movimiento['id'])}}" id="checkoutForm" method="POST"
-                        onsubmit="return confirm('¿Está seguro que desea hacer finalizar el Check-Out?')">
+                        onsubmit="return confirm('¿Está seguro que desea hacer finalizar el Check-Out?')" enctype="multipart/form-data" >
                         <input type="hidden" id="nro_movimiento" name="nro_movimiento" value="{{$movimiento['id']}}">
                         @csrf
                         <div class="row">
@@ -147,6 +147,7 @@
                                 <table class="table text-center table-hover" id="tabla-data">
                                     <thead>
                                         <tr>
+                                            <th>Acciones</th>
                                             <th>Fecha</th>
                                             <th>Precio Total</th>
                                             <th>Cantidad</th>
@@ -159,6 +160,12 @@
                                         @foreach($detalles as $item)
                                         <?php $total += $item['precioventa'] ?>
                                         <tr>
+                                            <td>
+                                                <button type="submit" data-id="{{$item['id']}}" class="btn btn-outline-danger btn-sm btnEliminarProducto"
+                                                        title="Eliminar producto"><i class="fa fa-trash"
+                                                            aria-hidden="true"></i>
+                                                </button>
+                                            </td> 
                                             <td>{{$item['fecha']}}</td>
                                             <td>
                                                 {{$item['precioventa']}}
@@ -349,6 +356,48 @@
 
         $('#btnAgregarHuesped').on('click', function(){
             $('#modalHuesped').modal('toggle');
+        });
+
+        $('.btnEliminarProducto').on('click', function(e){
+            e.preventDefault();
+            var id = $(this).attr('data-id');
+            var data = {
+                id: id,
+                _token: $('input[name=_token]').val(),
+            }
+            swal({
+                title: '¿ Está seguro que desea eliminar este producto/servicio?',
+                text: "Si lo elimina ahora ya no lo podrá usar despues!",
+                icon: 'warning',
+                buttons: {
+                    cancel: "Cancelar",
+                    confirm: "Aceptar"
+                },
+            }).then((value) => {
+                if (value) {
+                    $.ajax({
+                        url: "{{route('eliminar_producto_from_habitacion')}}",
+                        type: 'POST',
+                        data: data,
+                        success: function (respuesta) {
+                            if (respuesta.mensaje == "ok") {
+                                Hotel.notificaciones('El registro fue eliminado correctamente', 'Hotel', 'success');
+                                if (data.type != 'error') {
+                                    setTimeout(function() {
+                                        location.reload();
+                                    }, 1000);
+                                }
+
+                            } else {
+                                Hotel.notificaciones('El registro no pudo ser eliminado, hay recursos usandolo', 'Hotel', 'error');
+                            }
+                        },
+                        error: function (e) {
+                            console.log('Error: ', e);
+                        }
+                    });
+                }
+            });
         });
 
         $('.btnELiminarHuesped').on('click', function(e){
@@ -756,6 +805,43 @@
 
 
 
+    });
+
+    $('#txtEfectivo3').on('change', function(){
+            var total = $('#total').val();
+            var efectivo = $('#txtEfectivo3').val();
+            var tarjeta = total - efectivo;
+            $('#txtTarjeta3').val(tarjeta);
+    });
+    $('#txtTarjeta3').on('change', function(){
+            var total = $('#total').val();
+            var tarjeta = $('#txtTarjeta3').val();
+            var efectivo = total - tarjeta;
+            $('#txtEfectivo3').val(efectivo);
+    });
+    $('#txtDeposito2').on('change', function(){
+            var total = $('#total').val();
+            var deposito = $('#txtDeposito2').val();
+            var efectivo = total - deposito;
+            $('#txtEfectivo2').val(efectivo);
+    });
+    $('#txtEfectivo2').on('change', function(){
+            var total = $('#total').val();
+            var efectivo = $('#txtEfectivo2').val();
+            var deposito = total - efectivo;
+            $('#txtDeposito2').val(deposito);
+    });
+    $('#txtDeposito3').on('change', function(){
+            var total = $('#total').val();
+            var deposito = $('#txtDeposito3').val();
+            var tarjeta = total - deposito;
+            $('#txtTarjeta2').val(tarjeta);
+    });
+    $('#txtTarjeta2').on('change', function(){
+            var total = $('#total').val();
+            var tarjeta = $('#txtTarjeta2').val();
+            var deposito = total - tarjeta;
+            $('#txtDeposito3').val(deposito);
     });
      
  })

@@ -14,6 +14,7 @@ use App\Models\Procesos\DetalleComprobante;
 use App\Models\Procesos\Movimiento;
 use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class CajaController extends Controller
 {
@@ -466,6 +467,10 @@ class CajaController extends Controller
         $deposito=0;
         $modalidad = $request->modalidadpago;
         $tipotarjeta = "";
+        $fechadeposito="";
+        $nrooperacion="";
+        $nombrebanco="";
+        $urlimagen='';
         switch ($modalidad) {
             case 'efectivo':
                 $efectivo = $request->txtEfectivoSolo;
@@ -474,7 +479,14 @@ class CajaController extends Controller
                 $tarjeta = $request->txtTarjetaSolo;
                 $tipotarjeta = $request->tipotarjetaSolo;                
                 break;
-            case 'deposito':
+            case 'deposito':               
+                $fechadeposito = $request->txtFechaSoloDeposito;
+                $nrooperacion=$request->txtNroOperacionSolo;
+                $nombrebanco=strtoupper($request->txtNombreBancoSolo);
+                if(!is_null($request->imgDepositoSolo)){
+                    $imagen = $request->file('imgDepositoSolo')->store('public/depositos');
+                    $urlimagen = Storage::url($imagen);
+                }
                 $deposito = $request->txtDepositoSolo;            
                 break;
             case 'efectivotarjeta':
@@ -485,13 +497,28 @@ class CajaController extends Controller
             case 'depositoefectivo':
                 $deposito = $request->txtDepositoEfectivo;            
                 $efectivo = $request->txtEfectivoDeposito;  
+                $fechadeposito = $request->txtFechaDepositoEfectivo;
+                $nrooperacion=$request->txtNroOperacionEfectivo;
+                $nombrebanco=strtoupper($request->txtNombreBancoEfectivo);
+                if(!is_null($request->imgDepositoEfectivo)){
+                    $imagen = $request->file('imgDepositoEfectivo')->store('public/depositos');
+                    $urlimagen = Storage::url($imagen);
+                }
                 break;
             case 'depositotarjeta':
                 $deposito = $request->txtDepositoTarjeta;            
                 $tarjeta = $request->txtTarjetaDeposito;
-                $tipotarjeta = $request->tipotarjetaDeposito;                
+                $tipotarjeta = $request->tipotarjetaDeposito;  
+                $fechadeposito = $request->txtFechaDepositoTarjeta;
+                $nrooperacion=$request->txtNroOperacionTarjeta;
+                $nombrebanco=strtoupper($request->txtNombreBancoTarjeta);
+                if(!is_null($request->imgDepositoTarjeta)){
+                    $imagen = $request->file('imgDepositoTarjeta')->store('public/depositos');
+                    $urlimagen = Storage::url($imagen);
+                }              
                 break;            
         }
+
 
         if($deposito==0 && $tarjeta==0 && $efectivo==0){
             return response()->json(['respuesta' => 'no', 'mensaje' => 'Debe de seleccionar el método de pago']);
@@ -557,7 +584,11 @@ class CajaController extends Controller
                 'deposito'=>$deposito,
                 'efectivo'=>$efectivo,
                 'tipotarjeta'=>$tipotarjeta,
-                'modalidadpago'=>$modalidad
+                'modalidadpago'=>$modalidad,
+                'fechadeposito'=>$fechadeposito,
+                'nrooperacion'=>$nrooperacion,
+                'nombrebanco'=>$nombrebanco,
+                'urlimagen'=>$urlimagen,
                 // 'comentario' => $request->comentario,
             ]);
             //guardar un nuevo registro para caja 
@@ -652,6 +683,10 @@ class CajaController extends Controller
         $deposito=0;
         $modalidad = $request->modalidadpago;
         $tipotarjeta = "";
+        $fechadeposito="";
+        $nrooperacion="";
+        $nombrebanco="";
+        $urlimagen='';
         switch ($modalidad) {
             case 'efectivo':
                 $efectivo = $request->txtEfectivoSolo;
@@ -661,7 +696,14 @@ class CajaController extends Controller
                 $tipotarjeta = $request->tipotarjetaSolo;                
                 break;
             case 'deposito':
-                $deposito = $request->txtDepositoSolo;            
+                $deposito = $request->txtDepositoSolo;   
+                $fechadeposito = $request->txtFechaSoloDeposito;
+                $nrooperacion=$request->txtNroOperacionSolo;
+                $nombrebanco=strtoupper($request->txtNombreBancoSolo);
+                if(!is_null($request->imgDepositoSolo)){
+                    $imagen = $request->file('imgDepositoSolo')->store('public/depositos');
+                    $urlimagen = Storage::url($imagen);
+                }         
                 break;
             case 'efectivotarjeta':
                 $efectivo = $request->txtEfectivoTarjeta;            
@@ -671,11 +713,25 @@ class CajaController extends Controller
             case 'depositoefectivo':
                 $deposito = $request->txtDepositoEfectivo;            
                 $efectivo = $request->txtEfectivoDeposito;  
+                $fechadeposito = $request->txtFechaDepositoEfectivo;
+                $nrooperacion=$request->txtNroOperacionEfectivo;
+                $nombrebanco=strtoupper($request->txtNombreBancoEfectivo);
+                if(!is_null($request->imgDepositoEfectivo)){
+                    $imagen = $request->file('imgDepositoEfectivo')->store('public/depositos');
+                    $urlimagen = Storage::url($imagen);
+                }
                 break;
             case 'depositotarjeta':
                 $deposito = $request->txtDepositoTarjeta;            
                 $tarjeta = $request->txtTarjetaDeposito;
-                $tipotarjeta = $request->tipotarjetaDeposito;                
+                $tipotarjeta = $request->tipotarjetaDeposito;
+                $fechadeposito = $request->txtFechaDepositoTarjeta;
+                $nrooperacion=$request->txtNroOperacionTarjeta;
+                $nombrebanco=strtoupper($request->txtNombreBancoTarjeta);
+                if(!is_null($request->imgDepositoTarjeta)){
+                    $imagen = $request->file('imgDepositoTarjeta')->store('public/depositos');
+                    $urlimagen = Storage::url($imagen);
+                }                  
                 break;            
         }
 
@@ -732,7 +788,11 @@ class CajaController extends Controller
                 'deposito'=>$deposito,
                 'efectivo'=>$efectivo,
                 'tipotarjeta'=>$tipotarjeta,
-                'modalidadpago'=>$modalidad
+                'modalidadpago'=>$modalidad,
+                'fechadeposito'=>$fechadeposito,
+                'nrooperacion'=>$nrooperacion,
+                'nombrebanco'=>$nombrebanco,
+                'urlimagen'=>$urlimagen,
             ]);
             //obtener id del ultimo registro de caja es decir del registro anterior 
             // y con eso pasar a la tabla DeatalleCaja cada producto seleccionado
@@ -805,6 +865,10 @@ class CajaController extends Controller
         $deposito=0;
         $modalidad = $request->modalidadpago;
         $tipotarjeta = "";
+        $fechadeposito="";
+        $nrooperacion="";
+        $nombrebanco="";
+        $urlimagen='';
         switch ($modalidad) {
             case 'efectivo':
                 $efectivo = $request->txtEfectivoSolo;
@@ -814,7 +878,14 @@ class CajaController extends Controller
                 $tipotarjeta = $request->tipotarjetaSolo;                
                 break;
             case 'deposito':
-                $deposito = $request->txtDepositoSolo;            
+                $deposito = $request->txtDepositoSolo;
+                $fechadeposito = $request->txtFechaSoloDeposito;
+                $nrooperacion=$request->txtNroOperacionSolo;
+                $nombrebanco=strtoupper($request->txtNombreBancoSolo);
+                if(!is_null($request->imgDepositoSolo)){
+                    $imagen = $request->file('imgDepositoSolo')->store('public/depositos');
+                    $urlimagen = Storage::url($imagen);
+                }              
                 break;
             case 'efectivotarjeta':
                 $efectivo = $request->txtEfectivoTarjeta;            
@@ -823,12 +894,26 @@ class CajaController extends Controller
                 break;
             case 'depositoefectivo':
                 $deposito = $request->txtDepositoEfectivo;            
-                $efectivo = $request->txtEfectivoDeposito;  
+                $efectivo = $request->txtEfectivoDeposito;
+                $fechadeposito = $request->txtFechaDepositoEfectivo;
+                $nrooperacion=$request->txtNroOperacionEfectivo;
+                $nombrebanco=strtoupper($request->txtNombreBancoEfectivo);
+                if(!is_null($request->imgDepositoEfectivo)){
+                    $imagen = $request->file('imgDepositoEfectivo')->store('public/depositos');
+                    $urlimagen = Storage::url($imagen);
+                }  
                 break;
             case 'depositotarjeta':
                 $deposito = $request->txtDepositoTarjeta;            
                 $tarjeta = $request->txtTarjetaDeposito;
-                $tipotarjeta = $request->tipotarjetaDeposito;                
+                $tipotarjeta = $request->tipotarjetaDeposito;  
+                $fechadeposito = $request->txtFechaDepositoTarjeta;
+                $nrooperacion=$request->txtNroOperacionTarjeta;
+                $nombrebanco=strtoupper($request->txtNombreBancoTarjeta);
+                if(!is_null($request->imgDepositoTarjeta)){
+                    $imagen = $request->file('imgDepositoTarjeta')->store('public/depositos');
+                    $urlimagen = Storage::url($imagen);
+                }                
                 break;            
         }
 
@@ -885,7 +970,11 @@ class CajaController extends Controller
                 'deposito'=>$deposito,
                 'efectivo'=>$efectivo,
                 'tipotarjeta'=>$tipotarjeta,
-                'modalidadpago'=>$modalidad
+                'modalidadpago'=>$modalidad,
+                'fechadeposito'=>$fechadeposito,
+                'nrooperacion'=>$nrooperacion,
+                'nombrebanco'=>$nombrebanco,
+                'urlimagen'=>$urlimagen,
             ]);
             //obtener id del ultimo registro de caja es decir del registro anterior 
             // y con eso pasar a la tabla DeatalleCaja cada producto seleccionado

@@ -163,4 +163,14 @@ class DetalleMovimientoController extends Controller
         session()->pull('servicio', []);
         return redirect()->route('habitaciones');
     }
+
+    public function eliminarMovimiento(Request $request){
+        if ($request->ajax()) {
+            $id = $request->id;
+            DetalleMovimiento::destroy($id);
+            return response()->json(['mensaje' => 'ok']);
+        } else {
+            abort(404);
+        }
+    }
 }

@@ -13,6 +13,8 @@ use App\Models\Procesos\DetalleComprobante;
 use App\Models\Producto;
 use App\Models\Servicios;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+
 
 class VentasController extends Controller
 {
@@ -243,6 +245,10 @@ class VentasController extends Controller
         $deposito=0;
         $modalidad = $request->modalidadpago;
         $tipotarjeta = "";
+        $fechadeposito="";
+        $nrooperacion="";
+        $nombrebanco="";
+        $urlimagen='';
         switch ($modalidad) {
             case 'efectivo':
                 $efectivo = $request->txtEfectivoSolo;
@@ -252,7 +258,14 @@ class VentasController extends Controller
                 $tipotarjeta = $request->tipotarjetaSolo;                
                 break;
             case 'deposito':
-                $deposito = $request->txtDepositoSolo;            
+                $deposito = $request->txtDepositoSolo;
+                $fechadeposito = $request->txtFechaSoloDeposito;
+                $nrooperacion=$request->txtNroOperacionSolo;
+                $nombrebanco=strtoupper($request->txtNombreBancoSolo);
+                if(!is_null($request->imgDepositoSolo)){
+                    $imagen = $request->file('imgDepositoSolo')->store('public/depositos');
+                    $urlimagen = Storage::url($imagen);
+                }              
                 break;
             case 'efectivotarjeta':
                 $efectivo = $request->txtEfectivoTarjeta;            
@@ -261,12 +274,26 @@ class VentasController extends Controller
                 break;
             case 'depositoefectivo':
                 $deposito = $request->txtDepositoEfectivo;            
-                $efectivo = $request->txtEfectivoDeposito;  
+                $efectivo = $request->txtEfectivoDeposito;
+                $fechadeposito = $request->txtFechaDepositoEfectivo;
+                $nrooperacion=$request->txtNroOperacionEfectivo;
+                $nombrebanco=strtoupper($request->txtNombreBancoEfectivo);
+                if(!is_null($request->imgDepositoEfectivo)){
+                    $imagen = $request->file('imgDepositoEfectivo')->store('public/depositos');
+                    $urlimagen = Storage::url($imagen);
+                }  
                 break;
             case 'depositotarjeta':
                 $deposito = $request->txtDepositoTarjeta;            
                 $tarjeta = $request->txtTarjetaDeposito;
-                $tipotarjeta = $request->tipotarjetaDeposito;                
+                $tipotarjeta = $request->tipotarjetaDeposito;  
+                $fechadeposito = $request->txtFechaDepositoTarjeta;
+                $nrooperacion=$request->txtNroOperacionTarjeta;
+                $nombrebanco=strtoupper($request->txtNombreBancoTarjeta);
+                if(!is_null($request->imgDepositoTarjeta)){
+                    $imagen = $request->file('imgDepositoTarjeta')->store('public/depositos');
+                    $urlimagen = Storage::url($imagen);
+                }               
                 break;            
         }
 
@@ -321,7 +348,11 @@ class VentasController extends Controller
                 'deposito'=>$deposito,
                 'efectivo'=>$efectivo,
                 'tipotarjeta'=>$tipotarjeta,
-                'modalidadpago'=>$modalidad
+                'modalidadpago'=>$modalidad,
+                'fechadeposito'=>$fechadeposito,
+                'nrooperacion'=>$nrooperacion,
+                'nombrebanco'=>$nombrebanco,
+                'urlimagen'=>$urlimagen,
             ]);
             $caja =
                 Caja::with('movimiento', 'persona', 'concepto')
@@ -382,6 +413,10 @@ class VentasController extends Controller
         $deposito=0;
         $modalidad = $request->modalidadpago;
         $tipotarjeta = "";
+        $fechadeposito="";
+        $nrooperacion="";
+        $nombrebanco="";
+        $urlimagen='';
         switch ($modalidad) {
             case 'efectivo':
                 $efectivo = $request->txtEfectivoSolo;
@@ -391,7 +426,14 @@ class VentasController extends Controller
                 $tipotarjeta = $request->tipotarjetaSolo;                
                 break;
             case 'deposito':
-                $deposito = $request->txtDepositoSolo;            
+                $deposito = $request->txtDepositoSolo;
+                $fechadeposito = $request->txtFechaSoloDeposito;
+                $nrooperacion=$request->txtNroOperacionSolo;
+                $nombrebanco=strtoupper($request->txtNombreBancoSolo);
+                if(!is_null($request->imgDepositoSolo)){
+                    $imagen = $request->file('imgDepositoSolo')->store('public/depositos');
+                    $urlimagen = Storage::url($imagen);
+                }              
                 break;
             case 'efectivotarjeta':
                 $efectivo = $request->txtEfectivoTarjeta;            
@@ -400,12 +442,26 @@ class VentasController extends Controller
                 break;
             case 'depositoefectivo':
                 $deposito = $request->txtDepositoEfectivo;            
-                $efectivo = $request->txtEfectivoDeposito;  
+                $efectivo = $request->txtEfectivoDeposito;
+                $fechadeposito = $request->txtFechaDepositoEfectivo;
+                $nrooperacion=$request->txtNroOperacionEfectivo;
+                $nombrebanco=strtoupper($request->txtNombreBancoEfectivo);
+                if(!is_null($request->imgDepositoEfectivo)){
+                    $imagen = $request->file('imgDepositoEfectivo')->store('public/depositos');
+                    $urlimagen = Storage::url($imagen);
+                }    
                 break;
             case 'depositotarjeta':
                 $deposito = $request->txtDepositoTarjeta;            
                 $tarjeta = $request->txtTarjetaDeposito;
-                $tipotarjeta = $request->tipotarjetaDeposito;                
+                $tipotarjeta = $request->tipotarjetaDeposito;
+                $fechadeposito = $request->txtFechaDepositoTarjeta;
+                $nrooperacion=$request->txtNroOperacionTarjeta;
+                $nombrebanco=strtoupper($request->txtNombreBancoTarjeta);
+                if(!is_null($request->imgDepositoTarjeta)){
+                    $imagen = $request->file('imgDepositoTarjeta')->store('public/depositos');
+                    $urlimagen = Storage::url($imagen);
+                }                 
                 break;            
         }
 
@@ -461,7 +517,11 @@ class VentasController extends Controller
                 'deposito'=>$deposito,
                 'efectivo'=>$efectivo,
                 'tipotarjeta'=>$tipotarjeta,
-                'modalidadpago'=>$modalidad
+                'modalidadpago'=>$modalidad,
+                'fechadeposito'=>$fechadeposito,
+                'nrooperacion'=>$nrooperacion,
+                'nombrebanco'=>$nombrebanco,
+                'urlimagen'=>$urlimagen,
             ]);
             $caja =
                 Caja::with('movimiento', 'persona', 'concepto')

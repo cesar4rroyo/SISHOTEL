@@ -239,6 +239,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     Route::get('movimiento/pdf/in/{id}', 'MovimientoController@exportPdfCheckIn')->name('check_in_pdf');
 
 
+    Route::post('detallemovimiento/elimar/habitacion', 'DetalleMovimientoController@eliminarMovimiento')->name('eliminar_producto_from_habitacion');
 
     //actualizar habitacion
     Route::get('caja/habitacion/actualizar/{id}', 'CajaController@updateHabitacion')->name('actualizarHabitacion');
