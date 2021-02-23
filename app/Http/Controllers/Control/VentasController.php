@@ -245,7 +245,7 @@ class VentasController extends Controller
         $deposito=0;
         $modalidad = $request->modalidadpago;
         $tipotarjeta = "";
-        $fechadeposito="";
+        $fechadeposito=null;
         $nrooperacion="";
         $nombrebanco="";
         $urlimagen='';
@@ -413,7 +413,7 @@ class VentasController extends Controller
         $deposito=0;
         $modalidad = $request->modalidadpago;
         $tipotarjeta = "";
-        $fechadeposito="";
+        $fechadeposito=null;
         $nrooperacion="";
         $nombrebanco="";
         $urlimagen='';
