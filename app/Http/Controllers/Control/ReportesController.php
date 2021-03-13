@@ -401,7 +401,7 @@ class ReportesController extends Controller
                 ->toArray();
             $data = [];
             foreach ($detallemovimiento as $item) {
-                if ($item['movimiento']['pasajero'][0]['persona']['razonsocial'] && trim($item['movimiento']['pasajero'][0]['persona']['razonsocial']) != '') {
+                if (!is_null($item['movimiento']['pasajero'][0]['persona']['razonsocial']) && trim($item['movimiento']['pasajero'][0]['persona']['razonsocial']) != '') {
                     $nombres = $item['movimiento']['pasajero'][0]['persona']['razonsocial'];
                 } else {
                     $nombres = !is_null($item['movimiento']['pasajero'][0]['persona']) ? $item['movimiento']['pasajero'][0]['persona']['nombres'] . ' ' . $item['movimiento']['pasajero'][0]['persona']['apellidos']  : '-';

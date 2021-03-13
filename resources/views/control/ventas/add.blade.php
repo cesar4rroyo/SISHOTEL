@@ -211,6 +211,8 @@
                             type:'GET',
                             url:'http://192.168.0.200:81/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
                             data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
+                            crossDomain: true,
+                            dataType: 'jsonp',
                             success: function(r){
                                 window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                                 window.location.href = "{{route('caja')}}";
@@ -218,6 +220,8 @@
                             },
                             error: function(e){
                                 console.log(e.message);
+                                window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
+                                window.location.href = "{{route('caja')}}";
                             }
                         });  
                     }else{
