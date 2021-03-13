@@ -212,6 +212,8 @@
                             },
                             error: function(e){
                                 console.log(e.message);
+                                window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
+                                window.location.href = "{{route('caja')}}";
                             }
                         });  
                     }else{

@@ -148,7 +148,10 @@ class ReservaController extends Controller
     {
         try {
             $reserva = Reserva::findOrFail($id);
-            $reserva->delete();
+            //$reserva->delete();
+            $reserva->update([
+                'situacion'=>'Eliminado',
+            ]);
             return response()->json(['mensaje' => 'ok']);
         } catch (\Throwable $th) {
             return response()->json(['mensaje' => $th->getMessage()]);
