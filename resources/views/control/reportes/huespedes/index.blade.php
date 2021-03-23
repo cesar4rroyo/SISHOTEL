@@ -50,10 +50,10 @@
                             <select class="form-control" name="edad" id="edad">
                                 <option value="">Todos</option>
                                 <option value="r0">Niños (0-12)</option>
-                                <option value="r0">Adolescentes (12-18)</option>
-                                <option value="r1">Jóvenes (18-30) </option>
-                                <option value="r2">Adultos (30-63)</option>
-                                <option value="r3">Adulto Mayor (63 - más)</option>
+                                <option value="r1">Adolescentes (12-18)</option>
+                                <option value="r2">Jóvenes (18-30) </option>
+                                <option value="r3">Adultos (30-63)</option>
+                                <option value="r4">Adulto Mayor (63 - más)</option>
                             </select>
                         </div>
                     </div>
@@ -66,6 +66,8 @@
                 </form>
                 <div class="row mb-2" id="btnsReport">
                     <div class="table-responsive mt-4">
+                        <p class=" text-bold">Total: <span id="totalspam"></span></p>
+                        <p class=" text-bold">Mostrando: <span id="totalItems"></span>  húespedes</p>
                         <table class="table text-center table-hover" id="huespedestable" class="display"
                             style="width:100%">
                             <thead>
@@ -102,6 +104,7 @@
                                 </tr>
                             </tfoot>
                         </table>
+
                     </div>
                 </div>
             </div>
@@ -125,6 +128,7 @@
         $('#btnsReport').hide();
         $('#btnGenerar').on('click', function(e){
             e.preventDefault();
+            var table = '';
             const data = new FormData(document.getElementById('formMovimientos'));
             fetch("{{route('reportes_huespedes_pdf')}}", {
                 method:'POST',
@@ -132,7 +136,7 @@
             }).then(res=>res.json())
             .then((data)=>{
                 $('#btnsReport').show();
-                $('#huespedestable').DataTable( {
+                table=$('#huespedestable').DataTable( {
                         "language": {
                             "decimal": "",
                             "emptyTable": "No hay información",
@@ -176,12 +180,80 @@
                         ],
                         dom: 'lBfrtip',
                         buttons: [
-                            'excel', 'pdf', 'print'
+                            {
+                                extend: 'print',
+                                autoPrint: false,
+                                footer:false,
+                                title: 'Reporte de Húespedes:' +  $('#from').val() + ' hasta ' + $('#to').val(),
+                                messageTop: function(){
+                                    return "<p class='text-bold'>Total: " +$('#totalspam').text() + "</p><p class='text-bold'>Húespedes Nro: " + $('#totalItems').text() + " </p>";
+                                },
+                                customize: function(win){
+                                    var body = $(win.document.body).find( 'table tbody' )
+                                    $(body).append($(body).find('tr:eq(0)').clone())
+                                    var row = $(body).find('tr').last();
+                                    $(row).find('td').text('');
+                                    $(row).find('td:eq(8)').text('Total: ' + $('#totalspam').text());
+                                }
+                            },
+                            {
+                                extend: 'excel',
+                                title: 'Reporte de Húespedes:' +  $('#from').val() + ' hasta ' + $('#to').val(),
+                                footer:false, 
+                                messageTop: function(){
+                                    return "Total: " +$('#totalspam').text() + " - " + "Húespedes Nro: " + $('#totalItems').text();
+                                },
+                                
+                            },
+                            {
+                                extend: 'pdf',                                
+                                footer:false, 
+                                orientation: 'landscape',
+                                title: 'Reporte de Húespedes:' +  $('#from').val() + ' hasta ' + $('#to').val(),
+                                messageTop: function(){
+                                    return "Total: " +$('#totalspam').text() + "\n\n" + "Húespedes Nro: " + $('#totalItems').text();
+                                },
+                            },
                         ],
-                        "lengthMenu": [5,10,25,50,100],
+                        "lengthMenu": [[-1,10,25,50],["All",10,25,50]],
+                        "bLengthChange": false,
                    
 
-                        "bDestroy": true
+                        "bDestroy": true,
+                        "footerCallback": function( row, data, start, end, display ){
+                                var api = this.api();
+                                var intVal = function ( i ) {
+                                    return typeof i === 'string' ?
+                                    i.replace(/[\$,]/g, '')*1 :
+                                    typeof i === 'number' ?
+                                    i : 0;
+                                };
+                                total = api
+                                    .column( 8 )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+                                pageTotal = api
+                                    .column( 8, { page: 'current'} )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+                                
+                                // Update footer
+                                $( api.column( 8 ).footer() ).html(
+                                    'Total: S./'+Number(pageTotal).toFixed(2)
+                                );
+                                $('#totalspam').text('S/.' + Number(pageTotal).toFixed(2));
+
+                                console.log(data);
+
+                                var totalItems = api.page.info().end;
+                                $('#totalItems').text(totalItems);
+                                                             
+                                
+                        }
                     });
             })
             .catch(e=>console.log(e));
