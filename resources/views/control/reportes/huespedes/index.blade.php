@@ -247,7 +247,6 @@
                                 );
                                 $('#totalspam').text('S/.' + Number(pageTotal).toFixed(2));
 
-                                console.log(data);
 
                                 var totalItems = api.page.info().end;
                                 $('#totalItems').text(totalItems);

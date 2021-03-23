@@ -548,6 +548,9 @@ class ReportesController extends Controller
                         $modalidad = '';
                         break;               
                 }
+                if($item['tipo']=='Egreso'){
+                    $item['total']=-($item['total']);
+                }
                 $data[] = [
                     'fecha' => $item['fecha'],
                     'numero' => $item['numero'],

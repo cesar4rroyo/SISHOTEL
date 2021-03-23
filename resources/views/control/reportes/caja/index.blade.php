@@ -54,6 +54,8 @@
                         Exportar a Excel</button>
                     <p id="loading" class="font-weight-bold text-info">Espere ...</p> --}}
                     <div class="table-responsive mt-4">
+                        <p class=" text-bold">Total: <span id="totalspam"></span></p>
+                        <p class=" text-bold">Mostrando: <span id="totalItems"></span>  movimientos</p>
                         <table class="table text-center table-hover" id="cajatable" class="display" style="width:100%">
                             <thead>
                                 <tr>
@@ -159,7 +161,40 @@
                         ],
                         dom: 'lBfrtip',
                         buttons: [
-                            'excel', 'pdf', 'print'
+                            {
+                                extend: 'print',
+                                autoPrint: false,
+                                footer:false,
+                                title: 'Reporte de Caja:' +  $('#from').val() + ' hasta ' + $('#to').val(),
+                                messageTop: function(){
+                                    return "<p class='text-bold'>Total: " +$('#totalspam').text() + "</p><p class='text-bold'>Nro de Movimientos: " + $('#totalItems').text() + " </p>";
+                                },
+                                customize: function(win){
+                                    var body = $(win.document.body).find( 'table tbody' )
+                                    $(body).append($(body).find('tr:eq(0)').clone())
+                                    var row = $(body).find('tr').last();
+                                    $(row).find('td').text('');
+                                    $(row).find('td:eq(4)').text('Total: ' + $('#totalspam').text());
+                                }
+                            },
+                            {
+                                extend: 'excel',
+                                title: 'Reporte de Húespedes:' +  $('#from').val() + ' hasta ' + $('#to').val(),
+                                footer:false, 
+                                messageTop: function(){
+                                    return "Total: " +$('#totalspam').text() + " - " + "Nro. de Movimientos:" + $('#totalItems').text();
+                                },
+                                
+                            },
+                            {
+                                extend: 'pdf',                                
+                                footer:false, 
+                                orientation: 'landscape',
+                                title: 'Reporte de Húespedes:' +  $('#from').val() + ' hasta ' + $('#to').val(),
+                                messageTop: function(){
+                                    return "Total: " +$('#totalspam').text() + "\n\n" + "Nro. de Movimientos: " + $('#totalItems').text();
+                                },
+                            },
                         ],
                         "footerCallback": function( row, data, start, end, display ){
                                 var api = this.api();
@@ -184,10 +219,14 @@
                                 
                                 // Update footer
                                 $( api.column(4).footer() ).html(
-                                    'Total: S./'+pageTotal +' ( S/.'+ total +' total)'
+                                    'Total: S./'+pageTotal
                                 );
+                                $('#totalspam').text('S/.' + Number(pageTotal).toFixed(2));
+                                var totalItems = api.page.info().end;
+                                $('#totalItems').text(totalItems);
                             },
-                        "lengthMenu": [5,10,25,50,100],
+                        "lengthMenu": [[-1,10,25,50],["All",10,25,50]],
+                        "bLengthChange": false,
                         "bDestroy": true
                     });
             })
