@@ -48,6 +48,8 @@
                 </form>
                 <div class="row mb-2" id="btnsReport">
                     <div class="table-responsive mt-4">
+                        <p class=" text-bold">Total: <span id="totalspam"></span></p>
+                        <p class=" text-bold">Mostrando: <span id="totalItems"></span>  ventas</p>
                         <table class="table text-center table-hover" id="ventastable" class="display"
                             style="width:100%">
                             <thead>
@@ -145,11 +147,43 @@
                             ],
                             dom: 'lBfrtip',
                             buttons: [
-                                {extend:'excel', footer:true, },
-                                {extend:'pdf', footer:true, orientation: 'landscape',},
-                                {extend:'print', footer:true},
+                                {
+                                    extend: 'print',
+                                    autoPrint: false,
+                                    footer:false,
+                                    title: 'Reporte de Ventas en Habitaciones:' +  $('#from').val() + ' hasta ' + $('#to').val(),
+                                    messageTop: function(){
+                                        return "<p class='text-bold'>Total: " +$('#totalspam').text() + "</p><p class='text-bold'>Nro. de Ventas: " + $('#totalItems').text() + " </p>";
+                                    },
+                                    customize: function(win){
+                                        var body = $(win.document.body).find( 'table tbody' )
+                                        $(body).append($(body).find('tr:eq(0)').clone())
+                                        var row = $(body).find('tr').last();
+                                        $(row).find('td').text('');
+                                        $(row).find('td:eq(3)').text('Total: ' + $('#totalspam').text());
+                                    }
+                                },
+                                {
+                                    extend: 'excel',
+                                    footer:false, 
+                                    title: 'Reporte de Ventas en Habitaciones:' +  $('#from').val() + ' hasta ' + $('#to').val(),
+                                    messageTop: function(){
+                                        return "Total: " +$('#totalspam').text() + " - " + "Nro de Ventas: " + $('#totalItems').text();
+                                    },
+                                    
+                                },
+                                {
+                                    extend: 'pdf',                                
+                                    footer:false, 
+                                    orientation: 'landscape',
+                                    title: 'Reporte de Ventas en Habitaciones:' +  $('#from').val() + ' hasta ' + $('#to').val(),
+                                    messageTop: function(){
+                                        return "Total: " +$('#totalspam').text() + "\n\n" + "Nro de Ventas: " + $('#totalItems').text();
+                                    },
+                                },
                             ],
-                            "lengthMenu": [5,10,25,50,100],  
+                            "lengthMenu": [[-1,10,25,50],["All",10,25,50]],
+                            "bLengthChange": false,   
                             "bDestroy": true,
                             "footerCallback": function( row, data, start, end, display ){
                                 var api = this.api();
@@ -174,8 +208,12 @@
                                 
                                 // Update footer
                                 $( api.column( 3 ).footer() ).html(
-                                    'Total: S./'+pageTotal +' ( S/.'+ total +' total)'
+                                    'Total: S./'+pageTotal
                                 );
+
+                                $('#totalspam').text('S/.' + Number(pageTotal).toFixed(2));
+                                var totalItems = api.page.info().end;
+                                $('#totalItems').text(totalItems);
                             }
                         });
             })
