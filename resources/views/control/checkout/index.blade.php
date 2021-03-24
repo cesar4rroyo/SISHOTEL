@@ -51,68 +51,75 @@
                                     value="{{Carbon\Carbon::parse($movimiento["fechasalida"])->format('Y-m-d\TH:i')}}"
                                     id="fechasalida" name="fechasalida" type="datetime-local">
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm form-group">
-                                <label class="control-label" for="preciohabitacion">{{'Precio Habitacion'}}</label>
-                                <span class=" badge badge-info" type="button" data-toggle="modal"
-                                    data-target="#descuento">
-                                    <i class="fas fa-plus-circle"></i>
-                                    Descuento
-                                </span>
-                                <input type="number" name="txtDsctoForm" id="txtDsctoForm" hidden>
-                                <div class="modal fade" id="descuento" tabindex="-1" aria-labelledby="modalDscto"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="modalDscto">Añadir Descuento</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-sm form-group">
-                                                        <label class="control-label"
-                                                            for="preciosugerido">{{'Precio Sugerido'}}</label>
-                                                        <input class="form-control" readonly
-                                                            value="{{$habitacion['tipohabitacion']['precio']}}"
-                                                            type="number" name="preciosugerido" id="preciosugerido">
+                        </div>                                                                    
+                        @if (is_null($caja))
+                            <div class="row">
+                                <div class="col-sm form-group">
+                                    <label class="control-label" for="preciohabitacion">{{'Precio Habitacion'}}</label>
+                                    <span class=" badge badge-info" type="button" data-toggle="modal"
+                                        data-target="#descuento">
+                                        <i class="fas fa-plus-circle"></i>
+                                        Descuento
+                                    </span>
+                                    <input type="number" name="txtDsctoForm" id="txtDsctoForm" hidden>
+                                    <div class="modal fade" id="descuento" tabindex="-1" aria-labelledby="modalDscto"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="modalDscto">Añadir Descuento</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-sm form-group">
+                                                            <label class="control-label"
+                                                                for="preciosugerido">{{'Precio Sugerido'}}</label>
+                                                            <input class="form-control" readonly
+                                                                value="{{$habitacion['tipohabitacion']['precio']}}"
+                                                                type="number" name="preciosugerido" id="preciosugerido">
+                                                        </div>
+                                                        <div class="col-sm form-group">
+                                                            <label class="control-label"
+                                                                for="txtDescuento">{{'Descuento'}}</label>
+                                                            <input class="form-control" step="0.01" value="{{0}}"
+                                                                type="number" name="txtDescuento" id="txtDescuento">
+                                                        </div>
                                                     </div>
-                                                    <div class="col-sm form-group">
+                                                    <div class="row">
                                                         <label class="control-label"
-                                                            for="txtDescuento">{{'Descuento'}}</label>
-                                                        <input class="form-control" step="0.01" value="{{0}}"
-                                                            type="number" name="txtDescuento" id="txtDescuento">
+                                                            for="precioFinal">{{'Precio con Descuento'}}</label>
+                                                        <input class="form-control" readonly value="{{0}}" type="number"
+                                                            name="precioFinal" id="precioFinal">
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <label class="control-label"
-                                                        for="precioFinal">{{'Precio con Descuento'}}</label>
-                                                    <input class="form-control" readonly value="{{0}}" type="number"
-                                                        name="precioFinal" id="precioFinal">
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Cerrar</button>
+                                                    <button type="button" id="btnDscto" class="btn btn-primary">Guardar
+                                                        Cambios</button>
                                                 </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">Cerrar</button>
-                                                <button type="button" id="btnDscto" class="btn btn-primary">Guardar
-                                                    Cambios</button>
                                             </div>
                                         </div>
                                     </div>
+                                    <input class="form-control" readonly value="{{$habitacion['tipohabitacion']['precio']}}"
+                                        type="number" name="preciohabitacion" id="preciohabitacion">
                                 </div>
-                                <input class="form-control" readonly value="{{$habitacion['tipohabitacion']['precio']}}"
-                                    type="number" name="preciohabitacion" id="preciohabitacion">
+                                <div class="col-sm form-group">
+                                    <label class="control-label" for="dias">{{'Dias'}}</label>
+                                    <input required type="number" class="form-control" step="0.01" name="dias" id="dias">
+                                    <p id="errMessage" class="text-center text-danger">Este campo es obligatorio</p>
+                                </div>
                             </div>
-                            <div class="col-sm form-group">
-                                <label class="control-label" for="dias">{{'Dias'}}</label>
-                                <input required type="number" class="form-control" step="0.01" name="dias" id="dias">
-                                <p id="errMessage" class="text-center text-danger">Este campo es obligatorio</p>
-                            </div>
+                        @else
+                        <div class="col-12 form-group">
+                            <label for="pagado">Ya se canceló en caja: </label>
+                            <input required type="number" class="form-control" step="0.01" name="pagado" id="pagado" readonly value="{{$caja['total']}}">
                         </div>
+                        @endif
                         <div class="row">
                             <div class="col-sm form-group">
                                 <label class="control-label" for="early_checkin">{{'Early Check In'}}</label>
@@ -132,7 +139,11 @@
                         <div class="container mb-3">
                             <button type="button" id="calcularTotal" class="btn btn-success float-right">Calcular
                                 Total</button>
-                        </div>
+                        </div>                        
+                        <div class="container mb-3">
+                            <button type="button" id="calcularTotal2" class="btn btn-success float-right">Calcular
+                                Total</button>
+                        </div>                        
                         <div class="row">
                             <div class="col-sm form-group" id="totalContainer">
                                 <label class="control-label" for="total">{{'Total'}}</label>
@@ -283,12 +294,25 @@
                         <div class="form-group">
                             <label for="comentario" class="control-label">{{'Comentario'}}</label>
                             <textarea class="form-control" name="comentario" id="comentario" rows="5">
+                                {{$movimiento['comentario']}}
                             </textarea>
                         </div>
                         <div class="container text-center">
-                            <button type="button" id="btnCheckOut" class="btn btn-outline-success col-sm-6">
+                            @if (is_null($caja))
+                            <button type="button" id="btnCobrar" class="btn btn-outline-primary col-sm-6">
+                                Cobrar y generar comprobante
+                            </button>   
+                            <button type="button" id="btnCheckOut" disabled class="btn btn-outline-success col-sm-6 mt-2">
                                 Check-Out
-                            </button>
+                            </button>  
+                            @else
+                            <button type="button" id="btnCobrar" disabled class="btn btn-outline-primary col-sm-6">
+                                Cobrar y generar comprobante
+                            </button>   
+                            <button type="button" id="btnCheckOut" class="btn btn-outline-success col-sm-6 mt-2">
+                                Check-Out
+                            </button>    
+                            @endif
                         </div>
                     </form>
                 </div>
@@ -342,10 +366,12 @@
     document.addEventListener("DOMContentLoaded", function(event) {
         $('#errMessage').hide();
         $('#calcularTotal').hide();
+        $('#calcularTotal2').hide();
         $('#totalContainer').hide();
         $('#btnAddRuc').hide();
         $('#modalidadPago').hide();
 
+        
         $('input[type="radio"]').not(".tarjetatipo").click(function(){
             $('#modalidadPago').show();
             var inputValue = $(this).attr("value");
@@ -633,12 +659,86 @@
             $(".selectRolHuesped").val([]).trigger("change");      
         });
 
-        const btnCheckOut = document.getElementById('btnCheckOut').onclick=function(event){
+        const brnCobrar = document.getElementById('btnCobrar').onclick=function(event){
             event.preventDefault();
             const data = new FormData(document.getElementById('checkoutForm'));
             var dias = document.getElementById('dias').value;
             var total = document.getElementById('total').value;
             if(dias.trim()!='' && total.trim()!=0){
+                swal({
+                    title:'¿Está seguro que desea continuar con esta operación?',
+                    text:'Se cobrará solo el precio de la habitación',
+                    icon:'warning',
+                    buttons: {
+                        cancel: "Cancelar",
+                        confirm: "Aceptar"
+                    },
+                }).then(function(){
+                    fetch("{{route('cobrar_movimiento', $movimiento['id'])}}", {
+                        method:'POST',
+                        body:data,
+                    })
+                    .then(res=>res.json())
+                    .then(function(data){
+                        if(data.respuesta=='ok'){
+                            // window.location.href = "{{route('caja')}}";
+                            var idComprobante =data.id_comprobante
+                            var tipoDoc = data.tipoDoc 
+                            if(tipoDoc !="ticket"){
+                                if(tipoDoc=="boleta"){
+                                    var funcion ='enviarBoleta'
+                                }else if(tipoDoc=="factura"){
+                                    var funcion ='enviarFactura'
+                                }                    
+                                $.ajax({
+                                    type:'GET',
+                                    url:'http://192.168.0.200:81/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
+                                    //url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
+                                    data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
+                                    success: function(r){
+                                        window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");
+                                        //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
+                                        window.location.href = "{{route('caja')}}";
+                                        console.log(r);
+                                    },
+                                    error: function(e){
+                                        console.log(e.message);
+                                    }
+                                });  
+                            }else{
+                                window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank"); 
+                                //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
+                                window.location.href = "{{route('caja')}}";
+                            }  
+                        }else{
+                            swal({
+                                title:'Ha ocurrido un error',
+                                text:data.mensaje,
+                                icon:'error',
+                            });
+                            // $('#loading').hide();
+                        }
+                    })
+                    .catch(function(e){
+                        swal({
+                            title:'Ha ocurrido un error',
+                            text:'Oops, el checkout no se ha podido realizar, recarge la página e intentolo de nuevo',
+                            icon:'error',
+                        });
+                    });
+                    
+                });
+            }else{
+                $('#errMessage').show();
+            }  
+        }
+
+        const btnCheckOut = document.getElementById('btnCheckOut').onclick=function(event){
+            event.preventDefault();
+            const data = new FormData(document.getElementById('checkoutForm'));
+            //var dias = document.getElementById('dias').value;
+            var total = document.getElementById('total').value;
+            if(total.trim()!=0 || total.trim!=null || total.trim()!=''){
                 swal({
                     title:'¿Está seguro que desea continuar con esta operación?',
                     text:'Está a punto de finalizar el Check-Out.',
@@ -770,6 +870,40 @@
                 }
             });
         });
+    $("#early_checkin").on('change',function(){
+        var early = ($('#early_checkin').val().trim());
+        var late = $('#late_checkout').val().trim();
+        var use =$('#day_use').val().trim();
+        if(early==='' && late=='' && use==''){
+            $('#calcularTotal2').hide();
+            $('#totalContainer').hide();
+        }else{
+            $('#calcularTotal2').show();
+        }   
+    });
+    $("#late_checkout").on('change',function(){
+        var early = ($('#early_checkin').val().trim());
+        var late = $('#late_checkout').val().trim();
+        var use =$('#day_use').val().trim();
+        if(early==='' && late=='' && use==''){
+            $('#calcularTotal2').hide();
+            $('#totalContainer').hide();
+        }else{
+            $('#calcularTotal2').show();
+        }   
+    });
+    $("#day_use").on('change',function(){
+        var early = ($('#early_checkin').val().trim());
+        var late = $('#late_checkout').val().trim();
+        var use =$('#day_use').val().trim();
+        if(early==='' && late=='' && use==''){
+            $('#calcularTotal2').hide();
+            $('#totalContainer').hide();
+        }else{
+            $('#calcularTotal2').show();
+        }   
+    });
+    
     $("#dias").on('change',function(){
         if($(this).val().trim()==''){
             $('#calcularTotal').hide();
@@ -787,6 +921,21 @@
         // total = parseFloat(habitaciontotal) + parseFloat(total);
         // $('#total').val(parseFloat(total));       
     });
+    $('#calcularTotal2').on('click', function(){
+        var early = ($('#early_checkin').val().trim());
+        var late = $('#late_checkout').val().trim();
+        var use =$('#day_use').val().trim();
+        $('#total').val(parseFloat({{isset($total) ? $total : 0}}));        
+        early = (early=='' || early==undefined || early==0) ? 0 : parseFloat(early);
+        late = (late=='' || late==undefined || late==0) ? 0 : parseFloat(late);
+        use = (use=='' || use==undefined || use==0) ? 0 : parseFloat(use);
+        var total = $('#total').val();
+        var cancelado = $('#pagado').val();        
+        total = early + late + use + parseFloat(total);
+        $('#total').val(parseFloat(total));
+        $('#totalContainer').show();
+
+    });
     $('#calcularTotal').on('click', function(){
         var early = ($('#early_checkin').val().trim());
         var late = $('#late_checkout').val().trim();
@@ -798,7 +947,7 @@
         use = (use=='' || use==undefined || use==0) ? 0 : parseFloat(use);
         var preciohabitacion = $('#preciohabitacion').val();
         var habitaciontotal = dias*preciohabitacion;
-        var total = $('#total').val();
+        var total = $('#total').val();        
         total = early + late + use + parseFloat(habitaciontotal) + parseFloat(total);
         $('#total').val(parseFloat(total));
         $('#totalContainer').show();

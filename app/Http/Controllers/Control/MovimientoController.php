@@ -47,6 +47,7 @@ class MovimientoController extends Controller
         return view('control.checkout.list', compact('movimientos'));
     }
 
+    //teresa fanny 410 - jose olaya paralela arteaga 
     public function eliminar_checkout(Request $request, $id){
         if ($request->ajax()) {
             $mov = Movimiento::find($id);
@@ -162,7 +163,11 @@ class MovimientoController extends Controller
             $roles = Rol::orderBy('id')->pluck('nombre', 'id')->toArray();
             $nacionalidades = Nacionalidad::with('persona')->get();
             $personas = Persona::getClientesConRucDni();
-            return view('control.checkin.index', compact('roles', 'nacionalidades', 'habitacion', 'personas', 'initialDate', 'id_reserva'));
+            $reserva=null;
+            if(!is_null($id_reserva)){
+                $reserva = Reserva::find($id_reserva);
+            }
+            return view('control.checkin.index', compact('roles', 'nacionalidades', 'habitacion', 'personas', 'initialDate', 'id_reserva', 'reserva'));
         } else if ($habitacion['situacion'] == 'Ocupada') {
             $initialDate = Carbon::now()->format('Y-m-d\TH:i');
             $movimiento =
@@ -215,10 +220,16 @@ class MovimientoController extends Controller
             }
             $roles = Rol::orderBy('id')->pluck('nombre', 'id')->toArray();
             $nacionalidades = Nacionalidad::with('persona')->get();
+            $caja = Caja::where('movimiento_id', $id_movimiento)->get()->toArray();
+            if($caja==[]){
+                $caja=null;
+            }else{
+                $caja=$caja[0];
+            }
             return
                 view(
                     'control.checkout.index',
-                    compact('roles', 'nacionalidades','id_movimiento', 'numero', 'conceptos', 'habitacion', 'initialDate', 'detalles', 'movimiento', 'pasajerosSelect', 'personas')
+                    compact('roles', 'nacionalidades','id_movimiento', 'numero', 'conceptos', 'habitacion', 'initialDate', 'detalles', 'movimiento', 'pasajerosSelect', 'personas', 'caja')
                 );
         }
     }

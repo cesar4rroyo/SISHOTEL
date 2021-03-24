@@ -114,7 +114,11 @@
             </div>
             <div class="row">
                 <label for="comentario">{{'Comentario'}}</label>
-                <textarea class="form-control" name="comentario" id="comentario" cols="5" rows="5"></textarea>
+                <textarea class="form-control" name="comentario" id="comentario" cols="5" rows="5">
+                    @if ($reserva)
+                        {{$reserva->observacion}}
+                    @endif
+                </textarea>
             </div>
             <p class="font-weight-bold mt-4">Datos de Tarjeta</p>
             <hr>

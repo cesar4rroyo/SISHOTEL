@@ -82,7 +82,7 @@ class ReservaController extends Controller
         $data = [];
         $reservas = Reserva::with('habitacion', 'persona')->get();
         $habitacionesOcupadas = Movimiento::with('habitacion.tipohabitacion', 'pasajero.persona')
-            ->where('situacion', 'Pendiente')->get();
+            ->whereIn('situacion', ['Pendiente', 'Pago Realizado y Pendiente'])->get();
         // dd($habitacionesOcupadas->toArray());
         foreach ($reservas as $reserva) {
             if ($reserva->situacion == 'Reservado' || $reserva->situacion == 'Actualizado') {

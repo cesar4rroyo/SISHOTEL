@@ -234,6 +234,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     //cheak-out
     Route::post('movimiento/checkout/{id}', 'CajaController@checkout')->name('checkout');
     Route::post('movimiento/{id}/checkout', 'CajaController@createCheckout')->name('add_checkout');
+    Route::post('movimiento/{id}/cobrar', 'CajaController@cobrarMovimiento')->name('cobrar_movimiento');
     Route::get('movimiento/checkouts/lista', 'MovimientoController@listarCheckOuts')->name('checkouts_lista');
     Route::get('movimiento/pdf/out/{id}', 'MovimientoController@exportPdf')->name('check_out_pdf');
     Route::get('movimiento/pdf/in/{id}', 'MovimientoController@exportPdfCheckIn')->name('check_in_pdf');
