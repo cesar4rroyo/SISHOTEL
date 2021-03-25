@@ -136,6 +136,7 @@
                                 <input class="form-control" step="0.01" type="number" name="day_use" id="day_use">
                             </div>
                         </div>
+                        <p class="text-danger" id="txtErrorCheckout">Tiene que introducir un valor, en cualquier campo (0 al menos)</p>
                         <div class="container mb-3">
                             <button type="button" id="calcularTotal" class="btn btn-success float-right">Calcular
                                 Total</button>
@@ -370,6 +371,7 @@
         $('#totalContainer').hide();
         $('#btnAddRuc').hide();
         $('#modalidadPago').hide();
+        $('#txtErrorCheckout').hide();
 
         
         $('input[type="radio"]').not(".tarjetatipo").click(function(){
@@ -738,7 +740,18 @@
             const data = new FormData(document.getElementById('checkoutForm'));
             //var dias = document.getElementById('dias').value;
             var total = document.getElementById('total').value;
-            if(total.trim()!=0 || total.trim!=null || total.trim()!=''){
+            console.log(total);
+            var early = ($('#early_checkin').val().trim());
+            var late = $('#late_checkout').val().trim();
+            var use =$('#day_use').val().trim();
+            if(early=='' && late=='' && use==''){
+                console.log('incorrecto');
+                $('#txtErrorCheckout').show();
+                return 1;
+            }else{
+                console.log('correcto');
+            }  
+            if(total.trim!=null || total.trim()!=''){
                 swal({
                     title:'¿Está seguro que desea continuar con esta operación?',
                     text:'Está a punto de finalizar el Check-Out.',
@@ -784,6 +797,8 @@
                                 //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                                 window.location.href = "{{route('caja')}}";
                             }  
+                        }else if(data.respuesta=='ok-0'){
+                            window.location.href = "{{route('caja')}}";
                         }else{
                             swal({
                                 title:'Ha ocurrido un error',
@@ -874,7 +889,7 @@
         var early = ($('#early_checkin').val().trim());
         var late = $('#late_checkout').val().trim();
         var use =$('#day_use').val().trim();
-        if(early==='' && late=='' && use==''){
+        if(early=='' && late=='' && use==''){
             $('#calcularTotal2').hide();
             $('#totalContainer').hide();
         }else{
@@ -885,7 +900,7 @@
         var early = ($('#early_checkin').val().trim());
         var late = $('#late_checkout').val().trim();
         var use =$('#day_use').val().trim();
-        if(early==='' && late=='' && use==''){
+        if(early=='' && late=='' && use==''){
             $('#calcularTotal2').hide();
             $('#totalContainer').hide();
         }else{
@@ -896,7 +911,7 @@
         var early = ($('#early_checkin').val().trim());
         var late = $('#late_checkout').val().trim();
         var use =$('#day_use').val().trim();
-        if(early==='' && late=='' && use==''){
+        if(early=='' && late=='' && use==''){
             $('#calcularTotal2').hide();
             $('#totalContainer').hide();
         }else{

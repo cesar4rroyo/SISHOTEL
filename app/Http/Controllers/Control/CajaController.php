@@ -521,7 +521,7 @@ class CajaController extends Controller
         }
 
 
-        if($deposito==0 && $tarjeta==0 && $efectivo==0){
+        if($deposito==0 && $tarjeta==0 && $efectivo==0 && $request->total!=0){
             return response()->json(['respuesta' => 'no', 'mensaje' => 'Debe de seleccionar el método de pago']);
         }
         $cobrado = $deposito + $tarjeta + $efectivo;
@@ -531,7 +531,8 @@ class CajaController extends Controller
         if($tipotarjeta=='' && $tarjeta!=0){
             return response()->json(['respuesta' => 'no', 'mensaje' => 'No ha seleccionado el tipo de tarjeta, recarge la página e intentelo de nuevo']);
         }
-        
+
+       
 
         if (is_null($early_checkin)) {
             $early_checkin = 0;
@@ -572,25 +573,49 @@ class CajaController extends Controller
             } else {
                 $numero = $this->zero_fill(1, 8);
             }
-            //actualiza movimiento con fecha salida, dias, total y la situación
-            $movimiento->update([
-                'fechasalida' => $request->fechasalida,
-                'total' => (($request->total) + ($request->pagado)),
-                'situacion' => 'Pago Realizado',
-                'early_checkin' => $early_checkin,
-                'late_checkout' => $late_checkout,
-                'day_use' => $day_use,
-                'tarjeta'=>$tarjeta,
-                'deposito'=>$deposito,
-                'efectivo'=>$efectivo,
-                'tipotarjeta'=>$tipotarjeta,
-                'modalidadpago'=>$modalidad,
-                'fechadeposito'=>$fechadeposito,
-                'nrooperacion'=>$nrooperacion,
-                'nombrebanco'=>$nombrebanco,
-                'urlimagen'=>$urlimagen,
-                'comentario' => $request->comentario,
-            ]);
+            //actualiza movimiento con fecha salida, dias, total y la situación           
+
+            if($request->total!=0){
+                $movimiento->update([
+                    'fechasalida' => $request->fechasalida,
+                    'total' => (($request->total) + ($request->pagado)),
+                    'situacion' => 'Pago Realizado',
+                    'early_checkin' => $early_checkin,
+                    'late_checkout' => $late_checkout,
+                    'day_use' => $day_use,
+                    'tarjeta'=>$tarjeta,
+                    'deposito'=>$deposito,
+                    'efectivo'=>$efectivo,
+                    'tipotarjeta'=>$tipotarjeta,
+                    'modalidadpago'=>$modalidad,
+                    'fechadeposito'=>$fechadeposito,
+                    'nrooperacion'=>$nrooperacion,
+                    'nombrebanco'=>$nombrebanco,
+                    'urlimagen'=>$urlimagen,
+                    'comentario' => $request->comentario,
+                ]);
+            }else{
+                $movimiento->update([
+                    'fechasalida' => $request->fechasalida,
+                    //'total' => (($request->total) + ($request->pagado)),
+                    'situacion' => 'Pago Realizado',
+                    'early_checkin' => $early_checkin,
+                    'late_checkout' => $late_checkout,
+                    'day_use' => $day_use,
+                    'tarjeta'=>$tarjeta,
+                    'deposito'=>$deposito,
+                    'efectivo'=>$efectivo,
+                    'tipotarjeta'=>$tipotarjeta,
+                    'modalidadpago'=>$modalidad,
+                    'fechadeposito'=>$fechadeposito,
+                    'nrooperacion'=>$nrooperacion,
+                    'nombrebanco'=>$nombrebanco,
+                    'urlimagen'=>$urlimagen,
+                    'comentario' => $request->comentario,
+                ]);
+                return response()->json(['respuesta' => 'ok-0', 'id_comprobante' => null, 'tipoDoc' => null]);
+            }
+            
             //guardar un nuevo registro para caja 
             $cajaStore = Caja::create([
                 'fecha' => Carbon::now()->toDateTimeLocalString(),
