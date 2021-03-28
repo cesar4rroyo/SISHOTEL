@@ -675,60 +675,66 @@
                         cancel: "Cancelar",
                         confirm: "Aceptar"
                     },
-                }).then(function(){
-                    fetch("{{route('cobrar_movimiento', $movimiento['id'])}}", {
-                        method:'POST',
-                        body:data,
-                    })
-                    .then(res=>res.json())
-                    .then(function(data){
-                        if(data.respuesta=='ok'){
-                            // window.location.href = "{{route('caja')}}";
-                            var idComprobante =data.id_comprobante
-                            var tipoDoc = data.tipoDoc 
-                            if(tipoDoc !="ticket"){
-                                if(tipoDoc=="boleta"){
-                                    var funcion ='enviarBoleta'
-                                }else if(tipoDoc=="factura"){
-                                    var funcion ='enviarFactura'
-                                }                    
-                                $.ajax({
-                                    type:'GET',
-                                    url:'http://192.168.0.200:81/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
-                                    //url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
-                                    data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
-                                    success: function(r){
-                                        window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");
-                                        //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
-                                        window.location.href = "{{route('caja')}}";
-                                        console.log(r);
-                                    },
-                                    error: function(e){
-                                        console.log(e.message);
-                                    }
-                                });  
+                }).then(function(isConfirm){
+                    if(isConfirm){
+                        console.log('ok');
+                        fetch("{{route('cobrar_movimiento', $movimiento['id'])}}", {
+                            method:'POST',
+                            body:data,
+                        })
+                        .then(res=>res.json())
+                        .then(function(data){
+                            if(data.respuesta=='ok'){
+                                // window.location.href = "{{route('caja')}}";
+                                var idComprobante =data.id_comprobante
+                                var tipoDoc = data.tipoDoc 
+                                if(tipoDoc !="ticket"){
+                                    if(tipoDoc=="boleta"){
+                                        var funcion ='enviarBoleta'
+                                    }else if(tipoDoc=="factura"){
+                                        var funcion ='enviarFactura'
+                                    }                    
+                                    $.ajax({
+                                        type:'GET',
+                                        url:'http://192.168.0.200:81/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
+                                        //url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
+                                        data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
+                                        success: function(r){
+                                            window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");
+                                            //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
+                                            window.location.href = "{{route('caja')}}";
+                                            console.log(r);
+                                        },
+                                        error: function(e){
+                                            console.log(e.message);
+                                        }
+                                    });  
+                                }else{
+                                    window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank"); 
+                                    //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
+                                    window.location.href = "{{route('caja')}}";
+                                }  
                             }else{
-                                window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank"); 
-                                //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
-                                window.location.href = "{{route('caja')}}";
-                            }  
-                        }else{
+                                swal({
+                                    title:'Ha ocurrido un error',
+                                    text:data.mensaje,
+                                    icon:'error',
+                                });
+                                // $('#loading').hide();
+                            }
+                        })
+                        .catch(function(e){
                             swal({
                                 title:'Ha ocurrido un error',
-                                text:data.mensaje,
+                                text:'Oops, el checkout no se ha podido realizar, recarge la página e intentolo de nuevo',
                                 icon:'error',
                             });
-                            // $('#loading').hide();
-                        }
-                    })
-                    .catch(function(e){
-                        swal({
-                            title:'Ha ocurrido un error',
-                            text:'Oops, el checkout no se ha podido realizar, recarge la página e intentolo de nuevo',
-                            icon:'error',
                         });
-                    });
-                    
+                        
+                    }else{
+                        console.log('cancel');
+                        return "1";
+                    }                    
                 });
             }else{
                 $('#errMessage').show();
@@ -760,61 +766,66 @@
                         cancel: "Cancelar",
                         confirm: "Aceptar"
                     },
-                }).then(function(){
-                    fetch("{{route('add_checkout', $movimiento['id'])}}", {
-                        method:'POST',
-                        body:data,
-                    })
-                    .then(res=>res.json())
-                    .then(function(data){
-                        if(data.respuesta=='ok'){
-                            // window.location.href = "{{route('caja')}}";
-                            var idComprobante =data.id_comprobante
-                            var tipoDoc = data.tipoDoc 
-                            if(tipoDoc !="ticket"){
-                                if(tipoDoc=="boleta"){
-                                    var funcion ='enviarBoleta'
-                                }else if(tipoDoc=="factura"){
-                                    var funcion ='enviarFactura'
-                                }                    
-                                $.ajax({
-                                    type:'GET',
-                                    url:'http://192.168.0.200:81/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
-                                    //url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
-                                    data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
-                                    success: function(r){
-                                        window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");
-                                        //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
-                                        window.location.href = "{{route('caja')}}";
-                                        console.log(r);
-                                    },
-                                    error: function(e){
-                                        console.log(e.message);
-                                    }
-                                });  
-                            }else{
-                                window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank"); 
-                                //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
+                }).then(function(isConfirm){
+                    if(isConfirm){
+                        fetch("{{route('add_checkout', $movimiento['id'])}}", {
+                            method:'POST',
+                            body:data,
+                        })
+                        .then(res=>res.json())
+                        .then(function(data){
+                            if(data.respuesta=='ok'){
+                                // window.location.href = "{{route('caja')}}";
+                                var idComprobante =data.id_comprobante
+                                var tipoDoc = data.tipoDoc 
+                                if(tipoDoc !="ticket"){
+                                    if(tipoDoc=="boleta"){
+                                        var funcion ='enviarBoleta'
+                                    }else if(tipoDoc=="factura"){
+                                        var funcion ='enviarFactura'
+                                    }                    
+                                    $.ajax({
+                                        type:'GET',
+                                        url:'http://192.168.0.200:81/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
+                                        //url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
+                                        data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
+                                        success: function(r){
+                                            window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");
+                                            //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
+                                            window.location.href = "{{route('caja')}}";
+                                            console.log(r);
+                                        },
+                                        error: function(e){
+                                            console.log(e.message);
+                                        }
+                                    });  
+                                }else{
+                                    window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank"); 
+                                    //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
+                                    window.location.href = "{{route('caja')}}";
+                                }  
+                            }else if(data.respuesta=='ok-0'){
                                 window.location.href = "{{route('caja')}}";
-                            }  
-                        }else if(data.respuesta=='ok-0'){
-                            window.location.href = "{{route('caja')}}";
-                        }else{
+                            }else{
+                                swal({
+                                    title:'Ha ocurrido un error',
+                                    text:data.mensaje,
+                                    icon:'error',
+                                });
+                                // $('#loading').hide();
+                            }
+                        })
+                        .catch(function(e){
                             swal({
                                 title:'Ha ocurrido un error',
-                                text:data.mensaje,
+                                text:'Oops, el checkout no se ha podido realizar, recarge la página e intentolo de nuevo',
                                 icon:'error',
                             });
-                            // $('#loading').hide();
-                        }
-                    })
-                    .catch(function(e){
-                        swal({
-                            title:'Ha ocurrido un error',
-                            text:'Oops, el checkout no se ha podido realizar, recarge la página e intentolo de nuevo',
-                            icon:'error',
                         });
-                    });
+                    }else{
+                        console.log('cancel');
+                        return 1;
+                    }                   
                     
                 });
             }else{

@@ -197,6 +197,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     Route::get('habitaciones/{id}/edit', 'HabitacionesController@edit')->name('edit_habitaciones');
     Route::put('habitaciones/{id}', 'HabitacionesController@update')->name('update_habitaciones');
     Route::delete('habitaciones/{id}/destroy', 'HabitacionesController@destroy')->name('destroy_habitaciones');
+
+     /* NotaCredito  */
+     Route::post('notacredito/buscar', 'NotacreditoController@buscar')->name('notacredito.buscar');
+     Route::get('notacredito/eliminar/{id}/{listarluego}', 'NotacreditoController@eliminar')->name('notacredito.eliminar');
+     Route::resource('notacredito', 'NotacreditoController', array('except' => array('show')));
+     Route::get('notacredito/documentoautocompletar', 'NotacreditoController@documentoautocompletar')->name('notacredito.documentoautocompletar');
+     Route::get('notacredito/obtenerCliente', 'NotacreditoController@obtenerCliente')->name('notacredito.obtenerCliente');
 });
 Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['auth']], function () {
     /* Rutas de Movimientos */
