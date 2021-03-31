@@ -26,6 +26,6 @@ class Detallenotacredito extends Model
 	
     public function notacredito()
 	{
-		return $this->belongsTo(NotaCredito::class, 'movimiento_id');
+		return $this->belongsTo(NotaCredito::class, 'notacredito_id');
 	}
 }

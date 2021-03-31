@@ -15,6 +15,9 @@ class Libreria
 		if ($filas > $cantidadTotal) { 
 			$filas = $cantidadTotal;
 		}
+		if($filas==0){
+			$filas=100;
+		}
 		$cantidad = $cantidadTotal * 1.0; 
 		$division = $cantidad / $filas; 
 		$div = ceil($division); 

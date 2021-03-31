@@ -86,6 +86,8 @@
     <script src="{{asset("js/admin/acceso/index.js")}}"></script>
     <script src="{{asset("js/admin/scripts.js")}}"></script>
     <script src="{{asset("js/funciones.js")}}"></script>
+    <script src="{{asset("js/bootbox.min.js")}}"></script>
+    <script src="{{asset("js/funciones2.js")}}"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="{{asset("select2/js/select2.min.js")}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>

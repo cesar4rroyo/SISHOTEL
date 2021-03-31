@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Control;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Procesos\Comprobante;
+use App\Models\Procesos\NotaCredito;
 use Barryvdh\DomPDF\Facade as PDF;
 
 
 class ComprobanteController extends Controller
 {
+    
     public function exportPDF($id)
     {
         $comprobante =
