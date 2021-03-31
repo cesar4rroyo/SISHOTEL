@@ -5,12 +5,20 @@ namespace App\Http\Controllers\Control;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Librerias\Libreria;
+use App\Models\Procesos\Caja;
+use App\Models\Procesos\Comprobante;
+use App\Models\Procesos\DetalleCaja;
+use App\Models\Procesos\DetalleComprobante;
+use App\Models\Procesos\Detallenotacredito;
 use App\Models\Procesos\Motivonotacredito;
+use App\Models\Procesos\Movimiento;
 use App\Models\Procesos\NotaCredito;
+use Illuminate\Support\Facades\DB;
+use Validator;
 
 class NotacreditoController extends Controller
 {
-    protected $folderview      = 'app.notacredito';
+    protected $folderview      = 'control.notacredito';
     protected $tituloAdmin     = 'Nota de crédito';
     protected $tituloRegistrar = 'Registrar Nota de crédito';
     protected $tituloModificar = 'Modificar Nota de crédito';
@@ -50,7 +58,7 @@ class NotacreditoController extends Controller
         $fechainicio        = Libreria::getParam($request->input('fechainicio'));
         $fechafin       = Libreria::getParam($request->input('fechafin'));
         // $resultado        = Category::where('nombre', 'LIKE', '%'.strtoupper($nombre).'%')->orderBy('nombre', 'ASC');
-        $resultado        = NotaCredito::listarNota($sucursal,$fechainicio,$fechafin,null , $numero, $nombre);
+        $resultado        = NotaCredito::with('usuario', 'persona', 'comprobante')->listarNota($fechainicio,$fechafin,$numero, $nombre);
         $lista            = $resultado->get();
         $cabecera         = array();
         $cabecera[]       = array('valor' => '#', 'numero' => '1');
@@ -102,13 +110,13 @@ class NotacreditoController extends Controller
     public function create(Request $request)
     {
         $listar   = Libreria::getParam($request->input('listar'), 'NO');
-        $entidad  = 'NotaCredito';
-        $numero = $this->generarNumero();
-
+        $entidad  = 'notacredito';
+        $numero = $this->generarNumero(1);
+        $venta = null;
         $formData = array('notacredito.store');
         $formData = array('route' => $formData, 'class' => 'form-horizontal', 'id' => 'formMantenimiento'.$entidad, 'autocomplete' => 'off');
         $boton    = 'Registrar';
-        return view($this->folderview.'.mant')->with(compact('numero','formData', 'entidad', 'boton', 'listar'));
+        return view($this->folderview.'.mant')->with(compact('numero','formData', 'entidad', 'boton', 'listar', 'venta'));
     }
 
     /**
@@ -120,76 +128,96 @@ class NotacreditoController extends Controller
     public function store(Request $request)
     {
         $listar     = Libreria::getParam($request->input('listar'), 'NO');
+        if(($request->total) < ($request->totalnotacredito)){
+            return 1;
+        }
         $reglas     = array(
             'motivo' => 'required',
             'comentario' => 'required',
-            'documento' => 'required|exists:movimiento,id',
-            'sucursal_id' => 'required|exists:sucursal,id',
+            'documento' => 'required|exists:comprobante,id',
+            'totalnotacredito'=>'required'
         );
         $mensajes = array(
             'motivo.required'         => 'Seleccione el motivo',
             'comentario.required'         => 'Ingrese un comentario',
             'documento.required'         => 'Seleccione un documento de referencia',
-            'sucursal.required'         => 'Seleccione una sucursal',
+            'totalnotacredito.required' =>'El total es requerido'
             );
         $validacion = Validator::make($request->all(), $reglas, $mensajes);
         if ($validacion->fails()) {
             return $validacion->messages()->toJson();
         }
-        $user = Auth::user();
+        $user_id = session()->all()['usuario_id'];
         $dat = array();
 
-        $caja_sesion_id     = session('caja_sesion_id', '0');
-        $caja_sesion        = Caja::where('id', $caja_sesion_id)->first();
-        $estado_caja        = $caja_sesion->estado;
+        $cajaApertura =
+            Caja::with('movimiento', 'persona', 'concepto')
+            ->latest('created_at')->first()->toArray();
+            
 
         try {
-            if ($estado_caja == 'CERRADA') {
+            if ($cajaApertura['concepto_id'] == '2') {
                 $dat[0] = array("respuesta" => "ERROR", "msg" => "CAJA CERRADA");
                 throw new \Exception(json_encode($dat));
             }
-            $error = DB::transaction(function () use ($request, $user, &$dat , $caja_sesion) {
-                $venta = Movimiento::find($request->input('documento'));
+            $error = DB::transaction(function () use ($request, $user_id, &$dat) {
+                $venta = Comprobante::find($request->input('documento'));
                 if(!$venta){
                     $dat[0] = array("respuesta" => "ERROR", "msg" => "DOCUMENTO NO VÁLIDO");
                     throw new \Exception(json_encode($dat));
                 }
 
                 //-------------------CREAR VENTA------------------------
-                    $notacredito = new NotaCredito();
-                    $notacredito->numero = $request->input('numeronota');
-                    $notacredito->fecha = $request->input('fecha');
-
-                    $notacredito->persona_id = $venta->persona_id;
-                    $notacredito->responsable_id = $user->person_id;
-                    // $notacredito->concepto_id = ;
-                    // $notacredito->tipomovimiento_id = $user->person_id;
-                    // $notacredito->tipodocumento_id = $user->person_id;
-                    $notacredito->total = $request->input('totalnotacredito');
-                    $notacredito->igv = round( ($request->input('totalnotacredito')*0.18) , 2);
-                    $notacredito->subtotal =    round( ($notacredito->total - $notacredito->igv) , 2);
-                    $notacredito->comentario = Libreria::getParam($request->input('comentario'));
-                    $notacredito->situacion = 'C';
-                    $notacredito->movimiento_id = $venta->id;
-                    $notacredito->motivo_id = $request->input('motivo');
-                    $notacredito->caja_id = $caja_sesion->id;
-                    $notacredito->sucursal_id = $request->input('sucursal_id');
-                    $notacredito->save();
+                    $notacredito = NotaCredito::create([
+                        'numero'=>$request->numeronota,
+                        'fecha'=>$request->fecha,
+                        'persona_id'=>$venta->persona_id,
+                        'total'=>$request->totalnotacredito,
+                        'igv'=>round(($request->totalnotacredito*0.18) , 2),
+                        'subtotal'=>round($request->totalnotacredito - round(($request->totalnotacredito*0.18) , 2), 2),
+                        'usuario_id'=>session()->all()['usuario_id'],
+                        'observacion'=>$request->comentario,
+                        'motivo'=>$request->motivo,
+                        'concepto_id'=>3,
+                        'comprobante_id'=>$venta->id,
+                    ]);
                 //---------------------FIN CREAR VENTA------------------------
 
                 //---------------------DETALLES VENTA------------------------------
                 $arr = explode(",", $request->input('listDetalles'));
                 //dd($request);
-                for ($c = 0; $c < count($arr); $c++) {
-                    $detalleventa = Detallemovimiento::find($arr[$c]);
+                if(count($arr)>=2){
+                    for ($c = 0; $c < count($arr); $c++) {
+                        $detalleventa = DetalleComprobante::find($arr[$c]);
+                        $detallenota = new Detallenotacredito();
+                        if(!is_null($detalleventa->producto_id)){
+                            $detallenota->producto_id = $detalleventa->producto_id;
+                        }else{
+                            $detallenota->servicio_id = $detalleventa->servicio_id;
+                        }
+                        $detallenota->cantidad    = $detalleventa->cantidad;
+                        $detallenota->precioventa = $detalleventa->precioventa;
+                        $detallenota->preciocompra = $detalleventa->preciocompra;
+                        $detallenota->notacredito_id = $notacredito->id;
+                        $detallenota->comprobante_id = $venta->id;
+                        $detallenota->save();
+                    }
+                }else{
+                    $detalleventa = DetalleComprobante::find($arr[0]);
                     $detallenota = new Detallenotacredito();
-                    $detallenota->producto_id = $detalleventa->producto_id;
-                    $detallenota->cantidad      = $detalleventa->cantidad;
-                    $detallenota->precioventa = $detalleventa->precioventa;
+                    if(!is_null($detalleventa->producto_id)){
+                        $detallenota->producto_id = $detalleventa->producto_id;
+                    }else{
+                        $detallenota->servicio_id = $detalleventa->servicio_id;
+                    }
+                    $detallenota->cantidad    = $detalleventa->cantidad;
+                    $detallenota->precioventa = $request->totalnotacredito;
                     $detallenota->preciocompra = $detalleventa->preciocompra;
-                    $detallenota->movimiento_id = $notacredito->id;
-                    $detallenota->save();
+                    $detallenota->notacredito_id = $notacredito->id;
+                    $detallenota->comprobante_id = $venta->id;
+                    $detallenota->save(); 
                 }
+                
                 //-----------------------FIN DETALLES VENTA------------------------------
 
 
@@ -225,15 +253,20 @@ class NotacreditoController extends Controller
             return $existe;
         }
         $listar   = Libreria::getParam($request->input('listar'), 'NO');
-        $notacredito = NotaCredito::find($id);
-        $detalles = Detallenotacredito::where('movimiento_id',$id)->get();
-        $entidad  = 'NotaCredito';
-        $conf_codigobarra = CODIGO_BARRAS;
+        $notacredito = NotaCredito::with('comprobante', 'persona')->find($id);
+        $cliente='';
+        if((($notacredito->persona->razonsocial)!=null || ($notacredito->persona->razonsocial)!='')&&($notacredito->persona->ruc!='' || $notacredito->persona->ruc!=null)){
+            $cliente = $notacredito->persona->razonsocial;
+        }else{
+            $cliente = $notacredito->persona->nombres . ' ' . $notacredito->persona->apellidos;
+        }
+        $detalles = Detallenotacredito::with('producto', 'servicio')->where('notacredito_id',$id)->get();
+        $entidad  = 'notacredito';
         // $formData = array('notacredito.update', $id);
         // $formData = array('route' => $formData, 'method' => 'PUT', 'class' => 'form-horizontal', 'id' => 'formMantenimiento'.$entidad, 'autocomplete' => 'off');
         $formData = array('class' => 'form-horizontal', 'id' => 'formMantenimiento'.$entidad, 'autocomplete' => 'off');
         $boton    = 'Modificar';
-        return view($this->folderview.'.mantview')->with(compact('conf_codigobarra','notacredito','detalles' , 'formData', 'entidad', 'boton', 'listar'));
+        return view($this->folderview.'.mantview')->with(compact('notacredito','detalles' , 'formData', 'entidad', 'boton', 'listar', 'cliente'));
     }
 
     /**
@@ -264,7 +297,6 @@ class NotacreditoController extends Controller
         });
         return is_null($error) ? "OK" : $error;
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -309,14 +341,10 @@ class NotacreditoController extends Controller
         $fecha = date('Y-m-d');
         $nuevafecha = strtotime ( '-1 day' , strtotime ( $fecha ) ) ;
         $nuevafecha = date ( 'Y-m-d' , $nuevafecha );
-        $resultado        = Category::where('category.nombre', 'like', '%' . strtoupper($term) . '%');
-        $resultado        = Movimiento::where('tipomovimiento_id',2)
-                            ->where('tipodocumento_id','<>',5) // TICKET
-                            ->where('situacion','<>', 'A')
-                            ->where('fecha', '<' , $nuevafecha)
-                            ->where('movimiento.numero', 'like', '%' . strtoupper($term) . '%');
-
-        $tags = $resultado->orderBy('movimiento.numero', 'ASC')->get();
+        $resultado        = Comprobante::with('detallecomprobante.producto', 'detallecomprobante.servicios')
+                            ->where('tipodocumento','!=', 'Ticket')
+                            ->where('numero', 'like', '%' . strtoupper($term) . '%');
+        $tags = $resultado->orderBy('numero', 'ASC')->get();
         // $tags     = $resultado->select('category.*')->get();
         $formatted_tags = [];
         // $formatted_tags[] = ['id' => '0', 'text' => 'Todos'];
@@ -328,35 +356,53 @@ class NotacreditoController extends Controller
     public function obtenerCliente(Request $request)
     {
         $idmov = $request->input('idmovimiento');
-
-        $resultado  = Movimiento::find($idmov);
+        $resultado  = Comprobante::find($idmov);
         $detalles = [];
         if($resultado){
-            $cliente = $resultado->persona->apellidopaterno.' '.$resultado->persona->apellidomaterno.' '.$resultado->persona->nombres;
-
-            $detalles = Detallemovimiento::where('movimiento_id', $idmov)->get();
+            if($resultado->tipodocumento=='boleta'){
+                $numero = $this->generarNumero(1);
+                //1 ->>>boleta
+            }else if($resultado->tipodocumento=='factura'){
+                $numero = $this->generarNumero(2);
+                //2 ->>>factura
+            }
+            $cliente = $resultado->persona->apellidos.' '.$resultado->persona->nombres;
+            $detalles = DetalleComprobante::where('comprobante_id', $idmov)->get();
             foreach ($detalles as $key => $detalle) {
-                $detalle->producto;
+                if(!is_null($detalle->producto)){
+                    $detalle->producto;
+                }else{
+                    $detalle->servicios;
+                }
             }
         }else{
             $cliente = '';
         }
-        return \Response::json(['id'=>$idmov,'cliente'=>$cliente , 'detalles' => $detalles , 'total' => $resultado->total] );
+        return \Response::json(['id'=>$idmov,'cliente'=>$cliente , 'detalles' => $detalles , 'total' => $resultado->total, 'numero'=>$numero] );
     }
 
-    public function generarNumero(){
-        $caja_sesion_id     = session('caja_sesion_id', '0');
-        $caja_sesion        = Caja::where('id', $caja_sesion_id)->first();
-        $serie = str_pad($caja_sesion->serie , 2 , '0', STR_PAD_LEFT);
-
-        $ultimaNota = NotaCredito::orderBy('numero','DESC')->first();
-        if($ultimaNota){
-            $numero = intval( substr($ultimaNota->numero , -8) ) +1;
-        }else{
-            $numero = '1';
+    public function generarNumero($tipo=null){               
+        $serie = str_pad(63 , 2 , '0', STR_PAD_LEFT);
+        if($tipo==1){
+            $ultimaNota = NotaCredito::where('numero', 'like', '%'.'BC'.'%')->orderBy('numero','DESC')->first();
+            if($ultimaNota){
+                $numero = intval( substr($ultimaNota->numero , -8) ) +1;
+            }else{
+                $numero = '1';
+            }
+            $numero =  str_pad(''.$numero , 8 , '0', STR_PAD_LEFT);
+            $numero = 'BC'. $serie .'-'. $numero;
+        }else if($tipo==2){
+            $ultimaNota = NotaCredito::where('numero', 'like', '%'.'FC'.'%')->orderBy('numero','DESC')->first();
+            if($ultimaNota){
+                $numero = intval( substr($ultimaNota->numero , -8) ) +1;
+            }else{
+                $numero = '1';
+            }
+            $numero =  str_pad(''.$numero , 8 , '0', STR_PAD_LEFT);
+            $numero = 'FC'. $serie .'-'. $numero;
         }
-        $numero =  str_pad(''.$numero , 8 , '0', STR_PAD_LEFT);
-        $numero = 'C'. $serie .'-'. $numero;
+        
         return $numero;
     }
 }

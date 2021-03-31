@@ -12,6 +12,7 @@ use App\Models\Procesos\Caja;
 use App\Models\Procesos\Comprobante;
 use App\Models\Procesos\DetalleMovimiento;
 use App\Models\Procesos\Movimiento;
+use App\Models\Procesos\NotaCredito;
 use App\Models\Procesos\Pasajero;
 use App\Models\Procesos\Reserva;
 use App\Models\Procesos\Tarjeta;
@@ -37,7 +38,28 @@ class MovimientoController extends Controller
         }
         return response()->redirectTo('create_movimiento');
     }
+    public function exportNota($id)
+    {
+        $nota = NotaCredito::with('detallenotacredito.producto','detallenotacredito.servicio', 'persona', 'comprobante')
+                ->findOrFail($id)
+                ->toArray();
+        $detalles = NotaCredito::with('detallenotacredito.producto','detallenotacredito.servicio', 'persona')
+            ->findOrFail($id)
+            ->toArray()['detallenotacredito'];
+        $dniRuc='';
+        if(($nota['persona']['razonsocial']!='' || $nota['persona']['razonsocial']!=null) && $nota['persona']['ruc']){
+            $dniRuc=$nota['persona']['ruc'];
+            $nombre = $nota['persona']['razonsocial'];
+        }else{
+            $dniRuc=$nota['persona']['dni'];
+            $nombre=$nota['persona']['nombres'] . ' ' . $nota['persona']['apellidos'];
+        }
+        $direccion = $nota['persona']['direccion'];
+        $docRef= $nota['comprobante']['numero'];
+        $pdf = PDF::loadView('pdf.notacredito', compact('nota', 'detalles', 'dniRuc', 'direccion', 'nombre', 'docRef'))->setPaper('a4');
+        return $pdf->stream('notacredito.pdf');
 
+    }
     public function listarCheckOuts()
     {
         $movimientos =

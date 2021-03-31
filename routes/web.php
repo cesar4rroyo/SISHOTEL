@@ -183,7 +183,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Reservas', 'middleware' => ['
     /* //reserva buscador
     Route::get('nombres/buscador', 'PersonaController@buscador'); */
 });
-Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['auth', 'acceso']], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['auth']], function () {
     /* Rutas de COMPROBANTE */
     Route::get('comprobantes', 'ComprobanteController@index')->name('comprobantes');
     Route::get('comprobantes/pdf/{id}', 'ComprobanteController@exportPDF')->name('comprobante_pdf');
@@ -244,6 +244,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     Route::post('movimiento/{id}/cobrar', 'CajaController@cobrarMovimiento')->name('cobrar_movimiento');
     Route::get('movimiento/checkouts/lista', 'MovimientoController@listarCheckOuts')->name('checkouts_lista');
     Route::get('movimiento/pdf/out/{id}', 'MovimientoController@exportPdf')->name('check_out_pdf');
+    Route::get('movimiento/pdf/nota/{id}', 'MovimientoController@exportNota')->name('nota_pdf');
     Route::get('movimiento/pdf/in/{id}', 'MovimientoController@exportPdfCheckIn')->name('check_in_pdf');
 
     Route::delete('movimiento/{id}/eliminar', 'MovimientoController@eliminar_checkout')->name('eliminar_checkout_lista');
