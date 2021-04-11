@@ -310,6 +310,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     Route::get('reportes/ventas/habitacion', 'ReportesController@indexVentasHabitacion')->name('reportes_ventas_habitacion');
     Route::post('reportes/ventas/pdf/{formato?}', 'ReportesController@pdfVentas')->name('reportes_ventas_pdf');
     Route::get('reportes/caja', 'ReportesController@indexCaja')->name('reportes_caja');
+    Route::post('reportes/documentosventas/pdf', 'ReportesController@documentosventas')->name('reportes_documentosventas');
+    Route::get('reportes/documentosventas', 'ReportesController@indexDocVentas')->name('index_documentosventas');
     Route::post('reportes/caja/pdf/{formato?}', 'ReportesController@pdfCaja')->name('reportes_caja_pdf');
     Route::get('data/movimientos', 'ReportesController@movimientos')->name('data_movimientos');
     Route::get('data/reservas', 'ReportesController@reservas')->name('data_reservas');

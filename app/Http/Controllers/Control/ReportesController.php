@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Habitacion;
 use App\Models\Procesos\Caja;
+use App\Models\Procesos\Comprobante;
 use App\Models\Procesos\DetalleCaja;
 use App\Models\Procesos\DetalleMovimiento;
 use App\Models\Procesos\Movimiento;
@@ -485,6 +486,64 @@ class ReportesController extends Controller
             return response()->json(array('data' => $data));
         }
     }
+    public function documentosventas(Request $request){
+        $fechaInicio = $request->from;
+        //$usuario = $request->usuario;
+        $fechaInicio = Carbon::parse($fechaInicio)->toDateTimeString();
+        $fechaFin = $request->to;
+        $fechaFin = Carbon::parse($fechaFin)->addHours(23)->addMinutes(59)->toDateTimeString();
+        $tipo = $request->tipo;
+
+        $comprobante = Comprobante::with('persona','detallecomprobante.producto', 'detallecomprobante.servicios')
+            ->whereBetween('fecha', [$fechaInicio, $fechaFin])            
+            ->when($tipo, function ($q) use ($tipo) {
+                $q->where('tipodocumento', $tipo);
+            })
+            ->get()
+            ->toArray();
+        $data = [];
+        foreach ($comprobante as $item) {
+            if ($item['persona']['razonsocial'] && trim($item['persona']['razonsocial']) != '') {
+                $nombres = $item['persona']['razonsocial'];
+                $documento = $item['persona']['ruc'];
+            } else {
+                $nombres = !is_null($item['persona']) ? $item['persona']['nombres'] . ' ' . $item['persona']['apellidos']  : '-';
+                if($item['persona']['dni'] && trim($item['persona']['dni'])!=''){
+                    $documento = $item['persona']['dni'];
+                }else{
+                    $documento = '11111111';
+                }
+            }
+            switch ($item['tipodocumento']) {
+                case 'boleta':
+                    $tipodocumento='BOLETA DE VENTA';
+                    # code...
+                    break;
+                case 'factura':
+                    $tipodocumento='FACTURA DE VENTA';
+                    # code...
+                    break;
+                case 'ticket':
+                    $tipodocumento='TICKET DE VENTA';
+                    # code...
+                    break;
+            }
+            $data[]=[
+                'fecha' => $item['fecha'],
+                'numero' => $item['numero'],
+                'tipo' => $tipodocumento,
+                'total' => $item['total'],
+                'subtotal'=>$item['subtotal'],
+                'igv'=>$item['igv'],
+                'documento'=>$documento,
+                'cliente'=>$nombres
+            ];
+
+        }
+        return response()->json(array('data' => $data));
+
+
+    }
     public function pdfCaja(Request $request, $formato = null)
     {
         $fechaInicio = $request->from;
@@ -566,6 +625,12 @@ class ReportesController extends Controller
             }
             return response()->json(array('data' => $data));
         }
+    }
+    public function indexDocVentas()
+    {
+        $today = Carbon::now()->toDateString();
+        $usuarios = Usuario::with('persona')->get()->toArray();
+        return view('control.reportes.documentosventa.index', compact('usuarios', 'today'));
     }
     public function indexHuespedes()
     {
