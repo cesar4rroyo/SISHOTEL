@@ -563,6 +563,9 @@ class CajaController extends Controller
             $igv = (0.18) * ($total);
             $igv = round($igv, 2);
             $subtotal = $total - $igv;
+            $subtotal = round(($total/1.18),2);
+            $igv=round(($total-$subtotal),2);
+            
             $habitacion = $request->habitacion_id;
             //crear numero correlativo para caja
             $caja = Caja::latest('id')->first();
@@ -799,6 +802,8 @@ class CajaController extends Controller
             $igv = (0.18) * ($total);
             $igv = round($igv, 2);
             $subtotal = $total - $igv;
+            $subtotal = round(($total/1.18),2);
+            $igv=round(($total-$subtotal),2);
             $habitacion = $request->habitacion_id;
             //crear numero correlativo para caja
             $caja = Caja::latest('id')->first();
@@ -1001,7 +1006,9 @@ class CajaController extends Controller
             $today = Carbon::now()->toDateString();
             $igv = (0.18) * ($total);
             $igv = round($igv, 2);
-            $subtotal = $total - $igv;
+            $subtotal = round(($total/1.18),2);
+            $igv=round(($total-$subtotal),2);
+
             //esta validación es para generar el número correlativo para la caja
             $cajaValidate = Caja::latest('id')->first();
             //si es diferente de nulo se le sumará uno al registro anterior
@@ -1184,6 +1191,8 @@ class CajaController extends Controller
             $igv = (0.18) * ($total);
             $igv = round($igv, 2);
             $subtotal = $total - $igv;
+            $subtotal = round(($total/1.18),2);
+            $igv=round(($total-$subtotal),2);
             //esta validación es para generar el número correlativo para la caja
             $cajaValidate = Caja::latest('id')->first();
             //si es diferente de nulo se le sumará uno al registro anterior

@@ -323,6 +323,8 @@ class VentasController extends Controller
             $igv = (0.18) * ($total);
             $igv = round($igv, 2);
             $subtotal = $total - $igv;
+            $subtotal = round(($total/1.18),2);
+            $igv=round(($total-$subtotal),2);
 
             $cajaID = Caja::latest('id')->first();
             if (!is_null($cajaID)) {
@@ -490,6 +492,8 @@ class VentasController extends Controller
             $igv = (0.18) * ($total);
             $igv = round($igv, 2);
             $subtotal = $total - $igv;
+            $subtotal = round(($total/1.18),2);
+            $igv=round(($total-$subtotal),2);
 
             $cajaID = Caja::latest('id')->first();
 
