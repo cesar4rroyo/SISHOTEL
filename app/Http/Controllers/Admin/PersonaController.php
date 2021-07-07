@@ -14,7 +14,6 @@ use Carbon\Carbon;
 
 class PersonaController extends Controller
 {
-
     public function index(Request $request)
     {
         $search = $request->get('search');

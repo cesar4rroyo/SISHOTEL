@@ -277,29 +277,9 @@
               .then(function(data){
                 if(data.respuesta=='ok'){
                     var idComprobante =data.id_comprobante
-                    if(data.tipoDoc != "ticket"){
-                        if(data.tipoDoc=="boleta"){
-                        var funcion ='enviarBoleta'
-                        }else if(data.tipoDoc=="factura"){
-                            var funcion ='enviarFactura'
-                        }                    
-                        $.ajax({
-                            type:'GET',
-                            url:'http://192.168.0.200:81/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
-                            data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
-                            success: function(r){
-                                window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
-                                window.location.href = "{{route('caja')}}";
-                                console.log(r);
-                            },
-                            error: function(e){
-                                console.log(e.message);
-                            }
-                        });
-                    }else{
-                        window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
-                        window.location.href = "{{route('caja')}}";
-                    }   
+                    var url = "{{env('URL_FACTURACION')}}";
+                    window.open(url + '/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
+                    window.location.href = "{{route('caja')}}";    
                 }else{
                     Hotel.notificaciones(data.mensaje, 'Hotel', 'error');
                     $('#loading').hide();

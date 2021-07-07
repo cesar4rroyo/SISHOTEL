@@ -576,11 +576,16 @@ class ReportesController extends Controller
         } else {
             $data = [];
             foreach ($caja as $item) {
-                if ($item['persona']['razonsocial'] && trim($item['persona']['razonsocial']) != '') {
-                    $nombres = $item['persona']['razonsocial'];
-                } else {
-                    $nombres = !is_null($item['persona']) ? $item['persona']['nombres'] . ' ' . $item['persona']['apellidos']  : '-';
+                if(!is_null($item['persona'])){
+                    if ($item['persona']['razonsocial'] && trim($item['persona']['razonsocial']) != '') {
+                        $nombres = $item['persona']['razonsocial'];
+                    } else {
+                        $nombres = !is_null($item['persona']) ? $item['persona']['nombres'] . ' ' . $item['persona']['apellidos']  : '-';
+                    }
+                }else{
+                    $nombres = '-';
                 }
+                
 
                 switch ($item['modalidadpago']) {
                     case 'efectivo':

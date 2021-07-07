@@ -120,20 +120,20 @@
                             <input required type="number" class="form-control" step="0.01" name="pagado" id="pagado" readonly value="{{$caja['total']}}">
                         </div>
                         @endif
-                        <div class="row">
+                        <div class="row d-none">
                             <div class="col-sm form-group">
                                 <label class="control-label" for="early_checkin">{{'Early Check In'}}</label>
-                                <input class="form-control" step="0.01" type="number" name="early_checkin"
+                                <input class="form-control" value="0" step="0.01" type="number" name="early_checkin"
                                     id="early_checkin">
                             </div>
                             <div class="col-sm form-group">
                                 <label class="control-label" for="late_checkout">{{'Late Check Out'}}</label>
-                                <input class="form-control" step="0.01" type="number" name="late_checkout"
+                                <input class="form-control" value="0" step="0.01" type="number" name="late_checkout"
                                     id="late_checkout">
                             </div>
                             <div class="col-sm form-group">
                                 <label class="control-label" for="day_use">{{'Day Use'}}</label>
-                                <input class="form-control" step="0.01" type="number" name="day_use" id="day_use">
+                                <input class="form-control" value="0" step="0.01" type="number" name="day_use" id="day_use">
                             </div>
                         </div>
                         <p class="text-danger" id="txtErrorCheckout">Tiene que introducir un valor, en cualquier campo (0 al menos)</p>
@@ -491,7 +491,7 @@
                     url:"{{route('add_huesped_habitacion')}}",
                     data: data,
                     success:function(r){
-                        Hotel.notificaciones(r.message, 'SISTEMA HOTEL', r.type);
+                        Hotel.notificaciones(r.message, 'SISTEMA HOTEL ADRIAN', r.type);
                         if (data.type != 'error') {
                             setTimeout(function() {
                                 location.reload();
@@ -686,34 +686,11 @@
                         .then(function(data){
                             if(data.respuesta=='ok'){
                                 // window.location.href = "{{route('caja')}}";
-                                var idComprobante =data.id_comprobante
-                                var tipoDoc = data.tipoDoc 
-                                if(tipoDoc !="ticket"){
-                                    if(tipoDoc=="boleta"){
-                                        var funcion ='enviarBoleta'
-                                    }else if(tipoDoc=="factura"){
-                                        var funcion ='enviarFactura'
-                                    }                    
-                                    $.ajax({
-                                        type:'GET',
-                                        url:'http://192.168.0.200:81/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
-                                        //url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
-                                        data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
-                                        success: function(r){
-                                            window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");
-                                            //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
-                                            window.location.href = "{{route('caja')}}";
-                                            console.log(r);
-                                        },
-                                        error: function(e){
-                                            console.log(e.message);
-                                        }
-                                    });  
-                                }else{
-                                    window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank"); 
-                                    //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
-                                    window.location.href = "{{route('caja')}}";
-                                }  
+                                var idComprobante =data.id_comprobante;
+                                var tipoDoc = data.tipoDoc;
+                                var url = "{{env('URL_FACTURACION')}}";
+                                window.open(url + '/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
+                                window.location.href = "{{route('caja')}}"; 
                             }else{
                                 swal({
                                     title:'Ha ocurrido un error',
@@ -776,34 +753,11 @@
                         .then(function(data){
                             if(data.respuesta=='ok'){
                                 // window.location.href = "{{route('caja')}}";
-                                var idComprobante =data.id_comprobante
-                                var tipoDoc = data.tipoDoc 
-                                if(tipoDoc !="ticket"){
-                                    if(tipoDoc=="boleta"){
-                                        var funcion ='enviarBoleta'
-                                    }else if(tipoDoc=="factura"){
-                                        var funcion ='enviarFactura'
-                                    }                    
-                                    $.ajax({
-                                        type:'GET',
-                                        url:'http://192.168.0.200:81/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
-                                        //url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
-                                        data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
-                                        success: function(r){
-                                            window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");
-                                            //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
-                                            window.location.href = "{{route('caja')}}";
-                                            console.log(r);
-                                        },
-                                        error: function(e){
-                                            console.log(e.message);
-                                        }
-                                    });  
-                                }else{
-                                    window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank"); 
-                                    //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
-                                    window.location.href = "{{route('caja')}}";
-                                }  
+                                var idComprobante =data.id_comprobante;
+                                var tipoDoc = data.tipoDoc;
+                                var url = "{{env('URL_FACTURACION')}}";
+                                window.open(url + '/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
+                                window.location.href = "{{route('caja')}}"; 
                             }else if(data.respuesta=='ok-0'){
                                 window.location.href = "{{route('caja')}}";
                             }else{

@@ -3,7 +3,7 @@
     <a href="{{route("admin")}}" class="brand-link">
         <img src="{{asset("assets/$theme/dist/img/admin.jpg")}}" alt="Hotel Logo"
             class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">Sistema Hotel</span>
+        <span class="brand-text font-weight-light">Hotel Adrian</span>
     </a>
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">

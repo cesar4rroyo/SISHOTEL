@@ -120,7 +120,7 @@
                     @endif
                 </textarea>
             </div>
-            <p class="font-weight-bold mt-4">Datos de Tarjeta</p>
+            {{-- <p class="font-weight-bold mt-4">Datos de Tarjeta</p>
             <hr>
             <div class="form-group">
                 <label class="control-label" for="tipo">{{'Tipo de Tarjeta'}}</label>
@@ -146,8 +146,8 @@
             <div class="form-group">
                 <label for="titular">{{'Nombre del Titular'}}</label>
                 <input autocomplete="false" class="form-control" id="titular" type="text" name="titular">
-            </div>
-            <div class="container text-center">
+            </div> --}}
+            <div class="container text-center mt-5">
                 <button type="submit" class="btn btn-outline-success col-sm-6">
                     Check-In
                 </button>
