@@ -169,11 +169,14 @@ class PersonaController extends Controller
     {
         $persona = Persona::whereNotNull('ruc')->get()->toArray();
         $data = [];
+        $data[] = ['id'=>'', 'nombre'=>'Seleccione un cliente'];
         foreach ($persona as $item) {
-            $data[] = [
-                'id' => $item['id'],
-                'nombre' => $item['razonsocial'],
-            ];
+            if(strlen($item['ruc'])==11 && trim($item['razonsocial'])!=''){
+                $data[] = [
+                    'id' => $item['id'],
+                    'nombre' => $item['razonsocial'],
+                ];
+            }
         }
         $response = ['data' => $data];
         return response()->json($response);

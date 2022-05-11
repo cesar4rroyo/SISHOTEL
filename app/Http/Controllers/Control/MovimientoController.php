@@ -228,13 +228,16 @@ class MovimientoController extends Controller
                 ];
             }
             $personas = Persona::getClientesConRucDni();
-            $comprobante = Comprobante::latest('id')->first();
+            $comprobante = Comprobante::where('tipodocumento', 'boleta')->latest('id')->first();
             if (!is_null($comprobante)) {
                 $comprobante->get()->toArray();
-                $numero = $comprobante['id'] + 1;
+                $separar = explode('-', $comprobante['numero']);
+                $numero = $separar[1] + 1;
+                // $numero = $comprobante['id'] + 1;
                 $numero = $this->zero_fill($numero, 8);
                 $yearActual = Carbon::now()->year;
                 $numero = 'B063-' . $numero;
+                // dd('raa');
             } else {
                 $numero = $this->zero_fill(1, 8);
                 $yearActual = Carbon::now()->year;

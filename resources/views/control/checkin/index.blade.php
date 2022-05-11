@@ -27,7 +27,7 @@
                                     @include ('control.checkin.form', ['formMode' => 'create'])
                                     <input type="text" name="habitacion" hidden value="{{$habitacion['id']}}">
                                     <input type="text" name="reserva" hidden
-                                        value="{{isset($id_reserva) ? $id_reserva : null}}">
+                                        value="{{isset($id_reserva) ? $id_reserva : ""}}">
                                 </form>
                             </div>
                         </div>
@@ -115,12 +115,12 @@
             <div class="row">
                 <label for="comentario">{{'Comentario'}}</label>
                 <textarea class="form-control" name="comentario" id="comentario" cols="5" rows="5">
-                    @if ($reserva)
+                    @if (isset($reserva))
                         {{$reserva->observacion}}
                     @endif
                 </textarea>
             </div>
-            <p class="font-weight-bold mt-4">Datos de Tarjeta</p>
+            {{-- <p class="font-weight-bold mt-4">Datos de Tarjeta</p>
             <hr>
             <div class="form-group">
                 <label class="control-label" for="tipo">{{'Tipo de Tarjeta'}}</label>
@@ -146,9 +146,9 @@
             <div class="form-group">
                 <label for="titular">{{'Nombre del Titular'}}</label>
                 <input autocomplete="false" class="form-control" id="titular" type="text" name="titular">
-            </div>
+            </div> --}}
             <div class="container text-center">
-                <button type="submit" class="btn btn-outline-success col-sm-6">
+                <button type="submit" class="btn btn-outline-success col-sm-6 mt-5">
                     Check-In
                 </button>
             </div>

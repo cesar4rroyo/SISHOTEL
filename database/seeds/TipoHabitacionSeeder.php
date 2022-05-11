@@ -11,35 +11,28 @@ class TipoHabitacionSeeder extends Seeder
         //1
         DB::table('tipohabitacion')->insert([
             'nombre' => 'Habitación Simple',
-            'precio' => 120,
-            'capacidad' => 1,
+            'precio' => 30,
+            'capacidad' => 4,
         ]);
         //2
         DB::table('tipohabitacion')->insert([
-            'nombre' => 'Habitación Matr. Standard',
-            'precio' => 200,
-            'capacidad' => 2,
+            'nombre' => 'Habitación Doble',
+            'precio' => 50,
+            'capacidad' => 4,
 
         ]);
         //3
         DB::table('tipohabitacion')->insert([
-            'nombre' => 'Habitación Matr. Superior',
-            'precio' => 200,
-            'capacidad' => 2,
+            'nombre' => 'Habitación Matrimonial',
+            'precio' => 30,
+            'capacidad' => 4,
 
         ]);
         //4
         DB::table('tipohabitacion')->insert([
-            'nombre' => 'Bungalow Standard',
-            'precio' => 350,
+            'nombre' => 'Habitacion Matrimonial con Baño Compartido',
+            'precio' => 25,
             'capacidad' => 4,
-
-        ]);
-        //5
-        DB::table('tipohabitacion')->insert([
-            'nombre' => 'Bungalow Superior',
-            'precio' => 400,
-            'capacidad' => 5,
 
         ]);
     }

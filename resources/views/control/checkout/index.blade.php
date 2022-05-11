@@ -667,6 +667,20 @@
             var dias = document.getElementById('dias').value;
             var total = document.getElementById('total').value;
             if(dias.trim()!='' && total.trim()!=0){
+                const tipodocumento = document.getElementById('tipodocumento').value;
+                const persona = document.getElementById('persona_select').value;
+                console.log(persona);
+                if(tipodocumento =='factura'){
+                    if(persona.trim()==''){
+                        alert('Esta factura no tiene un cliente seleccionado');
+                        return 1;
+                    }
+                }
+                if (tipodocumento == 'boleta' && persona.trim()=='' && total>700) {
+                    alert('Esta boleta no tiene un cliente seleccionado, montos mayores a 700 debe tener nombre de cliente');
+                    return 1;
+                }
+                    
                 swal({
                     title:'¿Está seguro que desea continuar con esta operación?',
                     text:'Se cobrará solo el precio de la habitación',
@@ -696,11 +710,11 @@
                                     }                    
                                     $.ajax({
                                         type:'GET',
-                                        url:'http://192.168.0.200:81/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
+                                        url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
                                         //url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
                                         data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
                                         success: function(r){
-                                            window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");
+                                            window.open('http://localhost/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");
                                             //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                                             window.location.href = "{{route('caja')}}";
                                             console.log(r);
@@ -710,7 +724,7 @@
                                         }
                                     });  
                                 }else{
-                                    window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank"); 
+                                    window.open('http://localhost/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank"); 
                                     //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                                     window.location.href = "{{route('caja')}}";
                                 }  
@@ -758,6 +772,20 @@
                 console.log('correcto');
             }  
             if(total.trim!=null || total.trim()!=''){
+                const tipodocumento = document.getElementById('tipodocumento').value;
+                const persona = document.getElementById('persona_select').value;
+                if(tipodocumento =='factura'){
+                    if(persona.trim()==''){
+                        alert('Esta factura no tiene un cliente seleccionado');
+                        return 1;
+                    }
+                }
+                if (tipodocumento == 'boleta' && (persona.trim()=='' || persona==1) && total>700) {
+                    alert('Esta boleta no tiene un cliente seleccionado, montos mayores a 700 debe tener nombre de cliente');
+                    return 1;
+                }
+                      //  alert('ok' + persona + tipodocumento);
+                // return 1;
                 swal({
                     title:'¿Está seguro que desea continuar con esta operación?',
                     text:'Está a punto de finalizar el Check-Out.',
@@ -786,11 +814,11 @@
                                     }                    
                                     $.ajax({
                                         type:'GET',
-                                        url:'http://192.168.0.200:81/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
+                                        url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
                                         //url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
                                         data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
                                         success: function(r){
-                                            window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");
+                                            window.open('http://localhost/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");
                                             //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                                             window.location.href = "{{route('caja')}}";
                                             console.log(r);
@@ -800,7 +828,7 @@
                                         }
                                     });  
                                 }else{
-                                    window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank"); 
+                                    window.open('http://localhost/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank"); 
                                     //window.open('http://localhost/test/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                                     window.location.href = "{{route('caja')}}";
                                 }  
