@@ -31,21 +31,21 @@ class VentasController extends Controller
             $numero = $this->zero_fill($numero, 8);
             $yearActual = Carbon::now()->year;
             if ($tipo == 'boleta') {
-                $numero = 'B063-' . $numero;
+                $numero = 'B002-' . $numero;
             } else if ($tipo == 'factura') {
-                $numero = 'F063-' . $numero;
+                $numero = 'F002-' . $numero;
             } else if ($tipo == 'ticket') {
-                $numero = 'T063-' . $numero;
+                $numero = 'T002-' . $numero;
             }
         } else {
             $numero = $this->zero_fill(1, 8);
             $yearActual = Carbon::now()->year;
             if ($tipo == 'boleta') {
-                $numero = 'B063-' . $numero;
+                $numero = 'B002-' . $numero;
             } else if ($tipo == 'factura') {
-                $numero = 'F063-' . $numero;
+                $numero = 'F002-' . $numero;
             } else if ($tipo == 'ticket') {
-                $numero = 'T063-' . $numero;
+                $numero = 'T002-' . $numero;
             }
         }
         return response()->json($numero);
@@ -64,11 +64,11 @@ class VentasController extends Controller
             $numero = $separar[1] + 1;
             $numero = $this->zero_fill($numero, 8);
             $yearActual = Carbon::now()->year;
-            $numero = 'B063-' . $numero;
+            $numero = 'B002-' . $numero;
         } else {
             $numero = $this->zero_fill(1, 8);
             $yearActual = Carbon::now()->year;
-            $numero = 'B063-' . $numero;
+            $numero = 'B002-' . $numero;
         }
         if (!empty($search)) {
             $productos = Producto::where('nombre', 'LIKE', '%' . $search . '%')->get()->toArray();
@@ -90,11 +90,11 @@ class VentasController extends Controller
             $numero = $separar[1] + 1;
             $numero = $this->zero_fill($numero, 8);
             $yearActual = Carbon::now()->year;
-            $numero = 'B063-' . $numero;
+            $numero = 'B002-' . $numero;
         } else {
             $numero = $this->zero_fill(1, 8);
             $yearActual = Carbon::now()->year;
-            $numero = 'B063-' . $numero;
+            $numero = 'B002-' . $numero;
         }
         if (!empty($search)) {
             $servicios =

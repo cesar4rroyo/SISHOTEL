@@ -236,12 +236,12 @@ class MovimientoController extends Controller
                 // $numero = $comprobante['id'] + 1;
                 $numero = $this->zero_fill($numero, 8);
                 $yearActual = Carbon::now()->year;
-                $numero = 'B063-' . $numero;
+                $numero = 'B002-' . $numero;
                 // dd('raa');
             } else {
                 $numero = $this->zero_fill(1, 8);
                 $yearActual = Carbon::now()->year;
-                $numero = 'B063-' . $numero;
+                $numero = 'B002-' . $numero;
             }
             $roles = Rol::orderBy('id')->pluck('nombre', 'id')->toArray();
             $nacionalidades = Nacionalidad::with('persona')->get();
