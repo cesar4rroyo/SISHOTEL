@@ -27,7 +27,8 @@ class ComprobanteController extends Controller
             $dniRuc = $comprobante['persona']['ruc'];
             $nombre = $comprobante['persona']['razonsocial'];
             $direccion = $comprobante['persona']['direccion'];
-            $pdf = PDF::loadView('pdf.factura', compact('comprobante', 'detalles', 'dniRuc', 'nombre', 'direccion'))->setPaper('a4');
+            $tipo = "FACTURA";
+            $pdf = PDF::loadView('pdf.comprobante', compact('comprobante', 'detalles', 'dniRuc', 'nombre', 'direccion', 'tipo'))->setPaper(array(0, 0, 200, 800));
         } else {
             if (!is_null($comprobante['persona']['dni'])) {
                 $dniRuc = $comprobante['persona']['dni'];
@@ -42,7 +43,8 @@ class ComprobanteController extends Controller
                 $nombre = $comprobante['persona']['nombres'] . ' ' . $comprobante['persona']['apellidos'];
             }
             $direccion = $comprobante['persona']['direccion'];
-            $pdf = PDF::loadView('pdf.boleta', compact('comprobante', 'detalles', 'dniRuc', 'direccion', 'nombre'))->setPaper('a4');
+            $tipo = "BOLETA";
+            $pdf = PDF::loadView('pdf.comprobante', compact('comprobante', 'detalles', 'dniRuc', 'direccion', 'nombre', 'tipo'))->setPaper(array(0, 0, 200, 800));
         }
         if ($comprobante['tipodocumento'] == 'ticket') {
             if ($comprobante['persona']['nombres'] == '-' && !is_null($comprobante['persona']['razonsocial'])) {
@@ -51,10 +53,11 @@ class ComprobanteController extends Controller
                 $nombre = $comprobante['persona']['nombres'] . ' ' . $comprobante['persona']['apellidos'];
             }
             $direccion = $comprobante['persona']['direccion'];
-            $pdf = PDF::loadView('pdf.ticket', compact('comprobante', 'detalles', 'dniRuc', 'direccion', 'nombre'))->setPaper('a4');
+            $tipo = "TICKET";
+            $pdf = PDF::loadView('pdf.comprobante', compact('comprobante', 'detalles', 'dniRuc', 'direccion', 'nombre', 'tipo'))->setPaper(array(0, 0, 200, 800));
         }
 
-        return $pdf->download('factura.pdf');
+        return $pdf->stream('factura.pdf');
     }
     public function index(Request $request)
     {
