@@ -30,13 +30,13 @@
 
     <table width="100%">
         <tr>
-            <td valign="top"><img src="{{asset('assets/logo.png')}}" alt="" width="150" /></td>
+            {{-- <td valign="top"><img src="{{asset('assets/logo.png')}}" alt="" width="150" /></td> --}}
             <td align="right">
-                <h3>MARAKOS GRIL S.A.C.</h3>
+                <h3>NERI TORO SILVA</h3>
                 <pre>
-                RUC 20605066942
-                CALLE MIGUEL GRAU NRO. 795
-                LAMBAYEQUE - CHICLAYO - PIMENTEL
+                RUC 10011534584
+                JR HUANCAVELICA MZ 20- LT 15. LA MOLINA
+                NUEVA CAJAMARCA- RIOJA - SAN MARTÍN
             </pre>
             </td>
         </tr>
