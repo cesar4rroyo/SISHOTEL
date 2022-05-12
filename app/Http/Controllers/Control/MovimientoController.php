@@ -171,6 +171,7 @@ class MovimientoController extends Controller
 
     public function edit($id, $id_reserva = null)
     {
+        $serieFacturacion = env('SERIE_FACTURACION');
 
         //$id ====> es el id de la habitacion,
         //$id_reserva ====> es el id de la reserva (es opcional)
@@ -236,12 +237,12 @@ class MovimientoController extends Controller
                 // $numero = $comprobante['id'] + 1;
                 $numero = $this->zero_fill($numero, 8);
                 $yearActual = Carbon::now()->year;
-                $numero = 'B002-' . $numero;
+                $numero = 'B'.$serieFacturacion.'-' . $numero;
                 // dd('raa');
             } else {
                 $numero = $this->zero_fill(1, 8);
                 $yearActual = Carbon::now()->year;
-                $numero = 'B002-' . $numero;
+                $numero = 'B'.$serieFacturacion.'-' . $numero;
             }
             $roles = Rol::orderBy('id')->pluck('nombre', 'id')->toArray();
             $nacionalidades = Nacionalidad::with('persona')->get();

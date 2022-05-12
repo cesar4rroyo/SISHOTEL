@@ -74,6 +74,7 @@ class DetalleMovimientoController extends Controller
     }
     public function movimiento($id, $movimiento = null)
     {
+        $serieFacturacion = env('SERIE_FACTURACION');
         $movimientos =
             Movimiento::with('pasajero', 'reserva', 'habitacion', 'detallemovimiento')
             ->whereHas('habitacion', function ($q) use ($id) {
@@ -95,11 +96,11 @@ class DetalleMovimientoController extends Controller
             $numero = $separar[1] + 1;
             $numero = $this->zero_fill($numero, 8);
             $yearActual = Carbon::now()->year;
-            $numero = 'B002-' . $numero;
+            $numero = 'B'.$serieFacturacion.'-' . $numero;
         } else {
             $numero = $this->zero_fill(1, 8);
             $yearActual = Carbon::now()->year;
-            $numero = 'B002-' . $numero;
+            $numero = 'B'.$serieFacturacion.'-' . $numero;
         }
 
         if (is_null($movimiento)) {

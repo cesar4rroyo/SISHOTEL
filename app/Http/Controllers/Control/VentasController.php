@@ -20,7 +20,7 @@ class VentasController extends Controller
 {
     public function getComprobanteNumero($tipo)
     {
-
+        $serieFacturacion = env('SERIE_FACTURACION');
         $comprobante = Comprobante::latest('id')
             ->where('tipodocumento', $tipo)
             ->first();
@@ -31,27 +31,28 @@ class VentasController extends Controller
             $numero = $this->zero_fill($numero, 8);
             $yearActual = Carbon::now()->year;
             if ($tipo == 'boleta') {
-                $numero = 'B002-' . $numero;
+                $numero = 'B'.$serieFacturacion.'-' . $numero;
             } else if ($tipo == 'factura') {
-                $numero = 'F002-' . $numero;
+                $numero = 'F'.$serieFacturacion.'-' . $numero;
             } else if ($tipo == 'ticket') {
-                $numero = 'T002-' . $numero;
+                $numero = 'T'.$serieFacturacion.'-' . $numero;
             }
         } else {
             $numero = $this->zero_fill(1, 8);
             $yearActual = Carbon::now()->year;
             if ($tipo == 'boleta') {
-                $numero = 'B002-' . $numero;
+                $numero = 'B'.$serieFacturacion.'-' . $numero;
             } else if ($tipo == 'factura') {
-                $numero = 'F002-' . $numero;
+                $numero = 'F'.$serieFacturacion.'-' . $numero;
             } else if ($tipo == 'ticket') {
-                $numero = 'T002-' . $numero;
+                $numero = 'T'.$serieFacturacion.'-' . $numero;
             }
         }
         return response()->json($numero);
     }
     public function indexProductos(Request $request)
     {
+        $serieFacturacion = env('SERIE_FACTURACION');
         $search = $request->get('search');
         $personas = Persona::getClientesConRucDni();
         $comprobante = Comprobante::latest('id')
@@ -64,11 +65,11 @@ class VentasController extends Controller
             $numero = $separar[1] + 1;
             $numero = $this->zero_fill($numero, 8);
             $yearActual = Carbon::now()->year;
-            $numero = 'B002-' . $numero;
+            $numero = 'B'.$serieFacturacion.'-' . $numero;
         } else {
             $numero = $this->zero_fill(1, 8);
             $yearActual = Carbon::now()->year;
-            $numero = 'B002-' . $numero;
+            $numero = 'B'.$serieFacturacion.'-' . $numero;
         }
         if (!empty($search)) {
             $productos = Producto::where('nombre', 'LIKE', '%' . $search . '%')->get()->toArray();
@@ -79,6 +80,7 @@ class VentasController extends Controller
     }
     public function indexServicios(Request $request)
     {
+        $serieFacturacion = env('SERIE_FACTURACION');
         $search = $request->get('search');
         $personas = Persona::getClientesConRucDni();
         $comprobante = Comprobante::latest('id')
@@ -90,11 +92,11 @@ class VentasController extends Controller
             $numero = $separar[1] + 1;
             $numero = $this->zero_fill($numero, 8);
             $yearActual = Carbon::now()->year;
-            $numero = 'B002-' . $numero;
+            $numero = 'B'.$serieFacturacion.'-' . $numero;
         } else {
             $numero = $this->zero_fill(1, 8);
             $yearActual = Carbon::now()->year;
-            $numero = 'B002-' . $numero;
+            $numero = 'B'.$serieFacturacion.'-' . $numero;
         }
         if (!empty($search)) {
             $servicios =

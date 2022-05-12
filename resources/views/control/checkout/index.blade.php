@@ -721,6 +721,7 @@
                                         },
                                         error: function(e){
                                             console.log(e.message);
+                                            window.location.href = "{{route('caja')}}";
                                         }
                                     });  
                                 }else{
@@ -825,6 +826,7 @@
                                         },
                                         error: function(e){
                                             console.log(e.message);
+                                            window.location.href = "{{route('caja')}}";
                                         }
                                     });  
                                 }else{
