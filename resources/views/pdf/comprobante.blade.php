@@ -139,13 +139,13 @@
                     Op. Gravada</td>
                 <td
                     style="width:65%; text-align:right;   border : 0.5px black solid; border-bottom:none; border-left:none; border-right:none; font-size:13px;  font-weight:bold;">
-                    {{ number_format($comprobante['subtotal'], 2) }}</td>
+                    {{ number_format('0.00', 2) }}</td>
             </tr>
             <tr>
                 <td style="width:35%; text-align:left; font-size:13px;  font-weight:bold;">
                     I.G.V.(18%)</td>
                 <td style="width:65%; text-align:right; font-size:13px;  font-weight:bold;">
-                    {{ number_format($comprobante['igv'], 2) }}</td>
+                    {{ number_format('0.00', 2) }}</td>
             </tr>
             <tr>
                 <td style="width:35%; text-align:left; font-size:13px;  font-weight:bold;">
@@ -157,7 +157,7 @@
                 <td style="width:35%; text-align:left; font-size:13px;  font-weight:bold;">
                     Op. Exonerada</td>
                 <td style="width:65%; text-align:right; font-size:13px;  font-weight:bold;">
-                    {{ number_format('0.00', 2) }}</td>
+                    {{ number_format($comprobante['total'], 2) }}</td>
             </tr>
             <tr>
                 <td style="width:35%; text-align:left; font-size:13px;  font-weight:bold;">
