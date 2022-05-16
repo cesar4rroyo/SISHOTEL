@@ -259,6 +259,16 @@ class MovimientoController extends Controller
                 );
         }
     }
+    public function terminar($id, $id_reserva = null){
+        $habitacion = Habitacion::find($id);
+            $habitacion->update([
+                'situacion' => 'En Limpieza'
+        ]);
+
+        return redirect()
+            ->route('habitaciones')
+            ->with('success', 'Se cerró la habitación correctamente');
+    }
 
     public function zero_fill($valor, $long = 0)
     {

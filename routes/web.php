@@ -212,6 +212,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     Route::get('movimiento/show', 'MovimientoController@show')->name('show_movimiento');
     Route::post('movimiento/{id_reserva?}', 'MovimientoController@store')->name('store_movimiento');
     Route::get('movimiento/{id}/edit/{id_reserva?}', 'MovimientoController@edit')->name('edit_movimiento');
+    //TERMINAR HABITACION
+    Route::get('movimiento/finish/{id}/edit/{id_reserva?}', 'MovimientoController@terminar')->name('terminar_movimiento');
     //con reserva
     Route::get('movimiento/reserva/{id_habitacion}/{id_reserva}', 'MovimientoController@editConReserva')->name('edit_movimiento_reserva');
     Route::put('movimiento/{id}', 'MovimientoController@update')->name('update_movimiento');

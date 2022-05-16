@@ -110,6 +110,10 @@
                                 </div>
                                 <div class="col-sm form-group">
                                     <label class="control-label" for="dias">{{'Dias'}}</label>
+                                    <span class=" badge badge-success" type="button" id="btnCalcularTotal">
+                                        <i class="fas fa-plus-circle"></i>
+                                        Calcular Total
+                                    </span>
                                     <input required type="number" class="form-control" step="0.01" name="dias" id="dias">
                                     <p id="errMessage" class="text-center text-danger">Este campo es obligatorio</p>
                                 </div>
@@ -120,7 +124,7 @@
                             <input required type="number" class="form-control" step="0.01" name="pagado" id="pagado" readonly value="{{$caja['total']}}">
                         </div>
                         @endif
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-sm form-group">
                                 <label class="control-label" for="early_checkin">{{'Early Check In'}}</label>
                                 <input class="form-control" step="0.01" type="number" name="early_checkin"
@@ -135,16 +139,16 @@
                                 <label class="control-label" for="day_use">{{'Day Use'}}</label>
                                 <input class="form-control" step="0.01" type="number" name="day_use" id="day_use">
                             </div>
-                        </div>
-                        <p class="text-danger" id="txtErrorCheckout">Tiene que introducir un valor, en cualquier campo (0 al menos)</p>
-                        <div class="container mb-3">
+                        </div> --}}
+                        {{-- <p class="text-danger" id="txtErrorCheckout">Tiene que introducir un valor, en cualquier campo (0 al menos)</p> --}}
+                        {{-- <div class="container mb-3">
                             <button type="button" id="calcularTotal" class="btn btn-success float-right">Calcular
                                 Total</button>
                         </div>                        
                         <div class="container mb-3">
                             <button type="button" id="calcularTotal2" class="btn btn-success float-right">Calcular
                                 Total</button>
-                        </div>                        
+                        </div>                         --}}
                         <div class="row">
                             <div class="col-sm form-group" id="totalContainer">
                                 <label class="control-label" for="total">{{'Total'}}</label>
@@ -226,9 +230,9 @@
                             </span>
                             {{-- <input type="text" id="persona"> --}}
                             <select class="form-control" required name="persona" id="persona_select">
-                                <option value="{{$pasajerosSelect[0]['id']}}">
+                                {{-- <option value="{{$pasajerosSelect[0]['id']}}">
                                     {{$pasajerosSelect[0]['nombres']}}
-                                </option>
+                                </option> --}}
                                 @foreach ($personas as $item)
                                 @if ($item['id']!=$pasajerosSelect[0]['id'])
                                 <option value="{{$item['id']}}">
@@ -366,8 +370,8 @@
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) {
         $('#errMessage').hide();
-        $('#calcularTotal').hide();
-        $('#calcularTotal2').hide();
+        // $('#calcularTotal').hide();
+        // $('#calcularTotal2').hide();
         $('#totalContainer').hide();
         $('#btnAddRuc').hide();
         $('#modalidadPago').hide();
@@ -762,16 +766,9 @@
             //var dias = document.getElementById('dias').value;
             var total = document.getElementById('total').value;
             console.log(total);
-            var early = ($('#early_checkin').val().trim());
-            var late = $('#late_checkout').val().trim();
-            var use =$('#day_use').val().trim();
-            if(early=='' && late=='' && use==''){
-                console.log('incorrecto');
-                $('#txtErrorCheckout').show();
-                return 1;
-            }else{
-                console.log('correcto');
-            }  
+            var early = 0;
+            var late = 0;
+            var use =0; 
             if(total.trim!=null || total.trim()!=''){
                 const tipodocumento = document.getElementById('tipodocumento').value;
                 const persona = document.getElementById('persona_select').value;
@@ -926,56 +923,65 @@
                 }
             });
         });
-    $("#early_checkin").on('change',function(){
-        var early = ($('#early_checkin').val().trim());
-        var late = $('#late_checkout').val().trim();
-        var use =$('#day_use').val().trim();
-        if(early=='' && late=='' && use==''){
-            $('#calcularTotal2').hide();
-            $('#totalContainer').hide();
+    // $("#early_checkin").on('change',function(){
+    //     var early = ($('#early_checkin').val().trim());
+    //     var late = $('#late_checkout').val().trim();
+    //     var use =$('#day_use').val().trim();
+    //     if(early=='' && late=='' && use==''){
+    //         $('#calcularTotal2').hide();
+    //         $('#totalContainer').hide();
+    //     }else{
+    //         $('#calcularTotal2').show();
+    //     }   
+    // });
+    // $("#late_checkout").on('change',function(){
+    //     var early = ($('#early_checkin').val().trim());
+    //     var late = $('#late_checkout').val().trim();
+    //     var use =$('#day_use').val().trim();
+    //     if(early=='' && late=='' && use==''){
+    //         $('#calcularTotal2').hide();
+    //         $('#totalContainer').hide();
+    //     }else{
+    //         $('#calcularTotal2').show();
+    //     }   
+    // });
+    // $("#day_use").on('change',function(){
+    //     var early = ($('#early_checkin').val().trim());
+    //     var late = $('#late_checkout').val().trim();
+    //     var use =$('#day_use').val().trim();
+    //     if(early=='' && late=='' && use==''){
+    //         $('#calcularTotal2').hide();
+    //         $('#totalContainer').hide();
+    //     }else{
+    //         $('#calcularTotal2').show();
+    //     }   
+    // });
+
+    $('#btnCalcularTotal').on('click', function(){
+        var dias = $('#dias').val().trim();
+        if(dias=='' || dias==0){
+            alert('Debe ingresar los días de uso de la habitación');
         }else{
-            $('#calcularTotal2').show();
-        }   
-    });
-    $("#late_checkout").on('change',function(){
-        var early = ($('#early_checkin').val().trim());
-        var late = $('#late_checkout').val().trim();
-        var use =$('#day_use').val().trim();
-        if(early=='' && late=='' && use==''){
-            $('#calcularTotal2').hide();
-            $('#totalContainer').hide();
-        }else{
-            $('#calcularTotal2').show();
-        }   
-    });
-    $("#day_use").on('change',function(){
-        var early = ($('#early_checkin').val().trim());
-        var late = $('#late_checkout').val().trim();
-        var use =$('#day_use').val().trim();
-        if(early=='' && late=='' && use==''){
-            $('#calcularTotal2').hide();
-            $('#totalContainer').hide();
-        }else{
-            $('#calcularTotal2').show();
-        }   
-    });
+            var dias = $('#dias').val().trim();
+            $('#total').val(parseFloat({{isset($total) ? $total : 0}}));        
+            var preciohabitacion = $('#preciohabitacion').val();
+            var habitaciontotal = dias*preciohabitacion;
+            var total = $('#total').val();        
+            total = parseFloat(habitaciontotal) + parseFloat(total);
+            $('#total').val(parseFloat(total));
+            $('#totalContainer').show();
+        }
+
+    })
     
     $("#dias").on('change',function(){
+        return 1;
         if($(this).val().trim()==''){
             $('#calcularTotal').hide();
             $('#totalContainer').hide();
         }else{
             $('#calcularTotal').show();
-        }
-        // $('#total').val(parseFloat({{isset($total) ? $total : 0}}));        
-
-        // var dias =$(this).val();
-        // var preciohabitacion = $('#preciohabitacion').val();
-        // console.log(dias);
-        // var habitaciontotal = dias*preciohabitacion;
-        // var total = $('#total').val();
-        // total = parseFloat(habitaciontotal) + parseFloat(total);
-        // $('#total').val(parseFloat(total));       
+        }     
     });
     $('#calcularTotal2').on('click', function(){
         var early = ($('#early_checkin').val().trim());
@@ -993,23 +999,20 @@
 
     });
     $('#calcularTotal').on('click', function(){
-        var early = ($('#early_checkin').val().trim());
-        var late = $('#late_checkout').val().trim();
-        var use =$('#day_use').val().trim();
+        // var early = ($('#early_checkin').val().trim());
+        // var late = $('#late_checkout').val().trim();
+        // var use =$('#day_use').val().trim();
         var dias = $('#dias').val().trim();
         $('#total').val(parseFloat({{isset($total) ? $total : 0}}));        
-        early = (early=='' || early==undefined || early==0) ? 0 : parseFloat(early);
-        late = (late=='' || late==undefined || late==0) ? 0 : parseFloat(late);
-        use = (use=='' || use==undefined || use==0) ? 0 : parseFloat(use);
+        // early = (early=='' || early==undefined || early==0) ? 0 : parseFloat(early);
+        // late = (late=='' || late==undefined || late==0) ? 0 : parseFloat(late);
+        // use = (use=='' || use==undefined || use==0) ? 0 : parseFloat(use);
         var preciohabitacion = $('#preciohabitacion').val();
         var habitaciontotal = dias*preciohabitacion;
         var total = $('#total').val();        
-        total = early + late + use + parseFloat(habitaciontotal) + parseFloat(total);
+        total = parseFloat(habitaciontotal) + parseFloat(total);
         $('#total').val(parseFloat(total));
         $('#totalContainer').show();
-
-
-
     });
 
     $('#txtEfectivo3').on('change', function(){

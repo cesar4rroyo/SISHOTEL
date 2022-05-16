@@ -83,7 +83,7 @@
                 </div> --}}
             </div>
             <div class="form-group">
-                <label class="control-label" for="persona">{{'Pasajero Principal'}}</label>
+                <label class="control-label" for="persona">{{'Huesped Principal'}}</label>
                 <a type="button" data-toggle="modal" data-target="#modal-pasajero">
                     <span class="badge badge-success">
                         <i class="fas fa-plus-circle"></i>
@@ -97,7 +97,7 @@
                     @endforeach
                 </select>
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label class="control-label" for="persona">{{'Acompañantes'}}</label>
                 <a type="button" data-toggle="modal" data-target="#modal-pasajero">
                     <span class="badge badge-success">
@@ -111,7 +111,7 @@
                         {{$persona['nombres']}}</option>
                     @endforeach
                 </select>
-            </div>
+            </div> --}}
             <div class="row">
                 <label for="comentario">{{'Comentario'}}</label>
                 <textarea class="form-control" name="comentario" id="comentario" cols="5" rows="5">
@@ -164,6 +164,11 @@
     document.addEventListener("DOMContentLoaded", function(event) {
     $("#btnBuscarRuc").on('click', function(){
         var ruc = $('#ruc').val();
+        if(ruc.length!=11){
+            alert('El RUC debe tener 11 dígitos');
+            $('#ruc').val('');
+            return;
+        }
         $.ajax({
             type:'GET',
             url: 'http://157.245.85.164/facturacion/buscaCliente/BuscaClienteRuc.php?fe=N',
@@ -194,9 +199,40 @@
         $('#nombres').prop('readonly', false);
         $('#apellidos').prop('readonly', false);
     });
-   
-    
-    
+
+    $('#dni').change(function(){
+        var dni = $('#dni').val();
+        if(dni.length!=8){
+            alert('El DNI debe tener 8 dígitos');
+            $('#dni').val('');
+            return false;
+        }
+        if(typeof dni == 'undefined' || dni == null || dni == ''){
+            alert('El DNI debe tener 8 dígitos');
+            $('#dni').val('');
+            return false;
+        }
+        $.ajax({
+            type:'GET',
+            url: 'http://facturae-garzasoft.com/facturacion/buscaCliente/BuscaCliente2.php?' + 'dni=' + dni + '&fe=N&token=qusEj_w7aHEpX',
+            success:function(r){
+                var data = JSON.parse(r);
+                console.log(data);
+                if(data.code == 0){
+                    $('#nombres').val(data.nombres + ' ' + data.apepat + ' ' + data.apemat);
+                    $('#razonsocial').val('-');
+                    $('#ruc').val('-');
+                    $('#razonsocial').prop('readonly', true);
+                    $('#ruc').prop('readonly', true);
+                }
+            },
+            error:function(r){
+                alert('DNI Incorrecto');
+            }
+        })
+
+    });
+
  })
 
 

@@ -459,9 +459,9 @@ class CajaController extends Controller
     public function createCheckout(Request $request, $id)
     {
         //servicios adicionales
-        $early_checkin = $request->early_checkin;
-        $late_checkout = $request->late_checkout;
-        $day_use = $request->day_use;
+        $early_checkin = 0;
+        $late_checkout = 0;
+        $day_use = 0;
         //metodo de pago verficiacio
         $efectivo=0;
         $tarjeta=0;
@@ -685,23 +685,15 @@ class CajaController extends Controller
                 ]);
             }
             return response()->json(['respuesta' => 'ok', 'id_comprobante' => $id_ComprobanteAnterior, 'tipoDoc' => $tipoDoc]);
-
-            // return redirect()
-            //     ->route('caja')
-            //     ->with('success', 'Registro agregado correctamente');
         } else {
             return response()->json(['respuesta' => 'no', 'mensaje' => 'La caja no ha sido aperturada']);
-            // return redirect()
-            //     ->route('habitaciones')
-            //     ->with('error', 'La caja no ha sido aperturada');
         }
     }
     public function cobrarMovimiento(Request $request, $id)
     {
-        //servicios adicionales
-        $early_checkin = $request->early_checkin;
-        $late_checkout = $request->late_checkout;
-        $day_use = $request->day_use;
+        $early_checkin = 0;
+        $late_checkout = 0;
+        $day_use = 0;
         //metodo de pago verficiacion
         $efectivo=0;
         $tarjeta=0;
@@ -796,6 +788,10 @@ class CajaController extends Controller
             $habitacion->update([
                 'situacion' => 'En limpieza',
             ]); */
+            $habitacion = Habitacion::findOrFail($request->habitacion_id);
+            $habitacion->update([
+                'situacion' => 'YA PAGO',
+            ]);
             //comprobante datos      
             $today = Carbon::now()->toDateString();
             $total = $request->total;
@@ -819,7 +815,7 @@ class CajaController extends Controller
                 'fechasalida' => $request->fechasalida,
                 'dias' => $request->dias,
                 'total' => $request->total,
-                'situacion' => 'Pago Realizado y Pendiente',
+                'situacion' => 'Pago Realizado',
                 'descuento' => $request->txtDescuento,
                 'early_checkin' => $early_checkin,
                 'late_checkout' => $late_checkout,

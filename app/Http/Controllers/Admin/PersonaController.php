@@ -204,10 +204,10 @@ class PersonaController extends Controller
             'fechanacimiento' => $request->fechanacimiento,
             'telefono' => $request->telefono,
             'observacion' => strtoupper($request->observacion),
-            'nacionalidad_id' => $request->nacionalidad_id,
-            'email' => $request->email,
-            'ciudad' => strtoupper($request->ciudad),
-            'edad' => $request->edad,
+            'nacionalidad_id' => null,
+            'email' => "",
+            'ciudad' => "",
+            'edad' => "",
 
         ]);
         $persona->roles()->sync($request->rol_id);
@@ -269,22 +269,14 @@ class PersonaController extends Controller
 
         $persona = Persona::create([
             'nombres' => strtoupper($request->nombres),
-            'apellidos' => strtoupper($request->apellidos),
+            'apellidos' => "",
             'razonsocial' => strtoupper($request->razonsocial),
             'ruc' => $request->ruc,
             'dni' => $request->dni,
-            'direccion' => strtoupper($request->direccion),
-            'sexo' => $request->sexo,
-            'fechanacimiento' => $request->fechanacimiento,
-            'telefono' => $request->telefono,
             'observacion' => strtoupper($request->observacion),
-            'nacionalidad_id' => $request->nacionalidad_id,
-            'edad' => $request->edad,
-            'email' => $request->email,
-            'ciudad' => strtoupper($request->ciudad),
-
         ]);
-        $persona->roles()->sync($request->rol_id);
+        //ASINGNAR ROL DE CLIENTE 2
+        $persona->roles()->sync(2);
 
         $personas = Persona::getClientesConRucDni();
 

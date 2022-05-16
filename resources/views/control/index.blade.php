@@ -53,10 +53,10 @@
                             @foreach ($habitacion as $item)
                             <div class="col-md-4 mb-3">
                                 <div
-                                    class="position-relative {{$item['situacion']==='Disponible' ? 'bg-success' : ($item['situacion']==='Ocupada' ? 'bg-danger' : 'bg-info')}}">
+                                    class="position-relative {{$item['situacion']==='Disponible' ? 'bg-success' : ($item['situacion']==='Ocupada' || $item['situacion']==='YA PAGO'  ? 'bg-danger' : 'bg-info')}}">
                                     <div class="ribbon-wrapper">
                                         <div class="ribbon bg-white font-weight-bold">
-                                            {{$item['situacion']}}</div>
+                                            {{($item['situacion'] == 'Ocupada' ? 'NO PAGO' : $item['situacion'])}}</div>
                                     </div>
                                     <div class="container pt-5">
                                         <div class="row">
@@ -75,12 +75,12 @@
                                                                 S/.{{$item['tipohabitacion']['precio']}}
                                                             </span>
                                                         </span>
-                                                        <a href="{{route('show_habitaciones', $item['id'])}}" class="">
+                                                        {{-- <a href="{{route('show_habitaciones', $item['id'])}}" class="">
                                                             <span class="mt-2 badge bg-secondary">
                                                                 Consultar Reservas
                                                                 <i class="fas fa-search"></i>
                                                             </span>
-                                                        </a>
+                                                        </a> --}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -111,6 +111,13 @@
                                                 class="btn btn-app bg-secondary text-decoration-none">
                                                 <i class="fa fas fa-concierge-bell"></i>
                                                 Servicios
+                                            </a>
+                                            @break
+                                            @case('YA PAGO')
+                                            <a href="{{route('terminar_movimiento', $item['id'])}}"
+                                                class="btn btn-app bg-danger text-decoration-none">
+                                                <i class="fas fa-check-circle"></i>
+                                                Terminar
                                             </a>
                                             @break
                                             @default

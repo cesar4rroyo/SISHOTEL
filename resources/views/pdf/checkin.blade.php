@@ -112,8 +112,8 @@
             <tr>
                 <th> Nombres </th>
                 <td class="input"> {{ $persona['persona']['nombres'] }} </td>
-                <th> Apellidos </th>
-                <td class="input"> {{ $persona['persona']['apellidos'] }} </td>
+                {{-- <th> Apellidos </th>
+                <td class="input"> {{ $persona['persona']['apellidos'] }} </td> --}}
             </tr>
             <tr>
                 <th> Razon Social </th>
@@ -128,26 +128,26 @@
                 <td class="input">
                     {{ isset($persona['persona']['dni']) ? $persona['persona']['dni'] : '' }}
                 </td>
-                <th> Fecha de nacimiento </th>
-                <td class="input"> {{ $persona['persona']['fechanacimiento'] }} </td>
+                {{-- <th> Fecha de nacimiento </th>
+                <td class="input"> {{ $persona['persona']['fechanacimiento'] }} </td> --}}
             </tr>
             <tr>
                 <th> Dirección </th>
                 <td class="input"> {{ $persona['persona']['direccion'] }} </td>
             </tr>
-            <tr>
+            {{-- <tr>
                 <th> Ciudad </th>
                 <td class="input"> {{ isset($persona['persona']['ciudad'])?$persona['persona']['ciudad']:'-' }} </td>
                 <th> Edad </th>
                 <td class="input"> {{ isset($persona['persona']['edad'])?$persona['persona']['edad']:'-' }} </td>
-            </tr>
+            </tr> --}}
             <tr>
                 <th> Teléfono </th>
                 <td class="input"> {{ $persona['persona']['telefono'] }} </td>
-                <th> Nacionalidad </th>
+                {{-- <th> Nacionalidad </th>
                 <td class="input">
                     {{ isset($persona['persona']['nacionalidad'])?$persona['persona']['nacionalidad']['nombre']:'-' }}
-                </td>
+                </td> --}}
             </tr>
             <tr>
                 <th> Email </th>
