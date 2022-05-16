@@ -53,7 +53,8 @@
         @php
             $nombre_doc = $tipo == 'BOLETA' ? 'BOLETA ELECTRÓNICA' : ($tipo == 'FACTURA' ? 'FACTURA ELECTRONICA' : 'TICKET');
         @endphp
-        <p style=" margin:5px; text-align:center; font-size:14px; font-weight:bold;">NERI TORO SILVA</p>
+        <p style=" margin:5px; text-align:center; font-size:14px; font-weight:bold;">HOSTAL ANTONY</p>
+        <p style=" margin:5px; text-align:center; font-size:14px; font-weight:bold;">DE: NERI TORO SILVA</p>
         <p style=" margin:5px;  text-align:center; font-size:11px;"> RUC 10011534584</p>
         <p style=" margin:5px;  text-align:center; font-size:11px;"> JR HUANCAVELICA MZ 20- LT 15. LA MOLINA</p>
         <p style=" margin:5px;  text-align:center; font-size:11px;"> NUEVA CAJAMARCA- RIOJA - SAN MARTÍN</p>
