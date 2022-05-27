@@ -1,7 +1,4 @@
-@extends("theme.$theme.layout")
-
-@section('content')
-<div class="container">
+<div class="container" id="container">
     @if ($message = Session::get('success'))
     <div class="alert alert-success">
         <p>{{ $message }}</p>
@@ -83,4 +80,3 @@
         </div>
     </div>
 </div>
-@endsection

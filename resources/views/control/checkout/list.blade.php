@@ -1,8 +1,4 @@
-@extends("theme.$theme.layout")
-
-@section('content')
-{{-- {{dd($movimiento)}} --}}
-<div class="row">
+<div class="row" id="container">
     <div class="col-md-12">
         <div class="card">
             <div class="card-header font-weight-bold">Check Out Realizados por Clientes</div>
@@ -83,4 +79,3 @@
     </div>
 </div>
 </div>
-@endsection

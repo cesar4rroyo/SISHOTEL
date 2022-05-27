@@ -1,7 +1,4 @@
-@extends("theme.$theme.layout")
-
-@section('content')
-<div class="row">
+<div class="row" id="container">
     <div class="col-md-12">
         <div class="card">
             <div class="card-header font-weight-bold">Nueva Venta</div>
@@ -171,7 +168,6 @@
     </div>
 </div>
 </div>
-@endsection
 
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) {

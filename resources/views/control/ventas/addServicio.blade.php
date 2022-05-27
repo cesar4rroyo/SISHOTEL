@@ -1,6 +1,4 @@
-@extends("theme.$theme.layout")
-@section('content')
-<div class="row">
+<div class="row" id="container">
     <div class="col-md-12">
         <div class="card">
             <div class="card-header font-weight-bold">Nueva Venta</div>
@@ -137,6 +135,11 @@
                         <div class="row">
                             <div class="form-group col-sm {{ $errors->has('persona') ? 'has-error' : ''}}">
                                 <label for="persona" class="control-label">{{ 'Personas' }}</label>
+                                <span class=" badge badge-info" id="btnAddRuc" type="button" data-toggle="modal"
+                                    data-target="#rucModal">
+                                    <i class="fas fa-plus-circle"></i>
+                                    Agregar Cliente RUC
+                                </span>
                                 <select class="form-control clientes-select2" required name="persona" id="persona">
                                     <option value="">{{'Seleccione una opcion'}}</option>
                                     @foreach ($personas as $item)
@@ -167,8 +170,47 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="rucModal" tabindex="-1" aria-labelledby="rucModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rucModal">Añadir Cliente RUC</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm form-group">
+                        <label class="control-label" for="ruc">{{'RUC'}}</label>
+                        <span class="badge badge-primary" id="btnBuscarRuc">
+                            <i class="fas fa-search"></i>
+                            {{'Buscar'}}</span>
+                        <input class="form-control" type="number" name="ruc" id="ruc">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm form-group">
+                        <label class="control-label" for="razonsocial">{{'Razon Social'}}</label>
+                        <input class="form-control" readonly type="text" name="razonsocial" id="razonsocial">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm form-group">
+                        <label class="control-label" for="direccion">{{'Direccion'}}</label>
+                        <input class="form-control" readonly type="text" name="direccion" id="direccion">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" id="btnGuardarCliente" class="btn btn-primary">Guardar
+                    Cambios</button>
+            </div>
+        </div>
+    </div>
 </div>
-@endsection
+</div>
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) {
         $('#errMessage').hide();
@@ -317,20 +359,70 @@
             });
         }
     });
-   /*  $(".updateCart").click(function (e) {
-           e.preventDefault();
-           var ele = $(this);
+
+    $("#btnBuscarRuc").on('click', function(){
+            var ruc = $('#ruc').val();
             $.ajax({
-               url: "{{ url('admin/ventas/servicios/updateServicioCart') }}",
-               method: "PATCH",
-               data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id"), cantidad: ele.parents("tr").find(".quantity").val()},
-               success: function (respuesta) {
-                    Hotel.notificaciones(respuesta.respuesta, 'Hotel', 'success');
-                    location.reload();
+                type:'GET',
+                url: 'http://157.245.85.164/facturacion/buscaCliente/BuscaClienteRuc.php?fe=N',
+                data:"&token=qusEj_w7aHEpX"+"&ruc="+ruc,
+                success:function(r){
+                    var data = JSON.parse(r);
+                    if(data.code == 0){
+                        $('#razonsocial').val(data.RazonSocial);
+                        $('#direccion').val(data.Direccion);                    
+                    }
+                }
+            });
+    });
+
+    $('#btnGuardarCliente').on('click', function(){
+            var ruc = $('#ruc').val();
+            var razonsocial = $('#razonsocial').val();
+            var direccion = $('#direccion').val();
+            var select = $('#persona_select');
+            if(ruc.trim()=='' || razonsocial.trim()=='' || direccion.trim()==''){
+                alert('Uno o más campos están vacios');
+            }else{
+                $.ajax({
+                    type:'POST',
+                    url:"{{route('storeClienteRuc')}}",
+                    data:{
+                        "ruc":ruc,
+                        "razonsocial":razonsocial,
+                        "direccion":direccion,
+                        "_token": $('input[name=_token]').val(),
+                    },
+                    success: function(r){
+                        if(r.mensaje=='ok'){                            
+                            $.ajax({
+                                type:'GET',
+                                url:"{{route('getClientesRuc')}}",
+                                success:function(res){
+                                    select.find('option').remove();
+                                    $.each(res.data, function(key,value){
+                                        select.append("<option value='" + value.id + "'>" + value.nombre + "</option>");
+                                    });
+                                    $('#rucModal').modal('hide');
+                                    Hotel.notificaciones('Se agrego correctamente', 'Hotel', 'success');
+                                },
+                                error:function(e){
+                                    console.log(e);
+                                    $('#rucModal').modal('hide');
+                                    Hotel.notificaciones('Ha ocurrido un error', 'Hotel', 'error');   
+                                }
+                            });                            
+                        }
+                        console.log(r);
+                    },
+                    error: function(e){
+                        console.log(e);
+                        $('#rucModal').modal('hide');
+                        Hotel.notificaciones('Ha ocurrido un error', 'Hotel', 'error');                            
+                    }
+                })
             }
         });
-    }); */
-
     });
 
 </script>

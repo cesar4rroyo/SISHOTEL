@@ -10,7 +10,7 @@
     <ul class="nav nav-treeview grupomenu">
         @foreach ($item["opcionmenu"] as $opcion)
         <li class="nav-item pl-2">
-            <a href="{{url($opcion["link"])}}" class="nav-link {{getMenuActivo($opcion["link"])}}">
+            <a href="#" onclick="cargarRuta('{{URL::to($opcion['link'])}}', 'container');" class="nav-link {{getMenuActivo($opcion["link"])}}">
                 <i class="nav-icon fa {{$opcion["icono"]}}"></i>
                 <p>
                     {{$opcion["nombre"]}}
