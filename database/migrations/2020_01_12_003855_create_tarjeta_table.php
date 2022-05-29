@@ -15,11 +15,10 @@ class CreateTarjetaTable extends Migration
     {
         Schema::create('tarjeta', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('tipo')->nullable();
-            $table->string('numero')->nullable();
-            $table->string('fechavencimiento')->nullable();
-            $table->string('titular')->nullable();
+            $table->string('nombre')->nullable();
+            $table->string('banco')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

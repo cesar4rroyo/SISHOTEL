@@ -19,6 +19,7 @@ class CreateGrupoMenuTable extends Migration
             $table->string('icono', 50)->nullable();
             $table->integer('orden')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

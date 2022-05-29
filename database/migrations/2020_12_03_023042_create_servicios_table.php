@@ -18,6 +18,7 @@ class CreateServiciosTable extends Migration
             $table->string('nombre', 50);
             $table->decimal('precio', 10, 2)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -19,6 +19,7 @@ class CreateTipoHabitacionTable extends Migration
             $table->integer('capacidad')->nullable();
             $table->decimal('precio', 10, 2);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

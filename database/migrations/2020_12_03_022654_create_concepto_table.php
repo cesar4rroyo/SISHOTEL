@@ -15,9 +15,10 @@ class CreateConceptoTable extends Migration
     {
         Schema::create('concepto', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre', 50);
-            $table->string('tipo', 50);
+            $table->string('nombre', 100);
+            $table->string('tipo', 100);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

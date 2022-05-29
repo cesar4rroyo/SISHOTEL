@@ -24,6 +24,7 @@ class CreateRolPersonaTable extends Migration
                 ->references('id')
                 ->on('rol');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -47,6 +47,7 @@ class CreateCajaTable extends Migration
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

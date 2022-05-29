@@ -50,6 +50,7 @@ class CreateMovimientoTable extends Migration
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
