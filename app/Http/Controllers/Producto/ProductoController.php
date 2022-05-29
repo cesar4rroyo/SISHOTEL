@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Producto;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Producto\ValidateProducto;
+use App\Http\Requests\ProductRequest;
 use App\Models\Categoria;
 use App\Models\OpcionMenu;
 use App\Models\Producto;
 use App\Models\Unidad;
+use App\Services\InitService;
+use App\Services\ProductoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -15,123 +17,89 @@ use Illuminate\Support\Facades\Redirect;
 class ProductoController extends Controller
 {
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    private $service;
+
+    public function __construct()
+    {   
+        $this->service = new ProductoService();
+    }
+
+
+    public function buscar(Request $request)
+    {
+        try {
+           return $this->service->searchService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
+    }
+
+
     public function index(Request $request)
     {
-        $paginate_number = 10;
-        $search = $request->get('search');
-        if (!empty($search)) {
-            $producto = Producto::where('nombre', 'LIKE', '%' . $search . '%')
-                ->paginate($paginate_number);
-        } else {
-            $producto =
-                Producto::with('categoria', 'unidad')
-                ->orderBy('nombre')
-                ->paginate($paginate_number);
+        try {
+            return $this->service->indexService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
         }
-
-        return view('producto.producto.index', compact('producto'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function create(Request $request)
     {
-        $categorias = Categoria::with('producto')->get();
-        $unidades = Unidad::with('producto')->get();
-        return view('producto.producto.create', compact('categorias', 'unidades'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(ValidateProducto $request)
-    {
-        $producto = Producto::create([
-            'nombre' => $request->nombre,
-            'precioventa' => $request->precioventa,
-            'preciocompra' => $request->preciocompra,
-            'categoria_id' => $request->categoria_id,
-            'unidad_id' => $request->unidad_id
-        ]);
-
-        return redirect()
-            ->route('producto')
-            ->with('success', 'Agregado correctamente');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $producto = Producto::findOrFail($id);
-        return view('producto.producto.show', compact('producto'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $producto = Producto::findOrFail($id);
-        $categorias = Categoria::with('producto')->get();
-        $unidades = Unidad::with('producto')->get();
-        return view('producto.producto.edit', compact('producto', 'categorias', 'unidades'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(ValidateProducto $request, $id)
-    {
-        $producto = Producto::findOrFail($id)
-            ->update([
-                'nombre' => $request->nombre,
-                'precioventa' => $request->precioventa,
-                'preciocompra' => $request->preciocompra,
-                'categoria_id' => $request->categoria_id,
-                'unidad_id' => $request->unidad_id
-            ]);
-
-        return redirect()
-            ->route('producto')
-            ->with('success', 'Actualizado correctamente');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request, $id)
-    {
-        if ($request->ajax()) {
-            Producto::destroy($id);
-            return response()->json(['mensaje' => 'ok']);
-        } else {
-            abort(404);
+        try {
+            return $this->service->createService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
         }
+    }
+
+
+    public function store(ProductRequest $request)
+    {
+        try {
+            return $this->service->storeService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
+    }
+
+
+    public function edit($id, Request $request)
+    {
+        try {
+            return $this->service->editService($id, $request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
+    }
+
+
+    public function update(ProductRequest $request, $id)
+    {
+        try {
+            return $this->service->updateService($request, $id);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        } 
+    }
+
+    public function eliminar($id, $listarLuego)
+    {
+        try {
+            return $this->service->eliminarService($id, $listarLuego);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
+    }
+
+
+    public function destroy()
+    {
+        // try {
+        //     return $this->service->destroyService($producto->id);
+        // } catch (\Throwable $th) {
+        //     return InitService::MessageResponse($th->getMessage(), 'danger');
+        // }
     }
 }

@@ -143,13 +143,17 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Producto', 'middleware' => ['
     Route::put('unidad/{id}', 'UnidadController@update')->name('update_unidad');
     Route::delete('unidad/{id}/destroy', 'UnidadController@destroy')->name('destroy_unidad');
     /* Rutas de PRODUCTO */
-    Route::get('producto/create', 'ProductoController@create')->name('create_producto');
-    Route::get('producto', 'ProductoController@index')->name('producto');
-    Route::get('producto/{id}', 'ProductoController@show')->name('show_producto');
-    Route::post('producto', 'ProductoController@store')->name('store_producto');
-    Route::get('producto/{id}/edit', 'ProductoController@edit')->name('edit_producto');
-    Route::put('producto/{id}', 'ProductoController@update')->name('update_producto');
-    Route::delete('producto/{id}/destroy', 'ProductoController@destroy')->name('destroy_producto');
+    
+    Route::post('producto/buscar', 'ProductoController@buscar')->name('producto.buscar');
+    Route::get('producto/eliminar/{id}/{listarluego}', 'ProductoController@eliminar')->name('producto.eliminar');
+    Route::resource('producto', 'ProductoController', array('except' => array('show')));
+    // Route::get('producto/create', 'ProductoController@create')->name('create_producto');
+    // Route::get('producto', 'ProductoController@index')->name('producto');
+    // Route::get('producto/{id}', 'ProductoController@show')->name('show_producto');
+    // Route::post('producto', 'ProductoController@store')->name('store_producto');
+    // Route::get('producto/{id}/edit', 'ProductoController@edit')->name('edit_producto');
+    // Route::put('producto/{id}', 'ProductoController@update')->name('update_producto');
+    // Route::delete('producto/{id}/destroy', 'ProductoController@destroy')->name('destroy_producto');
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'acceso']], function () {

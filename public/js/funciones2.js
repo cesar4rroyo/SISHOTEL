@@ -185,10 +185,12 @@ function guardar (entidad, idboton, entidad2) {
 	data.done(function(msg) {
 		respuesta = msg;
 	}).fail(function(xhr, textStatus, errorThrown) {
+		respuesta = xhr.responseText;
+		if(JSON.parse(respuesta).message.trim() == 'The given data was invalid.'){
+			mostrarErrores(xhr.responseText, idformulario, entidad, 1);
+		}
 		respuesta = 'ERROR';
 	}).always(function() {
-		
-		// btn.button('reset');
 		if(respuesta.trim() === 'ERROR'){
 		}else {
 			if (respuesta.trim() === 'OK') {
@@ -199,7 +201,8 @@ function guardar (entidad, idboton, entidad2) {
 						entidad = entidad2;
 					}
 					buscarCompaginado('', 'Accion realizada correctamente', entidad, 'OK');
-				}        
+				}  
+				buscarCompaginado('', 'Accion realizada correctamente', entidad, 'OK');
 			} else {
 				mostrarErrores(respuesta, idformulario, entidad);
 			}
@@ -207,9 +210,13 @@ function guardar (entidad, idboton, entidad2) {
 	});
 }
 
-function mostrarErrores (data, idformulario, entidad) {
+function mostrarErrores (data, idformulario, entidad, type = null) {
 	try {
-		var mensajes = JSON.parse(data);
+		if(type != null){
+			var mensajes = JSON.parse(data).errors;
+		}else{
+			var mensajes = JSON.parse(data);
+		}
 		var divError = '#divMensajeError' + entidad;
 		$(divError).html('');
 		var respuesta = true;

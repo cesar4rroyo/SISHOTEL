@@ -3,6 +3,9 @@
 namespace App\Librerias;
 use Validator;
 use App\Menuoption;
+use App\Models\Categoria;
+use App\Models\Unidad;
+use Illuminate\Support\Arr;
 
 /**
 * Libreria de clases
@@ -460,5 +463,20 @@ class Libreria
 			return $retorno;
 		}
 		return $valor;
+	}
+
+	public function cboCategorias()
+    {
+        return ['' => 'Seleccione una categoría'] + Categoria::pluck('nombre', 'id')->all();
+    }
+
+    public function cboUnidades()
+    {
+        return ['' => 'Seleccione una unidad'] + Unidad::pluck('nombre', 'id')->all();
+    }
+
+	public function cboRangeFilas()
+	{
+		return ['10' => '10', '20' => '20', '50' => '50', '100' => '100', '500' => '500', '1000' => '1000'];
 	}
 }
