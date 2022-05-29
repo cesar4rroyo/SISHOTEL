@@ -4,15 +4,9 @@ namespace App\Http\Controllers\Producto;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
-use App\Models\Categoria;
-use App\Models\OpcionMenu;
-use App\Models\Producto;
-use App\Models\Unidad;
 use App\Services\InitService;
 use App\Services\ProductoService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
 
 class ProductoController extends Controller
 {
@@ -35,10 +29,10 @@ class ProductoController extends Controller
     }
 
 
-    public function index(Request $request)
+    public function index()
     {
         try {
-            return $this->service->indexService($request);
+            return $this->service->indexService();
         } catch (\Throwable $th) {
             return InitService::MessageResponse($th->getMessage(), 'danger');
         }
@@ -53,7 +47,6 @@ class ProductoController extends Controller
             return InitService::MessageResponse($th->getMessage(), 'danger');
         }
     }
-
 
     public function store(ProductRequest $request)
     {

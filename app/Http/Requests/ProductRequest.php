@@ -2,12 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Foundation\Http\FormRequest as LaravelFormRequest;
-use Illuminate\Validation\Rule;
 
 class ProductRequest extends LaravelFormRequest
 {

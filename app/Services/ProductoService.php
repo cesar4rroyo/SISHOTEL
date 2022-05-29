@@ -2,15 +2,15 @@
 
 namespace App\Services;
 
+use App\Interfaces\CRUDInterfaceService;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use App\Librerias\Libreria;
 use Illuminate\Support\Facades\DB;
 
-class ProductoService extends InitService
+class ProductoService extends InitService implements CRUDInterfaceService
+
 {
-
-
     public function __construct()
     {
         $this->modelo = new Producto();
