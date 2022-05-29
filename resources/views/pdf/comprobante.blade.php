@@ -53,11 +53,11 @@
         @php
             $nombre_doc = $tipo == 'BOLETA' ? 'BOLETA ELECTRÓNICA' : ($tipo == 'FACTURA' ? 'FACTURA ELECTRONICA' : 'TICKET');
         @endphp
-        <p style=" margin:5px; text-align:center; font-size:14px; font-weight:bold;">HOSTAL ANTONY</p>
-        <p style=" margin:5px; text-align:center; font-size:14px; font-weight:bold;">DE: NERI TORO SILVA</p>
-        <p style=" margin:5px;  text-align:center; font-size:11px;"> RUC 10011534584</p>
-        <p style=" margin:5px;  text-align:center; font-size:11px;"> JR HUANCAVELICA MZ 20- LT 15. LA MOLINA</p>
-        <p style=" margin:5px;  text-align:center; font-size:11px;"> NUEVA CAJAMARCA- RIOJA - SAN MARTÍN</p>
+        <p style=" margin:5px; text-align:center; font-size:14px; font-weight:bold;">HOTEL GARZASOFT</p>
+        {{-- <p style=" margin:5px; text-align:center; font-size:14px; font-weight:bold;">DE: NERI TORO SILVA</p> --}}
+        <p style=" margin:5px;  text-align:center; font-size:11px;"> RUC 20031544584</p>
+        <p style=" margin:5px;  text-align:center; font-size:11px;"> CHICLAYO</p>
+        <p style=" margin:5px;  text-align:center; font-size:11px;"> CHICLAYO - CHICLAYO - LAMBAYEQUE</p>
         <p style=" margin:5px;  text-align:center; font-size:14px; font-weight:bold;">{{ $nombre_doc }}</p>
         <p style=" margin:5px;  text-align:center; font-size:14px; font-weight:bold;">{{ $comprobante['numero'] }}</p>
         <table width='100%' style="  margin-top:10px; border-collapse: collapse;  ">
