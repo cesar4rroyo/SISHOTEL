@@ -40,6 +40,10 @@ class ProductoService extends InitService implements CRUDInterfaceService
                 'numero' => '1',
             ],
             [
+                'valor' => 'Nombre',
+                'numero' => '1',
+            ],
+            [
                 'valor' => 'Precio Venta',
                 'numero' => '1',
             ],
@@ -66,7 +70,7 @@ class ProductoService extends InitService implements CRUDInterfaceService
     {
         //AMBAS OPCIONES LLEGAN DESDE LA VISTA
 
-        $paginas = $request->get('paginas');
+        $paginas = $request->get('page');
         $filas = $request->get('filas');
 
         //AQUI OBTENER LOS DATOS QUE VIENEN DEL BUSCADOR DETERMINADO EN LA VISTA
