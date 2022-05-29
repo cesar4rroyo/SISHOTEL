@@ -3,9 +3,12 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Waavi\Sanitizer\Laravel\SanitizesInput;
 
 class ServiciosRequest extends FormRequest
 {
+    use SanitizesInput;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -37,5 +40,13 @@ class ServiciosRequest extends FormRequest
             'nombre.unique' => 'El nombre ya existe',
             'precio.required' => 'El precio es requerido'
         ];
-    }   
+    } 
+    
+    public function filters()
+    {
+        return [
+            'nombre' => 'trim|escape|capitalize',
+            'precio' => 'trim|escape'
+        ];
+    }
 }

@@ -3,9 +3,11 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Waavi\Sanitizer\Laravel\SanitizesInput;
 
 class ConceptoRequest extends FormRequest
 {
+    use SanitizesInput;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -37,6 +39,14 @@ class ConceptoRequest extends FormRequest
             'nombre.unique' => 'El nombre ya existe',
             'tipo.required' => 'El tipo es requerido',
             'tipo.max' => 'El tipo debe tener menos de 100 caracteres'
+        ];
+    }
+
+
+    public function filters()
+    {
+        return [
+            'nombre' => 'trim|escape|capitalize',
         ];
     }
 }

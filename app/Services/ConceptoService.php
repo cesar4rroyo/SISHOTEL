@@ -142,7 +142,7 @@ class ConceptoService extends InitService implements CRUDInterfaceService
             'listar' => Libreria::getParam($request->input('listar'), 'NO'),
             'boton' => 'Modificar',
             'entidad' => $this->entity,
-            'cboTipo' => [''=>'Todos','Ingreso'=>'Ingreso','Egreso'=>'Egreso'],
+            'cboTipo' => ['Ingreso'=>'Ingreso','Egreso'=>'Egreso'],
         ];
         return view($this->folderview . '.create')->with(compact('formData'));
     }

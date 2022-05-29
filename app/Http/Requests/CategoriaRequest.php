@@ -3,9 +3,11 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Waavi\Sanitizer\Laravel\SanitizesInput;
 
 class CategoriaRequest extends FormRequest
 {
+    use SanitizesInput;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -34,6 +36,13 @@ class CategoriaRequest extends FormRequest
             'nombre.required' => 'El nombre es requerido',
             'nombre.max' => 'El nombre debe tener menos de 50 caracteres',
             'nombre.unique' => 'El nombre ya existe',
+        ];
+    }
+
+    public function filters()
+    {
+        return [
+            'nombre' => 'trim|escape|capitalize',
         ];
     }
 }

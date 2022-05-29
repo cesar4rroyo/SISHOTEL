@@ -3,9 +3,11 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest as LaravelFormRequest;
+use Waavi\Sanitizer\Laravel\SanitizesInput;
 
 class ProductRequest extends LaravelFormRequest
 {
+    use SanitizesInput;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -39,6 +41,14 @@ class ProductRequest extends LaravelFormRequest
             'precioventa.required' => 'El precio de venta es requerido',
             'precioventa.numeric' => 'El precio de venta debe ser un número',
             'categoria_id.required' => 'La categoria es requerida',
+        ];
+    }
+
+    public function filters()
+    {
+        return [
+            'nombre' => 'trim|capitalize|escape',
+            'precioventa' => 'trim|escape',
         ];
     }
 

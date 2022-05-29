@@ -161,6 +161,8 @@ class ProductoService extends InitService implements CRUDInterfaceService
             'listar' => Libreria::getParam($request->input('listar'), 'NO'),
             'boton' => 'Modificar',
             'entidad' => $this->entity,
+            'cboCategorias' => $this->clsLibreria->cboCategorias(),
+            'cboUnidades' => $this->clsLibreria->cboUnidades(),
         ];
         return view($this->folderview . '.create')->with(compact('formData'));
     }
