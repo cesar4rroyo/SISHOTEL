@@ -14,4 +14,15 @@ class Categoria extends Model
     {
         return $this->hasMany(Producto::class);
     }
+
+    public function scopelistar($query, $nombre)
+	{
+		return $query
+            ->where(function ($subquery) use ($nombre) {
+				if (!is_null($nombre) && strlen($nombre) > 0) {
+					$subquery->where('nombre', 'LIKE', '%'.$nombre.'%');
+				}
+			})
+			->orderBy('nombre', 'DESC');
+	}
 }

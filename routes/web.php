@@ -126,36 +126,19 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Habitacion', 'middleware' => 
     Route::delete('habitacion/{id}/destroy', 'HabitacionController@destroy')->name('destroy_habitacion');
 });
 Route::group(['prefix' => 'admin', 'namespace' => 'Producto', 'middleware' => ['auth', 'acceso']], function () {
-    /* Rutas de CATEGORIA */
-    Route::get('categoria/create', 'CategoriaController@create')->name('create_categoria');
-    Route::get('categoria', 'CategoriaController@index')->name('categoria');
-    Route::get('categoria/{id}', 'CategoriaController@show')->name('show_categoria');
-    Route::post('categoria', 'CategoriaController@store')->name('store_categoria');
-    Route::get('categoria/{id}/edit', 'CategoriaController@edit')->name('edit_categoria');
-    Route::put('categoria/{id}', 'CategoriaController@update')->name('update_categoria');
-    Route::delete('categoria/{id}/destroy', 'CategoriaController@destroy')->name('destroy_categoria');
     /* Rutas de UNIDAD */
-    Route::get('unidad/create', 'UnidadController@create')->name('create_unidad');
-    Route::get('unidad', 'UnidadController@index')->name('unidad');
-    Route::get('unidad/{id}', 'UnidadController@show')->name('show_unidad');
-    Route::post('unidad', 'UnidadController@store')->name('store_unidad');
-    Route::get('unidad/{id}/edit', 'UnidadController@edit')->name('edit_unidad');
-    Route::put('unidad/{id}', 'UnidadController@update')->name('update_unidad');
-    Route::delete('unidad/{id}/destroy', 'UnidadController@destroy')->name('destroy_unidad');
+    Route::post('unidad/buscar', 'UnidadController@buscar')->name('unidad.buscar');
+    Route::get('unidad/eliminar/{id}/{listarluego}', 'UnidadController@eliminar')->name('unidad.eliminar');
+    Route::resource('unidad', 'UnidadController', array('except' => array('show')));
     /* Rutas de PRODUCTO */
-    
     Route::post('producto/buscar', 'ProductoController@buscar')->name('producto.buscar');
     Route::get('producto/eliminar/{id}/{listarluego}', 'ProductoController@eliminar')->name('producto.eliminar');
     Route::resource('producto', 'ProductoController', array('except' => array('show')));
-    // Route::get('producto/create', 'ProductoController@create')->name('create_producto');
-    // Route::get('producto', 'ProductoController@index')->name('producto');
-    // Route::get('producto/{id}', 'ProductoController@show')->name('show_producto');
-    // Route::post('producto', 'ProductoController@store')->name('store_producto');
-    // Route::get('producto/{id}/edit', 'ProductoController@edit')->name('edit_producto');
-    // Route::put('producto/{id}', 'ProductoController@update')->name('update_producto');
-    // Route::delete('producto/{id}/destroy', 'ProductoController@destroy')->name('destroy_producto');
+    /* Rutas de CATEGORIA */
+    Route::post('categoria/buscar', 'CategoriaController@buscar')->name('categoria.buscar');
+    Route::get('categoria/eliminar/{id}/{listarluego}', 'CategoriaController@eliminar')->name('categoria.eliminar');
+    Route::resource('categoria', 'CategoriaController', array('except' => array('show')));
 });
-
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'acceso']], function () {
     /* Rutas de CONCEPTO */
     Route::get('concepto/create', 'ConceptoController@create')->name('create_concepto');

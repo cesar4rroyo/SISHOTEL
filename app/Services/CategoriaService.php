@@ -3,32 +3,32 @@
 namespace App\Services;
 
 use App\Interfaces\CRUDInterfaceService;
-use App\Models\Producto;
 use Illuminate\Http\Request;
 use App\Librerias\Libreria;
+use App\Models\Categoria;
 use Illuminate\Support\Facades\DB;
 
-class ProductoService extends InitService implements CRUDInterfaceService
+class CategoriaService extends InitService implements CRUDInterfaceService
 
 {
     public function __construct()
     {
-        $this->modelo = new Producto();
-        $this->entity = 'producto';
-        $this->folderview = 'producto.producto';
-        $this->tituloAdmin = 'Producto';
-        $this->tituloRegistrar = 'Registrar Producto';
-        $this->tituloModificar = 'Modificar Producto';
-        $this->tituloEliminar = 'Eliminar Producto';
+        $this->modelo = new Categoria();
+        $this->entity = 'categoria';
+        $this->folderview = 'producto.categoria';
+        $this->tituloAdmin = 'Categoría';
+        $this->tituloRegistrar = 'Registrar Categoria';
+        $this->tituloModificar = 'Modificar Categoria';
+        $this->tituloEliminar = 'Eliminar Categoria';
         $this->rutas = [
-            'search' => 'producto.buscar',
-            'index' => 'producto.index',
-            'store' => 'producto.store',
-            'delete' => 'producto.eliminar',
-            'create' => 'producto.create',
-            'edit' => 'producto.edit',
-            'update' => 'producto.update',
-            'destroy' => 'producto.destroy',
+            'search' => 'categoria.buscar',
+            'index' => 'categoria.index',
+            'store' => 'categoria.store',
+            'delete' => 'categoria.eliminar',
+            'create' => 'categoria.create',
+            'edit' => 'categoria.edit',
+            'update' => 'categoria.update',
+            'destroy' => 'categoria.destroy',
         ];
         $this->idForm = 'formMantenimiento' . $this->entity;
         //INSTACIA DE LIBRERIA
@@ -42,27 +42,7 @@ class ProductoService extends InitService implements CRUDInterfaceService
             [
                 'valor' => 'Nombre',
                 'numero' => '1',
-            ],
-            [
-                'valor' => 'Precio Venta',
-                'numero' => '1',
-            ],
-            [
-                'valor' => 'Precio Compra', 
-                'numero' => '1',
-            ],
-            [
-                'valor' => 'Categoría',
-                'numero' => '1',
-            ],
-            [
-                'valor' => 'Unidad',
-                'numero' => '1',
-            ],
-            [
-                'valor' => 'Operaciones',
-                'numero' => '1',
-            ],
+            ]
         ];
     }
 
@@ -75,11 +55,9 @@ class ProductoService extends InitService implements CRUDInterfaceService
 
         //AQUI OBTENER LOS DATOS QUE VIENEN DEL BUSCADOR DETERMINADO EN LA VISTA
         $nombre = Libreria::getParam($request->get('nombre'));
-        $categoria = Libreria::getParam($request->get('categoria'));
-        $unidad = Libreria::getParam($request->get('unidad'));
 
         //BUSCAR EN EL MODELOS
-        $resultado = $this->modelo::listar($nombre, $categoria, $unidad);
+        $resultado = $this->modelo::listar($nombre);
         $lista = $resultado->get();
 
         //SETEAR VALORES PARA LA VISTA
@@ -114,8 +92,6 @@ class ProductoService extends InitService implements CRUDInterfaceService
             'titulo_admin' => $this->tituloAdmin,
             'titulo_registrar' => $this->tituloRegistrar,
             'ruta' => $this->rutas,
-            'cboCategorias' => $this->clsLibreria->cboCategorias(),
-            'cboUnidades' => $this->clsLibreria->cboUnidades(),
             'cboRangeFilas' => $this->clsLibreria->cboRangeFilas(),
         ]);
     }
@@ -131,8 +107,6 @@ class ProductoService extends InitService implements CRUDInterfaceService
             'entidad' => $this->entity,
             'listar' => Libreria::getParam($request->input('listar'), 'NO'),
             'boton' => 'Registrar',
-            'cboCategorias' => $this->clsLibreria->cboCategorias(),
-            'cboUnidades' => $this->clsLibreria->cboUnidades(),
         ];
         return view($this->folderview . '.create')->with(compact('formData'));
     }
@@ -160,6 +134,8 @@ class ProductoService extends InitService implements CRUDInterfaceService
             'model' => $this->modelo->find($id),
             'listar' => Libreria::getParam($request->input('listar'), 'NO'),
             'boton' => 'Modificar',
+            'cboCategorias' => $this->clsLibreria->cboCategorias(),
+            'cboUnidades' => $this->clsLibreria->cboUnidades(),
             'entidad' => $this->entity,
         ];
         return view($this->folderview . '.create')->with(compact('formData'));
