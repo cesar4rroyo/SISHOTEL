@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-header font-weight-bold">{{ $titulo_admin }}</div>
                 <div class="card-body table-responsive px-3">
-                    @include('producto.categoria.admin', [
+                    @include('producto.unidad.admin', [
                         'action' => $ruta['search'],
                         'method' => 'POST',
                         'idform' => 'formBusqueda' . $entidad,
