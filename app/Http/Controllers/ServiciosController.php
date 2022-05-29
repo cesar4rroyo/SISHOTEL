@@ -2,111 +2,95 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ValidateServicios;
-use App\Models\Servicios;
+use App\Http\Requests\ServiciosRequest;
+use App\Services\InitService;
+use App\Services\ServiciosService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ServiciosController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    private $service;
 
-    public function index(Request $request)
+    public function __construct()
+    {   
+        $this->service = new ServiciosService();
+    }
+
+
+    public function buscar(Request $request)
     {
-        $paginate_number = 10;
-        $search = $request->get('search');
-        if (!empty($search)) {
-            $servicios = Servicios::where('nombre', 'LIKE', '%' . $search . '%')
-                ->paginate($paginate_number);
-        } else {
-            $servicios = Servicios::orderBy('id')
-                ->paginate($paginate_number);
+        try {
+           return $this->service->searchService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
         }
-        return view('general.servicios.index', compact('servicios'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function index()
     {
-        return view('general.servicios.create');
+        try {
+            return $this->service->indexService();
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(ValidateServicios $request)
+
+    public function create(Request $request)
     {
-        Servicios::create($request->all());
-        return redirect()
-            ->route('servicios')
-            ->with('success', 'Agregado correctamente');
+        try {
+            return $this->service->createService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function store(ServiciosRequest $request)
     {
-        $servicio = Servicios::findOrFail($id);
-        return view('general.servicios.show', compact('servicio'));
+        try {
+            return $this->service->storeService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+
+    public function edit($id, Request $request)
     {
-        $servicio = Servicios::findOrFail($id);
-        return view('general.servicios.edit', compact('servicio'));
+        try {
+            return $this->service->editService($id, $request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(ValidateServicios $request, $id)
+
+    public function update(ServiciosRequest $request, $id)
     {
-        Servicios::findOrFail($id)
-            ->update($request->all());
-        return redirect()
-            ->route('servicios')
-            ->with('success', 'Menú actualizado con exito');
+        try {
+            return $this->service->updateService($request, $id);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        } 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request, $id)
+    public function eliminar($id, $listarLuego)
     {
-        if ($request->ajax()) {
-            Servicios::destroy($id);
+        try {
+            return $this->service->eliminarService($id, $listarLuego);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
+    }
 
-            return response()->json(['mensaje' => 'ok']);
-        } else {
-            abort(404);
+
+    public function destroy($id)
+    {
+        try {
+            return $this->service->destroyService($id);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
         }
     }
 }

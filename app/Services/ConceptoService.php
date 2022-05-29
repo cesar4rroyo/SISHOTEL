@@ -5,30 +5,30 @@ namespace App\Services;
 use App\Interfaces\CRUDInterfaceService;
 use Illuminate\Http\Request;
 use App\Librerias\Libreria;
-use App\Models\Unidad;
+use App\Models\Concepto;
 use Illuminate\Support\Facades\DB;
 
-class UnidadService extends InitService implements CRUDInterfaceService
+class ConceptoService extends InitService implements CRUDInterfaceService
 
 {
     public function __construct()
     {
-        $this->modelo = new Unidad();
-        $this->entity = 'unidad';
-        $this->folderview = 'producto.unidad';
-        $this->tituloAdmin = 'Unidad';
-        $this->tituloRegistrar = 'Registrar Unidad';
-        $this->tituloModificar = 'Modificar Unidad';
-        $this->tituloEliminar = 'Eliminar Unidad';
+        $this->modelo = new Concepto();
+        $this->entity = 'concepto';
+        $this->folderview = 'general.concepto';
+        $this->tituloAdmin = 'Concepto';
+        $this->tituloRegistrar = 'Registrar Concepto';
+        $this->tituloModificar = 'Modificar Concepto';
+        $this->tituloEliminar = 'Eliminar Concepto';
         $this->rutas = [
-            'search' => 'unidad.buscar',
-            'index' => 'unidad.index',
-            'store' => 'unidad.store',
-            'delete' => 'unidad.eliminar',
-            'create' => 'unidad.create',
-            'edit' => 'unidad.edit',
-            'update' => 'unidad.update',
-            'destroy' => 'unidad.destroy',
+            'search' => 'concepto.buscar',
+            'index' => 'concepto.index',
+            'store' => 'concepto.store',
+            'delete' => 'concepto.eliminar',
+            'create' => 'concepto.create',
+            'edit' => 'concepto.edit',
+            'update' => 'concepto.update',
+            'destroy' => 'concepto.destroy',
         ];
         $this->idForm = 'formMantenimiento' . $this->entity;
         //INSTACIA DE LIBRERIA
@@ -42,7 +42,11 @@ class UnidadService extends InitService implements CRUDInterfaceService
             [
                 'valor' => 'Nombre',
                 'numero' => '1',
-            ]
+            ],
+            [
+                'valor' => 'Tipo',
+                'numero' => '1',
+            ],
         ];
     }
 
@@ -55,9 +59,10 @@ class UnidadService extends InitService implements CRUDInterfaceService
 
         //AQUI OBTENER LOS DATOS QUE VIENEN DEL BUSCADOR DETERMINADO EN LA VISTA
         $nombre = Libreria::getParam($request->get('nombre'));
+        $tipo = Libreria::getParam($request->get('tipo'));
 
         //BUSCAR EN EL MODELOS
-        $resultado = $this->modelo::listar($nombre);
+        $resultado = $this->modelo::listar($nombre, $tipo);
         $lista = $resultado->get();
 
         //SETEAR VALORES PARA LA VISTA
@@ -93,6 +98,7 @@ class UnidadService extends InitService implements CRUDInterfaceService
             'titulo_registrar' => $this->tituloRegistrar,
             'ruta' => $this->rutas,
             'cboRangeFilas' => $this->clsLibreria->cboRangeFilas(),
+            'cboTipo' => [''=>'Todos','Ingreso'=>'Ingreso','Egreso'=>'Egreso'],
         ]);
     }
 
@@ -107,6 +113,7 @@ class UnidadService extends InitService implements CRUDInterfaceService
             'entidad' => $this->entity,
             'listar' => Libreria::getParam($request->input('listar'), 'NO'),
             'boton' => 'Registrar',
+            'cboTipo' => [''=>'Seleccione una opcion','Ingreso'=>'Ingreso','Egreso'=>'Egreso'],
         ];
         return view($this->folderview . '.create')->with(compact('formData'));
     }
@@ -135,6 +142,7 @@ class UnidadService extends InitService implements CRUDInterfaceService
             'listar' => Libreria::getParam($request->input('listar'), 'NO'),
             'boton' => 'Modificar',
             'entidad' => $this->entity,
+            'cboTipo' => [''=>'Todos','Ingreso'=>'Ingreso','Egreso'=>'Egreso'],
         ];
         return view($this->folderview . '.create')->with(compact('formData'));
     }

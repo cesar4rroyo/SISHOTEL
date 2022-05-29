@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ValidateServicios extends FormRequest
+class ServiciosRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,18 @@ class ValidateServicios extends FormRequest
     public function rules()
     {
         return [
-            'nombre' => 'required | max:45 | unique:servicios,nombre,' . $this->route('id'),
+            'nombre' => 'required | max:100 | unique:servicios,nombre,' . $this->id . ',id',
             'precio' => 'required'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'nombre.required' => 'El nombre es requerido',
+            'nombre.max' => 'El nombre debe tener menos de 100 caracteres',
+            'nombre.unique' => 'El nombre ya existe',
+            'precio.required' => 'El precio es requerido'
+        ];
+    }   
 }

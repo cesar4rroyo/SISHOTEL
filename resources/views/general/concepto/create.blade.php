@@ -1,36 +1,36 @@
-@extends("theme.$theme.layout")
-
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">Crear Nuevo Concepto</div>
-                <div class="card-body">
-                    <a href="{{ route('concepto') }}" title="Back"><button class="btn btn-outline-info btn-sm"><i
-                                class="fa fa-arrow-left" aria-hidden="true"></i> Regresar</button></a>
-                    <br />
-                    <br />
-
-                    @if ($errors->any())
-                    <ul class="alert alert-danger">
-                        @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                    @endif
-
-                    <form method="POST" action="{{ route('store_concepto') }}" accept-charset="UTF-8"
-                        class="form-horizontal" enctype="multipart/form-data">
-                        {{ csrf_field() }}
-
-                        @include ('general.concepto.form', ['formMode' => 'create'])
-
-                    </form>
-
-                </div>
-            </div>
-        </div>
-    </div>
+@include('utils.errorDiv', ['entidad' => $formData['entidad']])
+@include('utils.formCrud', [
+    'entidad' => $formData['entidad'],
+    'formData' => $formData,
+    'method' => $formData['method'],
+    'route' => $formData['route'],
+    'model' => isset($formData['model']) ? $formData['model'] : null,
+])
+<div class="form-group">
+    <label for="nombre">Nombre</label>
+    <input class=" form-control" type="text" name="nombre" id="nombre" placeholder="Ingrese nombre"
+        value="{{ isset($formData['model']) ? $formData['model']->nombre : null }}" required>
 </div>
-@endsection
+<div class="form-group">
+    <label for="tipo">Tipo</label>
+    <select name="tipo" id="tipo" class=" form-control" required>
+        @foreach ($formData['cboTipo'] as $key => $value)
+            @if (isset($formData['model']) && $formData['model']->tipo == $key)
+                <option value="{{ $key }}" selected>{{ $value }}</option>
+            @else
+                <option value="{{ $key }}">{{ $value }}</option>
+            @endif
+        @endforeach
+    </select>
+</div>
+<div class="form-group">
+    @include('utils.modalBtns', ['entidad' => $formData['entidad'], 'boton' => $formData['boton']])
+</div>
+
+</form>
+<script type="text/javascript">
+    $(document).ready(function() {
+        configurarAnchoModal('600');
+        init(IDFORMMANTENIMIENTO + '{!! $formData['entidad'] !!}', 'M', '{!! $formData['entidad'] !!}');
+    });
+</script>

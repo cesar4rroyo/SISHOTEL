@@ -141,21 +141,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Producto', 'middleware' => ['
 });
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'acceso']], function () {
     /* Rutas de CONCEPTO */
-    Route::get('concepto/create', 'ConceptoController@create')->name('create_concepto');
-    Route::get('concepto', 'ConceptoController@index')->name('concepto');
-    Route::get('concepto/{id}', 'ConceptoController@show')->name('show_concepto');
-    Route::post('concepto', 'ConceptoController@store')->name('store_concepto');
-    Route::get('concepto/{id}/edit', 'ConceptoController@edit')->name('edit_concepto');
-    Route::put('concepto/{id}', 'ConceptoController@update')->name('update_concepto');
-    Route::delete('concepto/{id}/destroy', 'ConceptoController@destroy')->name('destroy_concepto');
+    Route::post('concepto/buscar', 'ConceptoController@buscar')->name('concepto.buscar');
+    Route::get('concepto/eliminar/{id}/{listarluego}', 'ConceptoController@eliminar')->name('concepto.eliminar');
+    Route::resource('concepto', 'ConceptoController', array('except' => array('show')));
     /* Rutas de SERVICIOS */
-    Route::get('servicios/create', 'ServiciosController@create')->name('create_servicios');
-    Route::get('servicios', 'ServiciosController@index')->name('servicios');
-    Route::get('servicios/{id}', 'ServiciosController@show')->name('show_servicios');
-    Route::post('servicios', 'ServiciosController@store')->name('store_servicios');
-    Route::get('servicios/{id}/edit', 'ServiciosController@edit')->name('edit_servicios');
-    Route::put('servicios/{id}', 'ServiciosController@update')->name('update_servicios');
-    Route::delete('servicios/{id}/destroy', 'ServiciosController@destroy')->name('destroy_servicios');
+    Route::post('servicios/buscar', 'ServiciosController@buscar')->name('servicios.buscar');
+    Route::get('servicios/eliminar/{id}/{listarluego}', 'ServiciosController@eliminar')->name('servicios.eliminar');
+    Route::resource('servicios', 'ServiciosController', array('except' => array('show')));
 });
 Route::group(['prefix' => 'admin', 'namespace' => 'Reservas', 'middleware' => ['auth', 'acceso']], function () {
     /* Rutas de RESERVAS */

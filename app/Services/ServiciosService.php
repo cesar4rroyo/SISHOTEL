@@ -5,30 +5,30 @@ namespace App\Services;
 use App\Interfaces\CRUDInterfaceService;
 use Illuminate\Http\Request;
 use App\Librerias\Libreria;
-use App\Models\Unidad;
+use App\Models\Servicios;
 use Illuminate\Support\Facades\DB;
 
-class UnidadService extends InitService implements CRUDInterfaceService
+class ServiciosService extends InitService implements CRUDInterfaceService
 
 {
     public function __construct()
     {
-        $this->modelo = new Unidad();
-        $this->entity = 'unidad';
-        $this->folderview = 'producto.unidad';
-        $this->tituloAdmin = 'Unidad';
-        $this->tituloRegistrar = 'Registrar Unidad';
-        $this->tituloModificar = 'Modificar Unidad';
-        $this->tituloEliminar = 'Eliminar Unidad';
+        $this->modelo = new Servicios();
+        $this->entity = 'servicios';
+        $this->folderview = 'general.servicios';
+        $this->tituloAdmin = 'Servicio';
+        $this->tituloRegistrar = 'Registrar Servicio';
+        $this->tituloModificar = 'Modificar Servicio';
+        $this->tituloEliminar = 'Eliminar Servicio';
         $this->rutas = [
-            'search' => 'unidad.buscar',
-            'index' => 'unidad.index',
-            'store' => 'unidad.store',
-            'delete' => 'unidad.eliminar',
-            'create' => 'unidad.create',
-            'edit' => 'unidad.edit',
-            'update' => 'unidad.update',
-            'destroy' => 'unidad.destroy',
+            'search' => 'servicios.buscar',
+            'index' => 'servicios.index',
+            'store' => 'servicios.store',
+            'delete' => 'servicios.eliminar',
+            'create' => 'servicios.create',
+            'edit' => 'servicios.edit',
+            'update' => 'servicios.update',
+            'destroy' => 'servicios.destroy',
         ];
         $this->idForm = 'formMantenimiento' . $this->entity;
         //INSTACIA DE LIBRERIA
@@ -42,7 +42,11 @@ class UnidadService extends InitService implements CRUDInterfaceService
             [
                 'valor' => 'Nombre',
                 'numero' => '1',
-            ]
+            ],
+            [
+                'valor' => 'Precio',
+                'numero' => '1',
+            ],
         ];
     }
 
