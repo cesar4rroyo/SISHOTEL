@@ -186,7 +186,7 @@ class ProductoService extends InitService
             $listar = $listarLuego;
         }
         $formData = [
-            'route' => array($this->rutas['destroy'], ['id' => $id]),
+            'route' => array($this->rutas['destroy'], ['model' => $this->modelo->find($id)]),
             'method' => 'DELETE',
             'class' => 'form-horizontal',
             'id' => $this->idForm,
@@ -206,7 +206,10 @@ class ProductoService extends InitService
         if(!$existe){
             return $existe;
         }
-
+        $error = DB::transaction(function () use ($id) {
+            $this->modelo->find($id)->delete();
+        });
+        return is_null($error) ? "OK" : $error;
     }
 
 }

@@ -94,12 +94,12 @@ class ProductoController extends Controller
     }
 
 
-    public function destroy()
+    public function destroy($id)
     {
-        // try {
-        //     return $this->service->destroyService($producto->id);
-        // } catch (\Throwable $th) {
-        //     return InitService::MessageResponse($th->getMessage(), 'danger');
-        // }
+        try {
+            return $this->service->destroyService($id);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 }
