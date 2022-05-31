@@ -1,37 +1,36 @@
-@extends("theme.$theme.layout")
-
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">Crear nuevo Tipo de Habitación</div>
-                <div class="card-body">
-                    <a href="{{ route('tipohabitacion') }}" title="Regresar"><button
-                            class="btn btn-outline-info btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i>
-                            Regresar</button></a>
-                    <br />
-                    <br />
-
-                    @if ($errors->any())
-                    <ul class="alert alert-danger">
-                        @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                    @endif
-
-                    <form method="POST" action="{{ route('store_tipohabitacion') }}" accept-charset="UTF-8"
-                        class="form-horizontal" enctype="multipart/form-data">
-                        {{ csrf_field() }}
-
-                        @include ('habitacion.tipohabitacion.form', ['formMode' => 'create'])
-
-                    </form>
-
-                </div>
-            </div>
-        </div>
+@include('utils.errorDiv', ['entidad' => $formData['entidad']])
+@include('utils.formCrud', [
+    'entidad' => $formData['entidad'],
+    'formData' => $formData,
+    'method' => $formData['method'],
+    'route' => $formData['route'],
+    'model' => isset($formData['model']) ? $formData['model'] : null,
+])
+<div class="form-group">
+    <label for="nombre">Nombre</label>
+    <input class=" form-control" type="text" name="nombre" id="nombre" placeholder="Ingrese nombre"
+        value="{{ isset($formData['model']) ? $formData['model']->nombre : null }}" required>
+</div>
+<div class="row">
+    <div class="col-sm form-group">
+        <label for="capacidad">Capacidad</label>
+        <input class=" form-control" type="number" name="capacidad" id="capacidad" placeholder="Ingrese capacidad"
+            value="{{ isset($formData['model']) ? $formData['model']->capacidad : null }}">
+    </div>
+    <div class="col-sm form-group">
+        <label for="precio">Precio</label>
+        <input class=" form-control" type="number" step="0.01" name="precio" id="precio" placeholder="Ingrese precio"
+            value="{{ isset($formData['model']) ? $formData['model']->precio : null }}" required>
     </div>
 </div>
-@endsection
+<div class="form-group">
+    @include('utils.modalBtns', ['entidad' => $formData['entidad'], 'boton' => $formData['boton']])
+</div>
+
+</form>
+<script type="text/javascript">
+    $(document).ready(function() {
+        configurarAnchoModal('600');
+        init(IDFORMMANTENIMIENTO + '{!! $formData['entidad'] !!}', 'M', '{!! $formData['entidad'] !!}');
+    });
+</script>

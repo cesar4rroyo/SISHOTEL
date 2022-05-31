@@ -101,29 +101,17 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Habitacion', 'middleware' => ['auth', 'acceso']], function () {
     /* Rutas de TIPOHABITACION */
-    Route::get("tipohabitacion/create", 'TipoHabitacionController@create')->name('create_tipohabitacion');
-    Route::get("tipohabitacion", 'TipoHabitacionController@index')->name('tipohabitacion');
-    Route::get("tipohabitacion/{id}", 'TipoHabitacionController@show')->name('show_tipohabitacion');
-    Route::post("tipohabitacion", 'TipoHabitacionController@store')->name('store_tipohabitacion');
-    Route::get("tipohabitacion/{id}/edit", 'TipoHabitacionController@edit')->name('edit_tipohabitacion');
-    Route::put("tipohabitacion/{id}", 'TipoHabitacionController@update')->name('update_tipohabitacion');
-    Route::delete("tipohabitacion/{id}/destroy", 'TipoHabitacionController@destroy')->name('destroy_tipohabitacion');
+    Route::post('tipohabitacion/buscar', 'TipoHabitacionController@buscar')->name('tipohabitacion.buscar');
+    Route::get('tipohabitacion/eliminar/{id}/{listarluego}', 'TipoHabitacionController@eliminar')->name('tipohabitacion.eliminar');
+    Route::resource('tipohabitacion', 'TipoHabitacionController', array('except' => array('show')));
     /* Rutas de PISO */
-    Route::get('piso/create', 'PisoController@create')->name('create_piso');
-    Route::get('piso', 'PisoController@index')->name('piso');
-    Route::get('piso/{id}', 'PisoController@show')->name('show_piso');
-    Route::post('piso', 'PisoController@store')->name('store_piso');
-    Route::get('piso/{id}/edit', 'PisoController@edit')->name('edit_piso');
-    Route::put('piso/{id}', 'PisoController@update')->name('update_piso');
-    Route::delete('piso/{id}/destroy', 'PisoController@destroy')->name('destroy_piso');
+    Route::post('piso/buscar', 'PisoController@buscar')->name('piso.buscar');
+    Route::get('piso/eliminar/{id}/{listarluego}', 'PisoController@eliminar')->name('piso.eliminar');
+    Route::resource('piso', 'PisoController', array('except' => array('show')));
     /* Rutas de HABITACION */
-    Route::get('habitacion/create', 'HabitacionController@create')->name('create_habitacion');
-    Route::get('habitacion', 'HabitacionController@index')->name('habitacion');
-    Route::get('habitacion/{id}', 'HabitacionController@show')->name('show_habitacion');
-    Route::post('habitacion', 'HabitacionController@store')->name('store_habitacion');
-    Route::get('habitacion/{id}/edit', 'HabitacionController@edit')->name('edit_habitacion');
-    Route::put('habitacion/{id}', 'HabitacionController@update')->name('update_habitacion');
-    Route::delete('habitacion/{id}/destroy', 'HabitacionController@destroy')->name('destroy_habitacion');
+    Route::post('habitacion/buscar', 'HabitacionController@buscar')->name('habitacion.buscar');
+    Route::get('habitacion/eliminar/{id}/{listarluego}', 'HabitacionController@eliminar')->name('habitacion.eliminar');
+    Route::resource('habitacion', 'HabitacionController', array('except' => array('show')));
 });
 Route::group(['prefix' => 'admin', 'namespace' => 'Producto', 'middleware' => ['auth', 'acceso']], function () {
     /* Rutas de UNIDAD */

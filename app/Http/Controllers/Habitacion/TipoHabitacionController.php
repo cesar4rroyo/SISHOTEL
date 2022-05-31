@@ -2,110 +2,96 @@
 
 namespace App\Http\Controllers\Habitacion;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Habitacion\ValidateTipoHabitacion;
-use App\Models\TipoHabitacion;
-use Illuminate\Support\Facades\DB;
+use App\Http\Requests\TipoHabitacionRequest;
+use App\Services\InitService;
+use App\Services\TipoHabitacionService;
+use Illuminate\Http\Request;
 
 class TipoHabitacionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
+    private $service;
+
+    public function __construct()
+    {   
+        $this->service = new TipoHabitacionService();
+    }
+
+
+    public function buscar(Request $request)
     {
-        $paginate_number = 10;
-        $search = $request->get('search');
-        if (!empty($search)) {
-            $tipohabitacion = TipoHabitacion::where('nombre', 'LIKE', '%' . $search . '%')
-                ->paginate($paginate_number);
-        } else {
-            $tipohabitacion = TipoHabitacion::orderBy('id')
-                ->paginate($paginate_number);
+        try {
+           return $this->service->searchService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
         }
-        return view('habitacion.tipohabitacion.index', compact('tipohabitacion'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function index()
     {
-        return view('habitacion.tipohabitacion.create');
+        try {
+            return $this->service->indexService();
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(ValidateTipoHabitacion $request)
+
+    public function create(Request $request)
     {
-        TipoHabitacion::create($request->all());
-        return redirect()
-            ->route('tipohabitacion')
-            ->with('success', 'Agregado correctamente');
+        try {
+            return $this->service->createService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function store(TipoHabitacionRequest $request)
     {
-        $tipohabitacion = Tipohabitacion::findOrFail($id);
-        return view('habitacion.tipohabitacion.show', compact('tipohabitacion'));
+        try {
+            return $this->service->storeService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+
+    public function edit($id, Request $request)
     {
-        $tipohabitacion = Tipohabitacion::findOrFail($id);
-        return view('habitacion.tipohabitacion.edit', compact('tipohabitacion'));
+        try {
+            return $this->service->editService($id, $request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(ValidateTipoHabitacion $request, $id)
+
+    public function update(TipoHabitacionRequest $request, $id)
     {
-        Tipohabitacion::findOrFail($id)
-            ->update($request->all());
-        return redirect()
-            ->route('tipohabitacion')
-            ->with('success', 'Menú actualizado con exito');
+        try {
+            return $this->service->updateService($request, $id);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        } 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request, $id)
+    public function eliminar($id, $listarLuego)
     {
-        if ($request->ajax()) {
-            Tipohabitacion::destroy($id);
-            return response()->json(['mensaje' => 'ok']);
-        } else {
-            abort(404);
+        try {
+            return $this->service->eliminarService($id, $listarLuego);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
+    }
+
+
+    public function destroy($id)
+    {
+        try {
+            return $this->service->destroyService($id);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
         }
     }
 }

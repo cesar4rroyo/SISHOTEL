@@ -479,4 +479,10 @@ class Libreria
 	{
 		return ['10' => '10', '20' => '20', '50' => '50', '100' => '100', '500' => '500', '1000' => '1000'];
 	}
+
+	public function generateCboGeneral($model, $colum, $id, $default){
+		$cbo = [''=> $default] + $model::get()->pluck($colum, $id)->all();
+		return $cbo;
+	}
+
 }

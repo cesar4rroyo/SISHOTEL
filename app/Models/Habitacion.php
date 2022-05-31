@@ -31,4 +31,27 @@ class Habitacion extends Model
     {
         return $this->hasMany(Reserva::class, 'habitacion_id');
     }
+
+    public function scopelistar($query, $numero, $piso, $tipohabitacion)
+	{
+		return $query
+            ->where(function ($subquery) use ($numero) {
+				if (!is_null($numero) && strlen($numero) > 0) {
+					$subquery->where('numero', 'LIKE', '%'.$numero.'%');
+				}
+			})
+            ->where(function ($subquery) use ($piso) {
+                if (!is_null($piso) && strlen($piso) > 0) {
+                    $subquery->where('piso_id', $piso);
+                }
+            })
+            ->where(function ($subquery) use ($tipohabitacion) {
+                if (!is_null($tipohabitacion) && strlen($tipohabitacion) > 0) {
+                    $subquery->where('tipohabitacion_id', $tipohabitacion);
+                }
+            })
+			->orderBy('numero', 'DESC');
+	}
+
+
 }

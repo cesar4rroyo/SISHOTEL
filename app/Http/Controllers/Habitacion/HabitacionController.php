@@ -4,98 +4,94 @@ namespace App\Http\Controllers\Habitacion;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Habitacion\ValidateHabitacion;
-use App\Models\Habitacion;
-use App\Models\Piso;
-use App\Models\TipoHabitacion;
-use Illuminate\Support\Facades\DB;
+use App\Http\Requests\HabitacionRequest;
+use App\Services\HabitacionService;
+use App\Services\InitService;
 
 class HabitacionController extends Controller
 {
+    private $service;
 
-    public function index(Request $request)
+    public function __construct()
+    {   
+        $this->service = new HabitacionService();
+    }
+
+
+    public function buscar(Request $request)
     {
-        $paginate_number = 10;
-        $search = $request->get('search');
-        if (!empty($search)) {
-            $habitacion = Habitacion::where('numero', 'LIKE', '%' . $search . '%')
-                ->orWhere('situacion', 'LIKE', '%' . $search . '%')
-                ->orderBy('numero')
-                ->paginate($paginate_number);
-        } else {
-            $habitacion =
-                Habitacion::with('piso', 'tipohabitacion')
-                ->orderBy('numero')
-                ->paginate($paginate_number);
+        try {
+           return $this->service->searchService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
         }
-
-        return view('habitacion.habitacion.index', compact('habitacion'));
     }
 
 
-    public function create()
+    public function index()
     {
-        $pisos = Piso::with('habitacion')->get();
-        $tipohabitaciones = TipoHabitacion::with('habitacion')->get();
-        return view('habitacion.habitacion.create', compact('pisos', 'tipohabitaciones'));
+        try {
+            return $this->service->indexService();
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
 
-    public function store(ValidateHabitacion $request)
+    public function create(Request $request)
     {
-        $habitacion = Habitacion::create([
-            'numero' => $request->numero,
-            'situacion' => $request->situacion,
-            'piso_id' => $request->piso_id,
-            'tipohabitacion_id' => $request->tipohabitacion_id
-        ]);
+        try {
+            return $this->service->createService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
+    }
 
-        return redirect()
-            ->route('habitacion')
-            ->with('success', 'Agregado correctamente');
+    public function store(HabitacionRequest $request)
+    {
+        try {
+            return $this->service->storeService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
 
-    public function show($id)
+    public function edit($id, Request $request)
     {
-        $habitacion = Habitacion::findOrFail($id);
-        return view('habitacion.habitacion.show', compact('habitacion'));
+        try {
+            return $this->service->editService($id, $request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
 
-    public function edit($id)
+    public function update(HabitacionRequest $request, $id)
     {
-        $habitacion = Habitacion::findOrFail($id);
-        $pisos = Piso::with('habitacion')->get();
-        $tipohabitaciones = TipoHabitacion::with('habitacion')->get();
-        return view('habitacion.habitacion.edit', compact('habitacion', 'pisos', 'tipohabitaciones'));
+        try {
+            return $this->service->updateService($request, $id);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        } 
+    }
+
+    public function eliminar($id, $listarLuego)
+    {
+        try {
+            return $this->service->eliminarService($id, $listarLuego);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
 
-    public function update(ValidateHabitacion $request, $id)
+    public function destroy($id)
     {
-        $habitacion = Habitacion::findOrFail($id)
-            ->update([
-                'numero' => $request->numero,
-                'situacion' => $request->situacion,
-                'piso_id' => $request->piso_id,
-                'tipohabitacion_id' => $request->tipohabitacion_id
-            ]);
-
-        return redirect()
-            ->route('habitacion')
-            ->with('success', 'Actualizado correctamente');
-    }
-
-
-    public function destroy(Request $request, $id)
-    {
-
-        if ($request->ajax()) {
-            Habitacion::destroy($id);
-            return response()->json(['mensaje' => 'ok']);
-        } else {
-            abort(404);
+        try {
+            return $this->service->destroyService($id);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
         }
     }
 }
