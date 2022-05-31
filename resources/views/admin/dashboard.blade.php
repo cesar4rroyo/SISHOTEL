@@ -15,7 +15,11 @@
                                 <div class="icon">
                                     <i class="fas fa-user-plus"></i>
                                 </div>
-                                <a href="{{route('persona')}}" class="small-box-footer">
+                                <a 
+                                    href="#"
+                                    class="small-box-footer"
+                                    onclick="cargarRuta('{{URL::to('admin/persona')}}', 'container');"
+                                >
                                     Mas información <i class="fas fa-arrow-circle-right"></i>
                                 </a>
                             </div>
@@ -30,7 +34,11 @@
                                 <div class="icon">
                                     <i class="fas fa-gift"></i>
                                 </div>
-                                <a href="{{route('producto')}}" class="small-box-footer">
+                                <a 
+                                    href="#"
+                                    class="small-box-footer"
+                                    onclick="cargarRuta('{{URL::to('admin/producto')}}', 'container');"
+                                >
                                     Más información<i class="fas fa-arrow-circle-right"></i>
                                 </a>
                             </div>
@@ -45,7 +53,11 @@
                                 <div class="icon">
                                     <i class="fas fa-hotel"></i>
                                 </div>
-                                <a href="{{route('habitacion')}}" class="small-box-footer">
+                                <a 
+                                    href="#"
+                                    class="small-box-footer"
+                                    onclick="cargarRuta('{{URL::to('admin/habitacion')}}', 'container');"
+                                >
                                     Más información<i class="fas fa-arrow-circle-right"></i>
                                 </a>
                             </div>
@@ -60,7 +72,11 @@
                                 <div class="icon">
                                     <i class="fas fa-server"></i>
                                 </div>
-                                <a href="{{route('servicios')}}" class="small-box-footer">
+                                <a 
+                                    href="#"
+                                    class="small-box-footer"
+                                    onclick="cargarRuta('{{URL::to('admin/servicios')}}', 'container');"
+                                >
                                     Más información<i class="fas fa-arrow-circle-right"></i>
                                 </a>
                             </div>
