@@ -75,4 +75,20 @@ class Usuario extends Authenticatable
         })->get();
         return $personas;
     }
+
+    public function scopelistar($query, $nombre, $tipousuario)
+	{
+		return $query
+            ->where(function ($subquery) use ($nombre) {
+				if (!is_null($nombre) && strlen($nombre) > 0) {
+					$subquery->where('nombre', 'LIKE', '%'.$nombre.'%');
+				}
+			})
+            ->where(function ($subquery) use ($tipousuario) {
+                if (!is_null($tipousuario) && strlen($tipousuario) > 0) {
+                    $subquery->where('tipousuario_id', $tipousuario);
+                }
+            })
+			->orderBy('nombre', 'DESC');
+	}
 }

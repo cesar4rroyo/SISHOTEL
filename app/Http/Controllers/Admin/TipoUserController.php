@@ -4,74 +4,96 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\ValidateTipoUsuario;
-use App\Models\TipoUsuario;
-use Illuminate\Support\Facades\DB;
+use App\Http\Requests\TipoUsuarioRequest;
+use App\Services\InitService;
+use App\Services\TipoUsuarioService;
 
 class TipoUserController extends Controller
 {
+    private $service;
 
-    public function index(Request $request)
-    {
-        $paginate_number = 10;
-        $search = $request->get('search');
-        if (!empty($search)) {
-            $tipousuario = TipoUsuario::where('nombre', 'LIKE', '%' . $search . '%')
-                ->paginate($paginate_number);
-        } else {
-            $tipousuario = TipoUsuario::orderBy('id')
-                ->paginate($paginate_number);
-        }
-        return view('admin.tipousuario.index', compact('tipousuario'));
+    public function __construct()
+    {   
+        $this->service = new TipoUsuarioService();
     }
 
 
-    public function create()
+    public function buscar(Request $request)
     {
-        return view('admin.tipousuario.create');
-    }
-
-
-    public function store(ValidateTipoUsuario $request)
-    {
-        TipoUsuario::create($request->all());
-        return redirect()
-            ->route('tipousuario')
-            ->with('success', 'Agregado correctamente');
-    }
-
-
-    public function show($id)
-    {
-        $tipousuario = TipoUsuario::findOrFail($id);
-        return view('admin.tipousuario.show', compact('tipousuario'));
-    }
-
-
-    public function edit($id)
-    {
-        $tipousuario = TipoUsuario::findOrFail($id);
-        return view('admin.tipousuario.edit', compact('tipousuario'));
-    }
-
-
-    public function update(ValidateTipoUsuario $request, $id)
-    {
-        TipoUsuario::findOrFail($id)
-            ->update($request->all());
-        return redirect()
-            ->route('tipousuario')
-            ->with('success', 'Menú actualizado con exito');
-    }
-
-
-    public function destroy(Request $request, $id)
-    {
-        if ($request->ajax()) {
-            TipoUsuario::destroy($id);
-            return response()->json(['mensaje' => 'ok']);
-        } else {
-            abort(404);
+        try {
+           return $this->service->searchService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
         }
     }
+
+
+    public function index()
+    {
+        try {
+            return $this->service->indexService();
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
+    }
+
+
+    public function create(Request $request)
+    {
+        try {
+            return $this->service->createService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
+    }
+
+    public function store(TipoUsuarioRequest $request)
+    {
+        try {
+            return $this->service->storeService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
+    }
+
+
+    public function edit($id, Request $request)
+    {
+        try {
+            return $this->service->editService($id, $request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
+    }
+
+
+    public function update(TipoUsuarioRequest $request, $id)
+    {
+        try {
+            return $this->service->updateService($request, $id);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        } 
+    }
+
+    public function eliminar($id, $listarLuego)
+    {
+        try {
+            return $this->service->eliminarService($id, $listarLuego);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
+    }
+
+
+    public function destroy($id)
+    {
+        try {
+            return $this->service->destroyService($id);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
+    }
+
+   
 }

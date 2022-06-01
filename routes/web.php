@@ -20,41 +20,25 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('acceso', 'AccesoController@index')->name('acceso');
     Route::post('acceso', 'AccesoController@store')->name('store_acceso');
     /* Rutas de GRUPOMENU */
-    Route::get('grupomenu/create', 'GrupoMenuController@create')->name('create_grupomenu');
-    Route::get('grupomenu', 'GrupoMenuController@index')->name('grupomenu');
-    Route::get('grupomenu/{id}', 'GrupoMenuController@show')->name('show_grupomenu');
-    Route::post('grupomenu', 'GrupoMenuController@store')->name('store_grupomenu');
-    Route::get('grupomenu/{id}/edit', 'GrupoMenuController@edit')->name('edit_grupomenu');
-    Route::put('grupomenu/{id}', 'GrupoMenuController@update')->name('update_grupomenu');
-    Route::delete('grupomenu/{id}/destroy', 'GrupoMenuController@destroy')->name('destroy_grupomenu');
+    Route::post('grupomenu/buscar', 'GrupoMenuController@buscar')->name('grupomenu.buscar');
+    Route::get('grupomenu/eliminar/{id}/{listarluego}', 'GrupoMenuController@eliminar')->name('grupomenu.eliminar');
+    Route::resource('grupomenu', 'GrupoMenuController', array('except' => array('show')));
 
     /* Rutas de OPCIONMENU */
-    Route::get('opcionmenu/create', 'OpcionMenuController@create')->name('create_opcionmenu');
-    Route::get('opcionmenu', 'OpcionMenuController@index')->name('opcionmenu');
-    Route::get('opcionmenu/{id}', 'OpcionMenuController@show')->name('show_opcionmenu');
-    Route::post('opcionmenu', 'OpcionMenuController@store')->name('store_opcionmenu');
-    Route::get('opcionmenu/{id}/edit', 'OpcionMenuController@edit')->name('edit_opcionmenu');
-    Route::put('opcionmenu/{id}', 'OpcionMenuController@update')->name('update_opcionmenu');
-    Route::delete('opcionmenu/{id}/destroy', 'OpcionMenuController@destroy')->name('destroy_opcionmenu');
+    Route::post('opcionmenu/buscar', 'OpcionMenuController@buscar')->name('opcionmenu.buscar');
+    Route::get('opcionmenu/eliminar/{id}/{listarluego}', 'OpcionMenuController@eliminar')->name('opcionmenu.eliminar');
+    Route::resource('opcionmenu', 'OpcionMenuController', array('except' => array('show')));
     /* Rutas de ROL */
-    Route::get('rol/create', 'RolController@create')->name('create_rol');
-    Route::get('rol', 'RolController@index')->name('rol');
-    Route::get('rol/{id}', 'RolController@show')->name('show_rol');
-    Route::post('rol', 'RolController@store')->name('store_rol');
-    Route::get('rol/{id}/edit', 'RolController@edit')->name('edit_rol');
-    Route::put('rol/{id}', 'RolController@update')->name('update_rol');
-    Route::delete('rol/{id}/destroy', 'RolController@destroy')->name('destroy_rol');
+    Route::post('rol/buscar', 'RolController@buscar')->name('rol.buscar');
+    Route::get('rol/eliminar/{id}/{listarluego}', 'RolController@eliminar')->name('rol.eliminar');
+    Route::resource('rol', 'RolController', array('except' => array('show')));
     /* Rutas de ROLPERSONA */
     Route::get('rolpersona', 'RolPersonaController@index')->name('rolpersona');
     Route::post('rolpersona', 'RolPersonaController@store')->name('store_rolpersona');
     /* Rutas de TIPOUSUARIO */
-    Route::get('tipousuario/create', 'TipoUserController@create')->name('create_tipousuario');
-    Route::get('tipousuario', 'TipoUserController@index')->name('tipousuario');
-    Route::get('tipousuario/{id}', 'TipoUserController@show')->name('show_tipousuario');
-    Route::post('tipousuario', 'TipoUserController@store')->name('store_tipousuario');
-    Route::get('tipousuario/{id}/edit', 'TipoUserController@edit')->name('edit_tipousuario');
-    Route::put('tipousuario/{id}', 'TipoUserController@update')->name('update_tipousuario');
-    Route::delete('tipousuario/{id}/destroy', 'TipoUserController@destroy')->name('destroy_tipousuario');
+    Route::post('tipousuario/buscar', 'TipoUserController@buscar')->name('tipousuario.buscar');
+    Route::get('tipousuario/eliminar/{id}/{listarluego}', 'TipoUserController@eliminar')->name('tipousuario.eliminar');
+    Route::resource('tipousuario', 'TipoUserController', array('except' => array('show')));
     /* Rutas de USUARIO */
     Route::get('usuario/create', 'UsuarioController@create')->name('create_usuario');
     Route::get('usuario', 'UsuarioController@index')->name('usuario');

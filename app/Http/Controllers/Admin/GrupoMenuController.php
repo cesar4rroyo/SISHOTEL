@@ -4,107 +4,94 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\ValidateGrupoMenu;
-use App\Models\GrupoMenu;
-use App\Models\OpcionMenu;
-use Illuminate\Support\Facades\DB;
+use App\Http\Requests\GrupoMenuRequest;
+use App\Services\GrupoMenuService;
+use App\Services\InitService;
 
 class GrupoMenuController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    private $service;
+
+    public function __construct()
+    {   
+        $this->service = new GrupoMenuService();
+    }
+
+
+    public function buscar(Request $request)
+    {
+        try {
+           return $this->service->searchService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
+    }
+
+
     public function index()
     {
-        $paginate_number = 10;
-        $grupomenu = DB::table('grupomenu')->paginate($paginate_number);
-        $opcionmenu =
-            OpcionMenu::with('grupomenu')
-            ->orderBy('grupomenu_id')
-            ->paginate($paginate_number);
-        // dd($opcionmenu);
-        return view('admin.grupomenu.index', compact('grupomenu', 'opcionmenu'));
+        try {
+            return $this->service->indexService();
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function create(Request $request)
     {
-        return view('admin.grupomenu.create');
+        try {
+            return $this->service->createService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(ValidateGrupoMenu $request)
+    public function store(GrupoMenuRequest $request)
     {
-        GrupoMenu::create($request->all());
-        return redirect()
-            ->route('grupomenu')
-            ->with('success', 'Agregado correctamente');
+        try {
+            return $this->service->storeService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+
+    public function edit($id, Request $request)
     {
-        $grupomenu = GrupoMenu::findOrFail($id);
-        return view('admin.grupomenu.show', compact('grupomenu'));
+        try {
+            return $this->service->editService($id, $request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+
+    public function update(GrupoMenuRequest $request, $id)
     {
-        $grupomenu = GrupoMenu::findOrFail($id);
-        return view('admin.grupomenu.edit', compact('grupomenu'));
+        try {
+            return $this->service->updateService($request, $id);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        } 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(ValidateGrupoMenu $request, $id)
+    public function eliminar($id, $listarLuego)
     {
-        GrupoMenu::findOrFail($id)
-            ->update($request->all());
-        return redirect()
-            ->route('grupomenu')
-            ->with('success', 'Menú actualizado con exito');
+        try {
+            return $this->service->eliminarService($id, $listarLuego);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request, $id)
+
+    public function destroy($id)
     {
-        if ($request->ajax()) {
-            GrupoMenu::destroy($id);
-            return response()->json(['mensaje' => 'ok']);
-        } else {
-            abort(404);
+        try {
+            return $this->service->destroyService($id);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
         }
     }
 }

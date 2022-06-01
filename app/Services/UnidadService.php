@@ -42,6 +42,10 @@ class UnidadService extends InitService implements CRUDInterfaceService
             [
                 'valor' => 'Nombre',
                 'numero' => '1',
+            ],
+            [
+                'valor' => 'Operaciones',
+                'numero' => '1',
             ]
         ];
     }

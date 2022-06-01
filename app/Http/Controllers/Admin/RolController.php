@@ -4,109 +4,94 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Rol;
-use Illuminate\Support\Facades\DB;
+use App\Http\Requests\RolRequest;
+use App\Services\InitService;
+use App\Services\RolService;
 
 class RolController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
+    private $service;
+
+    public function __construct()
+    {   
+        $this->service = new RolService();
+    }
+
+
+    public function buscar(Request $request)
     {
-        $paginate_number = 10;
-        $search = $request->get('search');
-        if (!empty($search)) {
-            $rol = Rol::where('nombre', 'LIKE', '%' . $search . '%')
-                ->paginate($paginate_number);
-        } else {
-            $rol = Rol::orderBy('id')
-                ->paginate($paginate_number);
+        try {
+           return $this->service->searchService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
         }
-        return view('admin.rol.index', compact('rol'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function index()
     {
-        return view('admin.rol.create');
+        try {
+            return $this->service->indexService();
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function create(Request $request)
     {
-        Rol::create($request->all());
-        return redirect()
-            ->route('rol')
-            ->with('success', 'Agregado correctamente');
+        try {
+            return $this->service->createService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function store(RolRequest $request)
     {
-        $rol = Rol::findOrFail($id);
-        return view('admin.rol.show', compact('rol'));
+        try {
+            return $this->service->storeService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+
+    public function edit($id, Request $request)
     {
-        $rol = Rol::findOrFail($id);
-        return view('admin.rol.edit', compact('rol'));
+        try {
+            return $this->service->editService($id, $request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+
+    public function update(RolRequest $request, $id)
     {
-        Rol::findOrFail($id)
-            ->update($request->all());
-        return redirect()
-            ->route('rol')
-            ->with('success', 'Menú actualizado con exito');
+        try {
+            return $this->service->updateService($request, $id);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        } 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request, $id)
+    public function eliminar($id, $listarLuego)
     {
-        if ($request->ajax()) {
-            $rol = Rol::findOrFail($id);
-            $rol->persona()->detach();
-            $rol->delete();
-            return response()->json(['mensaje' => 'ok']);
-        } else {
-            abort(404);
+        try {
+            return $this->service->eliminarService($id, $listarLuego);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
+    }
+
+
+    public function destroy($id)
+    {
+        try {
+            return $this->service->destroyService($id);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
         }
     }
 }

@@ -15,9 +15,9 @@ class CreateOpcionMenuTable extends Migration
     {
         Schema::create('opcionmenu', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre', 50);
+            $table->string('nombre', 100);
             $table->string('link', 100);
-            $table->string('icono', 50)->nullable();
+            $table->string('icono', 100)->nullable();
             $table->integer('orden')->default(0);
             $table->unsignedInteger('grupomenu_id')->default(0);
             $table->foreign('grupomenu_id', 'fk_opcionmenu_grupomenu')

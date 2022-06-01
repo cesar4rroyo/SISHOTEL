@@ -51,6 +51,10 @@ class TipoHabitacionService extends InitService implements CRUDInterfaceService
                 'valor' => 'Precio',
                 'numero' => '1',
             ],
+            [
+                'valor' => 'Operaciones',
+                'numero' => '1',
+            ]
         ];
     }
 

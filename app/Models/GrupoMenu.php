@@ -10,8 +10,20 @@ class GrupoMenu extends Model
     protected $table = 'grupomenu';
     protected $primaryKey = 'id';
     protected $fillable = ['nombre', 'icono', 'orden'];
+    
     public function opcionmenu()
     {
         return $this->hasMany(OpcionMenu::class, 'grupomenu_id');
     }
+
+    public function scopelistar($query, $nombre)
+	{
+		return $query
+            ->where(function ($subquery) use ($nombre) {
+				if (!is_null($nombre) && strlen($nombre) > 0) {
+					$subquery->where('nombre', 'LIKE', '%'.$nombre.'%');
+				}
+			})
+			->orderBy('nombre', 'DESC');
+	}
 }

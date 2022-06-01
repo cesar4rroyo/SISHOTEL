@@ -4,93 +4,94 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\ValidateUsuario;
-use App\Models\Persona;
-use App\Models\Seguridad\Usuario;
-use App\Models\TipoUsuario;
+use App\Http\Requests\UsuarioRequest;
+use App\Services\InitService;
+use App\Services\UsuarioService;
 
 class UsuarioController extends Controller
 {
+    private $service;
 
-    public function index(Request $request)
+    public function __construct()
+    {   
+        $this->service = new UsuarioService();
+    }
+
+
+    public function buscar(Request $request)
     {
-        $paginate_number = 10;
-        $search = $request->get('search');
-        if (!empty($search)) {
-            $usuario = Usuario::where('login', 'LIKE', '%' . $search . '%')
-                ->paginate($paginate_number);
-        } else {
-            $usuario =
-                Usuario::with('persona', 'tipousuario')
-                ->orderBy('id')
-                ->paginate($paginate_number);
+        try {
+           return $this->service->searchService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
         }
-
-        return view('admin.usuario.index', compact('usuario'));
     }
 
 
-    public function create()
+    public function index()
     {
-        $tipousuarios = TipoUsuario::with('usuario')->get();
-        $personas = Usuario::getPersonasUsuarios();
-        return view('admin.usuario.create', compact('tipousuarios', 'personas'));
+        try {
+            return $this->service->indexService();
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
 
-    public function store(ValidateUsuario $request)
+    public function create(Request $request)
     {
-        $usuario = Usuario::create([
-            'login' => $request->login,
-            'password' => $request->password,
-            'tipousuario_id' => $request->tipousuario,
-            'persona_id' => $request->persona
-        ]);
-        return redirect()
-            ->route('usuario')
-            ->with('success', 'Agregado correctamente');
+        try {
+            return $this->service->createService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
+    }
+
+    public function store(UsuarioRequest $request)
+    {
+        try {
+            return $this->service->storeService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
 
-    public function show($id)
+    public function edit($id, Request $request)
     {
-        $usuario = Usuario::findOrFail($id);
-        return view('admin.usuario.show', compact('usuario'));
+        try {
+            return $this->service->editService($id, $request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
 
-    public function edit($id)
+    public function update(UsuarioRequest $request, $id)
     {
-        $usuario = Usuario::findOrFail($id);
-        $tipousuarios = TipoUsuario::with('usuario')->get();
-        $personas = Persona::with('usuario')->get();
-        return view('admin.usuario.edit', compact('usuario', 'tipousuarios', 'personas'));
+        try {
+            return $this->service->updateService($request, $id);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        } 
+    }
+
+    public function eliminar($id, $listarLuego)
+    {
+        try {
+            return $this->service->eliminarService($id, $listarLuego);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
 
-    public function update(ValidateUsuario $request, $id)
+    public function destroy($id)
     {
-        $usuario = Usuario::findOrFail($id)
-            ->update([
-                'login' => $request->login,
-                'password' => $request->password,
-                'tipousuario_id' => $request->tipousuario,
-                'persona_id' => $request->persona
-            ]);
-
-        return redirect()
-            ->route('usuario')
-            ->with('success', 'Actualizado correctamente');
-    }
-
-
-    public function destroy(Request $request, $id)
-    {
-        if ($request->ajax()) {
-            Usuario::destroy($id);
-            return response()->json(['mensaje' => 'ok']);
-        } else {
-            abort(404);
+        try {
+            return $this->service->destroyService($id);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
         }
     }
 }

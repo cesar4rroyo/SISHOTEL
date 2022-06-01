@@ -5,30 +5,31 @@ namespace App\Services;
 use App\Interfaces\CRUDInterfaceService;
 use Illuminate\Http\Request;
 use App\Librerias\Libreria;
-use App\Models\Concepto;
+use App\Models\GrupoMenu;
+use App\Models\OpcionMenu;
 use Illuminate\Support\Facades\DB;
 
-class ConceptoService extends InitService implements CRUDInterfaceService
+class OpcionMenuService extends InitService implements CRUDInterfaceService
 
 {
     public function __construct()
     {
-        $this->modelo = new Concepto();
-        $this->entity = 'concepto';
-        $this->folderview = 'general.concepto';
-        $this->tituloAdmin = 'Concepto';
-        $this->tituloRegistrar = 'Registrar Concepto';
-        $this->tituloModificar = 'Modificar Concepto';
-        $this->tituloEliminar = 'Eliminar Concepto';
+        $this->modelo = new OpcionMenu();
+        $this->entity = 'opcionmenu';
+        $this->folderview = 'admin.opcionmenu';
+        $this->tituloAdmin = 'Opción Menú';
+        $this->tituloRegistrar = 'Registrar Opción Menú';
+        $this->tituloModificar = 'Modificar Opción Menú';
+        $this->tituloEliminar = 'Eliminar Opción Menú';
         $this->rutas = [
-            'search' => 'concepto.buscar',
-            'index' => 'concepto.index',
-            'store' => 'concepto.store',
-            'delete' => 'concepto.eliminar',
-            'create' => 'concepto.create',
-            'edit' => 'concepto.edit',
-            'update' => 'concepto.update',
-            'destroy' => 'concepto.destroy',
+            'search' => 'opcionmenu.buscar',
+            'index' => 'opcionmenu.index',
+            'store' => 'opcionmenu.store',
+            'delete' => 'opcionmenu.eliminar',
+            'create' => 'opcionmenu.create',
+            'edit' => 'opcionmenu.edit',
+            'update' => 'opcionmenu.update',
+            'destroy' => 'opcionmenu.destroy',
         ];
         $this->idForm = 'formMantenimiento' . $this->entity;
         //INSTACIA DE LIBRERIA
@@ -44,7 +45,15 @@ class ConceptoService extends InitService implements CRUDInterfaceService
                 'numero' => '1',
             ],
             [
-                'valor' => 'Tipo',
+                'valor' => 'Link',
+                'numero' => '1',
+            ],
+            [
+                'valor' => 'Icono',
+                'numero' => '1',
+            ],
+            [
+                'valor' => 'Grupo de Menú',
                 'numero' => '1',
             ],
             [
@@ -63,10 +72,10 @@ class ConceptoService extends InitService implements CRUDInterfaceService
 
         //AQUI OBTENER LOS DATOS QUE VIENEN DEL BUSCADOR DETERMINADO EN LA VISTA
         $nombre = Libreria::getParam($request->get('nombre'));
-        $tipo = Libreria::getParam($request->get('tipo'));
+        $grupomenu = Libreria::getParam($request->get('grupomenu'));
 
         //BUSCAR EN EL MODELOS
-        $resultado = $this->modelo::listar($nombre, $tipo);
+        $resultado = $this->modelo::listar($nombre, $grupomenu);
         $lista = $resultado->get();
 
         //SETEAR VALORES PARA LA VISTA
@@ -102,7 +111,7 @@ class ConceptoService extends InitService implements CRUDInterfaceService
             'titulo_registrar' => $this->tituloRegistrar,
             'ruta' => $this->rutas,
             'cboRangeFilas' => $this->clsLibreria->cboRangeFilas(),
-            'cboTipo' => [''=>'Todos','Ingreso'=>'Ingreso','Egreso'=>'Egreso'],
+            'cboGrupoMenu' => $this->clsLibreria->generateCboGeneral(GrupoMenu::class, 'nombre', 'id', 'Todos'),
         ]);
     }
 
@@ -116,8 +125,8 @@ class ConceptoService extends InitService implements CRUDInterfaceService
             'autocomplete' => 'off',
             'entidad' => $this->entity,
             'listar' => Libreria::getParam($request->input('listar'), 'NO'),
+            'cboGrupoMenu' => $this->clsLibreria->generateCboGeneral(GrupoMenu::class, 'nombre', 'id', 'Seleccione una opción'),
             'boton' => 'Registrar',
-            'cboTipo' => [''=>'Seleccione una opcion','Ingreso'=>'Ingreso','Egreso'=>'Egreso'],
         ];
         return view($this->folderview . '.create')->with(compact('formData'));
     }
@@ -146,7 +155,7 @@ class ConceptoService extends InitService implements CRUDInterfaceService
             'listar' => Libreria::getParam($request->input('listar'), 'NO'),
             'boton' => 'Modificar',
             'entidad' => $this->entity,
-            'cboTipo' => ['Ingreso'=>'Ingreso','Egreso'=>'Egreso'],
+            'cboGrupoMenu' => $this->clsLibreria->generateCboGeneral(GrupoMenu::class, 'nombre', 'id', 'Seleccione una opción'),
         ];
         return view($this->folderview . '.create')->with(compact('formData'));
     }

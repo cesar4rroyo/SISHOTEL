@@ -5,30 +5,30 @@ namespace App\Services;
 use App\Interfaces\CRUDInterfaceService;
 use Illuminate\Http\Request;
 use App\Librerias\Libreria;
-use App\Models\Concepto;
+use App\Models\GrupoMenu;
 use Illuminate\Support\Facades\DB;
 
-class ConceptoService extends InitService implements CRUDInterfaceService
+class GrupoMenuService extends InitService implements CRUDInterfaceService
 
 {
     public function __construct()
     {
-        $this->modelo = new Concepto();
-        $this->entity = 'concepto';
-        $this->folderview = 'general.concepto';
-        $this->tituloAdmin = 'Concepto';
-        $this->tituloRegistrar = 'Registrar Concepto';
-        $this->tituloModificar = 'Modificar Concepto';
-        $this->tituloEliminar = 'Eliminar Concepto';
+        $this->modelo = new GrupoMenu();
+        $this->entity = 'grupomenu';
+        $this->folderview = 'admin.grupomenu';
+        $this->tituloAdmin = 'Grupo de Menú';
+        $this->tituloRegistrar = 'Registrar Grupo de Menú';
+        $this->tituloModificar = 'Modificar Grupo de Menú';
+        $this->tituloEliminar = 'Eliminar Grupo de Menú';
         $this->rutas = [
-            'search' => 'concepto.buscar',
-            'index' => 'concepto.index',
-            'store' => 'concepto.store',
-            'delete' => 'concepto.eliminar',
-            'create' => 'concepto.create',
-            'edit' => 'concepto.edit',
-            'update' => 'concepto.update',
-            'destroy' => 'concepto.destroy',
+            'search' => 'grupomenu.buscar',
+            'index' => 'grupomenu.index',
+            'store' => 'grupomenu.store',
+            'delete' => 'grupomenu.eliminar',
+            'create' => 'grupomenu.create',
+            'edit' => 'grupomenu.edit',
+            'update' => 'grupomenu.update',
+            'destroy' => 'grupomenu.destroy',
         ];
         $this->idForm = 'formMantenimiento' . $this->entity;
         //INSTACIA DE LIBRERIA
@@ -44,7 +44,11 @@ class ConceptoService extends InitService implements CRUDInterfaceService
                 'numero' => '1',
             ],
             [
-                'valor' => 'Tipo',
+                'valor' => 'Icono',
+                'numero' => '1',
+            ],
+            [
+                'valor' => 'Orden',
                 'numero' => '1',
             ],
             [
@@ -63,10 +67,9 @@ class ConceptoService extends InitService implements CRUDInterfaceService
 
         //AQUI OBTENER LOS DATOS QUE VIENEN DEL BUSCADOR DETERMINADO EN LA VISTA
         $nombre = Libreria::getParam($request->get('nombre'));
-        $tipo = Libreria::getParam($request->get('tipo'));
 
         //BUSCAR EN EL MODELOS
-        $resultado = $this->modelo::listar($nombre, $tipo);
+        $resultado = $this->modelo::listar($nombre);
         $lista = $resultado->get();
 
         //SETEAR VALORES PARA LA VISTA
@@ -102,7 +105,6 @@ class ConceptoService extends InitService implements CRUDInterfaceService
             'titulo_registrar' => $this->tituloRegistrar,
             'ruta' => $this->rutas,
             'cboRangeFilas' => $this->clsLibreria->cboRangeFilas(),
-            'cboTipo' => [''=>'Todos','Ingreso'=>'Ingreso','Egreso'=>'Egreso'],
         ]);
     }
 
@@ -117,7 +119,6 @@ class ConceptoService extends InitService implements CRUDInterfaceService
             'entidad' => $this->entity,
             'listar' => Libreria::getParam($request->input('listar'), 'NO'),
             'boton' => 'Registrar',
-            'cboTipo' => [''=>'Seleccione una opcion','Ingreso'=>'Ingreso','Egreso'=>'Egreso'],
         ];
         return view($this->folderview . '.create')->with(compact('formData'));
     }
@@ -146,7 +147,6 @@ class ConceptoService extends InitService implements CRUDInterfaceService
             'listar' => Libreria::getParam($request->input('listar'), 'NO'),
             'boton' => 'Modificar',
             'entidad' => $this->entity,
-            'cboTipo' => ['Ingreso'=>'Ingreso','Egreso'=>'Egreso'],
         ];
         return view($this->folderview . '.create')->with(compact('formData'));
     }

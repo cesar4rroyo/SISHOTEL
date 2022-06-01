@@ -4,95 +4,94 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\ValidateOpcionMenu;
-use App\Models\GrupoMenu;
-use App\Models\OpcionMenu;
-use Illuminate\Support\Facades\DB;
+use App\Http\Requests\OpcionMenuRequest;
+use App\Services\InitService;
+use App\Services\OpcionMenuService;
 
 class OpcionMenuController extends Controller
 {
-    public function index(Request $request)
+    private $service;
+
+    public function __construct()
+    {   
+        $this->service = new OpcionMenuService();
+    }
+
+
+    public function buscar(Request $request)
     {
-        $search = $request->get('search');
-        $paginate_number = 10;
-        if (!empty($search)) {
-            $opcionmenu =
-                OpcionMenu::where('grupomenu_id', '=', $search)
-                ->paginate($paginate_number);
-            $grupomenu = GrupoMenu::with('opcionmenu')->get();
-        } else {
-            $opcionmenu =
-                OpcionMenu::with('grupomenu')
-                ->orderBy('grupomenu_id')
-                ->paginate($paginate_number);
-            $grupomenu = GrupoMenu::with('opcionmenu')->get();
+        try {
+           return $this->service->searchService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
         }
-        return view('admin.opcionmenu.index', compact('opcionmenu', 'grupomenu'));
     }
 
 
-    public function create()
+    public function index()
     {
-        $grupomenu = GrupoMenu::with('opcionmenu')->get();
-        return view('admin.opcionmenu.create', compact('grupomenu'));
+        try {
+            return $this->service->indexService();
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
 
-    public function store(ValidateOpcionMenu $request)
+    public function create(Request $request)
     {
-        $opcionmenu = OpcionMenu::create([
-            'nombre' => $request->nombre,
-            'link' => $request->link,
-            'icono' => $request->icono,
-            'orden' => $request->orden,
-            'grupomenu_id' => $request->grupomenu_id
-        ]);
+        try {
+            return $this->service->createService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
+    }
 
-        return redirect()
-            ->route('opcionmenu')
-            ->with('success', 'Agregado correctamente');
+    public function store(OpcionMenuRequest $request)
+    {
+        try {
+            return $this->service->storeService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
 
-    public function show($id)
+    public function edit($id, Request $request)
     {
-        $opcionmenu = OpcionMenu::findOrFail($id);
-        return view('admin.opcionmenu.show', compact('opcionmenu'));
+        try {
+            return $this->service->editService($id, $request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
 
-    public function edit($id)
+    public function update(OpcionMenuRequest $request, $id)
     {
-        $grupomenu = GrupoMenu::with('opcionmenu')->get();
-        $opcionmenu = OpcionMenu::findOrFail($id);
-        return view('admin.opcionmenu.edit', compact('grupomenu', 'opcionmenu'));
+        try {
+            return $this->service->updateService($request, $id);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        } 
+    }
+
+    public function eliminar($id, $listarLuego)
+    {
+        try {
+            return $this->service->eliminarService($id, $listarLuego);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
     }
 
 
-    public function update(ValidateOpcionMenu $request, $id)
+    public function destroy($id)
     {
-        $opcionmenu = OpcionMenu::findOrFail($id)
-            ->update([
-                'nombre' => $request->nombre,
-                'link' => $request->link,
-                'icono' => $request->icono,
-                'orden' => $request->orden,
-                'grupomenu_id' => $request->grupomenu_id
-            ]);
-
-        return redirect()
-            ->route('opcionmenu')
-            ->with('success', 'Actualizado correctamente');
-    }
-
-
-    public function destroy(Request $request, $id)
-    {
-        if ($request->ajax()) {
-            OpcionMenu::destroy($id);
-            return response()->json(['mensaje' => 'ok']);
-        } else {
-            abort(404);
+        try {
+            return $this->service->destroyService($id);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
         }
     }
 }

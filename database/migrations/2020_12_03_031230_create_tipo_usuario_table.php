@@ -15,7 +15,7 @@ class CreateTipoUsuarioTable extends Migration
     {
         Schema::create('tipousuario', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre');
+            $table->string('nombre', 100);
             $table->timestamps();
             $table->softDeletes();
         });
