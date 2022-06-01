@@ -90,13 +90,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     //agregar nuevo pasajero a la habitación
     Route::post('persona/huesped/habitacion', 'PersonaController@addHuespedHabitacion')->name('add_huesped_habitacion');
     /* Rutas de NACIONALIDAD */
-    Route::get('nacionalidad/create', 'NacionalidadController@create')->name('create_nacionalidad');
-    Route::get('nacionalidad', 'NacionalidadController@index')->name('nacionalidad');
-    Route::get('nacionalidad/{id}', 'NacionalidadController@show')->name('show_nacionalidad');
-    Route::post('nacionalidad', 'NacionalidadController@store')->name('store_nacionalidad');
-    Route::get('nacionalidad/{id}/edit', 'NacionalidadController@edit')->name('edit_nacionalidad');
-    Route::put('nacionalidad/{id}', 'NacionalidadController@update')->name('update_nacionalidad');
-    Route::delete('nacionalidad/{id}/destroy', 'NacionalidadController@destroy')->name('destroy_nacionalidad');
+    Route::post('nacionalidad/buscar', 'NacionalidadController@buscar')->name('nacionalidad.buscar');
+    Route::get('nacionalidad/eliminar/{id}/{listarluego}', 'NacionalidadController@eliminar')->name('nacionalidad.eliminar');
+    Route::resource('nacionalidad', 'NacionalidadController', array('except' => array('show')));
+
 });
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Habitacion', 'middleware' => ['auth', 'acceso']], function () {

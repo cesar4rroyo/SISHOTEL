@@ -79,13 +79,6 @@ class OpcionMenuSeeder extends Seeder
             'orden' => 1,
             'grupomenu_id' => 4
         ]);
-        DB::table('opcionmenu')->insert([
-            'nombre' => 'Nacionalidad',
-            'icono' => 'fas fa-globe-americas',
-            'link' => 'admin/nacionalidad',
-            'orden' => 2,
-            'grupomenu_id' => 4
-        ]);
         //end Grupo Persona
 
         //start Grupo Usuarios
