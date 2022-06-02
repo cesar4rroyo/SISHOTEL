@@ -26,7 +26,6 @@ class AccesoController extends Controller
         $opciones = OpcionMenu::with('tipousuario')
             ->get()
             ->toArray();
-        // dd($opcionmenus);
         return view('admin.acceso.index', compact('opciones', 'tipousuarios', 'grupomenus', 'opcionmenus'));
     }
 
