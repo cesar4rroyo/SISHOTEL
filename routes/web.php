@@ -40,13 +40,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('tipousuario/eliminar/{id}/{listarluego}', 'TipoUserController@eliminar')->name('tipousuario.eliminar');
     Route::resource('tipousuario', 'TipoUserController', array('except' => array('show')));
     /* Rutas de USUARIO */
-    Route::get('usuario/create', 'UsuarioController@create')->name('create_usuario');
-    Route::get('usuario', 'UsuarioController@index')->name('usuario');
-    Route::get('usuario/{id}', 'UsuarioController@show')->name('show_usuario');
-    Route::post('usuario', 'UsuarioController@store')->name('store_usuario');
-    Route::get('usuario/{id}/edit', 'UsuarioController@edit')->name('edit_usuario');
-    Route::put('usuario/{id}', 'UsuarioController@update')->name('update_usuario');
-    Route::delete('usuario/{id}/destroy', 'UsuarioController@destroy')->name('destroy_usuario');
+    Route::post('usuario/buscar', 'UsuarioController@buscar')->name('usuario.buscar');
+    Route::get('usuario/eliminar/{id}/{listarluego}', 'UsuarioController@eliminar')->name('usuario.eliminar');
+    Route::resource('usuario', 'UsuarioController', array('except' => array('show')));
+
 });
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'acceso']], function () {
     /* Rutas de PERSONA */

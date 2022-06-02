@@ -88,4 +88,14 @@ class Persona extends Model
         }
         return $data;
     }
+
+    public function getFullNamePersonAttribute()
+    {
+        return $this->nombres . ' ' . $this->apellidos;
+    }
+
+    public function getFullNameBussinessAttribute()
+    {
+        return $this->razonsocial;
+    }
 }

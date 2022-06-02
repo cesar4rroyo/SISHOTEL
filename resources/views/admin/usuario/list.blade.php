@@ -11,16 +11,9 @@
 		@foreach ($lista as $key => $value)
         <tr>
 			<td>{{ $contador }}</td>
-			<td>{{ $value->nombre }}</td>
-			<td>{{ $value->link }}</td>
-			<td>
-				<i style="color:blueviolet" class=" fas {{$value->icono}}"></i>
-				<span>
-					{{ $value->icono }}
-				</span>
-			</td>
-			<td>{{ $value->orden }}</td>
-			<td>{{ $value->grupomenu->nombre }}</td>
+			<td>{{ $value->login }}</td>
+			<td>{{ $value->tipousuario->nombre }}</td>
+			<td>{{ $value->persona ? $value->persona->getFullNamePersonAttribute() : '-' }}</td>
 			<td class="text-center">
 				<div class="btn-group">
 					@include('utils.baseButtons', ['ruta' => $ruta, 'id' => $value->id, 'titulo_modificar' => $titulo_modificar, 'titulo_eliminar' => $titulo_eliminar])

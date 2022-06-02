@@ -5,7 +5,10 @@ namespace App\Services;
 use App\Interfaces\CRUDInterfaceService;
 use Illuminate\Http\Request;
 use App\Librerias\Libreria;
+use App\Models\Persona;
 use App\Models\Piso;
+use App\Models\Seguridad\Usuario;
+use App\Models\TipoUsuario;
 use Illuminate\Support\Facades\DB;
 
 class UsuarioService extends InitService implements CRUDInterfaceService
@@ -13,22 +16,22 @@ class UsuarioService extends InitService implements CRUDInterfaceService
 {
     public function __construct()
     {
-        $this->modelo = new Piso();
-        $this->entity = 'piso';
-        $this->folderview = 'habitacion.piso';
-        $this->tituloAdmin = 'Piso';
-        $this->tituloRegistrar = 'Registrar Piso';
-        $this->tituloModificar = 'Modificar Piso';
-        $this->tituloEliminar = 'Eliminar Piso';
+        $this->modelo = new Usuario();
+        $this->entity = 'usuario';
+        $this->folderview = 'admin.usuario';
+        $this->tituloAdmin = 'Usuario';
+        $this->tituloRegistrar = 'Registrar Usuario';
+        $this->tituloModificar = 'Modificar Usuario';
+        $this->tituloEliminar = 'Eliminar Usuario';
         $this->rutas = [
-            'search' => 'piso.buscar',
-            'index' => 'piso.index',
-            'store' => 'piso.store',
-            'delete' => 'piso.eliminar',
-            'create' => 'piso.create',
-            'edit' => 'piso.edit',
-            'update' => 'piso.update',
-            'destroy' => 'piso.destroy',
+            'search' => 'usuario.buscar',
+            'index' => 'usuario.index',
+            'store' => 'usuario.store',
+            'delete' => 'usuario.eliminar',
+            'create' => 'usuario.create',
+            'edit' => 'usuario.edit',
+            'update' => 'usuario.update',
+            'destroy' => 'usuario.destroy',
         ];
         $this->idForm = 'formMantenimiento' . $this->entity;
         //INSTACIA DE LIBRERIA
@@ -40,7 +43,15 @@ class UsuarioService extends InitService implements CRUDInterfaceService
                 'numero' => '1',
             ],
             [
-                'valor' => 'Nombre',
+                'valor' => 'Username',
+                'numero' => '1',
+            ],
+            [
+                'valor' => 'Tipo de Usuario',
+                'numero' => '1',
+            ],
+            [
+                'valor' => 'Persona',
                 'numero' => '1',
             ],
             [
@@ -59,9 +70,10 @@ class UsuarioService extends InitService implements CRUDInterfaceService
 
         //AQUI OBTENER LOS DATOS QUE VIENEN DEL BUSCADOR DETERMINADO EN LA VISTA
         $nombre = Libreria::getParam($request->get('nombre'));
+        $tipousuario = Libreria::getParam($request->get('tipousuario'));
 
         //BUSCAR EN EL MODELOS
-        $resultado = $this->modelo::listar($nombre);
+        $resultado = $this->modelo::listar($nombre, $tipousuario);
         $lista = $resultado->get();
 
         //SETEAR VALORES PARA LA VISTA
@@ -97,6 +109,7 @@ class UsuarioService extends InitService implements CRUDInterfaceService
             'titulo_registrar' => $this->tituloRegistrar,
             'ruta' => $this->rutas,
             'cboRangeFilas' => $this->clsLibreria->cboRangeFilas(),
+            'cboTipoUsuario' => $this->clsLibreria->generateCboGeneral(TipoUsuario::class, 'nombre', 'id', 'Todos'),
         ]);
     }
 
@@ -111,6 +124,8 @@ class UsuarioService extends InitService implements CRUDInterfaceService
             'entidad' => $this->entity,
             'listar' => Libreria::getParam($request->input('listar'), 'NO'),
             'boton' => 'Registrar',
+            'cboTipoUsuario' => $this->clsLibreria->generateCboGeneral(TipoUsuario::class, 'nombre', 'id', 'Seleccione una opción'),
+            'cboPersona' => $this->clsLibreria->generateCboGeneral(Persona::class, 'full_name_person', 'id', 'Seleccione una opción'),
         ];
         return view($this->folderview . '.create')->with(compact('formData'));
     }
@@ -139,6 +154,8 @@ class UsuarioService extends InitService implements CRUDInterfaceService
             'listar' => Libreria::getParam($request->input('listar'), 'NO'),
             'boton' => 'Modificar',
             'entidad' => $this->entity,
+            'cboTipoUsuario' => $this->clsLibreria->generateCboGeneral(TipoUsuario::class, 'nombre', 'id', 'Seleccione una opción'),
+            'cboPersona' => $this->clsLibreria->generateCboGeneral(Persona::class, 'full_name_person', 'id', 'Seleccione una opción'),
         ];
         return view($this->folderview . '.create')->with(compact('formData'));
     }

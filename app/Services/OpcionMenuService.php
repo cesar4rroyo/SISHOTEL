@@ -53,6 +53,10 @@ class OpcionMenuService extends InitService implements CRUDInterfaceService
                 'numero' => '1',
             ],
             [
+                'valor' => 'Orden',
+                'numero' => '1',
+            ],
+            [
                 'valor' => 'Grupo de Menú',
                 'numero' => '1',
             ],
@@ -163,7 +167,7 @@ class OpcionMenuService extends InitService implements CRUDInterfaceService
     public function updateService(Request $request, $id)
     {
         $existe = Libreria::verificarExistencia($id, $this->entity);
-        if(!$existe){
+        if (!$existe) {
             return $existe;
         }
         $error = DB::transaction(function () use ($request, $id) {
@@ -175,7 +179,7 @@ class OpcionMenuService extends InitService implements CRUDInterfaceService
     public function eliminarService($id, $listarLuego)
     {
         $existe = Libreria::verificarExistencia($id, $this->entity);
-        if(!$existe){
+        if (!$existe) {
             return $existe;
         }
         $listar = 'NO';
@@ -189,18 +193,17 @@ class OpcionMenuService extends InitService implements CRUDInterfaceService
             'id' => $this->idForm,
             'autocomplete' => 'off',
             'boton' => 'Eliminar',
-            'entidad'=> $this->entity,
+            'entidad' => $this->entity,
             'listar' => $listar,
             'modelo' => $this->modelo->find($id),
         ];
         return view('utils.confirmDelete')->with(compact('formData'));
-
     }
 
     public function destroyService($id)
     {
         $existe = Libreria::verificarExistencia($id, $this->entity);
-        if(!$existe){
+        if (!$existe) {
             return $existe;
         }
         $error = DB::transaction(function () use ($id) {
@@ -208,5 +211,4 @@ class OpcionMenuService extends InitService implements CRUDInterfaceService
         });
         return is_null($error) ? "OK" : $error;
     }
-
 }

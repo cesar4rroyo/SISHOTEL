@@ -81,7 +81,7 @@ class Usuario extends Authenticatable
 		return $query
             ->where(function ($subquery) use ($nombre) {
 				if (!is_null($nombre) && strlen($nombre) > 0) {
-					$subquery->where('nombre', 'LIKE', '%'.$nombre.'%');
+					$subquery->where('login', 'LIKE', '%'.$nombre.'%');
 				}
 			})
             ->where(function ($subquery) use ($tipousuario) {
@@ -89,6 +89,6 @@ class Usuario extends Authenticatable
                     $subquery->where('tipousuario_id', $tipousuario);
                 }
             })
-			->orderBy('nombre', 'DESC');
+			->orderBy('login', 'DESC');
 	}
 }

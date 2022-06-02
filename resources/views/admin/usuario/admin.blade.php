@@ -4,13 +4,13 @@
         <input type="hidden" name="page" id="page" value="1">
         <input type="hidden" name="accion" id="accion" value="listar">
         <div class="col-6">
-            <label for="nombre">Nombre Opción:</label>
+            <label for="nombre">Username:</label>
             <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Buscar por nombre...">
         </div>
         <div class="col-3">
-            <label for="grupomenu">Menú</label>
+            <label for="grupomenu">Tipo de Usuario</label>
             <select class="form-control" name="grupomenu" id="grupomenu" onchange="buscar('{{ $entidad }}');">
-                @foreach ($cboGrupoMenu as $key => $value)
+                @foreach ($cboTipoUsuario as $key => $value)
                 <option value="{{ $key }}">{{ $value }}</option>
                 @endforeach
             </select>
