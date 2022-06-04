@@ -23,6 +23,9 @@ class CreateMovimientoTable extends Migration
             $table->decimal('preciohabitacion', 10, 4)->nullable();
             $table->string('situacion', 200);
             $table->string('comentario', 500)->nullable();
+            $table->decimal('early_checkin', 10, 2)->nullable();
+            $table->decimal('late_checkout', 10, 2)->nullable();
+            $table->decimal('day_use', 10, 2)->nullable();
             $table->unsignedInteger('habitacion_id');
             $table->foreign('habitacion_id', 'fk_movimiento_habitacion')
                 ->references('id')

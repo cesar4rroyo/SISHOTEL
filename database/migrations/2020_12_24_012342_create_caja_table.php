@@ -46,7 +46,17 @@ class CreateCajaTable extends Migration
                 ->on('movimiento')
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
+            $table->string('modalidadpago', 50)->nullable();
+            $table->decimal('montovisa', 10, 2)->nullable();
+            $table->decimal('montomastercard', 10, 2)->nullable();
+            $table->decimal('montoamex', 10, 2)->nullable();
+            $table->decimal('montoyape', 10, 2)->nullable();
+            $table->decimal('montoplin', 10, 2)->nullable();
+            $table->decimal('montodeposito', 10, 2)->nullable();
+            $table->decimal('montoefectivo', 10, 2)->nullable();
+            $table->string('nrooperacion', 100)->nullable();
             $table->timestamps();
+            //NEW COLUMNS
             $table->softDeletes();
         });
     }

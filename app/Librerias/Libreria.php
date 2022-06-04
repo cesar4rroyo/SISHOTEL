@@ -485,4 +485,19 @@ class Libreria
 		return $cbo;
 	}
 
+	/*
+		* zero_fill
+		*
+		* Rellena con ceros a la izquierda
+		*
+		* @param $valor  valor a rellenar
+		* @param $long   longitud total del valor
+		* @return        valor rellenado
+	*/
+
+	public static function zero_fill($valor, $long = 0)
+	{
+		return str_pad($valor, $long, '0', STR_PAD_LEFT);
+	}
+
 }
