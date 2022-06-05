@@ -6,6 +6,7 @@ use App\Interfaces\CRUDInterfaceService;
 use Illuminate\Http\Request;
 use App\Librerias\Libreria;
 use App\Models\Concepto;
+use App\Models\Persona;
 use App\Models\Procesos\Caja;
 use Illuminate\Support\Facades\DB;
 
@@ -27,6 +28,7 @@ class CajaService extends InitService implements CRUDInterfaceService
     protected $montodeposito = 0;
     protected $totaltarjetas = 0;
     protected $totaltransferencias = 0;
+    protected $montocierre = 0;
     
     public function __construct()
     {
@@ -44,6 +46,7 @@ class CajaService extends InitService implements CRUDInterfaceService
         $this->montodeposito = $this->modelo->generarTotalDeposito();
         $this->totaltarjetas = $this->modelo->generarTotalTarjetas();
         $this->totaltransferencias = $this->modelo->generarTotalTransferencias();
+        $this->montocierre = $this->modelo->generarTotalCierre();
 
         if ($this->modelo->cajaAbierta()) {
             $this->status = 1;
@@ -102,10 +105,6 @@ class CajaService extends InitService implements CRUDInterfaceService
                 'valor' => 'Usuario',
                 'numero' => '1',
             ],
-            [
-                'valor' => 'Acciones',
-                'numero' => '1',
-            ]
         ];
     }
 
@@ -211,7 +210,11 @@ class CajaService extends InitService implements CRUDInterfaceService
             'numero' => $numero,
             'opcion' => $request->get('option'),
             'selectedTipo' => $selectedTipo,
+            'montocierre' => $this->montocierre,
             'selectedConcepto' => $selectedConcepto,
+            'cboConceptoIngreso' => $this->clsLibreria->cboConceptoTipo('Ingreso'),
+            'cboConceptoEgreso' => $this->clsLibreria->cboConceptoTipo('Egreso'),
+            'cboPersona' => $this->clsLibreria->generateCboGeneral(Persona::class, 'nombres', 'id', 'Seleccione una opción'),
             'cboConcepto' => $this->clsLibreria->generateCboGeneral(Concepto::class, 'nombre', 'id', 'Seleccione una opción'),
         ];
         return view($this->folderview . '.create')->with(compact('formData'));

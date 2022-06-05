@@ -27,11 +27,11 @@
                     <td>{{ $value->comentario }}</td>
                     <td>{{ isset($value->movimiento) ? $value->movimiento->id : '-' }}</td>
                     <td>{{ $value->usuario->login }}</td>
-                    <td class="text-center">
+                    {{-- <td class="text-center">
                         <div class="btn-group">
-                            {{-- @include('utils.baseButtons', ['ruta' => $ruta, 'id' => $value->id, 'titulo_modificar' => $titulo_modificar, 'titulo_eliminar' => $titulo_eliminar]) --}}
+                            @include('utils.baseButtons', ['ruta' => $ruta, 'id' => $value->id, 'titulo_modificar' => $titulo_modificar, 'titulo_eliminar' => $titulo_eliminar])
                         </div>
-                    </td>
+                    </td> --}}
                 </tr>
                 <?php
                 $contador = $contador + 1;

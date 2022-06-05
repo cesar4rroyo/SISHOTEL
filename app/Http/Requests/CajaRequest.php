@@ -35,7 +35,7 @@ class CajaRequest extends FormRequest
     public function rules()
     {
         return [
-            'fecha' => 'required|date|date_format:Y-m-d',
+            'fecha' => 'required|date|date_format:Y-m-d H:i:s',
             'numero' => 'required',
             'tipo' => 'required|string',
             'concepto_id' => 'required|integer',

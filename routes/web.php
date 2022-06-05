@@ -23,7 +23,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::post('grupomenu/buscar', 'GrupoMenuController@buscar')->name('grupomenu.buscar');
     Route::get('grupomenu/eliminar/{id}/{listarluego}', 'GrupoMenuController@eliminar')->name('grupomenu.eliminar');
     Route::resource('grupomenu', 'GrupoMenuController', array('except' => array('show')));
-
     /* Rutas de OPCIONMENU */
     Route::post('opcionmenu/buscar', 'OpcionMenuController@buscar')->name('opcionmenu.buscar');
     Route::get('opcionmenu/eliminar/{id}/{listarluego}', 'OpcionMenuController@eliminar')->name('opcionmenu.eliminar');
@@ -230,6 +229,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     Route::get('caja/eliminar/{id}/{listarluego}', 'CajaController@eliminar')->name('caja.eliminar');
     Route::resource('caja', 'CajaController', array('except' => array('show')));
 
+
     // Route::get('caja/create/apertura', 'CajaController@create_apertura')->name('apertura_caja');
     // Route::get('caja/create', 'CajaController@create')->name('create_caja');
     // Route::get('caja/create/cierre', 'CajaController@create_cierre')->name('cierre_caja');
@@ -247,6 +247,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
 });
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['auth']], function () {
+
+    Route::get('persona-search', 'CajaController@autocompletePersona')->name('person-search');
+
+
     Route::get('reportes/huespedes', 'ReportesController@indexHuespedes')->name('reportes_huespedes');
     Route::post('reportes/huespedes/pdf/{formato?}', 'ReportesController@pdfHuespedes')->name('reportes_huespedes_pdf');
     Route::get('reportes/checkout', 'ReportesController@indexCheckout')->name('reportes_checkout');

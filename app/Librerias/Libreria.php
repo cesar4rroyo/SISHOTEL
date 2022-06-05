@@ -4,6 +4,7 @@ namespace App\Librerias;
 use Validator;
 use App\Menuoption;
 use App\Models\Categoria;
+use App\Models\Concepto;
 use App\Models\Unidad;
 use Illuminate\Support\Arr;
 
@@ -483,6 +484,12 @@ class Libreria
 	public function generateCboGeneral($model, $colum, $id, $default){
 		$cbo = [''=> $default] + $model::get()->pluck($colum, $id)->all();
 		return $cbo;
+	}
+
+	public function cboConceptoTipo($tipo)
+	{
+		$cbo = Concepto::where('tipo', '=', $tipo)->whereNotIn('id', [1,2])->get()->pluck('nombre', 'id')->all();
+		return ['' => 'Seleccione un concepto'] + $cbo;
 	}
 
 	/*

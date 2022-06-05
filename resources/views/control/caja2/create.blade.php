@@ -9,22 +9,24 @@
 <div class="row">
     <div class="form-group col-sm">
         <label for="fecha">Fecha:</label>
-        <input class="form-control" type="date" name="fecha" id="fecha" value="{{ $formData['fecha'] }}" {{$formData['opcion'] != 'NEW' ? 'readonly' : null}} required>
+        <input class="form-control" type="datetime" name="fecha" id="fecha" value="{{ date('Y-m-d H:i:s') }}"
+            {{ $formData['opcion'] != 'NEW' ? 'readonly' : null }} required>
     </div>
     <div class="form-group col-sm">
         <label for="numero">Número:</label>
         <input class=" form-control" type="text" name="numero" id="numero" value="{{ $formData['numero'] }}" required
-        readonly>
+            readonly>
     </div>
 </div>
 <div class="row">
     <div class="form-group col-sm">
         <label for="tipo">Tipo:</label>
         @if ($formData['opcion'] != 'NEW')
-            <input type="hidden" name="tipo" value={{$formData['selectedTipo']}} >
-            <input type="hidden" name="concepto_id" value={{$formData['selectedConcepto']}} >
+            <input type="hidden" name="tipo" value={{ $formData['selectedTipo'] }}>
+            <input type="hidden" name="concepto_id" value={{ $formData['selectedConcepto'] }}>
         @endif
-        <select name="tipo" id="tipo" class=" form-control" {{($formData['opcion'] != 'NEW' ? 'disabled' : null)}}>
+        <select name="tipo" id="tipo_select" class=" form-control"
+            {{ $formData['opcion'] != 'NEW' ? 'disabled' : null }}>
             @foreach ($formData['cboTipo'] as $key => $value)
                 @if ($formData['selectedTipo'] == $key)
                     <option value="{{ $key }}" selected>{{ $value }}</option>
@@ -34,9 +36,12 @@
             @endforeach
         </select>
     </div>
+    @if ($formData['opcion'] == 'NEW')
+        <input type="hidden" name="concepto_id" id="concepto_id">
+    @endif
     <div class="form-group col-sm">
-        <label for="concepto_id">Concepto:</label>
-        <select name="concepto_id" id="concepto_id" class=" form-control" {{($formData['opcion'] != 'NEW' ? 'disabled' : null)}}>
+        <label for="selectConcepto">Concepto:</label>
+        <select id="selectConcepto" class="form-control" disabled>
             @foreach ($formData['cboConcepto'] as $key => $value)
                 @if ($formData['selectedConcepto'] == $key)
                     <option value="{{ $key }}" selected>{{ $value }}</option>
@@ -45,25 +50,123 @@
                 @endif
             @endforeach
         </select>
+        <select id="selectIngresos" class="form-control" style="display: none">
+            @foreach ($formData['cboConceptoIngreso'] as $key => $value)
+                <option value="{{ $key }}">{{ $value }}</option>
+            @endforeach
+        </select>
+        <select id="selectEgresos" class="form-control" style="display: none">
+            @foreach ($formData['cboConceptoEgreso'] as $key => $value)
+                <option value="{{ $key }}">{{ $value }}</option>
+            @endforeach
+        </select>
     </div>
 </div>
-<div class="form-group">
-    <label for="total">Monto</label>
-    <input class="form-control" type="number" step="0.01" name="total" id="total" value="" required placeholder="Ingrese el monto ...">
-</div>
+@if ($formData['opcion'] == 'CIERRE')
+    <div class="row">
+        <div class="form-group col-sm">
+            <label for="total">Monto cierre</label>
+            <input class="form-control" type="number" step="0.01" name="total_cierre" id="total_cierre"
+                value="{{ $formData['montocierre'] }}" disabled placeholder="Ingrese el monto ...">
+        </div>
+        <div class="form-group col-sm">
+            <label for="total">Monto</label>
+            <input class="form-control" type="number" step="0.01" name="total" id="total" value="" required
+                placeholder="Ingrese el monto ...">
+        </div>
+    </div>
+@else
+    <div class="form-group">
+        <label for="total">Monto</label>
+        <input class="form-control" type="number" step="0.01" name="total" id="total" value="" required
+            placeholder="Ingrese el monto ...">
+    </div>
+@endif
+@if ($formData['opcion'] == 'NEW')
+    <div class="form-group">
+        <label for="persona_id">Persona</label>
+        <select name="persona_id" id="persona_id" class="form-control">
+            @foreach ($formData['cboPersona'] as $key => $value)
+                <option value="{{ $key }}">{{ $value }}</option>
+            @endforeach
+        </select>
+    </div>
+@endif
 <div class="form-group">
     <label for="comentario">Comentario</label>
-    <textarea class="form-control" name="comentario" id="comentario" rows="3" placeholder="Ingrese el comentario ..."></textarea>
+    <textarea class="form-control" name="comentario" id="comentario" rows="3"
+        placeholder="Ingrese el comentario ..."></textarea>
 </div>
 
 <div class="form-group">
-    @include('utils.modalBtns', ['entidad' => $formData['entidad'], 'boton' => $formData['boton']])
+    <div class="col-sm text-right">
+        @if ($formData['opcion'] == 'CIERRE')
+            <button class="btn btn-success btn-sm" id="btnGuardar"
+                onclick="validarCaja();guardar('{{ $formData['entidad'] }}', this);">
+                <i class="far fa-save"></i>
+                {{ $formData['boton'] }}
+            </button>
+        @else
+            <button class="btn btn-success btn-sm" id="btnGuardar"
+                onclick="guardar('{{ $formData['entidad'] }}', this);">
+                <i class="far fa-save"></i>
+                {{ $formData['boton'] }}
+            </button>
+        @endif
+        <button class="btn btn-warning btn-sm" id="btnCancelar{{ $formData['entidad'] }}" onclick="cerrarModal();">
+            <i class=" fas fa-exclamation"></i>
+            Cancelar
+        </button>
+    </div>
 </div>
 
 </form>
 <script type="text/javascript">
     $(document).ready(function() {
-        configurarAnchoModal('600');
+        configurarAnchoModal('500');
         init(IDFORMMANTENIMIENTO + '{!! $formData['entidad'] !!}', 'M', '{!! $formData['entidad'] !!}');
     });
+    //SELECT2 para persona_id
+    $('#persona_id').select2({
+        theme: "bootstrap"
+    });
+    $('#tipo_select').on('change', function() {
+        var value = this.value;
+        if (value == 'INGRESO') {
+            $('#selectConcepto').hide();
+            $('#selectIngresos').show();
+            $('#selectEgresos').hide();
+        } else if (value == 'EGRESO') {
+            $('#selectConcepto').hide();
+            $('#selectIngresos').hide();
+            $('#selectEgresos').show();
+        } else {
+            $('#selectConcepto').show();
+            $('#selectIngresos').hide();
+            $('#selectEgresos').hide();
+        }
+    });
+    $('#selectConcepto').on('change', function() {
+        var value = this.value;
+        $('#concepto_id').val(value);
+    });
+    $('#selectIngresos').on('change', function() {
+        var value = this.value;
+        $('#concepto_id').val(value);
+    });
+    $('#selectEgresos').on('change', function() {
+        var value = this.value;
+        $('#concepto_id').val(value);
+    });
+
+    function validarCaja(){
+        var montocierre = $('#total_cierre').val();
+        var total = $('#total').val();
+        var desbalance = montocierre - total;
+        if (desbalance !=0) {
+            if(!confirm('El monto de la caja esta con un desbalance de S/.'+ desbalance +', desea continuar?')){
+                return false;
+            }
+        }
+    }
 </script>

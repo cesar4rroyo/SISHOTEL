@@ -165,4 +165,9 @@ class Caja extends Model
     {
         return $this->generarTotalIngresos() - $this->generarTotalEgresos();
     }
+
+    public function generarTotalCierre()
+    {
+        return $this->generarTotalEfectivo() - $this->generarTotalEgresos();
+    }
 }
