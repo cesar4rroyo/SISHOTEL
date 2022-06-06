@@ -12,12 +12,12 @@
             onclick="modal('{{ URL::route($ruta['create'], ['option' => 'CIERRE', 'listar' => 'SI']) }}', 'Cierre de Caja', this);">
             Cierre <i class="fas fa-external-link-alt"></i>
         </button>
-        <a href="#">
+        <a href="{{ route($ruta['printA4']) }}" target="_blank">
             <button class="btn btn-outline-warning btn-sm">
                 Imprimir A4 <i class="fas fa-print"></i>
             </button>
         </a>
-        <a href="#">
+        <a href="{{ route($ruta['print']) }}" target="_blank">
             <button class="btn btn-outline-secondary btn-sm">
                 Imprimir Ticket <i class="fas fa-ticket-alt"></i>
             </button>

@@ -67,6 +67,8 @@ class CajaService extends InitService implements CRUDInterfaceService
             'edit' => 'caja.edit',
             'update' => 'caja.update',
             'destroy' => 'caja.destroy',
+            'printA4' => 'caja.printA4',
+            'print' => 'caja.print',
         ];
         $this->idForm = 'formMantenimiento' . $this->entity;
         //INSTACIA DE LIBRERIA
@@ -296,5 +298,17 @@ class CajaService extends InitService implements CRUDInterfaceService
             $this->modelo->find($id)->delete();
         });
         return is_null($error) ? "OK" : $error;
+    }
+
+    public function printService()
+    {
+        //TODO implementar
+        echo 'generando pfd';
+    }
+    
+    public function printA4Service()
+    {
+        //TODO implementar
+        echo 'generando pfd';
     }
 }

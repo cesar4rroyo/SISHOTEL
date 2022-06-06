@@ -28,6 +28,15 @@ class CajaController extends Controller
         $this->service = new CajaService();
     }
 
+    public function index()
+    {
+        try {
+            return $this->service->indexService();
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
+    }
+
     public function buscar(Request $request)
     {
         try {
@@ -94,116 +103,21 @@ class CajaController extends Controller
         }
     }
 
-
-    public function index()
+    public function print(Request $request)
     {
-        return $this->service->indexService();
-        $cajaApertura =
-            Caja::with('movimiento', 'persona', 'concepto')
-            ->latest('created_at')->first()->toArray();
-        $btnApertura = true;
-        $btnCerrar = false;
-        $btnNuevo = false;
-        $disabled = false;
-
-        if ($cajaApertura['concepto_id'] != '2') {
-            $btnApertura = false;
-            $btnCerrar = true;
-            $btnNuevo = true;
-            $disabled = true;
+        try {
+            return $this->service->printService($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
         }
-        $caja =
-            Caja::with('movimiento', 'persona', 'concepto')->whereHas('concepto', function ($q) {
-                $q->where('id', 2);
-            })
-            ->latest('created_at')->first()->toArray();
-
-        $fecha = $caja['created_at'];
-
-        if (!$fecha) {
-            $fecha = $caja['fecha'];
+    }
+    public function printA4(Request $request)
+    {
+        try {
+            return $this->service->printA4Service($request);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
         }
-
-        $cajas =
-            Caja::with('concepto', 'usuario', 'persona', 'movimiento')
-            ->where('created_at', '>', $fecha)
-            ->orderBy('created_at', 'DESC')
-            ->paginate(10);
-
-        $cajasArray= Caja::with('concepto', 'usuario', 'persona', 'movimiento')
-            ->where('created_at', '>', $fecha)
-            ->orderBy('created_at', 'DESC')
-            ->get()
-            ->toArray();
-
-        $totalEfectivo = 0;
-        $totalTarjeta = 0;
-        $totalDeposito = 0;
-        $totalVisa = 0;
-        $totalMaster = 0;
-        $totalOtrasTarjetas = 0;
-        $apertura = 0;
-        $totalGeneral = 0;
-
-        foreach ($cajasArray as $item) {
-            $totalGeneral = $totalGeneral + $item['total'];
-            if($item['concepto']['id']==1){
-                $apertura = $item['total'];
-            }
-            if($item['concepto']['id']==3 && is_null($item['movimiento'])){
-                $totalEfectivo=$totalEfectivo + $item['efectivo'];
-                $totalTarjeta=$totalTarjeta + $item['tarjeta'];
-                $totalDeposito=$totalDeposito + $item['deposito'];
-                if(($item['tipotarjeta'])!=''){
-                    switch ($item['tipotarjeta']) {
-                        case 'visa':
-                            $totalVisa = $totalVisa + $item['tarjeta'];
-                            break;
-                        case 'master':
-                            $totalMaster = $totalMaster + $item['tarjeta'];
-                            break;
-                        case 'otro':
-                            $totalOtrasTarjetas = $totalOtrasTarjetas + $item['tarjeta'];                            
-                            break;                       
-                    }
-                }
-            }                    
-            if(!is_null($item['movimiento'])){
-                $totalEfectivo=$totalEfectivo + $item['movimiento']['efectivo'];
-                $totalTarjeta=$totalTarjeta + $item['movimiento']['tarjeta'];
-                $totalDeposito=$totalDeposito + $item['movimiento']['deposito'];
-                if(($item['movimiento']['tipotarjeta'])!=''){
-                    switch ($item['movimiento']['tipotarjeta']) {
-                        case 'visa':
-                            $totalVisa = $totalVisa + $item['movimiento']['tarjeta'];
-                            break;
-                        case 'master':
-                            $totalMaster = $totalMaster + $item['movimiento']['tarjeta'];
-                            break;
-                        case 'otro':
-                            $totalOtrasTarjetas = $totalOtrasTarjetas + $item['movimiento']['tarjeta'];                            
-                            break;                       
-                    }
-                }
-            }            
-        }
-
-
-        $info=[
-            'visa'=>$totalVisa,
-            'master'=>$totalMaster,
-            'otrasTarjetas'=>$totalOtrasTarjetas,
-            'apertura'=>$apertura,
-            'tarjetas'=>$totalTarjeta,
-            'efectivo'=>$totalEfectivo,
-            'depositos'=>$totalDeposito,
-            'total'=>$totalGeneral,
-        ];
-
-        //dd($totalEfectivo . " " . $totalTarjeta . " " . $totalDeposito);
-
-
-        return view('control.caja.index', compact('disabled', 'cajas', 'btnApertura', 'btnCerrar', 'btnNuevo','info'));
     }
 
     // public function exportPdf()

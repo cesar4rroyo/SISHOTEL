@@ -227,6 +227,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     /* Rutas de CAJA */
     Route::post('caja/buscar', 'CajaController@buscar')->name('caja.buscar');
     Route::get('caja/eliminar/{id}/{listarluego}', 'CajaController@eliminar')->name('caja.eliminar');
+    Route::get('caja/print', 'CajaController@print')->name('caja.print');
+    Route::get('caja/printA4', 'CajaController@printA4')->name('caja.printA4');
     Route::resource('caja', 'CajaController', array('except' => array('show')));
 
 
