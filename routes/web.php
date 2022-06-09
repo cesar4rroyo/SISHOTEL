@@ -45,17 +45,20 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
 
 });
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'acceso']], function () {
-    /* Rutas de PERSONA */
-    Route::get('persona/create', 'PersonaController@create')->name('create_persona');
-    Route::get('persona', 'PersonaController@index')->name('persona');
-    Route::get('persona/{id}', 'PersonaController@show')->name('show_persona');
-    Route::post('persona', 'PersonaController@store')->name('store_persona');
-    Route::post('persona/checkin', 'PersonaController@store_checkin')->name('store_persona_checkin');
-    Route::post('persona/checkin/reserva/{id}', 'PersonaController@store_checkin_reserva')->name('store_persona_checkin_reserva');
-    Route::get('persona/{id}/edit', 'PersonaController@edit')->name('edit_persona');
-    Route::put('persona/{id}', 'PersonaController@update')->name('update_persona');
-    Route::delete('persona/{id}/destroy', 'PersonaController@destroy')->name('destroy_persona');
-    Route::post('persona/pasajero/destroy', 'PersonaController@pasajeroDestroy')->name('destroy_pasajero');
+    // /* Rutas de PERSONA */
+    Route::post('persona/buscar', 'PersonaController@buscar')->name('persona.buscar');
+    Route::get('persona/eliminar/{id}/{listarluego}', 'PersonaController@eliminar')->name('persona.eliminar');
+    Route::resource('persona', 'PersonaController', array('except' => array('show')));
+    // Route::get('persona/create', 'PersonaController@create')->name('create_persona');
+    // Route::get('persona', 'PersonaController@index')->name('persona');
+    // Route::get('persona/{id}', 'PersonaController@show')->name('show_persona');
+    // Route::post('persona', 'PersonaController@store')->name('store_persona');
+    // Route::post('persona/checkin', 'PersonaController@store_checkin')->name('store_persona_checkin');
+    // Route::post('persona/checkin/reserva/{id}', 'PersonaController@store_checkin_reserva')->name('store_persona_checkin_reserva');
+    // Route::get('persona/{id}/edit', 'PersonaController@edit')->name('edit_persona');
+    // Route::put('persona/{id}', 'PersonaController@update')->name('update_persona');
+    // Route::delete('persona/{id}/destroy', 'PersonaController@destroy')->name('destroy_persona');
+    // Route::post('persona/pasajero/destroy', 'PersonaController@pasajeroDestroy')->name('destroy_pasajero');
 
     //store in checkout
     Route::post('persona/checkout/store', 'PersonaController@store_checkout')->name('store_persona_checkout');
@@ -249,8 +252,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
 });
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['auth']], function () {
-
-    Route::get('persona-search', 'CajaController@autocompletePersona')->name('person-search');
 
 
     Route::get('reportes/huespedes', 'ReportesController@indexHuespedes')->name('reportes_huespedes');

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Procesos\Caja;
 use App\Models\Procesos\Comprobante;
-use App\Models\Procesos\Movimiento;
 use App\Models\Procesos\Pasajero;
 use App\Models\Procesos\Reserva;
 use App\Models\Seguridad\Usuario;
@@ -96,6 +95,50 @@ class Persona extends Model
 
     public function getFullNameBussinessAttribute()
     {
-        return $this->razonsocial;
+        return $this->razonsocial ?? '-';
     }
+
+    public function getFullNameAllAttribute()
+    {
+        $nombres = $this->nombres;
+        if(is_null($nombres) || trim($nombres)==''){
+            $nombres = $this->razonsocial;
+        }
+        return $nombres;
+    }
+
+    public function getFullDocumentAllAttribute()
+    {
+        $documento = $this->dni;
+        if(is_null($documento) || trim($documento)==''){
+            $documento = $this->ruc;
+        }
+        return $documento;
+    }
+
+    public function scopelistar($query, $nombre)
+	{
+		return $query
+            ->where(function ($subquery) use ($nombre) {
+				if (!is_null($nombre) && strlen($nombre) > 0) {
+					$subquery->where('nombres', 'LIKE', '%'.$nombre.'%');
+				}
+			})
+            ->orWhere(function ($subquery) use ($nombre) {
+				if (!is_null($nombre) && strlen($nombre) > 0) {
+					$subquery->orWhere('razonsocial', 'LIKE', '%'.$nombre.'%');
+				}
+			})
+            ->orWhere(function ($subquery) use ($nombre) {
+				if (!is_null($nombre) && strlen($nombre) > 0) {
+					$subquery->orWhere('ruc', 'LIKE', '%'.$nombre.'%');
+				}
+			})
+            ->orWhere(function ($subquery) use ($nombre) {
+				if (!is_null($nombre) && strlen($nombre) > 0) {
+					$subquery->orWhere('dni', 'LIKE', '%'.$nombre.'%');
+				}
+			})
+			->orderBy('id', 'DESC');
+	}
 }

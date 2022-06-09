@@ -15,8 +15,8 @@ class PersonaSeeder extends Seeder
     {
         DB::table('persona')->insert([
             'nombres' => 'Varios',
-            'ciudad' => 'Chiclayo'
-
+            'ciudad' => 'Chiclayo',
+            'dni'=> '88888888',
         ]);
     }
 }

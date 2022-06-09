@@ -216,7 +216,7 @@ class CajaService extends InitService implements CRUDInterfaceService
             'selectedConcepto' => $selectedConcepto,
             'cboConceptoIngreso' => $this->clsLibreria->cboConceptoTipo('Ingreso'),
             'cboConceptoEgreso' => $this->clsLibreria->cboConceptoTipo('Egreso'),
-            'cboPersona' => $this->clsLibreria->generateCboGeneral(Persona::class, 'nombres', 'id', 'Seleccione una opción'),
+            'cboPersona' => $this->clsLibreria->generateCboGeneral(Persona::class, 'full_name_all', 'id', 'Seleccione una opción'),
             'cboConcepto' => $this->clsLibreria->generateCboGeneral(Concepto::class, 'nombre', 'id', 'Seleccione una opción'),
         ];
         return view($this->folderview . '.create')->with(compact('formData'));
