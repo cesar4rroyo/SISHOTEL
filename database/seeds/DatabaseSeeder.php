@@ -26,7 +26,6 @@ class DatabaseSeeder extends Seeder
             'persona',
             'usuario',
             'acceso',
-            'caja'
 
         ]);
         $this->call(TipoHabitacionSeeder::class);
@@ -45,7 +44,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PersonaSeeder::class);
         $this->call(UsuarioAdministradorSeeder::class);
         $this->call(AccesoSeeder::class);
-        $this->call(CajaSeeder::class);
     }
 
     protected function truncateTablas(array $tablas)

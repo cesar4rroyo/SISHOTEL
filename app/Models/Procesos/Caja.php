@@ -62,12 +62,18 @@ class Caja extends Model
     public function idUltimaApertura()
     {
         $caja = $this->where('concepto_id', 1)->latest('created_at')->first();
+        if(!$caja){
+            return 0;
+        }
         return $caja->id;
     }
 
     public function cajaAbierta()
     {
         $caja = $this->latest('created_at')->first();
+        if(!$caja){
+            return false;
+        }
         if ($caja->concepto_id == 2) {
             return false;
         } else { //CAJA ABIERTA
