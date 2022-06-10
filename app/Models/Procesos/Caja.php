@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Concepto;
 use App\Models\Persona;
 use App\Models\Seguridad\Usuario;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Caja extends Model
