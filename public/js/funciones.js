@@ -1,3 +1,5 @@
+// FUNCIONES GENERALES
+
 var Hotel = (function () {
     return {
         notificaciones: function (mensaje, titulo, tipo) {
@@ -20,6 +22,18 @@ var Hotel = (function () {
         },
     };
 })();
+
+function toggleDivCheckBox(id, div){
+    var e =  $('#' + id).prop('checked');
+    if(e){
+        $('#' + div).show();
+    }else{
+        $('#' + div).hide();
+    }
+}
+
+
+//FUNCIONES ESPECIFICAS
 
 function buscarPersona(dni) {
     $.ajax({
@@ -88,4 +102,24 @@ function BuscarNroDocumento(nrodoc=null) {
         $("#telefono").val("");
         $("#email").val("");
     }
+}
+
+
+function handleChangeTipoDocumento(id, url, input){
+    var e = $('#' + id).val();
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: "&" + id + "=" + e,
+        success: function (r) {
+            $('#' + input).val(r);
+        },
+        error: function (e) {
+            Hotel.notificaciones(
+                "Ha ocurrido un error en el servidor",
+                "Operación no realizada",
+                "danger"
+            );
+        },
+    });
 }

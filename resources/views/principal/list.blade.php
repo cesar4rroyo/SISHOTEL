@@ -5,7 +5,7 @@
         <div class="card-header text-uppercase font-weight-bold">{{ $pisoModel->nombre }}</div>
         <div class="card-body card-group">
             @foreach ($lista as $key => $value)
-                @include('principal.habitacion', ['habitacion' => $value])
+                @include('principal.habitacion', ['habitacion' => $value, 'ruta' => $ruta])
             @endforeach
         </div>
     </div>

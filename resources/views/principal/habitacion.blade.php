@@ -30,47 +30,47 @@
             <div class="btn-group">
                 @switch($habitacion->situacion)
                     @case('Disponible')
-                        <a href="{{ route('edit_movimiento', $habitacion->id) }}"
-                            class="btn btn-app bg-success text-decoration-none">
+                        <a href="#"
+                            class="btn btn-app bg-success text-decoration-none" onclick="modal('{{URL::route($ruta['create'], array('id'=>$habitacion->id, 'listar'=>'SI'))}}', 'Check-In', this);">
                             <i class="fas fa-check-circle"></i>
                             Check-In
                         </a>
                     @break
 
                     @case('Ocupada')
-                        <a href="{{ route('edit_movimiento', $habitacion->id) }}"
-                            class="btn btn-app bg-danger text-decoration-none">
+                        <a href="#"
+                            class="btn btn-app bg-danger text-decoration-none" onclick="modal('{{URL::route($ruta['edit'], array('id'=>$habitacion->id, 'listar'=>'SI'))}}', 'Check-Out', this);">
                             <i class="fas fa-check-circle"></i>
                             Check-Out
                         </a>
-                        <a href="{{ route('add_movimieto', ['id' => $habitacion->id]) }}"
-                            class="btn btn-app bg-primary text-decoration-none">
+                        <a href="#"
+                            class="btn btn-app bg-primary text-decoration-none" onclick="modal('{{URL::route($ruta['addmovimiento'], array('id'=> $habitacion->id, 'listar'=>'SI', 'movimiento'=>'producto'))}}', 'Agregar Productos', this);">
                             <i class="fas fa-gifts"></i>
                             Productos
                         </a>
-                        <a href="{{ route('add_movimieto', ['id' => $habitacion->id, 'movimiento' => 'servicio']) }}"
-                            class="btn btn-app bg-secondary text-decoration-none">
+                        <a href="#"
+                            class="btn btn-app bg-secondary text-decoration-none" onclick="modal('{{URL::route($ruta['addmovimiento'], array('id'=> $habitacion->id, 'listar'=>'SI', 'movimiento'=>'servicio'))}}', 'Agregar Servicios', this);">
                             <i class="fa fas fa-concierge-bell"></i>
                             Servicios
                         </a>
                     @break
 
                     @case('YA PAGO')
-                        <a href="{{ route('terminar_movimiento', $habitacion->id) }}"
-                            class="btn btn-app bg-danger text-decoration-none">
+                        <a href="#"
+                            class="btn btn-app bg-danger text-decoration-none" onclick="modal('{{URL::route($ruta['edit'], array('id'=> $habitacion->id, 'listar'=>'SI'))}}', 'Check-Out', this);">
                             <i class="fas fa-check-circle"></i>
                             Terminar
                         </a>
                     @break
 
                     @default
-                        <a href="{{ route('edit_movimiento', ['id' => $habitacion->id]) }}"
-                            class="btn btn-app bg-success disabled text-decoration-none">
+                        <a href="#"
+                            class="btn btn-app bg-success text-decoration-none disabled" onclick="modal('{{URL::route($ruta['create'], array('id'=>$habitacion->id, 'listar'=>'SI'))}}', 'Check-In', this);">
                             <i class="fas fa-check-circle"></i>
                             Check-In
                         </a>
-                        <a href="{{ route('actualizarHabitacion', $habitacion->id) }}"
-                            class="btn btn-app bg-warning text-decoration-none">
+                        <a href="#"
+                            class="btn btn-app bg-warning text-decoration-none" onclick="modal('{{URL::route($ruta['edit'], array('id'=> $habitacion->id, 'listar'=>'SI'))}}', 'Actualizar Habitación', this);">
                             <i class="fas fa-check-circle"></i>
                             Actualizar Habitación
                         </a>

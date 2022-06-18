@@ -141,6 +141,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Control', 'middleware' => ['a
     Route::post('habitaciones/buscar', 'PrincipalController@buscar')->name('habitaciones.buscar');
     Route::get('habitaciones/eliminar/{id}/{listarluego}', 'PrincipalController@eliminar')->name('habitaciones.eliminar');
     Route::resource('habitaciones', 'PrincipalController', array('except' => array('show')));
+    Route::get('habitaciones/generarNumero', 'PrincipalController@generarNumero')->name('habitaciones.generarNumero');
     // Route::get('habitaciones/create', 'HabitacionesController@create')->name('create_habitaciones');
     // Route::get('habitaciones', 'HabitacionesController@index')->name('habitaciones');
     // Route::get('habitaciones/{id}', 'HabitacionesController@show')->name('show_habitaciones');

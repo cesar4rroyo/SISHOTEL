@@ -35,6 +35,25 @@ class PrincipalController extends Controller
         }
     }
 
+    public function checkin(Request $request, $id)
+    {
+        dd($request->all());
+        try {
+            return $this->service->checkinService($request, $id);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
+    }
+
+    public function generarNumero(Request $request)
+    {
+        try {
+            return $this->service->generarNumeroService($request->tipo);
+        } catch (\Throwable $th) {
+            return InitService::MessageResponse($th->getMessage(), 'danger');
+        }
+    }
+
     public function create(Request $request)
     {
         try {
@@ -91,4 +110,5 @@ class PrincipalController extends Controller
             return InitService::MessageResponse($th->getMessage(), 'danger');
         }
     }
+    
 }
