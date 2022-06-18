@@ -85,11 +85,7 @@
 @if ($formData['opcion'] == 'NEW')
     <div class="form-group">
         <label for="persona_id">Persona</label>
-        <select name="persona_id" id="persona_id" class="form-control">
-            @foreach ($formData['cboPersona'] as $key => $value)
-                <option value="{{ $key }}">{{ $value }}</option>
-            @endforeach
-        </select>
+        @include('utils.select2General', ['name'=>'persona_id' , 'cbo'=>$formData['cboPersona']])
     </div>
 @endif
 <div class="form-group">
@@ -126,10 +122,6 @@
         configurarAnchoModal('500');
         init(IDFORMMANTENIMIENTO + '{!! $formData['entidad'] !!}', 'M', '{!! $formData['entidad'] !!}');
     });
-    //SELECT2 para persona_id
-    $('#persona_id').select2({
-        theme: "bootstrap"
-    });
     $('#tipo_select').on('change', function() {
         var value = this.value;
         if (value == 'INGRESO') {
@@ -159,14 +151,4 @@
         $('#concepto_id').val(value);
     });
 
-    function validarCaja(){
-        var montocierre = $('#total_cierre').val();
-        var total = $('#total').val();
-        var desbalance = montocierre - total;
-        if (desbalance !=0) {
-            if(!confirm('El monto de la caja esta con un desbalance de S/.'+ desbalance +', desea continuar?')){
-                return false;
-            }
-        }
-    }
 </script>

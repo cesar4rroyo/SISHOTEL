@@ -6,6 +6,7 @@ use App\Interfaces\CRUDInterfaceService;
 use Illuminate\Http\Request;
 use App\Librerias\Libreria;
 use App\Models\Habitacion;
+use App\Models\Persona;
 use App\Models\Piso;
 use App\Models\Procesos\Comprobante;
 use App\Models\Procesos\Movimiento;
@@ -37,7 +38,8 @@ class PrincipalService extends InitService implements CRUDInterfaceService
             'destroy' => 'habitaciones.destroy',
             'checkin' => 'habitaciones.checkin',
             'addmovimiento' => 'habitaciones.addmovimiento',
-            'generarNumero'=> 'habitaciones.generarNumero',
+            'generarNumero' => 'habitaciones.generarNumero',
+            'addPersona' => 'persona.create',
         ];
         $this->idForm = 'formMantenimiento' . $this->entity;
         $this->clsLibreria = new Libreria();
@@ -70,7 +72,7 @@ class PrincipalService extends InitService implements CRUDInterfaceService
             'titulo_registrar' => $this->tituloRegistrar,
             'ruta' => $this->rutas,
             'cboPisos' => $this->clsLibreria->generateCboGeneral(Piso::class, 'nombre', 'id', 'Seleccione un piso'),
-            'pisoSelected'=> $this->PISO_SELECTED
+            'pisoSelected' => $this->PISO_SELECTED
         ]);
     }
 
@@ -88,8 +90,10 @@ class PrincipalService extends InitService implements CRUDInterfaceService
             'habitacion' => $request->id,
             'startDate' => date('Y-m-d H:i:s'),
             'endDate' => date('Y-m-d H:i:s') . ' + 1 day',
-            'cboDocumentos' => ['Ticket' => 'Ticket', 'Boleta'=>'Boleta', 'Factura'=>'Factura'],
+            'cboDocumentos' => ['Ticket' => 'Ticket', 'Boleta' => 'Boleta', 'Factura' => 'Factura'],
+            'cboPersona' => $this->clsLibreria->generateCboGeneral(Persona::class, 'full_name_all', 'id', 'Seleccione una opción'),
             'rutaTipoDoc' => $this->rutas['generarNumero'],
+            'addPersona' => $this->rutas['addPersona'],
         ];
         return view($this->folderview . '.checkin')->with(compact('formData'));
     }
@@ -127,7 +131,7 @@ class PrincipalService extends InitService implements CRUDInterfaceService
     public function updateService(Request $request, $id)
     {
         $existe = Libreria::verificarExistencia($id, $this->entity);
-        if(!$existe){
+        if (!$existe) {
             return $existe;
         }
         $error = DB::transaction(function () use ($request, $id) {
@@ -139,7 +143,7 @@ class PrincipalService extends InitService implements CRUDInterfaceService
     public function eliminarService($id, $listarLuego)
     {
         $existe = Libreria::verificarExistencia($id, $this->entity);
-        if(!$existe){
+        if (!$existe) {
             return $existe;
         }
         $listar = 'NO';
@@ -153,12 +157,11 @@ class PrincipalService extends InitService implements CRUDInterfaceService
             'id' => $this->idForm,
             'autocomplete' => 'off',
             'boton' => 'Eliminar',
-            'entidad'=> $this->entity,
+            'entidad' => $this->entity,
             'listar' => $listar,
             'modelo' => $this->modelo->find($id),
         ];
         return view('utils.confirmDelete')->with(compact('formData'));
-
     }
 
     public function generarNumeroService($tipo)
@@ -169,7 +172,7 @@ class PrincipalService extends InitService implements CRUDInterfaceService
     public function destroyService($id)
     {
         $existe = Libreria::verificarExistencia($id, $this->entity);
-        if(!$existe){
+        if (!$existe) {
             return $existe;
         }
         $error = DB::transaction(function () use ($id) {
@@ -177,5 +180,4 @@ class PrincipalService extends InitService implements CRUDInterfaceService
         });
         return is_null($error) ? "OK" : $error;
     }
-
 }

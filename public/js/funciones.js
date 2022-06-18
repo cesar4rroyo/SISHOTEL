@@ -35,6 +35,17 @@ function toggleDivCheckBox(id, div){
 
 //FUNCIONES ESPECIFICAS
 
+function validarCaja(){
+    var montocierre = $('#total_cierre').val();
+    var total = $('#total').val();
+    var desbalance = montocierre - total;
+    if (desbalance !=0) {
+        if(!confirm('El monto de la caja esta con un desbalance de S/.'+ desbalance +', desea continuar?')){
+            return false;
+        }
+    }
+}
+
 function buscarPersona(dni) {
     $.ajax({
         type: "GET",
