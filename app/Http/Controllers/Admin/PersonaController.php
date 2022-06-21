@@ -47,10 +47,10 @@ class PersonaController extends Controller
         }
     }
 
-    public function store(PersonaRequest $request)
+    public function store(PersonaRequest $request, $type=null)
     {
         try {
-            return $this->service->storeService($request);
+            return $this->service->storeService($request, $type);
         } catch (\Throwable $th) {
             return InitService::MessageResponse($th->getMessage(), 'danger');
         }

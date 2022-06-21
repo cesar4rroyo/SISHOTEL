@@ -14,4 +14,5 @@
             @include('utils.select2General', ['name'=>'persona_id_comprobante' , 'cbo'=>$cboPersona])
         </div>
     </div>
+    <hr>
 </div>

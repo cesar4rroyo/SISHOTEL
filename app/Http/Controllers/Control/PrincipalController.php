@@ -63,8 +63,9 @@ class PrincipalController extends Controller
         }
     }
 
-    public function store(CajaRequest $request)
+    public function store(Request $request)
     {
+        dd($request->all());
         try {
             return $this->service->storeService($request);
         } catch (\Throwable $th) {

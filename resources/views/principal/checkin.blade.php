@@ -22,7 +22,7 @@
     <div class="form-group col-sm">
         <label for="nombre">Huésped Principal</label>
         <span class="badge badge-secondary"
-            onclick="modal('{{ URL::route($formData['addPersona'], ['listar' => 'NO']) }}', 'Agregar Huesped', this);">
+            onclick="modal('{{ URL::route($formData['addPersona'], ['from' => 'MODAL']) }}', 'Agregar Huesped', this);">
             <i class=" fas fa-plus-circle"></i> Agregar
         </span>
         @include('utils.select2General', ['name'=>'persona_id' , 'cbo'=>$formData['cboPersona']])
@@ -51,5 +51,9 @@
         init(IDFORMMANTENIMIENTO + '{!! $formData['entidad'] !!}', 'M', '{!! $formData['entidad'] !!}');
         toggleDivCheckBox('cobroAdelantado', 'divFacturacion');
         handleChangeTipoDocumento('tipo', '{{ URL::route($formData['rutaTipoDoc']) }}', 'numero');
+    });
+    $('#persona_id').change(function(){
+        var value = $(this).val();
+        sameValueInput(value, 'persona_id_comprobante');
     });
 </script>

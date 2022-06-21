@@ -191,9 +191,10 @@ function guardar (entidad, idboton, entidad2) {
 		}
 		respuesta = 'ERROR';
 	}).always(function() {
-		if(respuesta.trim() === 'ERROR'){
+		var resp = respuesta.trim();
+		if(resp === 'ERROR'){
 		}else {
-			if (respuesta.trim() === 'OK') {
+			if (resp === 'OK') {
 				cerrarModal();
 				Hotel.notificaciones("Accion realizada correctamente", "Realizado" , "success");
 				if (listar.trim() === 'SI') {
@@ -203,12 +204,25 @@ function guardar (entidad, idboton, entidad2) {
 					buscarCompaginado('', 'Accion realizada correctamente', entidad, 'OK');
 				}  
 				buscarCompaginado('', 'Accion realizada correctamente', entidad, 'OK');
-			} else {
+			} else if(JSON.parse(respuesta).case.trim() == 'storePersonFromModal'){
+				cerrarModal();
+				Hotel.notificaciones("Accion realizada correctamente", "Realizado" , "success");
+				var data = JSON.parse(respuesta);
+				agregarDatoToSelect(data.id, data.persona, data.persona_id);
+				agregarDatoToSelect(data.id2, data.persona, data.persona_id);
+			}else {
 				mostrarErrores(respuesta, idformulario, entidad);
 			}
 		}
 	});
 }
+
+function agregarDatoToSelect(idSelect, texto, value){
+	var select = $('#'+idSelect);
+	select.append('<option value="'+value+'">'+texto+'</option>');
+	select.val(value);
+}
+
 
 function mostrarErrores (data, idformulario, entidad, type = null) {
 	try {

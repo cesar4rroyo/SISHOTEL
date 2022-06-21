@@ -134,3 +134,9 @@ function handleChangeTipoDocumento(id, url, input){
         },
     });
 }
+
+function sameValueInput(value, idInput){
+    var input = $('#' + idInput);
+    input.val(value);
+}
+

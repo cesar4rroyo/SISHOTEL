@@ -46,6 +46,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
 });
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'acceso']], function () {
     // /* Rutas de PERSONA */
+    Route::post('persona/modal/{type?}', 'PersonaController@store')->name('persona.store.modal');
     Route::post('persona/buscar', 'PersonaController@buscar')->name('persona.buscar');
     Route::get('persona/eliminar/{id}/{listarluego}', 'PersonaController@eliminar')->name('persona.eliminar');
     Route::resource('persona', 'PersonaController', array('except' => array('show')));

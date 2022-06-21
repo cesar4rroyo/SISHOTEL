@@ -25,6 +25,7 @@ class PersonaService extends InitService implements CRUDInterfaceService
             'search' => 'persona.buscar',
             'index' => 'persona.index',
             'store' => 'persona.store',
+            'storeFromModal' => 'persona.store.modal',
             'delete' => 'persona.eliminar',
             'create' => 'persona.create',
             'edit' => 'persona.edit',
@@ -119,8 +120,13 @@ class PersonaService extends InitService implements CRUDInterfaceService
 
     public function createService(Request $request)
     {
+        if($request->from == 'MODAL'){
+            $ruta = array($this->rutas['storeFromModal'], ['type' => 'MODAL']);
+        }else{
+            $ruta = $this->rutas['store'];
+        }
         $formData = [
-            'route' => $this->rutas['store'],
+            'route' => $ruta,
             'method' => 'POST',
             'class' => 'form-horizontal',
             'id' => $this->idForm,
@@ -132,12 +138,25 @@ class PersonaService extends InitService implements CRUDInterfaceService
         return view($this->folderview . '.create')->with(compact('formData'));
     }
 
-    public function storeService(Request $request)
+    public function storeService(Request $request, $type = null)
     {
-        $error = DB::transaction(function () use ($request) {
+        $idCreated = null;
+        $error = DB::transaction(function () use ($request, &$idCreated) {
             $model = $this->modelo->create($request->all());
             $model->roles()->sync(2);
+            $idCreated = $model->id;
         });
+        if(isset($type)){
+            $data = [
+                'case' => 'storePersonFromModal',
+                'id' => 'persona_id',
+                'id2' => 'persona_id_comprobante',
+                'persona' => $request->nombres,
+                'persona_id' => $idCreated,
+            ];
+            $data = json_encode($data);
+            return is_null($error) ? $data : $error;
+        }
         return is_null($error) ? "OK" : $error;
     }
 
