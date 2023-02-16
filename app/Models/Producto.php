@@ -7,10 +7,12 @@ use App\Models\Procesos\DetalleComprobante;
 use App\Models\Procesos\DetalleMovimiento;
 use App\Models\Procesos\Movimiento;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Mockery\Mock;
 
 class Producto extends Model
 {
+    use SoftDeletes;
     protected $table = 'producto';
     protected $primaryKey = 'id';
     protected $fillable = [

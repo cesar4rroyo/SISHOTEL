@@ -46,13 +46,14 @@ class PersonaController extends Controller
         return view('admin.persona.index', compact('persona', 'rol'));
     }
 
-    public function getPersonaDNI(Request $request){
+    public function getPersonaDNI(Request $request)
+    {
         $dni = $request->dni;
         $persona = Persona::with('nacionalidad', 'roles')
             ->where('dni', $dni)
             ->get()
             ->toArray()[0];
-     
+
         $roles = [];
         if (count($persona['roles']) != 0) {
             foreach ($persona['roles'] as $item) {
@@ -61,10 +62,10 @@ class PersonaController extends Controller
             }
         }
         return response()->json(['persona' => $persona, 'roles' => $roles]);
-
     }
 
-    public function pasajeroDestroy(Request $request){
+    public function pasajeroDestroy(Request $request)
+    {
         if ($request->ajax()) {
             $id = $request->id;
             Pasajero::destroy($id);
@@ -74,10 +75,10 @@ class PersonaController extends Controller
         }
     }
 
-   
+
     public function store_checkout(Request $request)
     {
-        
+
         try {
             $persona = Persona::create([
                 'nombres' => strtoupper($request->nombresH),
@@ -93,7 +94,7 @@ class PersonaController extends Controller
                 'nacionalidad_id' => $request->nacionalidad_idH,
                 'edad' => $request->edadH,
                 'email' => $request->emailH,
-                'ciudad' => strtoupper($request->ciudadH),    
+                'ciudad' => strtoupper($request->ciudadH),
             ]);
             $persona->roles()->sync($request->rol_idH);
 
@@ -106,14 +107,13 @@ class PersonaController extends Controller
             return response()->json([
                 'message' => 'Se agregado correctamente',
                 'type' => 'success'
-            ]); 
+            ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Ha ocurrido un error ' . $th->getMessage(),
                 'type' => 'error'
             ]);
         }
-
     }
 
     public function addHuespedHabitacion(Request $request)
@@ -123,12 +123,12 @@ class PersonaController extends Controller
             $id_movimiento = $request->id_movimiento;
             $pasajeros = Pasajero::get()->toArray();
             foreach ($pasajeros as $item) {
-                if($item['persona_id']==$id_persona && $item['movimiento_id']==$id_movimiento){
+                if ($item['persona_id'] == $id_persona && $item['movimiento_id'] == $id_movimiento) {
                     return response()->json([
                         'message' => 'Este pasajero ya se encuentra en la habitación',
                         'type' => 'error'
-                    ]); 
-                }else{
+                    ]);
+                } else {
                     $pasajero = Pasajero::create([
                         'movimiento_id' => $id_movimiento,
                         'persona_id' => $id_persona
@@ -136,9 +136,9 @@ class PersonaController extends Controller
                     return response()->json([
                         'message' => 'Se agregado correctamente',
                         'type' => 'success'
-                    ]); 
+                    ]);
                 }
-            }        
+            }
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Ha ocurrido un error ' . $th->getMessage(),
@@ -169,9 +169,9 @@ class PersonaController extends Controller
     {
         $persona = Persona::whereNotNull('ruc')->get()->toArray();
         $data = [];
-        $data[] = ['id'=>'', 'nombre'=>'Seleccione un cliente'];
+        $data[] = ['id' => '', 'nombre' => 'Seleccione un cliente'];
         foreach ($persona as $item) {
-            if(strlen($item['ruc'])==11 && trim($item['razonsocial'])!=''){
+            if (strlen($item['ruc']) == 11 && trim($item['razonsocial']) != '') {
                 $data[] = [
                     'id' => $item['id'],
                     'nombre' => $item['razonsocial'],
@@ -266,6 +266,21 @@ class PersonaController extends Controller
         $initialDate = Carbon::now()->format('Y-m-d\TH:i');
         $roles = Rol::orderBy('id')->pluck('nombre', 'id')->toArray();
         $nacionalidades = Nacionalidad::with('persona')->get();
+        //verificar si existe con DNI o Ruc
+        if (is_null($request->ruc)) {
+            $persona = Persona::where('dni', $request->dni)->first();
+        } else {
+            $persona = Persona::where('ruc', $request->ruc)->first();
+        }
+        if ($persona) {
+            $personas = Persona::getClientesConRucDni();
+            if (!empty($request->reserva)) {
+                $id_reserva = $request->reserva;
+                return view('control.checkin.index', compact('roles', 'nacionalidades', 'habitacion', 'personas', 'initialDate', 'id_reserva'));
+            }
+
+            return view('control.checkin.index', compact('roles', 'nacionalidades', 'habitacion', 'personas', 'initialDate'));
+        }
 
         $persona = Persona::create([
             'nombres' => strtoupper($request->nombres),

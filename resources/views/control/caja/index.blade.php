@@ -82,7 +82,7 @@
 
                                         @if ($item->persona)
                                         @if (is_null($item->persona->razonsocial) ||
-                                        trim($item->persona->razonsocial)=='')
+                                        trim($item->persona->razonsocial)=='' || trim($item->persona->razonsocial == '-'))
                                         {{$item->persona->nombres .' ' . $item->persona->apellidos}}
                                         @else
                                         {{isset($item->persona->razonsocial) ? $item->persona->razonsocial : 'VARIOS'}}

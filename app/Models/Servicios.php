@@ -6,9 +6,12 @@ use App\Models\Procesos\DetalleCaja;
 use App\Models\Procesos\DetalleComprobante;
 use App\Models\Procesos\DetalleMovimiento;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Servicios extends Model
 {
+
+    use SoftDeletes;
 
     protected $table = 'servicios';
 
