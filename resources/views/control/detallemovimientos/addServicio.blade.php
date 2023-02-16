@@ -281,10 +281,10 @@
                         }                    
                         $.ajax({
                             type:'GET',
-                            url:'http://192.168.0.200:81/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
+                            url:'http://localhost:81/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
                             data:"idventa="+idComprobante+"&_token="+ $('input[name=_token]').val(),
                             success: function(r){
-                                window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
+                                window.open('http://localhost:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                                 window.location.href = "{{route('caja')}}";
                                 console.log(r);
                             },
@@ -293,7 +293,7 @@
                             }
                         });  
                     }else{
-                        window.open('http://192.168.0.200:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
+                        window.open('http://localhost:81/hotel/public/admin/comprobantes/pdf'+'/'+idComprobante, "_blank");         
                         window.location.href = "{{route('caja')}}";
                     }                  
                 }else{

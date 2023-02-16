@@ -66,6 +66,10 @@
             <td><strong>DIRECCION:</strong>{{!is_null($direccion)?$direccion :'-'}}
             </td>
         </tr>
+        <tr>
+            <td><strong>FORMA DE PAGO:</strong>{{'Contado'}}
+            </td>
+        </tr>
     </table>
 
     <br />

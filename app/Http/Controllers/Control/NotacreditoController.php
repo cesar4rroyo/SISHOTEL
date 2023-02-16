@@ -156,10 +156,10 @@ class NotacreditoController extends Controller
             
 
         try {
-            if ($cajaApertura['concepto_id'] == '2') {
+           /*  if ($cajaApertura['concepto_id'] == '2') {
                 $dat[0] = array("respuesta" => "ERROR", "msg" => "CAJA CERRADA");
                 throw new \Exception(json_encode($dat));
-            }
+            } */
             $error = DB::transaction(function () use ($request, $user_id, &$dat) {
                 $venta = Comprobante::find($request->input('documento'));
                 if(!$venta){

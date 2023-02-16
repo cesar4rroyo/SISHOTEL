@@ -81,12 +81,20 @@
                                     <td>
 
                                         @if ($item->persona)
-                                        @if (is_null($item->persona->razonsocial) ||
+                                        @php
+                                            $persona = $item->persona;
+                                        @endphp
+                                        @if (!is_null($persona->dni))
+                                            {{($persona->nombres) ? $persona->nombres . ' ' . $persona->apellidos . ' ' : 'VARIOS'}}
+                                        @else
+                                            {{($persona->razonsocial) ? $persona->razonsocial : 'VARIOS'}}
+                                        @endif
+                                        {{-- @if (is_null($item->persona->razonsocial) ||
                                         trim($item->persona->razonsocial)=='')
                                         {{$item->persona->nombres .' ' . $item->persona->apellidos}}
                                         @else
                                         {{isset($item->persona->razonsocial) ? $item->persona->razonsocial : 'VARIOS'}}
-                                        @endif
+                                        @endif --}}
                                         @endif
                                     </td>
                                     @if ( ($item->tipo)=='Ingreso' )

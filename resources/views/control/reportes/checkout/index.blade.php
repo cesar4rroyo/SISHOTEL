@@ -255,7 +255,7 @@
                         var data = table.row( $(this).parents('tr') ).data();
                         var id = data.id;
                         //window.open('http://localhost/test/public/admin/movimiento/pdf/out'+'/'+id, "_blank");
-                        window.open('http://192.168.0.200:81/hotel/public/admin/movimiento/pdf/out'+'/'+id, "_blank"); 
+                        window.open('http://localhost:81/hotel/public/admin/movimiento/pdf/out'+'/'+id, "_blank"); 
 
                     } );
             })

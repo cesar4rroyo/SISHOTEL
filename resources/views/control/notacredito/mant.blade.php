@@ -278,20 +278,20 @@
                             var id_venta = dat[0].venta_id;                            
                             $.ajax({
                                         type:'GET',
-                                        url:'http://192.168.0.200:81/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
+                                        url:'http://localhost:81/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
                                         //url:'http://localhost/clifacturacion/controlador/contComprobante.php?funcion='+funcion,
                                         data:"idventa="+id_venta+ "&id_serie="+"4"+"&_token="+ $('input[name=_token]').val(),
                                         success: function(r){
                                             //window.open('http://192.168.0.200:81/hotel/public/admin/movimiento/pdf/nota'+'/'+id_venta, "_blank"); 
                                             window.open('http://localhost:81/hotel/public/admin/movimiento/pdf/nota'+'/'+id_venta, "_blank"); 
-                                            location.reload();
+                                           // location.reload();
                                             console.log(r);
                                         },
                                         error: function(e){
                                             console.log(e.message);
                                             //window.open('http://192.168.0.200:81/hotel/public/admin/movimiento/pdf/nota'+'/'+id_venta, "_blank"); 
                                             window.open('http://localhost:81/hotel/public/admin/movimiento/pdf/nota'+'/'+id_venta, "_blank"); 
-                                            location.reload();
+                                          //  location.reload();
                                         }
                                     });  
                             

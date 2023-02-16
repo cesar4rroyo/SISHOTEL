@@ -169,11 +169,14 @@ class PersonaController extends Controller
     {
         $persona = Persona::whereNotNull('ruc')->get()->toArray();
         $data = [];
+        $data[] = ['id'=>'', 'nombre'=>'Seleccione un cliente'];
         foreach ($persona as $item) {
-            $data[] = [
-                'id' => $item['id'],
-                'nombre' => $item['razonsocial'],
-            ];
+            if(strlen($item['ruc'])==11 && trim($item['razonsocial'])!=''){
+                $data[] = [
+                    'id' => $item['id'],
+                    'nombre' => $item['razonsocial'],
+                ];
+            }
         }
         $response = ['data' => $data];
         return response()->json($response);
@@ -263,25 +266,32 @@ class PersonaController extends Controller
         $initialDate = Carbon::now()->format('Y-m-d\TH:i');
         $roles = Rol::orderBy('id')->pluck('nombre', 'id')->toArray();
         $nacionalidades = Nacionalidad::with('persona')->get();
+        //verificar si existe con DNI o Ruc
+        if (is_null($request->ruc)) {
+            $persona = Persona::where('dni', $request->dni)->first();
+        } else {
+            $persona = Persona::where('ruc', $request->ruc)->first();
+        }
+        if ($persona) {
+            $personas = Persona::getClientesConRucDni();
+            if (!empty($request->reserva)) {
+                $id_reserva = $request->reserva;
+                return view('control.checkin.index', compact('roles', 'nacionalidades', 'habitacion', 'personas', 'initialDate', 'id_reserva'));
+            }
 
+            return view('control.checkin.index', compact('roles', 'nacionalidades', 'habitacion', 'personas', 'initialDate'));
+        }
+        
         $persona = Persona::create([
             'nombres' => strtoupper($request->nombres),
-            'apellidos' => strtoupper($request->apellidos),
+            'apellidos' => "",
             'razonsocial' => strtoupper($request->razonsocial),
             'ruc' => $request->ruc,
             'dni' => $request->dni,
-            'direccion' => strtoupper($request->direccion),
-            'sexo' => $request->sexo,
-            'fechanacimiento' => $request->fechanacimiento,
-            'telefono' => $request->telefono,
             'observacion' => strtoupper($request->observacion),
-            'nacionalidad_id' => $request->nacionalidad_id,
-            'edad' => $request->edad,
-            'email' => $request->email,
-            'ciudad' => strtoupper($request->ciudad),
-
         ]);
-        $persona->roles()->sync($request->rol_id);
+        //ASINGNAR ROL DE CLIENTE 2
+        $persona->roles()->sync(2);
 
         $personas = Persona::getClientesConRucDni();
 

@@ -8,9 +8,11 @@ use App\Models\Procesos\DetalleMovimiento;
 use App\Models\Procesos\Movimiento;
 use Illuminate\Database\Eloquent\Model;
 use Mockery\Mock;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Producto extends Model
 {
+    use SoftDeletes;
     protected $table = 'producto';
     protected $primaryKey = 'id';
     protected $fillable = [

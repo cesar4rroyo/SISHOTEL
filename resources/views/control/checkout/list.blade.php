@@ -50,9 +50,13 @@
                                     <td>{{ $item->total }}</td>
 
                                     <td>
-                                        @foreach ($item->pasajero as $pasajero)
-                                        {{$loop->last ? $pasajero->persona->nombres : $pasajero->persona->nombres . ', '}}
-                                        @endforeach
+                                    @if (count($item->pasajero)>0)
+                                    @foreach ($item->pasajero as $pasajero)
+                                    {{$loop->last ? (isset($pasajero->persona) ? $pasajero->persona->nombres : '-') :  (isset($pasajero->persona) ? $pasajero->persona->nombres : '-') . ', '}}
+                                    @endforeach
+                                    @else
+                                        {{'-'}}
+                                    @endif
                                     </td>
                                     <td>
                                         <div class="btn-group">

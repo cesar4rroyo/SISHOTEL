@@ -64,7 +64,7 @@
                                 @foreach($persona as $item)
                                 <tr>
                                     <td>
-                                        @if (is_null($item->razonsocial) || trim($item->razonsocial)=='')
+                                        @if (is_null($item->razonsocial) || trim($item->razonsocial)=='-' || trim($item->razonsocial)=='')
                                         {{$item->nombres .' ' . $item->apellidos}}
                                         @else
                                         {{isset($item->razonsocial) ? $item->razonsocial : 'ERROR'}}

@@ -9,9 +9,11 @@ use App\Models\Procesos\Pasajero;
 use App\Models\Procesos\Reserva;
 use App\Models\Seguridad\Usuario;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Persona extends Model
 {
+    use SoftDeletes;
     protected $table = 'persona';
     protected $fillable = [
         'nombres',
@@ -76,7 +78,8 @@ class Persona extends Model
         $personas = Persona::getClientes();
         $data = [];
         foreach ($personas as $item) {
-            if ($item['nombres'] == '-' && $item['apellidos'] == '-' && !is_null($item['razonsocial'])) {
+            $nombres = '';
+            if ($item['ruc'] != '' && (!is_null($item['razonsocial'])) && $item['razonsocial'] != '-' && $item['razonsocial'] != '' && $item['ruc'] != '-') {
                 $nombres = $item['razonsocial'];
             } else if ($item['nombres'] != '-' && !is_null($item['nombres'])) {
                 $nombres = $item['nombres'] . ' ' . $item['apellidos'];

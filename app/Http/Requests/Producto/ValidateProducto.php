@@ -24,7 +24,7 @@ class ValidateProducto extends FormRequest
     public function rules()
     {
         return [
-            'nombre' => 'required | max:40 | unique:producto,nombre,' . $this->route('id'),
+            'nombre' => 'required | max:200 | unique:producto,nombre,' . $this->route('id'),
             'precioventa' => 'required',
             // 'preciocompra' => 'required',
             'categoria_id' => 'required',

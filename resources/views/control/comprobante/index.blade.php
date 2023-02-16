@@ -41,7 +41,7 @@
                             <tbody>
                                 @foreach($comprobantes as $item)
                                 <tr>
-                                    <td>{{  \Carbon\Carbon::parse($item->created_at)->formatLocalized('%d %B %Y %H:%M:00') }}
+                                    <td>{{  \Carbon\Carbon::parse($item->fecha)->formatLocalized('%d %B %Y %H:%M:00') }}
                                     </td>
                                     <td class="text-capitalize">{{ $item->tipodocumento }}</td>
                                     <td>
@@ -74,6 +74,9 @@
                                                 title="Impirmir"><button class="btn btn-warning btn-sm"><i
                                                         class="fas fa-print" aria-hidden="true"></i>
                                                 </button></a>
+                                            <a class="btn btn-error" 
+                                            onclick="declarar3(<?php echo $item->id;?>,'<?php echo substr($item->tipodocumento,0,1);?>')" 
+                                            style="display:;">Declarar </a>
                                         </div>
                                     </td>
                                 </tr>
@@ -89,4 +92,21 @@
     </div>
 </div>
 </div>
+<script>
+    function declarar3(idventa,idtipodocumento){
+        if(idtipodocumento=='b'){
+            var funcion="enviarBoleta";
+        }else{
+            var funcion="enviarFactura";
+        }
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:81/clifacturacion/controlador/contComprobante.php?funcion="+funcion,
+            data: "idventa="+idventa+"&_token="+$('input[name="_token"]').val(),
+            success: function(a) {
+                console.log(a);
+            }
+        }); 
+    }
+</script>
 @endsection
