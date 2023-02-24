@@ -76,7 +76,7 @@
                                                 </button></a>
                                             <a class="btn btn-error" 
                                             onclick="declarar3(<?php echo $item->id;?>,'<?php echo substr($item->tipodocumento,0,1);?>')" 
-                                            style="display:;">Declarar </a>
+                                            style="display:none;">Declarar </a>
                                         </div>
                                     </td>
                                 </tr>
